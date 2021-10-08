@@ -7,16 +7,14 @@ import App from '../client/App';
 import Phaser from "phaser";
 import config from './config/config'
 
-import PlayScene from './scene/PlayScene';
+import MMOScene from './scene/MMOScene';
 import MainScene from './scene/MainScene';
 
 export default class Game extends Phaser.Game {
   constructor() {
     // Add the config file to the game
     super(config);
-    // this.scene.add('BgScene', BgScene);
-    // this.scene.add('FgScene', FgScene);
-    this.scene.add('PlayScene', PlayScene);
+    this.scene.add('PlayScene', MMOScene);
     this.scene.add('MainScene', MainScene);
     //starts the game with the main scene
     this.scene.start('MainScene');

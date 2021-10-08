@@ -1,0 +1,1029 @@
+{
+	"textures": [
+		{
+			"image": "fox.png",
+			"normalMap": "fox_n.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 682,
+				"h": 64
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "fox_idle-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 34
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 22,
+						"h": 34
+					}
+				},
+				{
+					"filename": "fox_idle-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 0,
+						"y": 34,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_walk-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 34
+					},
+					"frame": {
+						"x": 22,
+						"y": 0,
+						"w": 22,
+						"h": 34
+					}
+				},
+				{
+					"filename": "fox_idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 34,
+						"y": 34,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_walk-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 34
+					},
+					"frame": {
+						"x": 44,
+						"y": 0,
+						"w": 22,
+						"h": 34
+					}
+				},
+				{
+					"filename": "fox_walk-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 34
+					},
+					"frame": {
+						"x": 66,
+						"y": 0,
+						"w": 22,
+						"h": 34
+					}
+				},
+				{
+					"filename": "fox_idle-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 68,
+						"y": 34,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_walk-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 34
+					},
+					"frame": {
+						"x": 88,
+						"y": 0,
+						"w": 22,
+						"h": 34
+					}
+				},
+				{
+					"filename": "fox_idle-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 102,
+						"y": 34,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 110,
+						"y": 0,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 136,
+						"y": 32,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_run-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 31,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 144,
+						"y": 0,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_run-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 31,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 170,
+						"y": 32,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_walk-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 178,
+						"y": 0,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_walk-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 204,
+						"y": 32,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_walk-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 212,
+						"y": 0,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_walk-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 238,
+						"y": 32,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_run-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 31,
+						"w": 26,
+						"h": 32
+					},
+					"frame": {
+						"x": 246,
+						"y": 0,
+						"w": 26,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 32
+					},
+					"frame": {
+						"x": 272,
+						"y": 0,
+						"w": 22,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 32
+					},
+					"frame": {
+						"x": 272,
+						"y": 32,
+						"w": 22,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 32
+					},
+					"frame": {
+						"x": 294,
+						"y": 0,
+						"w": 22,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_run-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 31,
+						"w": 26,
+						"h": 30
+					},
+					"frame": {
+						"x": 294,
+						"y": 32,
+						"w": 26,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_run-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 33,
+						"w": 26,
+						"h": 30
+					},
+					"frame": {
+						"x": 316,
+						"y": 0,
+						"w": 26,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 320,
+						"y": 30,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 342,
+						"y": 0,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 342,
+						"y": 30,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_run-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 364,
+						"y": 0,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_walk-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 364,
+						"y": 30,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_walk-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 386,
+						"y": 0,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 386,
+						"y": 30,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_idle-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 408,
+						"y": 0,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 420,
+						"y": 28,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 442,
+						"y": 0,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 454,
+						"y": 28,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 476,
+						"y": 0,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_walk-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 488,
+						"y": 28,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_walk-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 510,
+						"y": 0,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_walk-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 522,
+						"y": 28,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_walk-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 544,
+						"y": 0,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 33,
+						"w": 26,
+						"h": 28
+					},
+					"frame": {
+						"x": 556,
+						"y": 28,
+						"w": 26,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 37,
+						"w": 26,
+						"h": 28
+					},
+					"frame": {
+						"x": 578,
+						"y": 0,
+						"w": 26,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 28
+					},
+					"frame": {
+						"x": 582,
+						"y": 28,
+						"w": 22,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 28
+					},
+					"frame": {
+						"x": 604,
+						"y": 0,
+						"w": 22,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_walk-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 28
+					},
+					"frame": {
+						"x": 604,
+						"y": 28,
+						"w": 22,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_walk-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 28
+					},
+					"frame": {
+						"x": 626,
+						"y": 0,
+						"w": 22,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_run-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 39,
+						"w": 34,
+						"h": 26
+					},
+					"frame": {
+						"x": 626,
+						"y": 28,
+						"w": 34,
+						"h": 26
+					}
+				},
+				{
+					"filename": "fox_run-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 39,
+						"w": 34,
+						"h": 26
+					},
+					"frame": {
+						"x": 648,
+						"y": 0,
+						"w": 34,
+						"h": 26
+					}
+				},
+				{
+					"filename": "fox_run-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 26
+					},
+					"frame": {
+						"x": 660,
+						"y": 26,
+						"w": 22,
+						"h": 26
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:cd1122da024a28b57679c2a08ac3744d:0b33355e106a5f7ef8bb1d3ecf1c1029:53bbd70fd2b9eff0e701920f7f2a53a8$"
+	}
+}

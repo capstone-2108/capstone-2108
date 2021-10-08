@@ -1,0 +1,357 @@
+{
+	"textures": [
+		{
+			"image": "fox_idle.png",
+			"normalMap": "fox_idle_n.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 56,
+				"h": 244
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "fox_idle-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 28
+					},
+					"frame": {
+						"x": 34,
+						"y": 0,
+						"w": 22,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_idle-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 37,
+						"w": 34,
+						"h": 28
+					},
+					"frame": {
+						"x": 0,
+						"y": 28,
+						"w": 34,
+						"h": 28
+					}
+				},
+				{
+					"filename": "fox_idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 34,
+						"y": 28,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 0,
+						"y": 56,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 37,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 34,
+						"y": 58,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 30
+					},
+					"frame": {
+						"x": 0,
+						"y": 86,
+						"w": 22,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 22,
+						"y": 88,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 116,
+						"w": 22,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 22,
+						"y": 118,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 35,
+						"w": 34,
+						"h": 30
+					},
+					"frame": {
+						"x": 0,
+						"y": 148,
+						"w": 34,
+						"h": 30
+					}
+				},
+				{
+					"filename": "fox_idle-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 32
+					},
+					"frame": {
+						"x": 34,
+						"y": 148,
+						"w": 22,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 35,
+						"w": 22,
+						"h": 32
+					},
+					"frame": {
+						"x": 0,
+						"y": 178,
+						"w": 22,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 22,
+						"y": 180,
+						"w": 34,
+						"h": 32
+					}
+				},
+				{
+					"filename": "fox_idle-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 33,
+						"w": 22,
+						"h": 34
+					},
+					"frame": {
+						"x": 0,
+						"y": 210,
+						"w": 22,
+						"h": 34
+					}
+				},
+				{
+					"filename": "fox_idle-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 33,
+						"w": 34,
+						"h": 32
+					},
+					"frame": {
+						"x": 22,
+						"y": 212,
+						"w": 34,
+						"h": 32
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:0a51f0b7737c90b0973bbc8aa030df08:7323d0a3e6be577508c032853f5cdd8f:f5affc76dd5cc22468227d80f27296d8$"
+	}
+}

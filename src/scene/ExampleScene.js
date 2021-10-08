@@ -1,8 +1,8 @@
 import Player from '../entity/Player';
 
-export default class PlayScene extends Phaser.Scene {
+export default class ExampleScene extends Phaser.Scene {
   constructor() {
-    super('PlayScene');
+    super('ExampleScene');
   }
 
   /**
