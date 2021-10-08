@@ -10,7 +10,7 @@ import config from './config/config'
 import MMOScene from './scene/MMOScene';
 import MainScene from './scene/MainScene';
 
-class Game extends Phaser.Game {
+export default class Game extends Phaser.Game {
   constructor() {
     // Add the config file to the game
     super(config);
@@ -19,10 +19,6 @@ class Game extends Phaser.Game {
     //starts the game with the main scene
     this.scene.start('MainScene');
   }
-}
-
-window.onload = function () {
-  window.game = new Game();
 }
 
 ReactDOM.render(

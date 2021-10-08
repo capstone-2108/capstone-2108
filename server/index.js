@@ -1,7 +1,7 @@
-require('dotenv').config();
-const { db } = require('./db')
-const PORT = process.env.PORT || 1337
-const app = require('./app')
+require("dotenv").config();
+const { db } = require("./db");
+const PORT = process.env.PORT || 1337;
+const app = require("./app");
 // const seed = require('../script/seed');
 
 const init = async () => {
@@ -10,13 +10,13 @@ const init = async () => {
     //   await seed();
     // }
     // else {
-      await db.sync()
+    await db.sync({ force: true });
     // }
     // start listening (and create a 'server' object representing our server)
-    app.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`))
+    app.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`));
   } catch (ex) {
-    console.log(ex)
+    console.log(ex);
   }
-}
+};
 
 init();
