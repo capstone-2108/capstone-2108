@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withRouter, Route, Switch, } from "react-router-dom";
+import { withRouter, Route, Switch } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import { whoAmI } from "./store";
+import { GameView } from "./components/Game";
 
 /**
  * COMPONENT
@@ -19,8 +20,9 @@ class Routes extends Component {
     return (
       <div>
         <Switch>
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/game" component={GameView} />
         </Switch>
       </div>
     );
@@ -32,7 +34,7 @@ class Routes extends Component {
  */
 const mapState = (state) => {
   return {
-    isLoggedIn: state.auth.loggedIn,
+    isLoggedIn: state.auth.loggedIn
   };
 };
 
@@ -40,7 +42,7 @@ const mapDispatch = (dispatch) => {
   return {
     async loadInitialData() {
       await dispatch(whoAmI());
-    },
+    }
   };
 };
 
