@@ -39,13 +39,14 @@ const AuthForm = (props) => {
 
   const history = useHistory();
   const routeChange = () => {
-    let path = `/`;
+    let path = `/game`;
     history.push(path);
   };
 
   const loginSuccessAlert = useSelector((state) => state.auth.loginSuccess);
 
   const dispatch = useDispatch();
+
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     if (name === "signup") {
