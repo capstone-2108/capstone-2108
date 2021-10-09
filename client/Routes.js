@@ -5,6 +5,7 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import { whoAmI } from "./store";
 import { GameView } from "./components/Game";
+import TempLogin from "./components/Login"
 
 /**
  * COMPONENT
