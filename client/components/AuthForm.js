@@ -51,6 +51,7 @@ const AuthForm = (props) => {
     evt.preventDefault();
     if (name === "signup") {
       const successLogIn = await dispatch(authenticate(name, { email, password, firstName }));
+      console.log('success login', successLogIn)
       if (successLogIn) {
         routeChange();
       } else {

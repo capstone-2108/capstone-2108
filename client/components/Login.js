@@ -3,7 +3,7 @@ import { createTheme, ThemeProvider, Typography } from '@material-ui/core';
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Press Start 2P'
+    fontFamily: 'Rye'
   }
 })
 

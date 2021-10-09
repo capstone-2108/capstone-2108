@@ -21,6 +21,7 @@ class Routes extends Component {
     return (
       <div>
         <Switch>
+          <Route exact path='temp' component={TempLogin} />
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/game" component={GameView} />
