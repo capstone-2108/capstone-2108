@@ -7,19 +7,19 @@ export const SOUTHEAST = 'southeast';
 export const SOUTH = 'south';
 export const SOUTHWEST = 'southwest';
 
-export const TILE_WIDTH = 160;
-export const TILE_HEIGHT = 79;
-export const TILE_WIDTH_HALF = 80;
-export const TILE_HEIGHT_HALF = 39.5;
+export const TILE_WIDTH = 16;
+export const TILE_HEIGHT = 16;
+export const TILE_WIDTH_HALF = 8;
+export const TILE_HEIGHT_HALF = 8;
 
-export const D2DIRECTIONS = {
-  [NORTH]: '06',
-  [NORTHWEST]: '01',
-  [WEST]: '05',
-  [SOUTHWEST]: '00',
-  [SOUTH]: '04',
-  [SOUTHEAST]: '03',
-  [EAST]: '07',
-  [NORTHEAST]: '02'
+export const DIRECTION_CONVERSION = {
+  [NORTH]: NORTH,
+  [NORTHWEST]: NORTH,
+  [WEST]: WEST,
+  [SOUTHWEST]: SOUTH,
+  [SOUTH]: SOUTH,
+  [SOUTHEAST]: SOUTH,
+  [EAST]: EAST,
+  [NORTHEAST]: NORTH
 }
 

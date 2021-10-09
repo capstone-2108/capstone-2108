@@ -1,15 +1,12 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-console.log('output dir',  path.join(__dirname, 'dist'));
 module.exports = {
   mode: "development",
-  devtool: "eval-source-map",
+  devtool: "source-map",
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, 'public'),
-    filename: "index_bundle.js"
+    filename: "bundle.js"
   },
   module: {
     rules: [
@@ -52,16 +49,3 @@ module.exports = {
   ]
 };
 
-/*
- new CleanWebpackPlugin( {
-      root: path.resolve(__dirname, "../")
-    }),
- */
-
-/*
- new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      filename: "index.html",
-      inject: "body"
-    })
- */

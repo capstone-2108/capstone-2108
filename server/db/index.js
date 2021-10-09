@@ -3,18 +3,18 @@ const { db } = require("./db");
 const { User } = require("./models/User");
 const { TemplateCharacter } = require("./models/TemplateCharacter");
 const { SpriteSheet } = require("./models/SpriteSheet");
-const { User_character_join } = require("./models/User_character_join");
+const { PlayerCharacter } = require("./models/PlayerCharacter");
 const { Location } = require("./models/Location");
 const { Npc } = require("./models/Npc");
 const { Scene } = require("./models/Scene");
 const { Map } = require("./models/map");
 //associations could go here!
 
-User.belongsToMany(TemplateCharacter, { through: User_character_join });
-TemplateCharacter.belongsToMany(User, { through: User_character_join });
+User.belongsToMany(TemplateCharacter, { through: PlayerCharacter });
+TemplateCharacter.belongsToMany(User, { through: PlayerCharacter });
 
-User_character_join.belongsTo(Location);
-Location.hasMany(User_character_join);
+PlayerCharacter.belongsTo(Location);
+Location.hasMany(PlayerCharacter);
 
 Npc.belongsTo(Location);
 Location.hasMany(Npc);
@@ -36,7 +36,7 @@ module.exports = {
   User,
   TemplateCharacter,
   SpriteSheet,
-  User_character_join,
+  PlayerCharacter,
   Location,
   Npc,
   Scene,
