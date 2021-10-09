@@ -1,14 +1,24 @@
 import 'phaser';
 import {
   EAST,
-  NORTH,
-  SOUTH,
+  NORTH, NORTHEAST, NORTHWEST,
+  SOUTH, SOUTHEAST, SOUTHWEST,
   WEST,
 } from '../constants/constants';
 import {mapToScreen} from '../util/conversion';
+import {PathFinder} from '../pathfinding/PathFinder';
 
-export default class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, spriteKey, name) {
+export class Player extends Phaser.Physics.Arcade.Sprite {
+  /**
+   *
+   * @param {Phaser.Scene} scene
+   * @param {PathGrid} grid
+   * @param {number} x
+   * @param {number} y
+   * @param {string} spriteKey
+   * @param {string} name
+   */
+  constructor(scene, grid, x, y, spriteKey, name) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -18,13 +28,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 1,
-      run: 2,
+      walk: 100,
+      run: 150,
     }
     this.mode = 'idle';
     this.direction = SOUTH;
     this.movementMode = 'walk';
     this.animationChanged = false;
+    this.waypoints = [];
+    this.pathStart = null;
+    this.pathEnd = null;
+    // this.pathFinder = new PathFinder(this.scene, this, grid );
 
 
     //Physics
@@ -33,14 +47,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     //Hotkeys
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.createHotKeys();
-    
 
     //Animations
     this.createAnimations();
 
-
-
-
+    //Events
+    this.createHotKeyEvents();
 
     // this.movementModeChanged = false;
     // this.animationChanged = false; //if something triggers a change which should cause the current animation to change
@@ -67,7 +79,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
 
-
   createHotKeys() {
     this.cursors = this.scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -78,7 +89,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   createHotKeyEvents() {
-
+    this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
+      const {worldX, worldY} = pointer;
+      console.log(worldX, worldY);
+    });
   }
 
   //changes the character from run to walk or vice-versa
@@ -101,10 +115,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     for (const [dir, dirOptions] of Object.entries(directions)) {
       for(const mode of modes) {
-        console.log(dir, dirOptions);
         const animationName = `${this.name}-${mode}-${dir}`; //what to call the animation so we can refer to it later
         const atlasKey = `${this.name}`; //which atlas should we use
-        console.log(animationName, 'prefix', `${atlasKey}_${mode}-`);
         this.anims.create({
           key: animationName,
           frameRate: 10,
@@ -130,26 +142,94 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     let direction = this.direction;
     let vdX = 0;
     let vdY = 0
+    let  numDirectionsPressed = 0;
+    // if (cursors.up.isDown) {
+    //   vdY = -1;
+    //   direction =  NORTH;
+    //   numDirectionsPressed++;
+    // }
+    // if (cursors.down.isDown) {
+    //   vdY = 1;
+    //   direction = SOUTH;
+    //   numDirectionsPressed++;
+    // }
+    // if (cursors.right.isDown) {
+    //   vdX = 1;
+    //   direction = EAST;
+    //   numDirectionsPressed++;
+    // }
+    // if (cursors.left.isDown) {
+    //   vdX = -1;
+    //   direction = WEST;
+    //   numDirectionsPressed++;
+    // }
+
     if (cursors.up.isDown) {
       vdY = -1;
-      direction =  NORTH;
+      numDirectionsPressed++
     }
     else if (cursors.down.isDown) {
       vdY = 1;
-      direction = SOUTH;
+      numDirectionsPressed++
     }
-
+    else {
+      vdY = 0;
+    }
     if (cursors.right.isDown) {
       vdX = 1;
-      direction = EAST;
+      if (vdY === 0) {
+        direction = EAST;
+      }
+      else if (vdY === 1) {
+        // direction = SOUTHEAST;
+        direction = SOUTH; //we don't have animations for south east, so lets go with making the character face south
+        vdX = vdY = 1;
+      }
+      else {
+        // direction = NORTHEAST;
+        direction = NORTH
+        vdX = 1;
+        vdY = -1;
+      }
+      numDirectionsPressed++
     }
     else if (cursors.left.isDown) {
       vdX = -1;
-      direction = WEST;
+      if (vdY === 0) {
+        direction = WEST;
+      }
+      else if (vdY === 1) {
+        // direction = SOUTHWEST;
+        direction = SOUTH
+        vdY = 1;
+        vdX = -1;
+      }
+      else {
+        // direction = NORTHWEST;
+        direction = NORTH;
+        vdX = -1;
+        vdY = -1;
+      }
+      numDirectionsPressed++
     }
     else {
+      vdX = 0;
+      if (vdY === 0) {
+        //direction="west";
+      }
+      else if (vdY === 1) {
+        direction = SOUTH;
+      }
+      else {
+        direction = NORTH;
+      }
+    }
+
+    if(numDirectionsPressed === 0 || numDirectionsPressed > 2 || (cursors.left.isDown && cursors.right.isDown) ||
+      cursors.up.isDown && cursors.down.isDown) {
+      vdX = 0;
+      vdY = 0;
       this.mode = 'idle';
-      // console.log('idle');
     }
     return {vdX, vdY, direction}
   }
@@ -172,6 +252,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.animationChanged = false;
       }
       this.setVelocityX(this.speeds[this.movementMode] * vdX);
-      this.setVelocityY(this.speeds[this.movementMode]  * vdY);
+      this.setVelocityY(this.speeds[this.movementMode] * vdY);
   }
 }

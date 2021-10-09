@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const { db } = require("../db");
 
-const Character = db.define("character", {
+const PlayerCharacter = db.define("playerCharacter", {
   name: {
     type: Sequelize.STRING,
     allowNull: false
@@ -12,4 +12,4 @@ const Character = db.define("character", {
   }
 });
 
-module.exports = { User_character_join };
+module.exports = { PlayerCharacter };
