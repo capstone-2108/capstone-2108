@@ -13,17 +13,14 @@ import Alert from "@material-ui/lab/Alert";
 import { ThemeProvider, Typography, createTheme } from "@material-ui/core";
 import { loginSuccess } from "../store/auth";
 import { useHistory } from "react-router-dom";
-import desktopImage from '../../public/images/croppedCliffs1.jpeg';
+import desktopImage from "../../public/images/croppedCliffs1.jpeg";
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Cinzel Decorative'
+    fontFamily: "Cinzel Decorative"
   }
-})
+});
 
-/**
- * COMPONENT
- */
 const AuthForm = (props) => {
   const { name, displayName, error } = props;
   const [email, setEmail] = useState("cody@charm.com");
@@ -34,8 +31,8 @@ const AuthForm = (props) => {
   const [snackBarErrorOpen, setSnackBarErrorOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.backgroundColor = '#5c5005'
-  })
+    document.body.style.backgroundColor = "#5c5005";
+  });
 
   const handleWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -56,15 +53,13 @@ const AuthForm = (props) => {
     history.push(path);
   };
 
-  const loginSuccessAlert = useSelector((state) => state.auth.loginSuccess);
-
   const dispatch = useDispatch();
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     if (name === "signup") {
       const successLogIn = await dispatch(authenticate(name, { email, password, firstName }));
-      console.log('success login', successLogIn)
+      console.log("success login", successLogIn);
       if (successLogIn) {
         routeChange();
       } else {
@@ -85,8 +80,6 @@ const AuthForm = (props) => {
       item
       xs={12}
       style={{
-        // paddingTop: 0,
-        /* width: 80%; */
         margin: "0 auto"
       }}>
       <Snackbar
@@ -107,75 +100,21 @@ const AuthForm = (props) => {
           Incorrect Email/Password
         </Alert>
       </Snackbar>
-      {/* <div className="cart-header">
-        <h4 className="cart-title">{name === "signup" ? "Sign Up" : "Login"}</h4>
-      </div> */}
       <div id="loginContainer">
-        <img src={desktopImage} id="wallpaper"/>
+        <img src={desktopImage} id="wallpaper" />
         <ThemeProvider theme={theme}>
           <Typography variant="h1" gutterBottom id="title">
             Game Title
           </Typography>
-        <Grid container direction="row" justifyContent="center" alignItems="center">
-          <Grid
-            container
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            style={{ width: "50%" }}>
-            <Box style={{ margin: 25, width: "100%" }}>
-              <form onSubmit={handleSubmit} name={name}>
-                <Card
-                  style={{
-                    display: "flex",
-                    border: "8px solid #966a2c",
-                    margin: "10px",
-                    padding: "5px",
-                    borderRadius: "10px",
-                    backgroundColor: "#e3dbb3"
-                  }}>
-                  <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="Email">
-                    <Typography>
-                      <h1>Email</h1>
-                    </Typography>
-                  </Box>
-                  <TextField
-                    value={email}
-                    onChange={(evt) => {
-                      setEmail(evt.target.value);
-                    }}
-                    name="email"
-                    type="text"
-                    style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                    InputProps={{ disableUnderline: true }}
-                  />
-                </Card>
-                <Card
-                  style={{
-                    display: "flex",
-                    border: "8px solid #966a2c",
-                    margin: "10px",
-                    padding: "5px",
-                    borderRadius: "10px",
-                    backgroundColor: "#e3dbb3"
-                  }}>
-                  <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="password">
-                    <Typography>
-                      <h1>Password</h1>
-                    </Typography>
-                  </Box>
-                  <TextField
-                    value={password}
-                    onChange={(evt) => {
-                      setPassword(evt.target.value);
-                    }}
-                    InputProps={{ disableUnderline: true }}
-                    style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                    name="password"
-                    type="password"
-                  />
-                </Card>
-                {name === "signup" && (
+          <Grid container direction="row" justifyContent="center" alignItems="center">
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              style={{ width: "50%" }}>
+              <Box style={{ margin: 25, width: "100%" }}>
+                <form onSubmit={handleSubmit} name={name}>
                   <Card
                     style={{
                       display: "flex",
@@ -185,87 +124,132 @@ const AuthForm = (props) => {
                       borderRadius: "10px",
                       backgroundColor: "#e3dbb3"
                     }}>
-                    <Box htmlFor="First Name" style={{ margin: 0, width: "250px", padding: "1em" }}>
+                    <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="Email">
                       <Typography>
-                      <h1>First Name</h1>
+                        <h1>Email</h1>
                       </Typography>
                     </Box>
                     <TextField
-                      value={firstName}
+                      value={email}
                       onChange={(evt) => {
-                        setFirstName(evt.target.value);
+                        setEmail(evt.target.value);
                       }}
-                      name="firstName"
+                      name="email"
                       type="text"
-                      InputProps={{ disableUnderline: true }}
                       style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
+                      InputProps={{ disableUnderline: true }}
                     />
                   </Card>
-                )}
-                <Box style={{ display: "flex", justifyContent: "center" }}>
-                  <Button
+                  <Card
                     style={{
+                      display: "flex",
+                      border: "8px solid #966a2c",
                       margin: "10px",
-                      border: "3px solid #966a2c",
-                      backgroundColor: "#e3dbb3",
-                      textTransform: "lowercase"
-                    }}
-                    type="submit">
-                    <Typography>
-                      <h3>{displayName}</h3>
-                    </Typography>
-                  </Button>
+                      padding: "5px",
+                      borderRadius: "10px",
+                      backgroundColor: "#e3dbb3"
+                    }}>
+                    <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="password">
+                      <Typography>
+                        <h1>Password</h1>
+                      </Typography>
+                    </Box>
+                    <TextField
+                      value={password}
+                      onChange={(evt) => {
+                        setPassword(evt.target.value);
+                      }}
+                      InputProps={{ disableUnderline: true }}
+                      style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
+                      name="password"
+                      type="password"
+                    />
+                  </Card>
+                  {name === "signup" && (
+                    <Card
+                      style={{
+                        display: "flex",
+                        border: "8px solid #966a2c",
+                        margin: "10px",
+                        padding: "5px",
+                        borderRadius: "10px",
+                        backgroundColor: "#e3dbb3"
+                      }}>
+                      <Box
+                        htmlFor="First Name"
+                        style={{ margin: 0, width: "250px", padding: "1em" }}>
+                        <Typography>
+                          <h1>First Name</h1>
+                        </Typography>
+                      </Box>
+                      <TextField
+                        value={firstName}
+                        onChange={(evt) => {
+                          setFirstName(evt.target.value);
+                        }}
+                        name="firstName"
+                        type="text"
+                        InputProps={{ disableUnderline: true }}
+                        style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
+                      />
+                    </Card>
+                  )}
+                  <Box style={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                      style={{
+                        margin: "10px",
+                        border: "3px solid #966a2c",
+                        backgroundColor: "#e3dbb3",
+                        textTransform: "lowercase"
+                      }}
+                      type="submit">
+                      <Typography>
+                        <h3>{displayName}</h3>
+                      </Typography>
+                    </Button>
                   </Box>
                   {name === "login" ? (
-                  <Link to="/signup" style={{ textDecoration: "none"}}>
-                    <Button
-                      style={{
-                        margin: "10px",
-                        border: "3px solid #966a2c",
-                        backgroundColor: "#e3dbb3",
-                        textTransform: "lowercase"
-                      }}
-                      type="submit">
-                      <Typography>
-                        <h3>New Player? Sign Up Here</h3>
-                      </Typography>
-                    </Button>
-                  </Link>
+                    <Link to="/signup" style={{ textDecoration: "none" }}>
+                      <Button
+                        style={{
+                          margin: "10px",
+                          border: "3px solid #966a2c",
+                          backgroundColor: "#e3dbb3",
+                          textTransform: "lowercase"
+                        }}
+                        type="submit">
+                        <Typography>
+                          <h3>New Player? Sign Up Here</h3>
+                        </Typography>
+                      </Button>
+                    </Link>
                   ) : (
-                    <Link to="/" style={{ textDecoration: "none"}}>
-                    <Button
-                      style={{
-                        margin: "10px",
-                        border: "3px solid #966a2c",
-                        backgroundColor: "#e3dbb3",
-                        textTransform: "lowercase"
-                      }}
-                      type="submit">
-                      <Typography>
-                        <h3>Back to Login</h3>
-                      </Typography>
-                    </Button>
-                  </Link>
+                    <Link to="/" style={{ textDecoration: "none" }}>
+                      <Button
+                        style={{
+                          margin: "10px",
+                          border: "3px solid #966a2c",
+                          backgroundColor: "#e3dbb3",
+                          textTransform: "lowercase"
+                        }}
+                        type="submit">
+                        <Typography>
+                          <h3>Back to Login</h3>
+                        </Typography>
+                      </Button>
+                    </Link>
                   )}
-                {/* </Box> */}
-                {error && error.response && <Box> {error.response.data} </Box>}
-              </form>
-            </Box>
+                  {error && error.response && <Box> {error.response.data} </Box>}
+                </form>
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
         </ThemeProvider>
       </div>
     </Grid>
   );
 };
 
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
 const mapLogin = (state) => {
   return {
     name: "login",
