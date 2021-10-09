@@ -5,7 +5,6 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import { whoAmI } from "./store";
 import { GameView } from "./components/Game";
-import TempLogin from "./components/Login"
 
 /**
  * COMPONENT
@@ -21,7 +20,6 @@ class Routes extends Component {
     return (
       <div>
         <Switch>
-          <Route exact path='temp' component={TempLogin} />
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/game" component={GameView} />
