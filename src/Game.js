@@ -26,6 +26,9 @@ const config = {
       debug: true,
     }
   },
+  plugins: {
+
+  },
   scale: {
     parent: 'phaser',
     width: 1024,   // Game width in pixels

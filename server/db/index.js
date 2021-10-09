@@ -10,8 +10,14 @@ const { Scene } = require("./models/Scene");
 const { Map } = require("./models/map");
 //associations could go here!
 
-User.belongsToMany(TemplateCharacter, { through: PlayerCharacter });
-TemplateCharacter.belongsToMany(User, { through: PlayerCharacter });
+// User.belongsToMany(TemplateCharacter, { through: PlayerCharacter });
+// TemplateCharacter.belongsToMany(User, { through: PlayerCharacter });
+
+User.hasMany(PlayerCharacter);
+PlayerCharacter.belongsTo(User);
+
+PlayerCharacter.belongsTo(TemplateCharacter);
+TemplateCharacter.hasMany(PlayerCharacter);
 
 PlayerCharacter.belongsTo(Location);
 Location.hasMany(PlayerCharacter);
