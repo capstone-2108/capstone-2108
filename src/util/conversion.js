@@ -1,8 +1,8 @@
-import {TILE_HEIGHT_HALF, TILE_WIDTH_HALF} from '../constants/constants';
+import {TILE_HEIGHT, TILE_HEIGHT_HALF, TILE_WIDTH, TILE_WIDTH_HALF} from '../constants/constants';
 
 export function mapToScreen(mapX, mapY) {
-  let screenX = (mapX - mapY) * TILE_WIDTH_HALF;
-  let screenY = (mapX + mapY) * TILE_HEIGHT_HALF;
+  let screenX = mapX * TILE_WIDTH;
+  let screenY = mapY * TILE_HEIGHT;
   return [screenX, screenY];
 }
 

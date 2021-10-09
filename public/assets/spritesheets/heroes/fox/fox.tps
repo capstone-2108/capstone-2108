@@ -132,7 +132,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>fox.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -306,7 +306,7 @@
         <key>commonDivisorY</key>
         <uint>1</uint>
         <key>packNormalMaps</key>
-        <false/>
+        <true/>
         <key>autodetectNormalMaps</key>
         <true/>
         <key>normalMapFilter</key>
