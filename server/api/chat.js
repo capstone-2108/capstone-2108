@@ -3,7 +3,6 @@ const router = require("express").Router();
 const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const {worldChat} = require('../socket');
-console.log('worldChat', worldChat);
 
 //POST /api/chat/world - posts a new message to be emitted to the world
 router.post('/world', requireTokenMiddleware, async (req, res, next) => {

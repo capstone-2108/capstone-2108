@@ -24,7 +24,6 @@ class Routes extends Component {
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/game" component={GameView} />
-          <Route exact path="/chat" component={Chat} />
         </Switch>
       </div>
     );

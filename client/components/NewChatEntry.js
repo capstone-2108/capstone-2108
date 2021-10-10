@@ -6,6 +6,7 @@ export const NewChatEntry = (props) => {
   const [messageEntry, setMessageEntry] = useState('');
   const dispatch = useDispatch();
   const handleSend = (evt) => {
+    evt.stopPropagation();
     if(evt.key === 'Enter') {
       dispatch(sendMessage(evt.target.value))
       // socket.emit('sendMessage', evt.target.value);
