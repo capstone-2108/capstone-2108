@@ -44,7 +44,8 @@ router.get("/whoAmI", requireTokenMiddleware, async (req, res, next) => {
       isAdmin: req.user.isAdmin
     });
   } catch (ex) {
-    next(ex);
+    res.sendStatus(404);
+    // next(ex);
   }
 });
 
