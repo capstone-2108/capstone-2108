@@ -195,7 +195,7 @@ const AuthForm = (props) => {
             </Button>
           </Grid>
           {name === "login" && (
-            <Link to="signup">
+            <Link to="signup" style={{ textDecoration: "none" }}>
               <Grid align="center" className={classes.signup}>
                 <p>New player? Sign Up Here</p>
               </Grid>
