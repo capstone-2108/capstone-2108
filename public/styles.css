@@ -13,12 +13,6 @@ body {
     text-align: center;
 }
 
-#wallpaper {
-    width: 100%;
-    height: 500px;
-
-}
-
 #title {
     color: rgb(169, 144, 2);
     position: absolute;

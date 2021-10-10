@@ -4,24 +4,47 @@ import { Link } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store";
 import TextField from "@material-ui/core/TextField";
-import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import { ThemeProvider, Typography, createTheme } from "@material-ui/core";
-import { loginSuccess } from "../store/auth";
+import Avatar from "@material-ui/core/Avatar";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core";
+import LockedOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
-import desktopImage from "../../public/images/croppedCliffs1.jpeg";
+import desktopImage from "../../public/images/colorfulTreeLandscape.jpeg";
 
-const theme = createTheme({
-  typography: {
-    fontFamily: "Cinzel Decorative"
+const useStyles = makeStyles((theme) => ({
+  bkimg: {
+    minHeight: "100vh",
+    backgroundImage: `url(${desktopImage})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center"
+  },
+  form: {
+    height: "60vh",
+    width: 350,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#211510",
+    fontFamily: "Cinzel Decorative",
+    padding: 20
+  },
+  text: {
+    color: "#ffff"
+    // textTransform: "lowercase"
   }
-});
+}));
+
 
 const AuthForm = (props) => {
+  const classes = useStyles();
+
   const { name, displayName, error } = props;
   const [email, setEmail] = useState("cody@charm.com");
   const [password, setPassword] = useState("123");
@@ -29,10 +52,6 @@ const AuthForm = (props) => {
 
   const [snackBarWarningOpen, setSnackBarWarningOpen] = useState(false);
   const [snackBarErrorOpen, setSnackBarErrorOpen] = useState(false);
-
-  useEffect(() => {
-    document.body.style.backgroundColor = "#5c5005";
-  });
 
   const handleWarningClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -76,177 +95,31 @@ const AuthForm = (props) => {
   };
 
   return (
-    <Grid
-      item
-      xs={12}
-      style={{
-        margin: "0 auto"
-      }}>
-      <Snackbar
-        open={snackBarErrorOpen}
-        autoHideDuration={3000}
-        onClose={handleErrorClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-        <Alert onClose={handleErrorClose} severity="error" sx={{ width: "100%" }}>
-          This email address is already associated with an account
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={snackBarWarningOpen}
-        autoHideDuration={3000}
-        onClose={handleWarningClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-        <Alert onClose={handleWarningClose} severity="warning" sx={{ width: "100%" }}>
-          Incorrect Email/Password
-        </Alert>
-      </Snackbar>
-      <div id="loginContainer">
-        <img src={desktopImage} id="wallpaper" />
-        <ThemeProvider theme={theme}>
-          <Typography variant="h1" gutterBottom id="title">
-            Game Title
-          </Typography>
-          <Grid container direction="row" justifyContent="center" alignItems="center">
-            <Grid
-              container
-              direction="column"
-              justifyContent="center"
-              alignItems="center"
-              style={{ width: "50%" }}>
-              <Box style={{ margin: 25, width: "100%" }}>
-                <form onSubmit={handleSubmit} name={name}>
-                  <Card
-                    style={{
-                      display: "flex",
-                      border: "8px solid #966a2c",
-                      margin: "10px",
-                      padding: "5px",
-                      borderRadius: "10px",
-                      backgroundColor: "#e3dbb3"
-                    }}>
-                    <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="Email">
-                      <Typography>
-                        <h1>Email</h1>
-                      </Typography>
-                    </Box>
-                    <TextField
-                      value={email}
-                      onChange={(evt) => {
-                        setEmail(evt.target.value);
-                      }}
-                      name="email"
-                      type="text"
-                      style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                      InputProps={{ disableUnderline: true }}
-                    />
-                  </Card>
-                  <Card
-                    style={{
-                      display: "flex",
-                      border: "8px solid #966a2c",
-                      margin: "10px",
-                      padding: "5px",
-                      borderRadius: "10px",
-                      backgroundColor: "#e3dbb3"
-                    }}>
-                    <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="password">
-                      <Typography>
-                        <h1>Password</h1>
-                      </Typography>
-                    </Box>
-                    <TextField
-                      value={password}
-                      onChange={(evt) => {
-                        setPassword(evt.target.value);
-                      }}
-                      InputProps={{ disableUnderline: true }}
-                      style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                      name="password"
-                      type="password"
-                    />
-                  </Card>
-                  {name === "signup" && (
-                    <Card
-                      style={{
-                        display: "flex",
-                        border: "8px solid #966a2c",
-                        margin: "10px",
-                        padding: "5px",
-                        borderRadius: "10px",
-                        backgroundColor: "#e3dbb3"
-                      }}>
-                      <Box
-                        htmlFor="First Name"
-                        style={{ margin: 0, width: "250px", padding: "1em" }}>
-                        <Typography>
-                          <h1>First Name</h1>
-                        </Typography>
-                      </Box>
-                      <TextField
-                        value={firstName}
-                        onChange={(evt) => {
-                          setFirstName(evt.target.value);
-                        }}
-                        name="firstName"
-                        type="text"
-                        InputProps={{ disableUnderline: true }}
-                        style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                      />
-                    </Card>
-                  )}
-                  <Box style={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                      style={{
-                        margin: "10px",
-                        border: "3px solid #966a2c",
-                        backgroundColor: "#e3dbb3",
-                        textTransform: "lowercase"
-                      }}
-                      type="submit">
-                      <Typography>
-                        <h3>{displayName}</h3>
-                      </Typography>
-                    </Button>
-                  </Box>
-                  {name === "login" ? (
-                    <Link to="/signup" style={{ textDecoration: "none" }}>
-                      <Button
-                        style={{
-                          margin: "10px",
-                          border: "3px solid #966a2c",
-                          backgroundColor: "#e3dbb3",
-                          textTransform: "lowercase"
-                        }}
-                        type="submit">
-                        <Typography>
-                          <h3>New Player? Sign Up Here</h3>
-                        </Typography>
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Link to="/" style={{ textDecoration: "none" }}>
-                      <Button
-                        style={{
-                          margin: "10px",
-                          border: "3px solid #966a2c",
-                          backgroundColor: "#e3dbb3",
-                          textTransform: "lowercase"
-                        }}
-                        type="submit">
-                        <Typography>
-                          <h3>Back to Login</h3>
-                        </Typography>
-                      </Button>
-                    </Link>
-                  )}
-                  {error && error.response && <Box> {error.response.data} </Box>}
-                </form>
-              </Box>
-            </Grid>
-          </Grid>
-        </ThemeProvider>
-      </div>
-    </Grid>
+    <Grid className={classes.bkimg}>
+    <Paper elevation={15} className={classes.form}>
+      <Grid align="center" className={classes.text}>
+        <Avatar style={{ backgroundColor: "#414dbf" }}>
+          <LockedOutlinedIcon />
+        </Avatar>
+        <h2>Login</h2>
+      </Grid>
+      <Box component="form" onSubmit={handleSubmit} name={name}>
+      <TextField
+        required
+        fullWidth
+        label="Email Address"
+        value={email}
+        onChange={(evt) => {
+          setEmail(evt.target.value);
+        }}
+        name="email"
+        type="text"
+      >
+
+      </TextField>
+      </Box>
+    </Paper>
+  </Grid>
   );
 };
 
