@@ -38,6 +38,7 @@ const config = {
 };
 
 
+
 export class Game extends Phaser.Game {
   constructor() {
     // Add the config file to the game

@@ -1,6 +1,9 @@
 import 'phaser'
 import {Player} from '../entity/Player';
 import {PathGrid} from '../pathfinding/PathGrid';
+import {eventEmitter} from '../event/EventEmitter';
+
+console.log('phaser', 'asdfasdfasfsaf', eventEmitter);
 
 export default class MMOScene extends Phaser.Scene {
   constructor() {
@@ -14,7 +17,7 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   create() {
-
+    eventEmitter.dispatch('test');
     /**creating a map based on a tileset**/
     const map = this.make.tilemap({key: 'start-scene'}) //the key: should match what you specified in this.load.tilemapTiledJSON
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
@@ -22,9 +25,6 @@ export default class MMOScene extends Phaser.Scene {
     this.groundLayer = map.createLayer('ground', groundTiles, 0, 0);
     map.createLayer('world', groundTiles, 0, 0);
     map.createLayer('belowChar', groundTiles, 0, 0);
-    // map.createLayer('house', groundTiles, 0, 0);
-    // map.createLayer('Tile Layer 5', groundTiles, 0, 0);
-    // map.createLayer('rocks', groundTiles, 0, 0);
 
     let grid = new PathGrid(this, 100, this.groundLayer.width);
     // groundLayer.setPipeline('Light2D');

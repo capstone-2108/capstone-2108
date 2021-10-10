@@ -6,6 +6,9 @@ import { logout } from "../store";
 import Chat from "./Chat";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import {eventEmitter} from '../../src/event/EventEmitter';
+console.log('asdfasdfasfsaf', eventEmitter);
+
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -18,8 +21,11 @@ export const GameView = () => {
   const dispatch = useDispatch();
   const muiClasses = useStyles(); //this is used to override material ui styles
 
+
   useEffect(() => {
     window.game = new Game();
+    eventEmitter.addEventListener('test', () => {console.log('test!')})
+
   }, []);
 
   return (
