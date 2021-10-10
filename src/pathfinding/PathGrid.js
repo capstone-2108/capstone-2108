@@ -3,41 +3,25 @@ import {TILE_HEIGHT, TILE_HEIGHT_HALF, TILE_WIDTH, TILE_WIDTH_HALF} from '../con
 import {Node} from './node';
 
 export class PathGrid {
-  constructor(scene, size , collisionLayers = []) {
+  constructor(scene, size) {
     this.grid = [];
     this.scene = scene;
     this.size = size;
-    // for (let row = 0; row < size; row++) {
-    //   this.grid[row] = [];
-    //   for (let col = 0; col < size; col++) {
-    //     let [screenX, screenY] = mapToScreen(col, row);
-    //     let isWalkable = true;
-    //     this.grid[row][col] = new Node(col, row, true, this.makeSquare(screenX, screenY));
-    //   }
-    // }
+    for (let row = 0; row < size; row++) {
+      this.grid[row] = [];
+      for (let col = 0; col < size; col++) {
+        let [screenX, screenY] = mapToScreen(col, row);
+        let isWalkable = true;
+        //@todo: check the collides property on the tile for setting walkable
+        this.grid[row][col] = new Node(col, row, true, this.makeSquare(screenX, screenY));
+      }
+    }
   }
 
-  makeSquare(xPos, yPos, color = 0xFF0000, width = 4, height = 4) {
-    return this.scene.add.rectangle(xPos + TILE_WIDTH_HALF - width/2, yPos + TILE_HEIGHT_HALF - height/2, width, height, color);
-
-
-    // let graphics = this.scene.add.graphics({x: 0, y: 0});
-    // graphics.lineStyle(2, color);
-    // graphics.moveTo(rhombus.points[0].x, rhombus.points[0].y);
-    // for (let i = 1; i < rhombus.points.length; i++) {
-    //   graphics.lineTo(rhombus.points[i].x, rhombus.points[i].y);
-    // }
-    //
-    // graphics.closePath();
-    // graphics.strokePath();
-    // rhombus.graphics = graphics;
-    // rhombus.screenX = screenX;
-    // rhombus.screenY = screenY;
-    // rhombus.originalColor = color;
-    // return rhombus;
-
+  makeSquare(xPos, yPos, color = 0xFF00FF, width = 4, height = 4) {
+    // return this.scene.add.rectangle(xPos + TILE_WIDTH_HALF - width/2, yPos + TILE_HEIGHT_HALF - height/2, width, height, color)
+    return this.scene.add.rectangle(xPos, yPos, width, height)
   }
-
 
   getAdjacentNodes(node) {
     const adjNodes = [];
@@ -62,6 +46,14 @@ export class PathGrid {
     return adjNodes;
   }
 
+  /**
+   *
+   * @param nextX
+   * @param nextY
+   * @param boundX
+   * @param boundY
+   * @returns {boolean}
+   */
   canIMove(nextX, nextY, boundX, boundY) {
     let node = false;
     if (nextX >= 0 && nextX < boundX && nextY >= 0 && nextY < boundY) {
@@ -73,17 +65,17 @@ export class PathGrid {
     return node;
   }
 
-  resetGrid(size = 35) {
+  resetGrid(size = this.size) {
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
-        this.grid[row][col].distanceFromStart = Infinity;
-        this.grid[row][col].estimatedDistanceToEnd = Infinity;
-        this.grid[row][col].cameFrom = null;
+        this.grid[col][row].distanceFromStart = Infinity;
+        this.grid[col][row].estimatedDistanceToEnd = Infinity;
+        this.grid[col][row].cameFrom = null;
       }
     }
   }
 
-  getNode(x, y) {
+  getNode(x,y) {
     return this.grid[y][x];
   }
 }

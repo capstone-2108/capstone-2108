@@ -11,6 +11,8 @@ router.post("/signup", async (req, res, next) => {
     await userSignupSchema.validate(req.body);
     const {email, password, firstName} = req.body;
     const user = await User.create({email, password, firstName});
+    const playerCharacter = await user.createPlayerCharacter({name: 'Hero', health: 100});
+    console.log(user.__proto__);
     const token = await user.generateToken();
     res.cookie("token", token, {
       sameSite: "strict",
