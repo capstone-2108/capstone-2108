@@ -6,7 +6,8 @@
   "scripts": {
     "build:dev": "webpack --watch --config ./webpack.config.js  --mode=development",
     "start:dev": "npm run build:dev & npm run start-server",
-    "start-server": "nodemon server -e html,js,scss --ignore public --ignore client"
+    "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
+    "seed": "node script/seed.js"
   },
   "author": "",
   "license": "MIT",

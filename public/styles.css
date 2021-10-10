@@ -1,5 +1,24 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.top {
+  display: flex;
+}
+
 #phaser {
-    display:flex;
-    width:100%;
-    justify-content: center;
+  display: flex;
+  /* width: 100%; */
+  padding: 0;
+}
+
+.inventory {
+  display: flex;
+  flex-grow: 1;
+  text-align: center;
+  background-color: yellow;
+  padding: 0;
+  justify-content: space-between;
+  flex-direction: column;
 }

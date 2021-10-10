@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
-import {Link} from 'react-router-dom';
-import {Game} from '../../src/Game';
-import {logout} from '../store';
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { Game } from "../../src/Game";
+import { logout } from "../store";
 
 export const GameView = () => {
   const dispatch = useDispatch();
@@ -12,13 +12,20 @@ export const GameView = () => {
   }, []);
 
   return (
-    <>
-      <h1>Hello From the Game Component</h1>
-      <Link to='/'>
-        <button onClick={() => dispatch(logout())}>Logout</button>
-      </Link>
-      <div id='phaser'>
+    <div>
+      <div className="top">
+        <div id="phaser"></div>
+        <div className="inventory">
+          <h3>inventory</h3>
+          <div id="logoutButton">
+            <Link to="/">
+              <button onClick={() => dispatch(logout())}>Logout</button>
+            </Link>
+          </div>
+        </div>
       </div>
-    </>
+
+      <div className="worldChat">world chat</div>
+    </div>
   );
 };
