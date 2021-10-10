@@ -16,15 +16,15 @@ export default class MMOScene extends Phaser.Scene {
   create() {
 
     /**creating a map based on a tileset**/
-    const map = this.make.tilemap({key: 'starter-town'}) //the key: should match what you specified in this.load.tilemapTiledJSON
+    const map = this.make.tilemap({key: 'start-scene'}) //the key: should match what you specified in this.load.tilemapTiledJSON
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
     const groundTiles = map.addTilesetImage('town', 'town'); //loads the tileset used to make up this map
-    this.groundLayer = map.createLayer('Ground', groundTiles, 0, 0);
-    map.createLayer('trees', groundTiles, 0, 0);
-    map.createLayer('trees2', groundTiles, 0, 0);
-    map.createLayer('house', groundTiles, 0, 0);
-    map.createLayer('Tile Layer 5', groundTiles, 0, 0);
-    map.createLayer('rocks', groundTiles, 0, 0);
+    this.groundLayer = map.createLayer('ground', groundTiles, 0, 0);
+    map.createLayer('world', groundTiles, 0, 0);
+    map.createLayer('belowChar', groundTiles, 0, 0);
+    // map.createLayer('house', groundTiles, 0, 0);
+    // map.createLayer('Tile Layer 5', groundTiles, 0, 0);
+    // map.createLayer('rocks', groundTiles, 0, 0);
 
     let grid = new PathGrid(this, 100, this.groundLayer.width);
     // groundLayer.setPipeline('Light2D');
