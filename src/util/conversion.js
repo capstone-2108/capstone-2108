@@ -6,11 +6,12 @@ export function mapToScreen(mapX, mapY) {
   return [screenX, screenY];
 }
 
+
 export function screenToMap(screenX, screenY) {
   screenX = Math.floor(screenX);
   screenY = Math.floor(screenY);
-  let mapX = Math.round((screenX / TILE_WIDTH_HALF + screenY / TILE_HEIGHT_HALF) /2);
-  let mapY = Math.round((screenY / TILE_HEIGHT_HALF -(screenX / TILE_WIDTH_HALF)) /2);
+  let mapX = Math.round(screenX / TILE_WIDTH);
+  let mapY = Math.round(screenY / TILE_HEIGHT);
 
   return [mapX, mapY];
 }
