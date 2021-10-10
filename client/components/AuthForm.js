@@ -1,25 +1,72 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store";
 import TextField from "@material-ui/core/TextField";
-import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
-import { loginSuccess } from "../store/auth";
+import Avatar from "@material-ui/core/Avatar";
+import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
+import { makeStyles } from "@material-ui/core";
+import LockedOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
+import desktopImage from "../../public/images/colorfulTreeLandscape.jpeg";
 
-/**
- * COMPONENT
- */
+const useStyles = makeStyles((theme) => ({
+  bkimg: {
+    minHeight: "100vh",
+    backgroundImage: `url(${desktopImage})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center"
+  },
+  form: {
+    height: "60vh",
+    top: "50%",
+    width: 350,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#211510",
+    fontFamily: "Cinzel Decorative",
+    padding: 20
+  },
+  text: {
+    color: "#f5f3e6",
+    fontFamily: "Cinzel Decorative"
+  },
+  textfield: {
+    backgroundColor: "#872441",
+    marginBottom: 20
+  },
+  btn: {
+    fontFamily: "Cinzel Decorative",
+    backgroundColor: "#872441",
+    color: "#f5f3e6",
+    marginTop: 20,
+    "&:hover": {
+      backgroundColor: "#344a95"
+    }
+  },
+  signup: {
+    color: "#f5f3e6",
+    paddingTop: 20
+  }
+}));
+
 const AuthForm = (props) => {
+  const classes = useStyles();
+
   const { name, displayName, error } = props;
-  const [email, setEmail] = useState("cody@charm.com");
-  const [password, setPassword] = useState("123");
-  const [firstName, setFirstName] = useState("Cody");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
 
   const [snackBarWarningOpen, setSnackBarWarningOpen] = useState(false);
   const [snackBarErrorOpen, setSnackBarErrorOpen] = useState(false);
@@ -43,14 +90,13 @@ const AuthForm = (props) => {
     history.push(path);
   };
 
-  const loginSuccessAlert = useSelector((state) => state.auth.loginSuccess);
-
   const dispatch = useDispatch();
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     if (name === "signup") {
       const successLogIn = await dispatch(authenticate(name, { email, password, firstName }));
+      console.log("success login", successLogIn);
       if (successLogIn) {
         routeChange();
       } else {
@@ -67,14 +113,7 @@ const AuthForm = (props) => {
   };
 
   return (
-    <Grid
-      item
-      xs={12}
-      style={{
-        paddingTop: "1rem",
-        /* width: 80%; */
-        margin: "0 auto"
-      }}>
+    <div className={classes.bkimg}>
       <Snackbar
         open={snackBarErrorOpen}
         autoHideDuration={3000}
@@ -93,120 +132,81 @@ const AuthForm = (props) => {
           Incorrect Email/Password
         </Alert>
       </Snackbar>
-      <div className="cart-header">
-        <h4 className="cart-title">{name === "signup" ? "Sign Up" : "Login"}</h4>
-      </div>
-      <Grid container direction="row" justifyContent="center" alignItems="center">
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          style={{ width: "50%" }}>
-          <Box style={{ margin: 25, width: "100%" }}>
-            <form onSubmit={handleSubmit} name={name}>
-              <Card
-                style={{
-                  display: "flex",
-                  border: "8px solid #fcd000",
-                  margin: "10px",
-                  padding: "5px",
-                  borderRadius: "10px"
-                }}>
-                <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="Email">
-                  <h1 style={{ fontFamily: "mario" }}>Email</h1>
-                </Box>
-                <TextField
-                  value={email}
-                  onChange={(evt) => {
-                    setEmail(evt.target.value);
-                  }}
-                  name="email"
-                  type="text"
-                  // inputProps={{ style: { textAlign: "center", margin: "0 auto" } }}
-                  style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                  InputProps={{ disableUnderline: true }}
-                />
-              </Card>
-              <Card
-                style={{
-                  display: "flex",
-                  border: "8px solid #fcd000",
-                  margin: "10px",
-                  padding: "5px",
-                  borderRadius: "10px"
-                }}>
-                <Box style={{ margin: 0, width: "250px", padding: "1em" }} htmlFor="password">
-                  <h1 style={{ fontFamily: "mario" }}>Password</h1>
-                </Box>
-                <TextField
-                  value={password}
-                  onChange={(evt) => {
-                    setPassword(evt.target.value);
-                  }}
-                  // inputProps={{ style: { textAlign: "center" } }}
-                  InputProps={{ disableUnderline: true }}
-                  style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                  name="password"
-                  type="password"
-                />
-              </Card>
-              {name === "signup" && (
-                <Card
-                  style={{
-                    display: "flex",
-                    border: "8px solid #fcd000",
-                    margin: "10px",
-                    padding: "5px",
-                    borderRadius: "10px"
-                  }}>
-                  <Box htmlFor="First Name" style={{ margin: 0, width: "250px", padding: "1em" }}>
-                    <h1
-                      style={{
-                        fontFamily: "mario"
-                      }}>
-                      First Name
-                    </h1>
-                  </Box>
-                  <TextField
-                    value={firstName}
-                    onChange={(evt) => {
-                      setFirstName(evt.target.value);
-                    }}
-                    name="firstName"
-                    type="text"
-                    // inputProps={{ style: { textAlign: "center" } }}
-                    InputProps={{ disableUnderline: true }}
-                    style={{ flexGrow: 1, justifyContent: "center", alignItems: "flex-start" }}
-                  />
-                </Card>
-              )}
-              <Box style={{ display: "flex", justifyContent: "right" }}>
-                <Button
-                  style={{
-                    margin: "10px",
-                    border: "3px solid #44af35"
-                  }}
-                  type="submit">
-                  <h3 style={{ fontFamily: "mario" }}>{displayName}</h3>
-                </Button>
-              </Box>
-              {error && error.response && <Box> {error.response.data} </Box>}
-            </form>
-          </Box>
+      <Card elevation={15} className={classes.form}>
+        <Grid align="center" className={classes.text}>
+          <Avatar style={{ backgroundColor: "#344a95" }}>
+            <LockedOutlinedIcon />
+          </Avatar>
+          <h2>{displayName}</h2>
         </Grid>
-      </Grid>
-    </Grid>
+        <Box component="form" onSubmit={handleSubmit} name={name}>
+          <TextField
+            required
+            fullWidth
+            label="Email Address"
+            value={email}
+            onChange={(evt) => {
+              setEmail(evt.target.value);
+            }}
+            name="email"
+            type="text"
+            className={classes.textfield}
+            InputLabelProps={{
+              className: classes.text
+            }}
+            variant="outlined"></TextField>
+          <TextField
+            required
+            fullWidth
+            label="Password"
+            value={password}
+            onChange={(evt) => {
+              setPassword(evt.target.value);
+            }}
+            name="password"
+            // styling goes to hell if I add this
+            // so currently, the password is not hidden when typing
+            // type="password"
+            className={classes.textfield}
+            InputLabelProps={{
+              className: classes.text
+            }}
+            variant="outlined"></TextField>
+          {name === "signup" && (
+            <TextField
+              required
+              fullWidth
+              label="First Name"
+              value={firstName}
+              onChange={(evt) => {
+                setFirstName(evt.target.value);
+              }}
+              name="firstName"
+              type="text"
+              className={classes.textfield}
+              InputLabelProps={{
+                className: classes.text
+              }}
+              variant="outlined"></TextField>
+          )}
+          <Grid align="center">
+            <Button type="submit" className={classes.btn}>
+              {displayName}
+            </Button>
+          </Grid>
+          {name === "login" && (
+            <Link to="signup" style={{ textDecoration: "none" }}>
+              <Grid align="center" className={classes.signup}>
+                <p>New player? Sign Up Here</p>
+              </Grid>
+            </Link>
+          )}
+        </Box>
+      </Card>
+    </div>
   );
 };
 
-/**
- * CONTAINER
- *   Note that we have two different sets of 'mapStateToProps' functions -
- *   one for Login, and one for Signup. However, they share the same 'mapDispatchToProps'
- *   function, and share the same Component. This is a good example of how we
- *   can stay DRY with interfaces that are very similar to each other!
- */
 const mapLogin = (state) => {
   return {
     name: "login",
