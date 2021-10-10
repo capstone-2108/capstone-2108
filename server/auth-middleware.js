@@ -3,7 +3,9 @@ const { User } = require("./db");
 //middleware to get the user by the data in their token
 const requireTokenMiddleware = async (req, res, next) => {
   try {
+    console.log('signedCookies', req.signedCookies);
     if (req.signedCookies && req.signedCookies.token) {
+      console.log('signed cookie', req.signedCookies.token);
       req.user = await User.findByToken(req.signedCookies.token);
       next();
     } else {

@@ -5,6 +5,7 @@ import { withRouter, Route, Switch } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import { whoAmI } from "./store";
 import { GameView } from "./components/Game";
+import Chat from './components/Chat';
 
 /**
  * COMPONENT
@@ -23,6 +24,7 @@ class Routes extends Component {
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/game" component={GameView} />
+          <Route exact path="/chat" component={Chat} />
         </Switch>
       </div>
     );
