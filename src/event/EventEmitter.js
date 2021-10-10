@@ -13,8 +13,8 @@ export class EventEmitter {
 
   dispatch(eventName, data) {
     let i = 0;
-    let len = this.events[eventName];
-    for(;i< this.events[eventName]; i++) {
+    let len = this.events[eventName].length;
+    for(;i< len; i++) {
       (this.events[eventName][i])(data);
     }
   }

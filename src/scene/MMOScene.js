@@ -3,7 +3,6 @@ import {Player} from '../entity/Player';
 import {PathGrid} from '../pathfinding/PathGrid';
 import {eventEmitter} from '../event/EventEmitter';
 
-console.log('phaser', 'asdfasdfasfsaf', eventEmitter);
 
 export default class MMOScene extends Phaser.Scene {
   constructor() {
@@ -17,7 +16,6 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   create() {
-    eventEmitter.dispatch('test');
     /**creating a map based on a tileset**/
     const map = this.make.tilemap({key: 'start-scene'}) //the key: should match what you specified in this.load.tilemapTiledJSON
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set

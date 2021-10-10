@@ -7,8 +7,6 @@ import Chat from "./Chat";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import {eventEmitter} from '../../src/event/EventEmitter';
-console.log('asdfasdfasfsaf', eventEmitter);
-
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -28,8 +26,13 @@ export const GameView = () => {
 
   }, []);
 
+  test() {
+
+  }
+
   return (
     <div>
+      <button onClick={test}>Send to game</button>
       <div className="top">
         <div id="phaser"></div>
         <div className="inventory">
