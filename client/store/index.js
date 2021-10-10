@@ -3,12 +3,12 @@ import { createLogger } from "redux-logger";
 import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
-import worldChat from './worldChat';
+import chat from './chat';
 
 
 const reducer = combineReducers({
   auth,
-  worldChat
+  chat
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))

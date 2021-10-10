@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter, Route, Switch } from "react-router-dom";
 import { Login, Signup } from "./components/AuthForm";
 import { whoAmI } from "./store";
-import { GameView } from "./components/Game";
+import { GameView } from "./components/GameView";
 import Chat from './components/Chat';
 
 /**

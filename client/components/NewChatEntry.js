@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {sendMessage} from '../store/worldChat';
+import {sendMessage} from '../store/chat';
 
-export const NewMessageEntry = (props) => {
+export const NewChatEntry = (props) => {
   const [messageEntry, setMessageEntry] = useState('');
   const dispatch = useDispatch();
   const handleSend = (evt) => {
@@ -18,7 +18,7 @@ export const NewMessageEntry = (props) => {
 
   return (
     <div>
-      <input value={messageEntry} onChange={handleTyping} onKeyPress={handleSend}/>
+      <input className="new-chat-message" value={messageEntry} onChange={handleTyping} onKeyPress={handleSend}/>
     </div>
   )
 }

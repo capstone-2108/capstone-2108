@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import io from 'socket.io-client';
-import {NewMessageEntry} from './NewMessageEntry';
+import {NewChatEntry} from './NewChatEntry';
 import {useDispatch, useSelector} from 'react-redux';
-import {addNewMessage} from '../store/worldChat';
+import {addNewMessage} from '../store/chat';
+import ChatHistory from './ChatHistory';
+import Grid from '@material-ui/core/Grid';
 
 const Chat = (props) => {
   const [socket, setSocket] = useState(null);
-  const messages = useSelector(state => state.worldChat.messages);
+  const messages = useSelector(state => state.chat.messages.world);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,17 +22,16 @@ const Chat = (props) => {
 
   return (
     <div className='App'>
-      <header className='app-header'>
-        React Chat
-      </header>
       {socket ? (
-        <div className='chat-container'>
-
-        </div>
+        <Grid container>
+          <Grid item>
+            <ChatHistory/>
+            <NewChatEntry socket={socket}/>
+          </Grid>
+        </Grid>
       ) : (
         <div>Not Connected</div>
       )}
-      <NewMessageEntry socket={socket}/>
     </div>
   );
 }

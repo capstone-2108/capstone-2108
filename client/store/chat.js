@@ -11,6 +11,7 @@ export const ADD_NEW_MESSAGE = "ADD_NEW_MESSAGE";
  ************************/
 //--Plain actions--
 export const addNewMessage = (message) => {
+  message.message.id = Date.now() + '-' + message.message.name
   return {
     type: ADD_NEW_MESSAGE,
     message
@@ -22,9 +23,6 @@ export const sendMessage = (message) => {
   return async (dispatch) => {
     try {
       const response = await axios.post(`/api/chat/world`, {message});
-      if(response.status === 200) {
-        dispatch(addNewMessage(response.data));
-      }
     } catch (err) {
       console.log(err);
     }
@@ -46,7 +44,9 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_NEW_MESSAGE:
-      const newMessages = [...state.messages[action.message.channel]];
+      let channelMessages = state.messages[action.message.channel];
+      //only keep the last 30 messages
+      let newMessages = channelMessages.length >= 30 ? channelMessages.slice(10) : [...channelMessages]
       newMessages.push(action.message.message);
       return {
         ...state,
