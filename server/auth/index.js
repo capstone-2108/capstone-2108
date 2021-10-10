@@ -37,7 +37,8 @@ router.get("/whoAmI", requireTokenMiddleware, async (req, res, next) => {
   try {
     res.send({ loggedIn: true, firstName: req.user.firstName, lastName: req.user.lastName, email: req.user.email, isAdmin: req.user.isAdmin  });
   } catch (ex) {
-    next(ex);
+    res.sendStatus(404);
+    // next(ex);
   }
 });
 

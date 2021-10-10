@@ -3,20 +3,30 @@ body {
 }
 
 #phaser {
-    display: flex;
-    width: 100%;
-    justify-content: center;
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
-#loginContainer {
-    position: relative;
-    text-align: center;
+#chat_history {
+  height:200px;
+  display:flex;
+  flex-flow: column-reverse nowrap;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #211510;
+  border: 1px solid #504137;
+  color: gold;
+  width:100%;
 }
 
-#title {
-    color: rgb(169, 144, 2);
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.chat-message {
+  width:inherit;
+  word-wrap: break-word;
+  margin-top: .25rem;
+}
+
+.new-chat-message{
+  width:400px;
+  border: 1px solid #504137;
 }
