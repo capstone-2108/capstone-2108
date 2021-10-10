@@ -7,18 +7,19 @@ module.exports = app
 // logging middleware
 app.use(morgan('dev'))
 
-// body parsing middleware
-app.use(express.json())
-
-// auth and api routes
-app.use('/auth', require('./auth'))
-
-app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));
-
 // static file-serving middleware
 app.use(express.static(path.join(__dirname, '..', 'public')))
 app.use(express.urlencoded({extended: true}))
-app.use(express.json());
+// body parsing middleware
+app.use(express.json())
+
+
+// auth and api routes
+app.use('/auth', require('./auth'))
+app.use('/api/chat', require('./api/chat'))
+
+app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));
+
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {

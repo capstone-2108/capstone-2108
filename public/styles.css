@@ -1,5 +1,28 @@
 #phaser {
-    display:flex;
-    width:100%;
-    justify-content: center;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+#chat_history {
+  height:200px;
+  display:flex;
+  flex-flow: column-reverse nowrap;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #211510;
+  border: 1px solid #504137;
+  color: gold;
+  width:100%;
+}
+
+.chat-message {
+  width:inherit;
+  word-wrap: break-word;
+  margin-top: .25rem;
+}
+
+.new-chat-message{
+  width:400px;
+  border: 1px solid #504137;
 }
