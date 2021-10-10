@@ -15,19 +15,24 @@ export class PathFinder {
   constructor(scene, character, grid) {
     this.scene = scene;
     this.grid = grid;
+    this.character = character;
   }
 
   /**
    *
-   * @param start
-   * @param end
+   * @param {Vector2} startVector
+   * @param {Vector2} endVector
    * @returns {Node[]|[]}
    */
-  aStarPath(start, end) {
+  aStarPath(startVector, endVector) {
     this.grid.resetGrid();
-    const startNode = this.grid.getNode(start[0], start[1]);
-    this.character.moveToTile(startNode.x, startNode.y);
-    return aStar(start[0], start[1], end[0], end[1], this.grid);
+    const startNode = this.grid.getNode(startVector.x, startVector.y);
+    const endNode = this.grid.getNode(endVector.x, endVector.y);
+    // this.character.moveToTile(startNode);
+    const path = aStar(startNode, endNode, this.grid);
+    return path;
+    // this.testPath(this.character, path);
+    // return [];
   }
 
   highlightPath(path, clear = false) {
@@ -54,7 +59,7 @@ export class PathFinder {
       const interval = window.setInterval(() => {
         if(i < path.length) {
           let node = path[i];
-          player.moveToCoordinate(node.worldPos._x, node.worldPos._y);
+          player.moveToCoordinate(node.worldNode.x, node.worldNode.y);
         }
         else {
           console.log('ending interval');
