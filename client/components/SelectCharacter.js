@@ -45,7 +45,7 @@ const dummyData = [
 
 const useStyles = makeStyles(() => ({
   bkgd: {
-    backgroundColor: "#593478",
+    backgroundColor: "#2c3b7a",
     minHeight: "100vh",
     marginTop: 0
   },
