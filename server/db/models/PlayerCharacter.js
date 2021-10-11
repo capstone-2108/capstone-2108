@@ -9,6 +9,11 @@ const PlayerCharacter = db.define("playerCharacter", {
   health: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  gold: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 });
 

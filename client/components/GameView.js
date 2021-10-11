@@ -10,6 +10,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 import { fetchCharacterData, updateHealth } from "../store/player";
 import io from "socket.io-client";
 import { addNewMessage } from "../store/chat";
+import Inventory from "./Inventory";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -47,6 +48,9 @@ export const GameView = () => {
         <div id="phaser"></div>
         <div className="inventory">
           <h3>inventory</h3>
+
+          <Inventory />
+
           <div id="logoutButton">
             <Link to="/">
               <button onClick={() => dispatch(logout())}>Logout</button>
