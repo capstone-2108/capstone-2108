@@ -52,7 +52,8 @@ export const fetchCharacterData = () => {
 const initialState = {
   selectedCharacterId: 1,
   name: '',
-  health: 100
+  health: 100,
+  totalHealth: 500,
 };
 
 export default (state = initialState, action) => {
