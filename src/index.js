@@ -25,7 +25,7 @@ ReactDOM.render(
 //   };
 //
 //   useEffect(() => {
-//     window.addEventListener('mousemove', onMouse);
+//     window.subscribe('mousemove', onMouse);
 //
 //     return () => {
 //       window.removeEventListener('mousemove', onMouse);

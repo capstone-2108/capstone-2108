@@ -8,6 +8,7 @@ export default class MMOScene extends Phaser.Scene {
     super("MMOScene");
     this.playerData = {};
     this.otherPlayers = {};
+    this.subscribes = [];
   }
 
   preload() {}
@@ -35,12 +36,12 @@ export default class MMOScene extends Phaser.Scene {
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
     // });
 
-    //These events should exist on every
-      /*
-   * loads a player in when receiving a playerLoad event from react
-   * @param {{}} data
-   */
-    eventEmitter.addEventListener("playerLoad", (data) => {
+    //These events should exist on every scene
+    /*
+     * loads a player in when receiving a playerLoad event from react
+     * @param {{}} data
+     */
+    eventEmitter.subscribe("playerLoad", (data) => {
       console.log("playerLoad", data, this.groundLayer);
       this.playerData = data;
       let grid = new PathGrid(this, 100, this.groundLayer.width);
@@ -56,45 +57,62 @@ export default class MMOScene extends Phaser.Scene {
       );
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
-      .add(795, 0, 230, 230)
-      .setZoom(0.3)
-      .setName("mini")
-      .startFollow(this.player);
-    this.minimap.setBackgroundColor(0x002244);
+        .add(795, 0, 230, 230)
+        .setZoom(0.3)
+        .setName("mini")
+        .startFollow(this.player);
+      this.minimap.setBackgroundColor(0x002244);
 
-    // this.minimap.scrollX = 820;
-    // this.minimap.scrollY = 700;
-    this.minimap.centerOn(0, 0);
-    const minimapCircle = new Phaser.GameObjects.Graphics(this);
-    minimapCircle.fillCircle(910, 115, 110);
-    const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
-    this.minimap.setMask(circle, true);
+      this.minimap.centerOn(0, 0);
+      const minimapCircle = new Phaser.GameObjects.Graphics(this);
+      minimapCircle.fillCircle(910, 115, 110);
+      const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
+      this.minimap.setMask(circle, true);
     });
 
-      /**
-   * loads another player (not the main player) when receiving an otherPlayerLoad event from react
-   * @param data
-   */
-    eventEmitter.addEventListener("otherPlayerLoad", (data) => {
-      if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
-        let grid = new PathGrid(this, 100, this.groundLayer.width);
-        this.otherPlayers[data.id] = new Player(
-          this,
-          grid,
-          data.xPos,
-          data.yPos,
-          `${data.name}-${data.id}`,
-          data.templateName,
-          false,
-          data.id
-        );
+    /**
+     * loads another player (not the main player) when receiving an otherPlayerLoad event from react
+     * @param data
+     */
+    // eventEmitter.subscribe("otherPlayerLoad", (data) => {
+    //   if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
+    //     let grid = new PathGrid(this, 100, this.groundLayer.width);
+    //     this.otherPlayers[data.id] = new Player(
+    //       this,
+    //       grid,
+    //       data.xPos,
+    //       data.yPos,
+    //       `${data.name}-${data.id}`,
+    //       data.templateName,
+    //       false,
+    //       data.id
+    //     );
+    //   }
+    // });
+
+    eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
+      console.log("phaser got nearbyPlayerLoad", players);
+      let i = 0;
+      let len = players.length;
+      for (; i < len; i++) {
+        if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
+          let grid = new PathGrid(this, 100, this.groundLayer.width);
+          this.otherPlayers[data.id] = new Player(
+            this,
+            grid,
+            data.xPos,
+            data.yPos,
+            `${data.name}-${data.id}`,
+            data.templateName,
+            false,
+            data.id
+          );
+        }
       }
     });
+
     //this has to go last because we need all our events setup before react starts dispatching events
-    eventEmitter.dispatch("phaserLoad");
-
-    //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
-
+    eventEmitter.emit("phaserLoad");
   }
 
   /**anything that needs to update, should get it's update function called here**/

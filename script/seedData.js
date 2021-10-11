@@ -5,7 +5,8 @@ const userData = [
     password: "123",
     firstName: "fox",
     lastName: "cute",
-    isAdmin: true
+    isAdmin: true,
+    loggedIn: false
   },
   {
     id: 2,
@@ -13,7 +14,8 @@ const userData = [
     password: "123",
     firstName: "Amaya",
     lastName: "Agha",
-    isAdmin: true
+    isAdmin: true,
+    loggedIn: false
   }
 ];
 
@@ -62,14 +64,16 @@ const playerCharacterData = [
     health: 100,
     userId: 1,
     templateCharacterId: 1,
-    locationId: 1
+    locationId: 1,
+    active: false
   },
   {
     name: "Arcana",
     health: 100,
     userId: 2,
     templateCharacterId: 2,
-    locationId: 2
+    locationId: 2,
+    active: false,
   }
 ];
 

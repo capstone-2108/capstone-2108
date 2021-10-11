@@ -7,7 +7,7 @@ import Chat from "./Chat";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import { fetchCharacterData, updateHealth } from "../store/player";
+import {fetchCharacterData, fetchNearbyPlayers, updateHealth} from '../store/player';
 import io from "socket.io-client";
 import { addNewMessage } from "../store/chat";
 
@@ -23,12 +23,16 @@ export const GameView = () => {
   const muiClasses = useStyles(); //this is used to override material ui styles
   const [phaserLoaded, setPhaserLoaded] = useState();
   const [socket, setSocket] = useState(null);
+  const playerState = useSelector(state => state.player);
 
   useEffect(() => {
     console.log("GameView useEffect");
     window.game = new Game();
-    eventEmitter.addEventListener("phaserLoad", (data) => {
-      dispatch(fetchCharacterData());
+    eventEmitter.subscribe("phaserLoad", async (data) => {
+      const characterId = await dispatch(fetchCharacterData());
+      if(characterId) {
+        dispatch(fetchNearbyPlayers(characterId));
+      }
     });
 
     const newSocket = io(`http://${window.location.hostname}:1338/gameSync`, {
@@ -36,10 +40,11 @@ export const GameView = () => {
     });
     setSocket(newSocket);
     newSocket.on("otherPlayerLoad", (data) => {
-      eventEmitter.dispatch("otherPlayerLoad", data);
+      eventEmitter.emit("otherPlayerLoad", data);
     });
     return () => newSocket.close();
   }, []);
+
 
   return (
     <div>
