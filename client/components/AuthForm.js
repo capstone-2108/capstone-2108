@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: "center"
   },
   form: {
-    height: "60vh",
+    height: 450,
     top: "50%",
     width: 350,
     position: "absolute",
