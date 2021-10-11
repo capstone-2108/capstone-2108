@@ -21,8 +21,33 @@ export default class MMOScene extends Phaser.Scene {
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
     const groundTiles = map.addTilesetImage("town", "town"); //loads the tileset used to make up this map
     this.groundLayer = map.createLayer("ground", groundTiles, 0, 0);
-    map.createLayer("world", groundTiles, 0, 0);
-    map.createLayer("belowChar", groundTiles, 0, 0);
+    this.worldLayer = map.createLayer("world", groundTiles, 0, 0);
+    this.belowCharLayer = map.createLayer("belowChar", groundTiles, 0, 0);
+
+    // collision
+    this.groundLayer.setCollisionByProperty({ collides: true})
+    this.worldLayer.setCollisionByProperty({ collides: true})
+    this.belowCharLayer.setCollisionByProperty({ collides: true})
+
+
+    /*** collision debugging code ***/
+
+    // const debugGraphics = this.add.graphics().setAlpha(0.75)
+    // this.worldLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40,39, 37, 255)
+    // })
+    // this.groundLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40,39, 37, 255)
+    // })
+    // this.belowCharLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40,39, 37, 255)
+    // })
 
     // groundLayer.setPipeline('Light2D');
     // map.createLayer('house', groundTiles, 0, 0);
@@ -62,12 +87,14 @@ export default class MMOScene extends Phaser.Scene {
         .setName("mini")
         .startFollow(this.player);
       this.minimap.setBackgroundColor(0x002244);
-
-      this.minimap.centerOn(0, 0);
-      const minimapCircle = new Phaser.GameObjects.Graphics(this);
-      minimapCircle.fillCircle(910, 115, 110);
-      const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
-      this.minimap.setMask(circle, true);
+    this.minimap.centerOn(0, 0);
+    const minimapCircle = new Phaser.GameObjects.Graphics(this);
+    minimapCircle.fillCircle(910, 115, 110);
+    const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
+    this.minimap.setMask(circle, true);
+    this.physics.add.collider(this.player, this.groundLayer);
+    this.physics.add.collider(this.player, this.worldLayer);
+    this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
     /**
@@ -110,7 +137,6 @@ export default class MMOScene extends Phaser.Scene {
         }
       }
     });
-
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("phaserLoad");
   }
