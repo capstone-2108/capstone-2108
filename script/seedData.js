@@ -20,18 +20,23 @@ const userData = [
 const templateCharacterData = [
   {
     id:1,
-    name: "fox",
-    baseStrength: 100,
+    name: "Fox",
+    baseStrength: 55,
     isPlayable: true,
-    baseHealth: 100
+    baseHealth: 100,
+    baseIntelligence: 70,
+    portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png"
   },
   {
     id:2,
-    name: "sorcerer",
-    baseStrength: 100,
+    name: "Sorcerer",
+    baseStrength: 75,
+    //change to true
     isPlayable: false,
-    baseHealth: 100
-  }
+    baseHealth: 100,
+    baseIntelligence: 100,
+    portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png"
+  },
 ];
 
 const spriteSheetData = [
@@ -60,6 +65,8 @@ const playerCharacterData = [
   {
     name: "fox_player",
     health: 100,
+    strength: 55,
+    intelligence: 70,
     userId: 1,
     templateCharacterId: 1,
     locationId: 1
@@ -67,6 +74,8 @@ const playerCharacterData = [
   {
     name: "Arcana",
     health: 100,
+    strength: 75,
+    intelligence: 100,
     userId: 2,
     templateCharacterId: 2,
     locationId: 2

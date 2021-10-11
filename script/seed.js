@@ -33,6 +33,7 @@ async function seed() {
     })
   );
 
+
   const templateCharacterArray = await Promise.all(
     templateCharacterData.map((templateCharacter) => {
       return TemplateCharacter.create(templateCharacter);

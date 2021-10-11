@@ -3,7 +3,6 @@ import { CardMedia, makeStyles, CardContent, CardActionArea } from "@material-ui
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import desktopImage from "../../public/images/croppedColorfulTreeLandscape.jpeg";
 
 // DELETE LATER
 import fox from "../../public/assets/characters/character-protrait-emotes-2/Fox_frame.png";
@@ -45,13 +44,6 @@ const dummyData = [
 // END DELETE
 
 const useStyles = makeStyles(() => ({
-  bkgd: {
-    backgroundImage: `url(${desktopImage})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh",
-  },
   cardArea: {
     marginTop: "5%"
   },
@@ -86,7 +78,7 @@ const selectCharacter = () => {
   };
 
   return (
-    <div className={classes.bkgd}>
+    <div className="selectContainer">
       <h1 className={classes.heading}>Select Your Character</h1>
       <Grid container justifyContent="space-evenly">
         {dummyData.map((character) => (

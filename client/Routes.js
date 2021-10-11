@@ -20,14 +20,12 @@ class Routes extends Component {
     const { isLoggedIn, isAdmin } = this.props;
 
     return (
-      <div>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/game" component={GameView} />
-          <Route exact path="/select" component={SelectCharacter} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/game" component={GameView} />
+        <Route exact path="/select" component={SelectCharacter} />
+      </Switch>
     );
   }
 }

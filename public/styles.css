@@ -47,3 +47,19 @@ body {
   width: 400px;
   border: 1px solid #504137;
 }
+
+.authForm {
+  height: 100vh;
+  background-image: url("/images/colorfulTreeLandscape.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center
+}
+
+.selectContainer {
+  height: 100vh;
+  background-image: url("/images/croppedColorfulTreeLandscape.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center
+}
