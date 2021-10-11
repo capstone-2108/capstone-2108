@@ -31,22 +31,22 @@ export default class MMOScene extends Phaser.Scene {
 
     /*** collision debugging code ***/
 
-    const debugGraphics = this.add.graphics().setAlpha(0.75)
-    this.worldLayer.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40,39, 37, 255)
-    })
-    this.groundLayer.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40,39, 37, 255)
-    })
-    this.belowCharLayer.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40,39, 37, 255)
-    })
+    // const debugGraphics = this.add.graphics().setAlpha(0.75)
+    // this.worldLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40,39, 37, 255)
+    // })
+    // this.groundLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40,39, 37, 255)
+    // })
+    // this.belowCharLayer.renderDebug(debugGraphics, {
+    //   tileColor: null,
+    //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+    //   faceColor: new Phaser.Display.Color(40,39, 37, 255)
+    // })
 
     // groundLayer.setPipeline('Light2D');
     // map.createLayer('house', groundTiles, 0, 0);
