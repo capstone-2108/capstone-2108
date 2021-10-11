@@ -25,7 +25,8 @@ const templateCharacterData = [
     isPlayable: true,
     baseHealth: 100,
     baseIntelligence: 70,
-    portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png"
+    portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png",
+    description: "Increased healthspan, but less damage"
   },
   {
     id:2,
@@ -35,7 +36,8 @@ const templateCharacterData = [
     isPlayable: false,
     baseHealth: 100,
     baseIntelligence: 100,
-    portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png"
+    portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png",
+    description: "High intelligence, but dies faster"
   },
 ];
 
@@ -86,13 +88,13 @@ const locationData = [
   {
     xPos: 300,
     yPos: 500,
-    facingDirection: "left",
+    facingDirection: "w",
     sceneId: 1
   },
   {
     xPos: 350,
     yPos: 500,
-    facingDirection: "left",
+    facingDirection: "w",
     sceneId: 1
   }
 ];

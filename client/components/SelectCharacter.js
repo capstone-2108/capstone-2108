@@ -1,47 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { CardMedia, makeStyles, CardContent, CardActionArea } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-
-// DELETE LATER
-import fox from "../../public/assets/characters/character-protrait-emotes-2/Fox_frame.png";
-import beastMaster from "../../public/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png";
-import sorcerer from "../../public/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png";
-import swashbuckler from "../../public/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png";
-
-const dummyData = [
-  {
-    id: 1,
-    name: "Fox",
-    strength: 75,
-    portrait: fox
-    // description: "Sly, quick, and mega cute"
-  },
-  {
-    id: 2,
-    name: "Beast Master",
-    strength: 100,
-    portrait: beastMaster
-    // description: "Strong, resilient, and wise"
-  },
-  {
-    id: 3,
-    name: "Sorcerer",
-    strength: 90,
-    portrait: sorcerer
-    // description: "Magical, mysterious, and powerful"
-  },
-  {
-    id: 4,
-    name: "Swashbuckler",
-    strength: 100,
-    portrait: swashbuckler
-    // description: "Daring, romantic, and handsome"
-  }
-];
-
-// END DELETE
+import { fetchTemplateCharacters } from "../store/templateCharacters";
+import { setChosenCharacter } from "../store/chosenCharacter";
 
 const useStyles = makeStyles(() => ({
   cardArea: {
@@ -70,21 +34,33 @@ const useStyles = makeStyles(() => ({
 
 const selectCharacter = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [selected, setSelected] = useState(false)
 
   const history = useHistory();
-  const routeChange = () => {
-    let path = `/game`;
+  const routeChange = (character) => {
+    console.log('CHARACTER', character)
+    dispatch(setChosenCharacter(character))
+    let path = `/select/${character.id}`;
     history.push(path);
   };
+
+  useEffect(() => {
+    dispatch(fetchTemplateCharacters())
+  }, [])
+
+  const templates = useSelector(state => state.templateCharacters)
+
+  console.log('TEMPLATES', templates);
 
   return (
     <div className="selectContainer">
       <h1 className={classes.heading}>Select Your Character</h1>
       <Grid container justifyContent="space-evenly">
-        {dummyData.map((character) => (
-          <Grid item key={character.id} xs={12} md={10} lg={2} className={classes.cardArea}>
+        {templates.map((character) => (
+          <Grid item key={character.id} xs={12} md={4} lg={2} className={classes.cardArea}>
             <Card>
-              <CardActionArea className={classes.root} onClick={() => routeChange()}>
+              <CardActionArea className={classes.root} onClick={() => routeChange(character)}>
                 <CardMedia
                   className={classes.media}
                   component="img"
@@ -94,13 +70,17 @@ const selectCharacter = () => {
                 <CardContent>
                   <h3>{character.name}</h3>
                   <h5>{character.description}</h5>
-                  <h5>Strength: {character.strength}</h5>
+                  <h6>Strength: {character.baseStrength}</h6>
+                  <h6>Intelligence: {character.baseIntelligence}</h6>
                 </CardContent>
               </CardActionArea>
             </Card>
           </Grid>
         ))}
       </Grid>
+      {/* {selected && ({
+        <form
+      })} */}
     </div>
   );
 };

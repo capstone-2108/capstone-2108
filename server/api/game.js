@@ -5,6 +5,16 @@ router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync} = require("../socket");
 const { TemplateCharacter, SpriteSheet, Location } = require("../db");
 
+//This fetches all template characters
+router.get("/character", async (req, res, next) => {
+  try {
+    const result = await TemplateCharacter.findAll()
+    res.json(result)
+  } catch {
+    next(err)
+  }
+});
+
 //get /api/game/character/:id - fetches character data by id
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   //@todo: make sure the player can only load characters belonging to them

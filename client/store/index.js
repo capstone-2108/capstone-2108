@@ -5,12 +5,16 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import chat from './chat';
 import player from './player';
+import templateCharacters from "./templateCharacters";
+import chosenCharacter from "./chosenCharacter";
 
 
 const reducer = combineReducers({
   auth,
   chat,
-  player
+  player,
+  templateCharacters,
+  chosenCharacter
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))

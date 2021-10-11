@@ -25,6 +25,9 @@ const TemplateCharacter = db.define("templateCharacter", {
   portrait: {
     type: Sequelize.TEXT,
     defaultValue: "/images/NoImageAvailable.jpeg"
+  },
+  description: {
+    type: Sequelize.STRING,
   }
 });
 

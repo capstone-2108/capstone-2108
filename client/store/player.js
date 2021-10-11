@@ -34,14 +34,15 @@ export const fetchCharacterData = () => {
       const response = await axios.get(`/api/game/character/${state.player.selectedCharacterId}`);
       dispatch(setPlayerCharacter(response.data));
       state = getState();
+      //Not sure this should be running yet
       eventEmitter.dispatch('playerLoad', state.player);
     }
     catch(err) {
       console.log(err)
     }
-
   }
 }
+
 
 
 
