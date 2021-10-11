@@ -73,6 +73,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.createHotKeyEvents();
     }
 
+    this.body.setOffset(32, 33)
     // this.movementModeChanged = false;
     // this.animationChanged = false; //if something triggers a change which should cause the current animation to change
     // this.speed = 100; //the speed of the player
