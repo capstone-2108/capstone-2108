@@ -4,11 +4,13 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import auth from "./auth";
 import chat from './chat';
+import player from './player';
 
 
 const reducer = combineReducers({
   auth,
-  chat
+  chat,
+  player
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))

@@ -1,61 +1,52 @@
 const userData = [
   {
-    email: "ava@email.com",
-    password: "aaaa",
-    firstName: "ava",
-    lastName: "choi",
+    id: 1,
+    email: "fox@mmo.com",
+    password: "123",
+    firstName: "fox",
+    lastName: "cute",
+    isAdmin: true
+  },
+  {
+    id: 2,
+    email: "arcana@mmo.com",
+    password: "123",
+    firstName: "Amaya",
+    lastName: "Agha",
     isAdmin: true
   }
 ];
 
 const templateCharacterData = [
   {
+    id:1,
+    name: "fox",
     baseStrength: 100,
     isPlayable: true,
     baseHealth: 100
   },
   {
+    id:2,
+    name: "sorcerer",
     baseStrength: 100,
     isPlayable: false,
     baseHealth: 100
   }
 ];
+
 const spriteSheetData = [
   {
-    name: "Fox_die",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_die.png",
+    name: "fox",
+    spriteSheet_image_url: "../spritesheets/heroes/fox/fox.png",
+    spriteSheet_json_url: "../spritesheets/heroes/fox/fox.json",
     templateCharacterId: 1
   },
   {
-    name: "Fox_hit",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_hit.png",
-    templateCharacterId: 1
+    name: "sorcerer",
+    spriteSheet_image_url: "../spritesheets/heroes/sorcerer/sorcerer.png",
+    spriteSheet_json_url: "../spritesheets/heroes/sorcerer/sorcerer.json",
+    templateCharacterId: 2
   },
-  {
-    name: "Fox_idle",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_idle.png",
-    templateCharacterId: 1
-  },
-  {
-    name: "Fox_melee_hitbox",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_melee_hitbox.png",
-    templateCharacterId: 1
-  },
-  {
-    name: "Fox_melee",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_melee.png",
-    templateCharacterId: 1
-  },
-  {
-    name: "Fox_run",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_run.png",
-    templateCharacterId: 1
-  },
-  {
-    name: "Fox_walk",
-    spriteSheet_url: "../public/assets/characters/character-sprites/Fox_walk.png",
-    templateCharacterId: 1
-  }
 ];
 
 const sceneData = [
@@ -67,17 +58,30 @@ const sceneData = [
 
 const playerCharacterData = [
   {
-    name: "fox",
+    name: "fox_player",
     health: 100,
     userId: 1,
     templateCharacterId: 1,
     locationId: 1
+  },
+  {
+    name: "Arcana",
+    health: 100,
+    userId: 2,
+    templateCharacterId: 2,
+    locationId: 2
   }
 ];
 
 const locationData = [
   {
     xPos: 300,
+    yPos: 500,
+    facingDirection: "left",
+    sceneId: 1
+  },
+  {
+    xPos: 350,
     yPos: 500,
     facingDirection: "left",
     sceneId: 1
@@ -92,6 +96,7 @@ const mapData = [
 
 const npcData = [
   {
+    name: "Frodo Baggins",
     health: 100,
     locationId: 1,
     templateCharacterId: 2

@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Game } from "../../src/Game";
 import { logout } from "../store";
 import Chat from "./Chat";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {eventEmitter} from '../../src/event/EventEmitter';
+import { eventEmitter } from "../../src/event/EventEmitter";
+import { fetchCharacterData, updateHealth } from "../store/player";
+import io from "socket.io-client";
+import { addNewMessage } from "../store/chat";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -18,21 +21,28 @@ const useStyles = makeStyles((theme) => ({
 export const GameView = () => {
   const dispatch = useDispatch();
   const muiClasses = useStyles(); //this is used to override material ui styles
-
+  const [phaserLoaded, setPhaserLoaded] = useState();
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
+    console.log("GameView useEffect");
     window.game = new Game();
-    eventEmitter.addEventListener('test', () => {console.log('test!')})
+    eventEmitter.addEventListener("phaserLoad", (data) => {
+      dispatch(fetchCharacterData());
+    });
 
+    const newSocket = io(`http://${window.location.hostname}:1338/gameSync`, {
+      withCredentials: true
+    });
+    setSocket(newSocket);
+    newSocket.on("otherPlayerLoad", (data) => {
+      eventEmitter.dispatch("otherPlayerLoad", data);
+    });
+    return () => newSocket.close();
   }, []);
-
-  test() {
-
-  }
 
   return (
     <div>
-      <button onClick={test}>Send to game</button>
       <div className="top">
         <div id="phaser"></div>
         <div className="inventory">

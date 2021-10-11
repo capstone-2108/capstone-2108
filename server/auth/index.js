@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { User } = require("../db");
+const { User, TemplateCharacter, SpriteSheet} = require("../db");
 const { requireTokenMiddleware } = require("../auth-middleware");
 const cookieParser = require("cookie-parser");
 const { userSignupSchema } = require("../api/validationSchemas");
@@ -74,17 +74,19 @@ router.put("/update", requireTokenMiddleware, async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   try {
     const { user, token } = await User.authenticate(req.body);
+
     res.cookie("token", token, {
       sameSite: "strict",
       httpOnly: true,
       signed: true
     });
-    res.send({
+    res.json({
       loggedIn: true,
       firstName: user.firstName,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
     });
   } catch (err) {
+    console.log(err);
     res.status(401).send("Failed to authenticate");
   }
 });

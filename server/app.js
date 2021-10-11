@@ -17,6 +17,7 @@ app.use(express.json())
 // auth and api routes
 app.use('/auth', require('./auth'))
 app.use('/api/chat', require('./api/chat'))
+app.use('/api/game', require('./api/game'))
 
 app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));
 
