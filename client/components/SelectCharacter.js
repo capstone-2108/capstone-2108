@@ -3,6 +3,7 @@ import { CardMedia, makeStyles, CardContent, CardActionArea } from "@material-ui
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
+import desktopImage from "../../public/images/croppedColorfulTreeLandscape.jpeg";
 
 // DELETE LATER
 import fox from "../../public/assets/characters/character-protrait-emotes-2/Fox_frame.png";
@@ -45,9 +46,11 @@ const dummyData = [
 
 const useStyles = makeStyles(() => ({
   bkgd: {
-    backgroundColor: "#2c3b7a",
+    backgroundImage: `url(${desktopImage})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
     minHeight: "100vh",
-    marginTop: 0
   },
   cardArea: {
     marginTop: "5%"
@@ -56,7 +59,8 @@ const useStyles = makeStyles(() => ({
     maxWidth: "100%",
     margin: "auto",
     fontFamily: "Cinzel Decorative",
-    backgroundColor: "#e8e5d3"
+    backgroundColor: "#211511",
+    color: "#f5f3e6"
   },
   media: {
     height: 250,
