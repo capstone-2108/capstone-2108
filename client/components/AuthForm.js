@@ -85,7 +85,7 @@ const AuthForm = (props) => {
 
   const history = useHistory();
   const routeChange = () => {
-    let path = `/game`;
+    let path = `/select`;
     history.push(path);
   };
 
