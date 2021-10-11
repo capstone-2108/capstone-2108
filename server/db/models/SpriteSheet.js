@@ -6,8 +6,12 @@ const SpriteSheet = db.define("spriteSheet", {
     type: Sequelize.STRING,
     allowNull: false
   },
-  spriteSheet_url: {
-    type: Sequelize.TEXT,
+  spriteSheet_image_url: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  spriteSheet_json_url: {
+    type: Sequelize.STRING,
     allowNull: false
   }
 });

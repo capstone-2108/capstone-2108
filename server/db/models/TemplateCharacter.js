@@ -2,6 +2,10 @@ const Sequelize = require("sequelize");
 const { db } = require("../db");
 
 const TemplateCharacter = db.define("templateCharacter", {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   baseStrength: {
     type: Sequelize.INTEGER,
     allowNull: false

@@ -63,8 +63,8 @@ const AuthForm = (props) => {
   const classes = useStyles();
 
   const { name, displayName, error } = props;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("fox@mmo.com");
+  const [password, setPassword] = useState("123");
   const [firstName, setFirstName] = useState("");
 
   const [snackBarWarningOpen, setSnackBarWarningOpen] = useState(false);

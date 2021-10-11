@@ -1,0 +1,693 @@
+{
+	"textures": [
+		{
+			"image": "sorcerer.png",
+			"normalMap": "sorcerer_n.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 248,
+				"h": 134
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "sorcerer_idle-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 31,
+						"y": 1,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 61,
+						"y": 1,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 93,
+						"y": 1,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 125,
+						"y": 1,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 157,
+						"y": 1,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 189,
+						"y": 1,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 219,
+						"y": 1,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 1,
+						"y": 33,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 33,
+						"y": 33,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 63,
+						"y": 33,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 95,
+						"y": 33,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 30,
+						"h": 30
+					},
+					"frame": {
+						"x": 127,
+						"y": 33,
+						"w": 30,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 159,
+						"y": 33,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 189,
+						"y": 33,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_walk-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 35,
+						"w": 28,
+						"h": 30
+					},
+					"frame": {
+						"x": 219,
+						"y": 33,
+						"w": 28,
+						"h": 30
+					}
+				},
+				{
+					"filename": "sorcerer_idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 30,
+						"h": 32
+					},
+					"frame": {
+						"x": 1,
+						"y": 65,
+						"w": 30,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 30,
+						"h": 32
+					},
+					"frame": {
+						"x": 33,
+						"y": 65,
+						"w": 30,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 30,
+						"h": 32
+					},
+					"frame": {
+						"x": 65,
+						"y": 65,
+						"w": 30,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 30,
+						"h": 32
+					},
+					"frame": {
+						"x": 97,
+						"y": 65,
+						"w": 30,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 129,
+						"y": 65,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 159,
+						"y": 65,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 189,
+						"y": 65,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_idle-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 219,
+						"y": 65,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_walk-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 1,
+						"y": 99,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_walk-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 31,
+						"y": 99,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_walk-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 61,
+						"y": 99,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_walk-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 28,
+						"h": 32
+					},
+					"frame": {
+						"x": 91,
+						"y": 99,
+						"w": 28,
+						"h": 32
+					}
+				},
+				{
+					"filename": "sorcerer_walk-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 33,
+						"w": 28,
+						"h": 34
+					},
+					"frame": {
+						"x": 121,
+						"y": 99,
+						"w": 28,
+						"h": 34
+					}
+				},
+				{
+					"filename": "sorcerer_walk-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 28,
+						"h": 34
+					},
+					"frame": {
+						"x": 151,
+						"y": 99,
+						"w": 28,
+						"h": 34
+					}
+				},
+				{
+					"filename": "sorcerer_walk-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 33,
+						"w": 28,
+						"h": 34
+					},
+					"frame": {
+						"x": 181,
+						"y": 99,
+						"w": 28,
+						"h": 34
+					}
+				},
+				{
+					"filename": "sorcerer_walk-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 33,
+						"w": 28,
+						"h": 34
+					},
+					"frame": {
+						"x": 211,
+						"y": 99,
+						"w": 28,
+						"h": 34
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e0505620160aeabd968753272515609b:6d70d6bb76c7b6c4aa889c1483599dce:6b525cf5e1437dfa69c3f9c2e9fa1587$"
+	}
+}

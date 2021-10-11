@@ -17,9 +17,18 @@ const io = new Server(server, {
   }}
 );
 const worldChat = io.of('/worldChat');
+const gameSync = io.of('/gameSync');
 
-function initChatServer() {
+function initSocketServer() {
+  initWorldChat();
+  initGameSync();
+  server.listen(1338, () => {
+    console.log('Chat server listening on *:1338');
 
+  });
+}
+
+function initWorldChat() {
   worldChat.use(requireSocketToken);
   worldChat.on('connection', async (socket) => {
     socket.on('sendMessage', (message) => {
@@ -33,14 +42,26 @@ function initChatServer() {
     });
     console.log(`${socket.user.firstName} has connected to world chat!`);
   })
+}
 
-  server.listen(1338, () => {
-    console.log('Chat server listening on *:1338');
+function initGameSync() {
+  gameSync.use(requireSocketToken);
+  gameSync.on('connection', async (socket) => {
+    // socket.on('sendMessage', (message) => {
+    //   console.log('sendMessage', message);
+    //   socket.broadcast.emit('newMessage', message);
+    // });
 
-  });
+    socket.on("connect_error", (error) => {
+      console.log('Chat server error!');
+      console.log(error);
+    });
+    console.log(`${socket.user.firstName} has connected to game sync!`);
+  })
 }
 
 module.exports = {
-  initChatServer,
+  initSocketServer,
+  gameSync,
   worldChat
 }
