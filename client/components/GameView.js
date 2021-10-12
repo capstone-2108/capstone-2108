@@ -65,7 +65,6 @@ export const GameView = () => {
     //phaser will report player position movements in this event
     eventEmitter.subscribe("playerPositionChanged", (position) => {
       //send a message using socket.io to let the server know that the player changed position
-      console.log("test", position);
       newSocket.emit("playerPositionChanged", position);
     });
 

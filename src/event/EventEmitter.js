@@ -4,7 +4,6 @@ export class EventEmitter {
   }
 
   subscribe(eventName, callback) {
-    console.log("addingEvent", eventName);
     if (this.events[eventName]) { this.events[eventName].push(callback); }
     else { this.events[eventName] = [callback]; }
 
@@ -21,7 +20,6 @@ export class EventEmitter {
 
   emit(eventName, data) {
     if (this.events[eventName]) {
-      console.log("dispatchingEvent", eventName);
       let i = 0; let len = this.events[eventName].length;
       for (; i < len; i++) {this.events[eventName][i](data);}
     }

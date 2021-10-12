@@ -49,9 +49,7 @@ export default class MMOScene extends Phaser.Scene {
     // })
 
     // groundLayer.setPipeline('Light2D');
-    // map.createLayer('house', groundTiles, 0, 0);
-    // map.createLayer('Tile Layer 5', groundTiles, 0, 0);
-    // map.createLayer('rocks', groundTiles, 0, 0);
+
 
     // groundLayer.setPipeline('Light2D');
     // groundLayer.renderDebug(debugGraphics, {
@@ -67,11 +65,9 @@ export default class MMOScene extends Phaser.Scene {
      */
     eventEmitter.subscribe("playerLoad", (data) => {
       this.playerData = data;
-      let grid = new PathGrid(this, 100, this.groundLayer.width);
       console.log("playerLoad", data);
       this.player = new Player(
         this,
-        grid,
         data.xPos,
         data.yPos,
         "player",
@@ -81,21 +77,21 @@ export default class MMOScene extends Phaser.Scene {
       );
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
-      .add(785, 0, 240, 240)
-      .setZoom(0.15)
-      .setName("mini")
-      .startFollow(this.player)
-      .setBackgroundColor(0x002244);
+        .add(785, 0, 240, 240)
+        .setZoom(0.15)
+        .setName("mini")
+        .startFollow(this.player)
+        .setBackgroundColor(0x002244);
 
-    this.minimap.centerOn(0, 0);
-    const minimapCircle = new Phaser.GameObjects.Graphics(this);
-    minimapCircle.fillCircle(900, 125, 110);
-    const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
-    this.minimap.setMask(circle, true);
+      this.minimap.centerOn(0, 0);
+      const minimapCircle = new Phaser.GameObjects.Graphics(this);
+      minimapCircle.fillCircle(900, 125, 110);
+      const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
+      this.minimap.setMask(circle, true);
 
-    this.physics.add.collider(this.player, this.groundLayer);
-    this.physics.add.collider(this.player, this.worldLayer);
-    this.physics.add.collider(this.player, this.belowCharLayer);
+      this.physics.add.collider(this.player, this.groundLayer);
+      this.physics.add.collider(this.player, this.worldLayer);
+      this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
     /**
@@ -103,12 +99,10 @@ export default class MMOScene extends Phaser.Scene {
      */
     // eventEmitter.subscribe("otherPlayerLoad", (data) => {
     //   if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
-    //     let grid = new PathGrid(this, 100, this.groundLayer.width);
     //     this.otherPlayers[data.id] = new Player(
     //       this,
-    //       grid,
-    //       data.xPos,
-    //       data.yPos,
+    //       data.x,
+    //       data.y,
     //       `${data.name}-${data.id}`,
     //       data.templateName,
     //       false,
@@ -127,10 +121,8 @@ export default class MMOScene extends Phaser.Scene {
           player.characterId !== this.player.characterId &&
           !this.otherPlayers[player.characterId]
         ) {
-          let grid = new PathGrid(this, 100, this.groundLayer.width);
           this.otherPlayers[player.characterId] = new Player(
             this,
-            grid,
             player.xPos,
             player.yPos,
             `${player.name}-${player.characterId}`,
@@ -149,7 +141,7 @@ export default class MMOScene extends Phaser.Scene {
       //set a `move to` position, and let update take care of the rest
       //should consider making `moveTo` waypoints a queue in case more events come in before
       //the player character has finished moving
-      console.log("phaser received otherPlayerPositionChanged", position);
+      // console.log("phaser received otherPlayerPositionChanged", position);
       if(this.otherPlayers[position.characterId]) {
         this.otherPlayers[position.characterId].waypoints.push(position);
       }
