@@ -43,6 +43,8 @@ export const fetchCharacterData = () => {
   }
 }
 
+// CREATE CHARACTER IN PLAYERCHARACTER TABLE
+// export const createPlayerCharacter
 
 
 
@@ -51,8 +53,10 @@ export const fetchCharacterData = () => {
  * Reducer       *
  ************************/
 const initialState = {
+  //is this the template id or a unique id for the player character?
   selectedCharacterId: 1,
   name: '',
+  //?
   health: 100
 };
 

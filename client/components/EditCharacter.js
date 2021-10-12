@@ -3,12 +3,6 @@ import { useSelector } from 'react-redux';
 import { makeStyles, Card, Grid, Box, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-  // heading: {
-  //   paddingTop: 75,
-  //   marginTop: 0,
-  //   fontFamily: "Cinzel Decorative",
-  //   textAlign: "center",
-  // },
   form: {
     height: 225,
     top: "50%",

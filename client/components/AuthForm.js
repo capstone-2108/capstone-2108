@@ -77,8 +77,13 @@ const AuthForm = (props) => {
 
   const history = useHistory();
   const routeChange = () => {
-    let path = `/select`;
-    history.push(path);
+    if (name === "signup") {
+      let path = `/select`;
+      history.push(path);
+    } else {
+      let path = "/game"
+      history.push(path);
+    }
   };
 
   const dispatch = useDispatch();
