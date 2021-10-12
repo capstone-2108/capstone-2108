@@ -19,6 +19,7 @@ router.get("/character", async (req, res, next) => {
 });
 
 router.post("/character", requireTokenMiddleware, async (req, res, next) => {
+  console.log('in character backend route')
   try {
     const location = await Location.create({
       xPos: 300,
@@ -34,9 +35,13 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       intelligence: req.body.character.baseIntelligence,
       locationId: location.id
     })
-    newPlayer.setUser(req.user)
-    newPlayer.setTemplateCharacter(req.body.character.id)
-    res.json(newPlayer.id)
+    await newPlayer.setUser(req.user)
+    await newPlayer.setTemplateCharacter(req.body.character.id)
+    // convert to payload constant (below)
+    // newplayer get spritesheet
+    console.log(newPlayer)
+    res.json(newPlayer)
+    // res.json(newPlayer.id)
   } catch (err) {
     next(err)
   }

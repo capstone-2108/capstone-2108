@@ -35,6 +35,7 @@ const useStyles = makeStyles(() => ({
 }))
 
 const editCharacter = () => {
+  console.log('STATE', useSelector((state) => state))
   const classes = useStyles();
   const character = useSelector(state => state.chosenCharacter);
   const [characterName, setCharacterName] = useState("");
@@ -45,8 +46,8 @@ const editCharacter = () => {
     evt.preventDefault();
     dispatch(createPlayerCharacter(characterName, character))
     // Re-route to game
-    let path = "/game"
-    history.push(path)
+    // let path = "/game"
+    // history.push(path)
   }
 
   return (

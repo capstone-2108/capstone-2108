@@ -45,10 +45,11 @@ export const fetchCharacterData = () => {
 // CALL TO BACKEND TO CREATE PLAYER CHARACTER
 export const createPlayerCharacter = (name, character) => {
   return async (dispatch) => {
-    let state = getState()
+    // let state = getState()
     try {
       const response = await axios.post("/api/game/character", {name, character})
       console.log('RESPONSE', response.data)
+      dispatch(setPlayerCharacter(response.data))
       // Set player character id on state
       // Something like this? state.player.selectedCharacterId = response.data
     } catch(err) {
@@ -63,10 +64,8 @@ export const createPlayerCharacter = (name, character) => {
  * Reducer       *
  ************************/
 const initialState = {
-  //is this the template id or a unique id for the player character?
   selectedCharacterId: 1,
   name: '',
-  //?
   health: 100,
   // Are we using both health and totalHealth?
   totalHealth: 500,
