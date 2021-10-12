@@ -32,13 +32,32 @@ const templateCharacterData = [
     id:2,
     name: "Sorcerer",
     baseStrength: 75,
-    //change to true
-    isPlayable: false,
+    isPlayable: true,
     baseHealth: 100,
     baseIntelligence: 100,
     portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png",
     description: "High intelligence, but dies faster"
   },
+  {
+  id: 3,
+  name: "Beastmaster",
+  baseStrength: 100,
+  isPlayable: true,
+  baseHealth: 100,
+  baseIntelligence: 50,
+  portrait: "/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png",
+  description: "High strength, but not the brightest"
+  },
+  {
+    id: 4,
+    name: "Swashbuckler",
+    baseStrength: 80,
+    isPlayable: true,
+    baseHealth: 100,
+    baseIntelligence: 70,
+    portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
+    description: "Average strength and intelligence"
+    },
 ];
 
 const spriteSheetData = [

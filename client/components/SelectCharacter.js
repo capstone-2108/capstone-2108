@@ -46,11 +46,13 @@ const selectCharacter = () => {
   };
 
   useEffect(() => {
+
     dispatch(fetchTemplateCharacters())
   }, [])
 
   const templates = useSelector(state => state.templateCharacters)
 
+  console.log('STATE', useSelector((state) => state))
   return (
     <div className="selectContainer">
       <h1 className={classes.heading}>Select Your Character</h1>

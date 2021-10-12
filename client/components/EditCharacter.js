@@ -6,7 +6,7 @@ import { createPlayerCharacter } from '../store/player';
 
 const useStyles = makeStyles(() => ({
   form: {
-    height: 225,
+    height: 240,
     top: "50%",
     width: 350,
     position: "absolute",
