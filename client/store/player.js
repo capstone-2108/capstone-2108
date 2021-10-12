@@ -79,7 +79,8 @@ const initialState = {
   health: 100,
   nearbyPlayers: [],
   xPos: 0,
-  yPos: 0
+  yPos: 0,
+  totalHealth: 500,
 };
 
 export default (state = initialState, action) => {
