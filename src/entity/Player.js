@@ -13,6 +13,7 @@ import {
 import { mapToScreen, screenToMap } from "../util/conversion";
 import { PathFinder } from "../pathfinding/PathFinder";
 import { Vector2 } from "../pathfinding/Vector2";
+import { eventEmitter } from "../event/EventEmitter";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -43,7 +44,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.animationChanged = false;
     this.waypoints = [];
     this.previousWaypoint = null;
-    this.nextWaypoint = null;
+    this.ne2xtWaypoint = null;
     this.currentWaypointIndex = 0;
     this.pathFinder = new PathFinder(this.scene, this, grid);
     this.moveUsingCursors = false;
@@ -54,6 +55,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.directionChanged = false;
     this.mainPlayer = mainPlayer;
     this.id = id;
+    this.positionChanged = false;
+    this.lastReportTime = 0;
+    this.posSinceLastReport = {
+      xPos: null,
+      yPos: null,
+      direction: this.direction
+    };
+    this.moveWaypoints = [];
     // this.setOrigin(0);
 
     //Physics
@@ -61,8 +70,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     //Animations
     this.createAnimations();
-
-
 
     if (this.mainPlayer) {
       //Hotkeys
@@ -73,7 +80,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.createHotKeyEvents();
     }
 
-    this.body.setOffset(32, 33)
+    this.body.setOffset(32, 33);
     // this.movementModeChanged = false;
     // this.animationChanged = false; //if something triggers a change which should cause the current animation to change
     // this.speed = 100; //the speed of the player
@@ -105,33 +112,37 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   createHotKeyEvents() {
     //handles moving to a point when the user clicks on it
-    this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
-      this.moveUsingCursors = false;
-      this.clearPath();
-      const { worldX, worldY } = pointer;
-      let [endMapX, endMapY] = screenToMap(worldX, worldY);
-      let startVector = this.getCurrentPosition();
-      let endVector = new Vector2(endMapX, endMapY);
-      console.log(startVector, endVector);
-      const path = this.pathFinder.aStarPath(startVector, endVector);
-      console.log("path", path);
-      this.moveAlongPath(path);
-    });
+    // this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
+    //   this.moveUsingCursors = false;
+    //   this.clearPath();
+    //   const { worldX, worldY } = pointer;
+    //   let [endMapX, endMapY] = screenToMap(worldX, worldY);
+    //   let startVector = this.getCurrentPosition();
+    //   let endVector = new Vector2(endMapX, endMapY);
+    //   console.log(startVector, endVector);
+    //   const path = this.pathFinder.aStarPath(startVector, endVector);
+    //   console.log("path", path);
+    //   this.moveAlongPath(path);
+    // });
 
     this.scene.input.keyboard.on("keydown-" + "W", (event) => {
       this.clearPath();
+      this.positionChanged = true;
       this.moveUsingCursors = true;
     });
     this.scene.input.keyboard.on("keydown-" + "A", (event) => {
       this.clearPath();
+      this.positionChanged = true;
       this.moveUsingCursors = true;
     });
     this.scene.input.keyboard.on("keydown-" + "S", (event) => {
       this.clearPath();
+      this.positionChanged = true;
       this.moveUsingCursors = true;
     });
     this.scene.input.keyboard.on("keydown-" + "D", (event) => {
       this.clearPath();
+      this.positionChanged = true;
       this.moveUsingCursors = true;
     });
   }
@@ -141,17 +152,54 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.movementMode = this.movementMode === "walk" ? "run" : "walk";
   }
 
-  update() {
-    if (!this.moveUsingCursors) {
-      this.updatePathMovement();
-      this.pathMovement();
+  update(time, delta) {
+    if (this.mainPlayer) {
+      if (!this.moveUsingCursors) {
+        this.updatePathMovement();
+        this.pathMovement();
+      } else {
+        this.playAnimation();
+      }
+
+      //send a position update every 150ms
+      //@todo: consider overriding timer on direction change
+      if (time - this.lastReportTime > 500) {
+        if (this.x !== this.posSinceLastReport.xPos || this.y !== this.posSinceLastReport.yPos) {
+          eventEmitter.emit("playerPositionChanged", {
+            characterId: this.id,
+            xPos: this.x,
+            yPos: this.y,
+            direction: this.direction
+          });
+          this.posSinceLastReport = {
+            xPos: this.x,
+            yPos: this.y,
+            direction: this.direction
+          };
+        }
+        this.lastReportTime = time;
+      }
     } else {
-      this.playAnimation();
+      //this is another player, not the main player
+      //check for waypoints, if so, then move
+      if (this.waypoints.length > 0 && !this.nextWaypoint) {
+        console.log("unshifting");
+        this.setNextWaypoint(this.waypoints.shift());
+      } else {
+        this.updatePathMovement();
+        this.pathMovement();
+      }
+
+      // if(this.moveWaypoints.length) {
+      //   const waypoint = this.moveWaypoints.shift();
+      //
+      // }
+      // this.pathMovement();
     }
   }
 
   createAnimations() {
-    const modes = ["idle", "walk", /*"run"*/];
+    const modes = ["idle", "walk" /*"run"*/];
     const directions = {
       [NORTH]: { start: 12, end: 15 },
       [EAST]: { start: 8, end: 11 },
@@ -321,13 +369,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   updatePathMovement() {
     if (this.nextWaypoint) {
-      this.pdX = this.nextWaypoint.vector2.x - this.x;
-      this.pdY = this.nextWaypoint.vector2.y - this.y;
+      this.pdX = this.nextWaypoint.xPos - this.x;
+      this.pdY = this.nextWaypoint.yPos - this.y;
 
-      if (Math.abs(this.pdX) < 8) {
+      if (Math.abs(this.pdX) <= 1) {
         this.pdX = 0;
       }
-      if (Math.abs(this.pdY) < 8) {
+      if (Math.abs(this.pdY) <= 1) {
         this.pdY = 0;
       }
       this.getMovementDirection(this.previousWaypoint, this.nextWaypoint);
@@ -350,8 +398,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   getMovementDirection(start, end) {
-    let pdX = end.vector2.x - start.vector2.x;
-    let pdY = end.vector2.y - start.vector2.y;
+    let pdX = end.xPos - this.x;
+    let pdY = end.yPos - this.y;
+    // let pdX = end.vector2.x - start.vector2.x;
+    // let pdY = end.vector2.y - start.vector2.y;
     let pvdX = 0;
     let pvdY = 0;
     let direction = this.direction;

@@ -25,10 +25,9 @@ export default class MMOScene extends Phaser.Scene {
     this.belowCharLayer = map.createLayer("belowChar", groundTiles, 0, 0);
 
     // collision
-    this.groundLayer.setCollisionByProperty({ collides: true})
-    this.worldLayer.setCollisionByProperty({ collides: true})
-    this.belowCharLayer.setCollisionByProperty({ collides: true})
-
+    this.groundLayer.setCollisionByProperty({ collides: true });
+    this.worldLayer.setCollisionByProperty({ collides: true });
+    this.belowCharLayer.setCollisionByProperty({ collides: true });
 
     /*** collision debugging code ***/
 
@@ -67,39 +66,40 @@ export default class MMOScene extends Phaser.Scene {
      * @param {{}} data
      */
     eventEmitter.subscribe("playerLoad", (data) => {
-      console.log("playerLoad", data, this.groundLayer);
       this.playerData = data;
       let grid = new PathGrid(this, 100, this.groundLayer.width);
+      console.log("playerLoad", data);
       this.player = new Player(
         this,
         grid,
-        this.playerData.xPos,
-        this.playerData.yPos,
+        data.xPos,
+        data.yPos,
         "player",
-        this.playerData.templateName,
+        data.templateName,
         true,
-        this.playerData.id
+        data.characterId
       );
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
         .add(795, 0, 230, 230)
         .setZoom(0.3)
         .setName("mini")
-        .startFollow(this.player);
-      this.minimap.setBackgroundColor(0x002244);
-    this.minimap.centerOn(0, 0);
-    const minimapCircle = new Phaser.GameObjects.Graphics(this);
-    minimapCircle.fillCircle(910, 115, 110);
-    const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
-    this.minimap.setMask(circle, true);
-    this.physics.add.collider(this.player, this.groundLayer);
-    this.physics.add.collider(this.player, this.worldLayer);
-    this.physics.add.collider(this.player, this.belowCharLayer);
+        .startFollow(this.player)
+        .setBackgroundColor(0x000000)
+        .centerOn(0, 0);
+
+      const minimapCircle = new Phaser.GameObjects.Graphics(this);
+      minimapCircle.fillCircle(910, 115, 110);
+      const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
+      this.minimap.setMask(circle, true);
+
+      this.physics.add.collider(this.player, this.groundLayer);
+      this.physics.add.collider(this.player, this.worldLayer);
+      this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
-     * @param data
      */
     // eventEmitter.subscribe("otherPlayerLoad", (data) => {
     //   if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
@@ -122,21 +122,39 @@ export default class MMOScene extends Phaser.Scene {
       let i = 0;
       let len = players.length;
       for (; i < len; i++) {
-        if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
+        const player = players[i];
+        if (
+          player.characterId !== this.player.characterId &&
+          !this.otherPlayers[player.characterId]
+        ) {
           let grid = new PathGrid(this, 100, this.groundLayer.width);
-          this.otherPlayers[data.id] = new Player(
+          this.otherPlayers[player.characterId] = new Player(
             this,
             grid,
-            data.xPos,
-            data.yPos,
-            `${data.name}-${data.id}`,
-            data.templateName,
+            player.xPos,
+            player.yPos,
+            `${player.name}-${player.characterId}`,
+            player.templateName,
             false,
-            data.id
+            player.characterId
           );
         }
       }
+      console.log(this.otherPlayers);
     });
+
+    //this event lets us know that another player has moved, we should make this position move to
+    //the position we received
+    eventEmitter.subscribe("otherPlayerPositionChanged", (position) => {
+      //set a `move to` position, and let update take care of the rest
+      //should consider making `moveTo` waypoints a queue in case more events come in before
+      //the player character has finished moving
+      console.log("phaser received otherPlayerPositionChanged", position);
+      if(this.otherPlayers[position.characterId]) {
+        this.otherPlayers[position.characterId].waypoints.push(position);
+      }
+    });
+
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("phaserLoad");
   }
@@ -144,7 +162,7 @@ export default class MMOScene extends Phaser.Scene {
   /**anything that needs to update, should get it's update function called here**/
   update(time, delta) {
     if (this.player) {
-      this.player.update();
+      this.player.update(time, delta);
     }
     if (this.otherPlayers) {
       for (const [id, player] of Object.entries(this.otherPlayers)) {

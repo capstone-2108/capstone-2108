@@ -9,7 +9,25 @@ const { Op } = require("sequelize");
 //get /api/game/character/nearby - fetches all characters nearby this character
 router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req, res, next) => {
   try {
-    res.json(await PlayerCharacter.getNearbyPlayers(req.params.characterId));
+    const playerCharacters = await PlayerCharacter.getNearbyPlayers(req.params.characterId);
+    const payload = [];
+    let i = 0; let len = playerCharacters.length;
+    for(;i < len; i++) {
+      const playerCharacter = playerCharacters[i]
+      payload[i] = {
+        userId: req.user.id,
+        characterId: playerCharacter.id,
+        name: playerCharacter.name,
+        health: playerCharacter.health,
+        templateName: playerCharacter.templateCharacter.name,
+        spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+        spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+        xPos: playerCharacter.location.xPos,
+        yPos: playerCharacter.location.yPos,
+        facingDirection: playerCharacter.location.facingDirection
+      }
+    }
+    res.json(payload);
   } catch (err) {
     console.log(err);
   }
