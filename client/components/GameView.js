@@ -49,7 +49,9 @@ export const GameView = () => {
         <div className="inventory">
           <h3>inventory</h3>
 
-          <Inventory />
+          <div>
+            <Inventory />
+          </div>
 
           <div id="logoutButton">
             <Link to="/">
