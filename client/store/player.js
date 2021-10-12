@@ -34,7 +34,6 @@ export const fetchCharacterData = () => {
       const response = await axios.get(`/api/game/character/${state.player.selectedCharacterId}`);
       dispatch(setPlayerCharacter(response.data));
       state = getState();
-      //Not sure this should be running yet
       eventEmitter.dispatch('playerLoad', state.player);
     }
     catch(err) {
@@ -43,9 +42,20 @@ export const fetchCharacterData = () => {
   }
 }
 
-// CREATE CHARACTER IN PLAYERCHARACTER TABLE
-// export const createPlayerCharacter
-
+// CALL TO BACKEND TO CREATE PLAYER CHARACTER
+export const createPlayerCharacter = (name, character) => {
+  return async (dispatch) => {
+    let state = getState()
+    try {
+      const response = await axios.post("/api/game/character", {name, character})
+      console.log('RESPONSE', response.data)
+      // Set player character id on state
+      // Something like this? state.player.selectedCharacterId = response.data
+    } catch(err) {
+      console.log(err)
+    }
+  }
+}
 
 
 
@@ -57,7 +67,9 @@ const initialState = {
   selectedCharacterId: 1,
   name: '',
   //?
-  health: 100
+  health: 100,
+  // Are we using both health and totalHealth?
+  totalHealth: 500,
 };
 
 export default (state = initialState, action) => {

@@ -51,8 +51,6 @@ const selectCharacter = () => {
 
   const templates = useSelector(state => state.templateCharacters)
 
-  console.log('TEMPLATES', templates);
-
   return (
     <div className="selectContainer">
       <h1 className={classes.heading}>Select Your Character</h1>
@@ -78,9 +76,6 @@ const selectCharacter = () => {
           </Grid>
         ))}
       </Grid>
-      {/* {selected && ({
-        <form
-      })} */}
     </div>
   );
 };

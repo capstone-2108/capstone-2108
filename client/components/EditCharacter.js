@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import { makeStyles, Card, Grid, Box, TextField, Button } from '@material-ui/core';
+import { createPlayerCharacter } from '../store/player';
 
 const useStyles = makeStyles(() => ({
   form: {
@@ -35,8 +37,17 @@ const useStyles = makeStyles(() => ({
 const editCharacter = () => {
   const classes = useStyles();
   const character = useSelector(state => state.chosenCharacter);
+  const [characterName, setCharacterName] = useState("");
+  const dispatch = useDispatch();
+  const history = useHistory()
 
-  const [characterName, setCharacterName] = useState("")
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    dispatch(createPlayerCharacter(characterName, character))
+    // Re-route to game
+    let path = "/game"
+    history.push(path)
+  }
 
   return (
     <div className="selectContainer">
@@ -44,7 +55,7 @@ const editCharacter = () => {
         <Grid align="center">
           <h2>Name Your {character.name}</h2>
         </Grid>
-        <Box component="form" onSubmit={() => console.log('submitted')}>
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField
             required
             fullWidth
