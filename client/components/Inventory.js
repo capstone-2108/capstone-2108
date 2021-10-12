@@ -1,13 +1,13 @@
 import React from "react";
 import { fetchCharacterData, updateHealth } from "../store/player";
-
+import Healthbar from "./Healthbar";
+import Gold from "./Gold";
 const Inventory = () => {
   return (
     <div>
-      <div>
-        <h3>health:</h3>
-        <div className="rectangle" />
-      </div>
+      <h3>hi</h3>
+      <Healthbar />
+      <Gold />
     </div>
   );
 };
