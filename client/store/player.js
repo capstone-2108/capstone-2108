@@ -48,6 +48,7 @@ const initialState = {
   selectedCharacterId: 1,
   name: "",
   health: 100,
+  totalHealth: 500,
   gold: 0
 };
 

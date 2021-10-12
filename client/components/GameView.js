@@ -11,6 +11,7 @@ import { fetchCharacterData, updateHealth } from "../store/player";
 import io from "socket.io-client";
 import { addNewMessage } from "../store/chat";
 import Inventory from "./Inventory";
+import Healthbar from "./Healthbar";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -47,6 +48,7 @@ export const GameView = () => {
       <div className="top">
         <div id="phaser"></div>
         <div className="inventory">
+          <Healthbar />
           <h3>inventory</h3>
 
           <div>
