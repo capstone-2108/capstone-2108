@@ -50,7 +50,6 @@ export default class MMOScene extends Phaser.Scene {
 
     // groundLayer.setPipeline('Light2D');
 
-
     // groundLayer.setPipeline('Light2D');
     // groundLayer.renderDebug(debugGraphics, {
     //   tileColor: null, // Color of non-colliding tiles
@@ -137,13 +136,13 @@ export default class MMOScene extends Phaser.Scene {
 
     //this event lets us know that another player has moved, we should make this position move to
     //the position we received
-    eventEmitter.subscribe("otherPlayerPositionChanged", (position) => {
+    eventEmitter.subscribe("otherPlayerPositionChanged", (waypoints) => {
       //set a `move to` position, and let update take care of the rest
       //should consider making `moveTo` waypoints a queue in case more events come in before
       //the player character has finished moving
-      // console.log("phaser received otherPlayerPositionChanged", position);
-      if(this.otherPlayers[position.characterId]) {
-        this.otherPlayers[position.characterId].waypoints.push(position);
+      const remotePlayer = this.otherPlayers[waypoints.characterId];
+      if (remotePlayer) {
+        remotePlayer.waypoints = remotePlayer.waypoints.concat(waypoints.waypoints);
       }
     });
 
@@ -158,7 +157,7 @@ export default class MMOScene extends Phaser.Scene {
     }
     if (this.otherPlayers) {
       for (const [id, player] of Object.entries(this.otherPlayers)) {
-        player.update();
+        player.update(time, delta);
       }
     }
   }
