@@ -58,8 +58,6 @@ export const logout = () => {
       if (!response.data.loggedIn) {
         dispatch(setLoggedOut());
         dispatch(loginSuccess(false));
-        //clear the player this.state.
-        //dispatch an action to do this!!!!
       } else {
         console.log("Failed to logout");
         //@todo failed to logout
