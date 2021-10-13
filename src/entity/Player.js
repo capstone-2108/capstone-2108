@@ -144,7 +144,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         newDirection !== this.lastDirection ||
         (this.moveSnapshots.length === 0 && newMode !== "idle")
       ) {
-        console.log("snapshot");
         //take a snapshot
         const lastSnapshot = this.moveSnapshots[this.moveSnapshots.length - 1];
         if (lastSnapshot && !lastSnapshot.duration) {
@@ -171,10 +170,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.lastDirection = newDirection;
         this.lastMode = newMode;
       } else if (time - this.lastReportTime > 300 && this.moveSnapshots.length > 0) {
-        console.log("report");
         const lastSnapshot = this.moveSnapshots[this.moveSnapshots.length - 1];
         if (lastSnapshot && !lastSnapshot.duration) {
-          console.log("close snapshot at report");
           lastSnapshot.duration = time - lastSnapshot.timeStarted;
           delete lastSnapshot.timeStarted;
           lastSnapshot.endX = Math.floor(this.x);
@@ -475,73 +472,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     let convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.name}-${this.mode}-${convertedDir}`;
     if (animationChanged || !this.anims.isPlaying) {
-      console.log("play animation", animationToPlay);
       this.anims.play(animationToPlay);
       this.animationChanged = false;
       this.directionChanged = false;
     }
     this.setVelocityX(this.speeds[this.movementMode] * vdx);
     this.setVelocityY(this.speeds[this.movementMode] * vdy);
-  }
-
-  otherPlayerArrivedAtWaypoint(waypoint) {
-    let { dx, dy } = this.getDistanceToWaypoint(waypoint);
-    if (Math.abs(dx) <= 6) {
-      dx = 0;
-    }
-    if (Math.abs(dy) <= 6) {
-      dy = 0;
-    }
-    return dx === 0 && dy === 0;
-  }
-
-  getDistanceToWaypoint(waypoint) {
-    let dx = Math.abs(waypoint.x - this.x);
-    let dy = Math.abs(waypoint.y - this.y);
-    return { dx, dy };
-  }
-
-  otherPlayerLostSync(waypoint) {
-    const { dx, dy } = this.getDistanceToWaypoint(waypoint);
-    console.log("sync check", this.lastDx, dx, this.lastDy, dy);
-    return dx > this.lastDx || dy > this.lastDy;
-  }
-
-  getOtherPlayerVelocityModifiers(waypoint) {
-    let vdx = 0;
-    let vdy = 0;
-
-    switch (waypoint.direction) {
-      case NORTH:
-        vdy = -1;
-        break;
-      case EAST:
-        vdx = 1;
-        break;
-      case SOUTH:
-        vdy = 1;
-        break;
-      case WEST:
-        vdx = -1;
-        break;
-      case NORTHEAST:
-        vdx = 1;
-        vdy = -1;
-        break;
-      case NORTHWEST:
-        vdx = -1;
-        vdy = -1;
-        break;
-      case SOUTHEAST:
-        vdx = 1;
-        vdy = 1;
-        break;
-      case SOUTHWEST:
-        vdx = -1;
-        vdy = 1;
-        break;
-    }
-    return { vdx, vdy };
   }
 
   setOtherPlayerNextWaypoint(waypoint) {
