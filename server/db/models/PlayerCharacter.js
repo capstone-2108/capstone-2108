@@ -17,6 +17,11 @@ const PlayerCharacter = db.define("playerCharacter", {
   active: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  gold: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 });
 

@@ -21,14 +21,14 @@ const userData = [
 
 const templateCharacterData = [
   {
-    id:1,
+    id: 1,
     name: "fox",
     baseStrength: 100,
     isPlayable: true,
     baseHealth: 100
   },
   {
-    id:2,
+    id: 2,
     name: "sorcerer",
     baseStrength: 100,
     isPlayable: false,
@@ -48,7 +48,7 @@ const spriteSheetData = [
     spriteSheet_image_url: "../spritesheets/heroes/sorcerer/sorcerer.png",
     spriteSheet_json_url: "../spritesheets/heroes/sorcerer/sorcerer.json",
     templateCharacterId: 2
-  },
+  }
 ];
 
 const sceneData = [
@@ -65,7 +65,8 @@ const playerCharacterData = [
     userId: 1,
     templateCharacterId: 1,
     locationId: 1,
-    active: false
+    active: false,
+    gold: 15
   },
   {
     name: "Arcana",
@@ -74,6 +75,7 @@ const playerCharacterData = [
     templateCharacterId: 2,
     locationId: 2,
     active: false,
+    gold: 30
   }
 ];
 

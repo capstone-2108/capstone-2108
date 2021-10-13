@@ -63,6 +63,7 @@ export default class MMOScene extends Phaser.Scene {
      * @param {{}} data
      */
     eventEmitter.subscribe("playerLoad", (data) => {
+      console.log("playerLoad", data, this.groundLayer);
       this.playerData = data;
       console.log("playerLoad", data);
       this.player = new Player(
@@ -76,18 +77,25 @@ export default class MMOScene extends Phaser.Scene {
       );
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
-        .add(785, 0, 240, 240)
+        .add(795, 0, 230, 230)
         .setZoom(0.15)
         .setName("mini")
-        .startFollow(this.player)
-        .setBackgroundColor(0x002244);
+        .startFollow(this.player);
+      this.minimap.setBackgroundColor(0x002244);
+
+      // this.minimap.scrollX = 820;
+      // this.minimap.scrollY = 700;
+
+      // Make the border
+      // this.add.sprite(716, 85, "mini").setScale(2.52);
 
       this.minimap.centerOn(0, 0);
       const minimapCircle = new Phaser.GameObjects.Graphics(this);
-      minimapCircle.fillCircle(900, 125, 110);
+      minimapCircle.fillCircle(910, 115, 110);
+      minimapCircle.fillCircle(910, 115, 110, "mini");
+
       const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
       this.minimap.setMask(circle, true);
-
       this.physics.add.collider(this.player, this.groundLayer);
       this.physics.add.collider(this.player, this.worldLayer);
       this.physics.add.collider(this.player, this.belowCharLayer);
@@ -148,6 +156,30 @@ export default class MMOScene extends Phaser.Scene {
 
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("phaserLoad");
+
+    /**
+     * loads another player (not the main player) when receiving an otherPlayerLoad event from react
+     * @param data
+     */
+    eventEmitter.addEventListener("otherPlayerLoad", (data) => {
+      if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
+        let grid = new PathGrid(this, 100, this.groundLayer.width);
+        this.otherPlayers[data.id] = new Player(
+          this,
+          grid,
+          data.xPos,
+          data.yPos,
+          `${data.name}-${data.id}`,
+          data.templateName,
+          false,
+          data.id
+        );
+      }
+    });
+    //this has to go last because we need all our events setup before react starts dispatching events
+    eventEmitter.dispatch("phaserLoad");
+
+    //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
   }
 
   /**anything that needs to update, should get it's update function called here**/

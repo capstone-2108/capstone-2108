@@ -35,6 +35,7 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
   }
 });
 
+
 //get /api/game/character/:id - fetches character data by id
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   //@todo: make sure the player can only load characters belonging to them
@@ -46,7 +47,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   playerCharacter = (
     await req.user.getPlayerCharacters({
       // where: { id },
-      attributes: ["id", "name", "health"],
+      attributes: ["id", "name", "health", "gold"],
       include: [
         {
           model: TemplateCharacter,
@@ -69,6 +70,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   const payload = {
     userId: req.user.id,
     characterId: playerCharacter.id,
+    id: playerCharacter.id,
     name: playerCharacter.name,
     health: playerCharacter.health,
     templateName: playerCharacter.templateCharacter.name,
@@ -76,7 +78,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
-    facingDirection: playerCharacter.location.facingDirection
+    gold: playerCharacter.gold
   };
 
   res.json(payload);
