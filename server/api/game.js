@@ -3,9 +3,8 @@ const router = require("express").Router();
 const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync} = require("../socket");
-const { TemplateCharacter, SpriteSheet,  } = require("../db");
+const { TemplateCharacter, SpriteSheet, Location} = require("../db");
 const {PlayerCharacter} = require("../db/models/PlayerCharacter");
-const {Location} = require("../db/models/Location");
 
 
 //This fetches all template characters
@@ -70,41 +69,41 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   // const hasCharacter = await req.user.hasPlayerCharacter(id);
   let playerCharacter = [];
   // if (hasCharacter) {
-    playerCharacter = (
-      await req.user.getPlayerCharacters({
-        // where: { id },
-        attributes: ["id", "name", "health"],
-        include: [
-          {
-            model: TemplateCharacter,
-            attributes: ["id", "name"],
-            include: {
-              model: SpriteSheet,
-              attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
-            }
-          },
-          {
-            model: Location,
-            attributes: { exclude: ["createdAt", "updatedAt"] }
+  playerCharacter = (
+    await req.user.getPlayerCharacters({
+      // where: { id },
+      attributes: ["id", "name", "health", "gold"],
+      include: [
+        {
+          model: TemplateCharacter,
+          attributes: ["id", "name"],
+          include: {
+            model: SpriteSheet,
+            attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
           }
-        ]
-      })
-    )[0];
+        },
+        {
+          model: Location,
+          attributes: { exclude: ["createdAt", "updatedAt"] }
+        }
+      ]
+    })
+  )[0];
   // } else {
   //   res.sendStatus(404);
   // }
   const payload = {
-    id:playerCharacter.id,
+    id: playerCharacter.id,
     name: playerCharacter.name,
     health: playerCharacter.health,
     templateName: playerCharacter.templateCharacter.name,
     spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
-    //Shouldn't this be spriteSheet_json_url?
-    spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
-    facingDirection: playerCharacter.location.facingDirection
-  }
+    facingDirection: playerCharacter.location.facingDirection,
+    gold: playerCharacter.gold
+  };
 
   res.json(payload);
 

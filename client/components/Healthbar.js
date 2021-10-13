@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 const Healthbar = () => {
   const player = useSelector((state) => state.player);
   const ratio = player.health / player.totalHealth;
-  const healthWidth = 300*ratio;
+  const healthWidth = 300 * ratio;
 
   let healthStyle = "";
 
@@ -19,24 +19,41 @@ const Healthbar = () => {
   } else if (healthWidth >= 30 && healthWidth <= 60) {
     healthStyle = {
       background: "rgb(159,159,3)",
-      background: "linear-gradient(180deg, rgba(159,159,0,1) 0%, rgba(255,255,0,1) 48%, rgba(159,159,0,1) 88%)",
+      background:
+        "linear-gradient(180deg, rgba(159,159,0,1) 0%, rgba(255,255,0,1) 48%, rgba(159,159,0,1) 88%)",
       width: `${healthWidth}px`,
       height: "20px"
     };
   } else {
     healthStyle = {
       background: "rgb(14,106,0)",
-      background: "linear-gradient(180deg, rgba(14,106,0,1) 0%, rgba(50,205,50,1) 48%, rgba(14,106,0,1) 88%)",
-       width: `${healthWidth}px`,
-        height: "20px"
+      background:
+        "linear-gradient(180deg, rgba(14,106,0,1) 0%, rgba(50,205,50,1) 48%, rgba(14,106,0,1) 88%)",
+      width: `${healthWidth}px`,
+      height: "20px"
     };
   }
 
   return (
     <div>
-      <h3>{player.name}</h3>
-      <div style={{ backgroundColor: "black", width: "300px", height: "20px", border: "3px pink" }}>
-        <div style={healthStyle}></div>
+      <div className="player">
+        <img src="b7c6549290654353cdcf3c0db0d7b38d.png" width="20px" height="20px" />
+        <h3 id="playerName">{player.name}</h3>
+      </div>
+      <div className="health">
+        <div>
+          <h4 className="whiteText">HP</h4>
+        </div>
+
+        <div
+          style={{
+            backgroundColor: "black",
+            width: "280px",
+            height: "20px",
+            margin: "5px"
+          }}>
+          <div style={healthStyle}></div>
+        </div>
       </div>
     </div>
   );

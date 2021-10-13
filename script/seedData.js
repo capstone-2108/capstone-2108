@@ -72,7 +72,7 @@ const spriteSheetData = [
     spriteSheet_image_url: "../spritesheets/heroes/sorcerer/sorcerer.png",
     spriteSheet_json_url: "../spritesheets/heroes/sorcerer/sorcerer.json",
     templateCharacterId: 2
-  },
+  }
 ];
 
 const sceneData = [
@@ -90,7 +90,8 @@ const playerCharacterData = [
     intelligence: 70,
     userId: 1,
     templateCharacterId: 1,
-    locationId: 1
+    locationId: 1,
+    gold: 15
   },
   {
     name: "Arcana",
@@ -99,7 +100,8 @@ const playerCharacterData = [
     intelligence: 100,
     userId: 2,
     templateCharacterId: 2,
-    locationId: 2
+    locationId: 2,
+    gold: 30
   }
 ];
 

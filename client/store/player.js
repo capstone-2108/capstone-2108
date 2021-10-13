@@ -1,12 +1,11 @@
 import axios from "axios";
-import {eventEmitter} from '../../src/event/EventEmitter';
+import { eventEmitter } from "../../src/event/EventEmitter";
 
 /*************************
  * Action Types          *
  ************************/
 export const UPDATE_HEALTH = "UPDATE_HEALTH";
 export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
-
 
 /*************************
  * Action Creators       *
@@ -16,15 +15,15 @@ export const setPlayerCharacter = (character) => {
   return {
     type: SET_PLAYER_CHARACTER,
     character
-  }
-}
+  };
+};
 
 export const updateHealth = (health) => {
   return {
     type: UPDATE_HEALTH,
     health
-  }
-}
+  };
+};
 
 //--Thunks--
 export const fetchCharacterData = () => {
@@ -32,12 +31,12 @@ export const fetchCharacterData = () => {
     let state = getState();
     try {
       const response = await axios.get(`/api/game/character/${state.player.selectedCharacterId}`);
+      console.log("response.data", response.data);
       dispatch(setPlayerCharacter(response.data));
       state = getState();
-      eventEmitter.dispatch('playerLoad', state.player);
-    }
-    catch(err) {
-      console.log(err)
+      eventEmitter.dispatch("playerLoad", state.player);
+    } catch (err) {
+      console.log(err);
     }
   }
 }
@@ -62,18 +61,20 @@ export const createPlayerCharacter = (name, character) => {
  ************************/
 const initialState = {
   selectedCharacterId: 1,
-  name: '',
+  name: "",
   health: 100,
   // Are we using both health and totalHealth?
   totalHealth: 500,
+  gold: 0,
+  scene: "village"
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYER_CHARACTER:
-      return {...state, ...action.character};
+      return { ...state, ...action.character };
     case UPDATE_HEALTH:
-      return {...state, health: action.health}
+      return { ...state, health: action.health };
     default:
       return state;
   }

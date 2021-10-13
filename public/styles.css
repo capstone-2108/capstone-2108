@@ -2,9 +2,14 @@ body {
   margin: 0;
   padding: 0;
 }
-
-.top {
+.layout {
   display: flex;
+  flex-direction: row;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
 }
 
 #phaser {
@@ -15,17 +20,79 @@ body {
 
 .inventory {
   display: flex;
-  flex-grow: 1;
+  width: 300px;
+  color: white;
   text-align: center;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
+    Verdana, sans-serif;
   padding: 0;
   justify-content: space-between;
   flex-direction: column;
-  width: 100%;
-  justify-content: center;
+  justify-content: flex-start;
+  background-color: rgb(50, 50, 50);
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  margin: 0px 80px;
+}
+
+.gold {
+  display: flex;
+  align-items: center;
+  margin: 0px 125px;
+}
+
+.whiteText {
+  font-size: 12px;
+}
+.health {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 10px 25px;
+}
+
+img {
+  margin: 5px;
+}
+
+.itemList {
+  width: 253px;
+  margin: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.item {
+  background-color: black;
+  width: 61px;
+  height: 61px;
+  border-radius: 5px;
+}
+
+#logoutButton {
+  padding: 10px;
+  color: black;
+  border-radius: 7px;
+  width: 253px;
+  margin: 10px;
+  background-color: white;
+}
+
+#characterButton {
+  padding: 10px;
+  color: black;
+  border-radius: 7px;
+  width: 253px;
+  margin: 10px;
+  background-color: rgb(232, 232, 20);
 }
 
 #chat_history {
-  height: 200px;
+  height: 180px;
   display: flex;
   flex-flow: column-reverse nowrap;
   overflow-y: scroll;
@@ -43,7 +110,7 @@ body {
 }
 
 .new-chat-message {
-  width: 400px;
+  width: 1015px;
   border: 1px solid #504137;
 }
 
@@ -60,5 +127,13 @@ body {
   background-image: url("/images/croppedColorfulTreeLandscape.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center
+  background-position: center;
+}
+
+#playerName {
+  padding-top: 50px;
+}
+
+.currentScene {
+  padding: 20px;
 }

@@ -17,6 +17,11 @@ const PlayerCharacter = db.define("playerCharacter", {
   intelligence: {
     type: Sequelize.INTEGER,
     allowNull: false
+  },
+  gold: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 });
 
