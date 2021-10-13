@@ -2,7 +2,7 @@ const { requireTokenMiddleware } = require("../auth-middleware");
 const router = require("express").Router();
 const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
-const { worldChat, gameSync } = require("../socket");
+const { worldChat, gameSync } = require("../socket/index");
 const { TemplateCharacter, SpriteSheet, Location, User, PlayerCharacter } = require("../db");
 const { Op } = require("sequelize");
 
@@ -34,7 +34,6 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
     console.log(err);
   }
 });
-
 
 //get /api/game/character/:id - fetches character data by id
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
