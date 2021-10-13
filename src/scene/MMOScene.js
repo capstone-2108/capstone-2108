@@ -24,10 +24,9 @@ export default class MMOScene extends Phaser.Scene {
     this.belowCharLayer = map.createLayer("belowChar", groundTiles, 0, 0);
 
     // collision
-    this.groundLayer.setCollisionByProperty({ collides: true})
-    this.worldLayer.setCollisionByProperty({ collides: true})
-    this.belowCharLayer.setCollisionByProperty({ collides: true})
-
+    this.groundLayer.setCollisionByProperty({ collides: true });
+    this.worldLayer.setCollisionByProperty({ collides: true });
+    this.belowCharLayer.setCollisionByProperty({ collides: true });
 
     /*** collision debugging code ***/
 
@@ -61,10 +60,10 @@ export default class MMOScene extends Phaser.Scene {
     // });
 
     //These events should exist on every
-      /*
-   * loads a player in when receiving a playerLoad event from react
-   * @param {{}} data
-   */
+    /*
+     * loads a player in when receiving a playerLoad event from react
+     * @param {{}} data
+     */
     eventEmitter.addEventListener("playerLoad", (data) => {
       console.log("playerLoad", data, this.groundLayer);
       this.playerData = data;
@@ -81,31 +80,34 @@ export default class MMOScene extends Phaser.Scene {
       );
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
-      .add(785, 0, 240, 240)
-      .setZoom(0.15)
-      .setName("mini")
-      .startFollow(this.player);
-
+        .add(795, 0, 230, 230)
+        .setZoom(0.15)
+        .setName("mini")
+        .startFollow(this.player);
       this.minimap.setBackgroundColor(0x002244);
 
-    // this.minimap.scrollX = 820;
-    // this.minimap.scrollY = 700;
-    this.minimap.centerOn(0, 0);
-    const minimapCircle = new Phaser.GameObjects.Graphics(this);
-    minimapCircle.fillCircle(900, 125, 110);
-    const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
-    this.minimap.setMask(circle, true);
+      // this.minimap.scrollX = 820;
+      // this.minimap.scrollY = 700;
 
+      // Make the border
+      // this.add.sprite(716, 85, "mini").setScale(2.52);
 
-    this.physics.add.collider(this.player, this.groundLayer);
-    this.physics.add.collider(this.player, this.worldLayer);
-    this.physics.add.collider(this.player, this.belowCharLayer);
+      this.minimap.centerOn(0, 0);
+      const minimapCircle = new Phaser.GameObjects.Graphics(this);
+      minimapCircle.fillCircle(910, 115, 110);
+      minimapCircle.fillCircle(910, 115, 110, "mini");
+
+      const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
+      this.minimap.setMask(circle, true);
+      this.physics.add.collider(this.player, this.groundLayer);
+      this.physics.add.collider(this.player, this.worldLayer);
+      this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
-      /**
-   * loads another player (not the main player) when receiving an otherPlayerLoad event from react
-   * @param data
-   */
+    /**
+     * loads another player (not the main player) when receiving an otherPlayerLoad event from react
+     * @param data
+     */
     eventEmitter.addEventListener("otherPlayerLoad", (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
         let grid = new PathGrid(this, 100, this.groundLayer.width);
@@ -125,9 +127,6 @@ export default class MMOScene extends Phaser.Scene {
     eventEmitter.dispatch("phaserLoad");
 
     //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
-
-
-
   }
 
   /**anything that needs to update, should get it's update function called here**/
