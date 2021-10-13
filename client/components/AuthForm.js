@@ -14,16 +14,8 @@ import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core";
 import LockedOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
-import desktopImage from "../../public/images/colorfulTreeLandscape.jpeg";
 
 const useStyles = makeStyles((theme) => ({
-  bkimg: {
-    minHeight: "100vh",
-    backgroundImage: `url(${desktopImage})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundPosition: "center"
-  },
   form: {
     height: 450,
     top: "50%",
@@ -85,8 +77,13 @@ const AuthForm = (props) => {
 
   const history = useHistory();
   const routeChange = () => {
-    let path = `/select`;
-    history.push(path);
+    if (name === "signup") {
+      let path = `/select`;
+      history.push(path);
+    } else {
+      let path = "/game"
+      history.push(path);
+    }
   };
 
   const dispatch = useDispatch();
@@ -95,7 +92,6 @@ const AuthForm = (props) => {
     evt.preventDefault();
     if (name === "signup") {
       const successLogIn = await dispatch(authenticate(name, { email, password, firstName }));
-      console.log("success login", successLogIn);
       if (successLogIn) {
         routeChange();
       } else {
@@ -112,7 +108,7 @@ const AuthForm = (props) => {
   };
 
   return (
-    <div className={classes.bkimg}>
+    <div className="authForm">
       <Snackbar
         open={snackBarErrorOpen}
         autoHideDuration={3000}

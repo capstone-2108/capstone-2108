@@ -29,6 +29,7 @@ export const loginSuccess = (bool) => ({ type: LOGIN_SUCCESS, bool });
  */
 export const authenticate = (method, credentials) => {
   return async (dispatch, getState) => {
+    console.log('in authenticate')
     try {
       const response = await axios.post(`/auth/${method}`, credentials);
       if (response.data.loggedIn) {
@@ -57,6 +58,8 @@ export const logout = () => {
       if (!response.data.loggedIn) {
         dispatch(setLoggedOut());
         dispatch(loginSuccess(false));
+        //clear the player this.state.
+        //dispatch an action to do this!!!!
       } else {
         console.log("Failed to logout");
         //@todo failed to logout
