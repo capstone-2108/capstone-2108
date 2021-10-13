@@ -7,6 +7,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 export const UPDATE_HEALTH = "UPDATE_HEALTH";
 export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
 export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
+export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
 
 /*************************
  * Action Creators       *
@@ -38,7 +39,7 @@ export const updateHealth = (health) => {
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
     let state = getState();
-    console.log('STATE', state)
+    console.log("STATE", state);
     try {
       //if the player has already been set on redux
       // AKA this is a new user who just signed up
@@ -76,23 +77,27 @@ export const fetchNearbyPlayers = (characterId) => {
     } catch (err) {
       console.log(err);
     }
-  }
-}
+  };
+};
 
 // CALL TO BACKEND TO CREATE PLAYER CHARACTER
 export const createPlayerCharacter = (name, character, history) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("/api/game/character", {name, character})
-      dispatch(setPlayerCharacter(response.data))
-      history.push("/game")
-    } catch(err) {
-      console.log(err)
+      const response = await axios.post("/api/game/character", { name, character });
+      dispatch(setPlayerCharacter(response.data));
+      history.push("/game");
+    } catch (err) {
+      console.log(err);
     }
-  }
-}
+  };
+};
 
-
+export const clearPlayerState = () => {
+  return {
+    type: CLEAR_PLAYER_STATE
+  };
+};
 
 /*************************
  * Reducer       *
@@ -111,6 +116,20 @@ const initialState = {
   scene: "village"
 };
 
+const clearState = {
+  userId: null,
+  characterId: null,
+  name: "",
+  health: null,
+  nearbyPlayers: [],
+  xPos: 0,
+  yPos: 0,
+  totalHealth: null,
+  gold: 0,
+  //Change to sceneName
+  scene: null
+};
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYER_CHARACTER:
@@ -119,6 +138,8 @@ export default (state = initialState, action) => {
       return { ...state, nearbyPlayers: action.characters };
     case UPDATE_HEALTH:
       return { ...state, health: action.health };
+    case CLEAR_PLAYER_STATE:
+      return clearState;
     default:
       return state;
   }

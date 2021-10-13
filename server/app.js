@@ -1,46 +1,45 @@
-const path = require('path')
-const express = require('express')
-const morgan = require('morgan')
+const path = require("path");
+const express = require("express");
+const morgan = require("morgan");
+const http = require("http");
 const app = express();
-module.exports = app
+const server = http.createServer(app);
+module.exports = server;
 
 // logging middleware
-app.use(morgan('dev'))
+app.use(morgan("dev"));
 
 // static file-serving middleware
-app.use(express.static(path.join(__dirname, '..', 'public')))
-app.use(express.urlencoded({extended: true}))
+app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.urlencoded({ extended: true }));
 // body parsing middleware
-app.use(express.json())
-
+app.use(express.json());
 
 // auth and api routes
-app.use('/auth', require('./auth'))
-app.use('/api/chat', require('./api/chat'))
-app.use('/api/game', require('./api/game'))
+app.use("/auth", require("./auth"));
+app.use("/api/game", require("./api/game"));
 
-app.get('/', (req, res)=> res.sendFile(path.join(__dirname, '..', 'public/index.html')));
-
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "..", "public/index.html")));
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {
   if (path.extname(req.path).length) {
-    const err = new Error('Not found')
-    err.status = 404
-    next(err)
+    const err = new Error("Not found");
+    err.status = 404;
+    next(err);
   } else {
-    next()
+    next();
   }
-})
+});
 
 // sends index.html
-app.use('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public/index.html'));
-})
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public/index.html"));
+});
 
 // error handling endware
 app.use((err, req, res, next) => {
-  console.error(err)
-  console.error(err.stack)
-  res.status(err.status || 500).send(err.message || 'Internal server error.')
-})
+  console.error(err);
+  console.error(err.stack);
+  res.status(err.status || 500).send(err.message || "Internal server error.");
+});

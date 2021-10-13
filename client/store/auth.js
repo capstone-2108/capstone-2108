@@ -1,4 +1,5 @@
 import axios from "axios";
+import {clearPlayerState} from './player';
 /***********************
  * STATES        *
  ***********************/
@@ -17,7 +18,7 @@ const LOGIN_SUCCESS = "LOGIN_SUCCESS";
  * ACTION CREATORS     *
  ***********************/
 const setLoggedIn = (firstName, lastName, email) => ({ type: LOGIN, firstName, lastName, email });
-const setLoggedOut = () => ({ type: LOGOUT, firstName: 'Guest' });
+const setLoggedOut = () => ({ type: LOGOUT, firstName: "Guest" });
 const setInfo = ({ firstName, lastName, email }) => ({
   type: SET_INFO,
   payload: { firstName, lastName, email }
@@ -29,7 +30,7 @@ export const loginSuccess = (bool) => ({ type: LOGIN_SUCCESS, bool });
  */
 export const authenticate = (method, credentials) => {
   return async (dispatch, getState) => {
-    console.log('in authenticate')
+    console.log("in authenticate");
     try {
       const response = await axios.post(`/auth/${method}`, credentials);
       if (response.data.loggedIn) {
@@ -58,6 +59,7 @@ export const logout = () => {
       if (!response.data.loggedIn) {
         dispatch(setLoggedOut());
         dispatch(loginSuccess(false));
+        dispatch(clearPlayerState());
       } else {
         console.log("Failed to logout");
         //@todo failed to logout
@@ -106,7 +108,7 @@ const initialState = {
   email: "",
   loggedIn: NOT_LOGGED_IN,
   loginSuccess: true,
-  error: false,
+  error: false
 };
 
 export default (state = initialState, action) => {

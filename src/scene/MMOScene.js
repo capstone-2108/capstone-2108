@@ -138,7 +138,6 @@ export default class MMOScene extends Phaser.Scene {
           );
         }
       }
-      console.log(this.otherPlayers);
     });
 
     //this event lets us know that another player has moved, we should make this position move to
