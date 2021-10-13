@@ -29,6 +29,7 @@ export const GameView = () => {
   useEffect(() => {
     //loads the game
     window.game = new Game();
+    console.log('USE EFFECT*******************');
 
     /****************
      * Socket.io *

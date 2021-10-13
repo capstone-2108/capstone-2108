@@ -63,9 +63,8 @@ export default class MMOScene extends Phaser.Scene {
      * @param {{}} data
      */
     eventEmitter.subscribe("playerLoad", (data) => {
-      console.log("playerLoad", data, this.groundLayer);
-      this.playerData = data;
       console.log("playerLoad", data);
+      this.playerData = data;
       this.player = new Player(
         this,
         data.xPos,
@@ -154,14 +153,11 @@ export default class MMOScene extends Phaser.Scene {
       }
     });
 
-    //this has to go last because we need all our events setup before react starts dispatching events
-    eventEmitter.emit("phaserLoad");
-
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
      * @param data
      */
-    eventEmitter.addEventListener("otherPlayerLoad", (data) => {
+    eventEmitter.subscribe("otherPlayerLoad", (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
         let grid = new PathGrid(this, 100, this.groundLayer.width);
         this.otherPlayers[data.id] = new Player(
@@ -177,7 +173,7 @@ export default class MMOScene extends Phaser.Scene {
       }
     });
     //this has to go last because we need all our events setup before react starts dispatching events
-    eventEmitter.dispatch("phaserLoad");
+    eventEmitter.emit("phaserLoad");
 
     //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
   }
