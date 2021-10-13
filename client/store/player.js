@@ -45,13 +45,10 @@ export const fetchCharacterData = () => {
 // CALL TO BACKEND TO CREATE PLAYER CHARACTER
 export const createPlayerCharacter = (name, character) => {
   return async (dispatch) => {
-    // let state = getState()
     try {
       const response = await axios.post("/api/game/character", {name, character})
-      console.log('RESPONSE', response.data)
+      console.log('RESPONSE', response)
       dispatch(setPlayerCharacter(response.data))
-      // Set player character id on state
-      // Something like this? state.player.selectedCharacterId = response.data
     } catch(err) {
       console.log(err)
     }

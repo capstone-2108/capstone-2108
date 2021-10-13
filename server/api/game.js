@@ -37,11 +37,27 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
     })
     await newPlayer.setUser(req.user)
     await newPlayer.setTemplateCharacter(req.body.character.id)
-    // convert to payload constant (below)
-    // newplayer get spritesheet
-    console.log(newPlayer)
-    res.json(newPlayer)
-    // res.json(newPlayer.id)
+
+    const templateCharacterInfo = await newPlayer.getTemplateCharacter()
+    console.log('templateCharacterInfo magic methods', Object.getPrototypeOf(templateCharacterInfo))
+    const spriteSheetInfo = await templateCharacterInfo.getSpriteSheets()
+
+    //THIS IS RETURNING UNDEFINED
+    console.log('spritesheet info imarge url', spriteSheetInfo)
+
+    const payload = {
+      id: newPlayer.id,
+      name: newPlayer.name,
+      health: newPlayer.health,
+      templateName: templateCharacterInfo.name,
+      spriteSheetImageUrl: spriteSheetInfo.spriteSheet_image_url,
+      spriteSheetJsonUrl: spriteSheetInfo.spriteSheet_json_url,
+      xPos: location.xPos,
+      yPos: location.yPos,
+      facingDirection: location.facingDirection
+    }
+    console.log("payload", payload)
+    res.json(payload)
   } catch (err) {
     next(err)
   }
@@ -83,6 +99,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
     health: playerCharacter.health,
     templateName: playerCharacter.templateCharacter.name,
     spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    //Shouldn't this be spriteSheet_json_url?
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
