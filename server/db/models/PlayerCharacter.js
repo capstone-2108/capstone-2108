@@ -12,6 +12,18 @@ const PlayerCharacter = db.define("playerCharacter", {
   },
   health: {
     type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  totalHealth: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  strength: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  intelligence: {
+    type: Sequelize.INTEGER,
     allowNull: false
   },
   active: {

@@ -6,7 +6,8 @@ import { Login, Signup } from "./components/AuthForm";
 import { whoAmI } from "./store";
 import { GameView } from "./components/GameView";
 import Chat from './components/Chat';
-import SelectCharacter from './components/SelectCharacter'
+import SelectCharacter from './components/SelectCharacter';
+import EditCharacter from './components/EditCharacter';
 
 /**
  * COMPONENT
@@ -20,14 +21,13 @@ class Routes extends Component {
     const { isLoggedIn, isAdmin } = this.props;
 
     return (
-      <div>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route exact path="/signup" component={Signup} />
-          <Route exact path="/game" component={GameView} />
-          <Route exact path="/select" component={SelectCharacter} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/" component={Login} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/game" component={GameView} />
+        <Route exact path="/select" component={SelectCharacter} />
+        <Route path="/select/:id" component={EditCharacter} />
+      </Switch>
     );
   }
 }

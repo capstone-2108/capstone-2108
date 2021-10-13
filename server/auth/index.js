@@ -11,9 +11,10 @@ router.post("/signup", async (req, res, next) => {
     await userSignupSchema.validate(req.body);
     const { email, password, firstName } = req.body;
     const user = await User.create({ email, password, firstName });
-    const playerCharacter = await user.createPlayerCharacter({ name: "Hero", health: 100 });
-    console.log("playerCharacter", playerCharacter.__proto__);
-    playerCharacter.createLocation({ xPos: 300, yPos: 500, facingDirection: "left", sceneId: 1 });
+    //Need to move lines 15 - 17 to after character creation REACT COMPONENT
+    // const playerCharacter = await user.createPlayerCharacter({ name: "Hero", health: 100 });
+    // console.log("playerCharacter", playerCharacter.__proto__);
+    // playerCharacter.createLocation({ xPos: 300, yPos: 500, facingDirection: "left", sceneId: 1 });
     const token = await user.generateToken();
     res.cookie("token", token, {
       sameSite: "strict",
@@ -25,6 +26,7 @@ router.post("/signup", async (req, res, next) => {
       firstName: user.firstName
     });
   } catch (err) {
+    console.log('MY ERROR', err)
     if (err.name === "SequelizeUniqueConstraintError") {
       res.status(401).send("User already exists");
     } else {
