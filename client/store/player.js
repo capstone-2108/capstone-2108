@@ -35,16 +35,26 @@ export const updateHealth = (health) => {
 };
 
 //--Thunks--
-//@todo: once character select is done, remove the default value
-export const fetchCharacterData = (characterId = 1) => {
+export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
     let state = getState();
+    console.log('STATE', state)
     try {
-      const response = await axios.get(`/api/game/character/${characterId}`);
-      dispatch(setPlayerCharacter(response.data));
-      state = getState();
-      eventEmitter.emit("playerLoad", state.player);
-      return response.data.characterId;
+      //if the player has already been set on redux
+      // AKA this is a new user who just signed up
+      if (state.player.characterId !== null) {
+        eventEmitter.emit("playerLoad", state.player);
+        return state.player.characterId;
+      } else {
+        //go find this user's player character and then set it on state
+        //then load
+        const response = await axios.get(`/api/game/character`);
+        dispatch(setPlayerCharacter(response.data));
+        state = getState();
+        //This actually starts the load of the player character into Phaser
+        eventEmitter.emit("playerLoad", state.player);
+        return response.data.characterId;
+      }
     } catch (err) {
       console.log(err);
     }
@@ -70,12 +80,12 @@ export const fetchNearbyPlayers = (characterId) => {
 }
 
 // CALL TO BACKEND TO CREATE PLAYER CHARACTER
-export const createPlayerCharacter = (name, character) => {
+export const createPlayerCharacter = (name, character, history) => {
   return async (dispatch) => {
     try {
       const response = await axios.post("/api/game/character", {name, character})
-      console.log('RESPONSE', response)
       dispatch(setPlayerCharacter(response.data))
+      history.push("/game")
     } catch(err) {
       console.log(err)
     }
@@ -97,6 +107,7 @@ const initialState = {
   yPos: 0,
   totalHealth: 500,
   gold: 0,
+  //Change to sceneName
   scene: "village"
 };
 

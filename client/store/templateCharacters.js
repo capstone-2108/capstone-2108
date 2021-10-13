@@ -19,7 +19,7 @@ export const setTemplates = (templateCharacters) => {
 export const fetchTemplateCharacters = () => {
   return async (dispatch) => {
     try {
-      const result = await axios.get('/api/game/character');
+      const result = await axios.get('/api/game/templates');
       dispatch(setTemplates(result.data))
     } catch (err) {
       console.log(err)

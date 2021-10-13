@@ -1,6 +1,6 @@
 const userData = [
   {
-    id: 1,
+    // id: 1,
     email: "fox@mmo.com",
     password: "123",
     firstName: "fox",
@@ -9,7 +9,7 @@ const userData = [
     loggedIn: false
   },
   {
-    id: 2,
+    // id: 2,
     email: "arcana@mmo.com",
     password: "123",
     firstName: "Amaya",
@@ -22,7 +22,7 @@ const userData = [
 const templateCharacterData = [
   {
     id:1,
-    name: "Fox",
+    name: "fox",
     baseStrength: 55,
     isPlayable: true,
     baseHealth: 100,
@@ -32,7 +32,7 @@ const templateCharacterData = [
   },
   {
     id:2,
-    name: "Sorcerer",
+    name: "sorcerer",
     baseStrength: 75,
     isPlayable: true,
     baseHealth: 100,
@@ -42,7 +42,7 @@ const templateCharacterData = [
   },
   {
   id: 3,
-  name: "Beastmaster",
+  name: "beastmaster",
   baseStrength: 100,
   isPlayable: true,
   baseHealth: 100,
@@ -52,7 +52,7 @@ const templateCharacterData = [
   },
   {
     id: 4,
-    name: "Swashbuckler",
+    name: "swashbuckler",
     baseStrength: 80,
     isPlayable: true,
     baseHealth: 100,
@@ -74,6 +74,18 @@ const spriteSheetData = [
     spriteSheet_image_url: "../spritesheets/heroes/sorcerer/sorcerer.png",
     spriteSheet_json_url: "../spritesheets/heroes/sorcerer/sorcerer.json",
     templateCharacterId: 2
+  },
+  {
+    name: "beastmaster",
+    spriteSheet_image_url: "../spritesheets/heroes/beastmaster/beastmaster.png",
+    spriteSheet_json_url: "../spritesheets/heroes/beastmaster/beastmaster.json",
+    templateCharacterId: 3
+  },
+  {
+    name: "swashbuckler",
+    spriteSheet_image_url: "../spritesheets/heroes/swashbuckler/swashbuckler.png",
+    spriteSheet_json_url: "../spritesheets/heroes/swashbuckler/swashbuckler.json",
+    templateCharacterId: 3
   }
 ];
 
@@ -88,6 +100,7 @@ const playerCharacterData = [
   {
     name: "fox_player",
     health: 100,
+    totalHealth: 100,
     strength: 55,
     intelligence: 70,
     userId: 1,
@@ -99,6 +112,7 @@ const playerCharacterData = [
   {
     name: "Arcana",
     health: 100,
+    totalHealth: 100,
     strength: 75,
     intelligence: 100,
     userId: 2,
