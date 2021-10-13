@@ -78,25 +78,27 @@ export default class MMOScene extends Phaser.Scene {
         true,
         this.playerData.id
       );
-
-      // minimap border
-
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
-        .add(785, 0, 240, 240)
+        .add(795, 0, 230, 230)
         .setZoom(0.15)
         .setName("mini")
-        .startFollow(this.player)
-        .setBackgroundColor(0x002244);
+        .startFollow(this.player);
+      this.minimap.setBackgroundColor(0x002244);
 
       // this.minimap.scrollX = 820;
       // this.minimap.scrollY = 700;
+
+      // Make the border
+      // this.add.sprite(716, 85, "mini").setScale(2.52);
+
       this.minimap.centerOn(0, 0);
       const minimapCircle = new Phaser.GameObjects.Graphics(this);
-      minimapCircle.fillCircle(900, 125, 110);
+      minimapCircle.fillCircle(910, 115, 110);
+      minimapCircle.fillCircle(910, 115, 110, "mini");
+
       const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
       this.minimap.setMask(circle, true);
-
       this.physics.add.collider(this.player, this.groundLayer);
       this.physics.add.collider(this.player, this.worldLayer);
       this.physics.add.collider(this.player, this.belowCharLayer);
