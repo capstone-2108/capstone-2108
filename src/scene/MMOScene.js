@@ -8,6 +8,7 @@ export default class MMOScene extends Phaser.Scene {
     super("MMOScene");
     this.playerData = {};
     this.otherPlayers = {};
+    this.subscribes = [];
   }
 
   preload() {}
@@ -48,9 +49,6 @@ export default class MMOScene extends Phaser.Scene {
     // })
 
     // groundLayer.setPipeline('Light2D');
-    // map.createLayer('house', groundTiles, 0, 0);
-    // map.createLayer('Tile Layer 5', groundTiles, 0, 0);
-    // map.createLayer('rocks', groundTiles, 0, 0);
 
     // groundLayer.setPipeline('Light2D');
     // groundLayer.renderDebug(debugGraphics, {
@@ -59,24 +57,22 @@ export default class MMOScene extends Phaser.Scene {
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
     // });
 
-    //These events should exist on every
+    //These events should exist on every scene
     /*
      * loads a player in when receiving a playerLoad event from react
      * @param {{}} data
      */
-    eventEmitter.addEventListener("playerLoad", (data) => {
-      console.log("playerLoad", data, this.groundLayer);
+    eventEmitter.subscribe("playerLoad", (data) => {
+      console.log("playerLoad", data);
       this.playerData = data;
-      let grid = new PathGrid(this, 100, this.groundLayer.width);
       this.player = new Player(
         this,
-        grid,
-        this.playerData.xPos,
-        this.playerData.yPos,
+        data.xPos,
+        data.yPos,
         "player",
-        this.playerData.templateName,
+        data.templateName,
         true,
-        this.playerData.id
+        data.characterId
       );
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
@@ -106,9 +102,62 @@ export default class MMOScene extends Phaser.Scene {
 
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
+     */
+    // eventEmitter.subscribe("otherPlayerLoad", (data) => {
+    //   if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
+    //     this.otherPlayers[data.id] = new Player(
+    //       this,
+    //       data.x,
+    //       data.y,
+    //       `${data.name}-${data.id}`,
+    //       data.templateName,
+    //       false,
+    //       data.id
+    //     );
+    //   }
+    // });
+
+    eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
+      console.log("phaser got nearbyPlayerLoad", players);
+      let i = 0;
+      let len = players.length;
+      for (; i < len; i++) {
+        const player = players[i];
+        if (
+          player.characterId !== this.player.characterId &&
+          !this.otherPlayers[player.characterId]
+        ) {
+          this.otherPlayers[player.characterId] = new Player(
+            this,
+            player.xPos,
+            player.yPos,
+            `${player.name}-${player.characterId}`,
+            player.templateName,
+            false,
+            player.characterId
+          );
+        }
+      }
+      console.log(this.otherPlayers);
+    });
+
+    //this event lets us know that another player has moved, we should make this position move to
+    //the position we received
+    eventEmitter.subscribe("otherPlayerPositionChanged", (waypoints) => {
+      //set a `move to` position, and let update take care of the rest
+      //should consider making `moveTo` waypoints a queue in case more events come in before
+      //the player character has finished moving
+      const remotePlayer = this.otherPlayers[waypoints.characterId];
+      if (remotePlayer) {
+        remotePlayer.waypoints = remotePlayer.waypoints.concat(waypoints.waypoints);
+      }
+    });
+
+    /**
+     * loads another player (not the main player) when receiving an otherPlayerLoad event from react
      * @param data
      */
-    eventEmitter.addEventListener("otherPlayerLoad", (data) => {
+    eventEmitter.subscribe("otherPlayerLoad", (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
         let grid = new PathGrid(this, 100, this.groundLayer.width);
         this.otherPlayers[data.id] = new Player(
@@ -124,7 +173,7 @@ export default class MMOScene extends Phaser.Scene {
       }
     });
     //this has to go last because we need all our events setup before react starts dispatching events
-    eventEmitter.dispatch("phaserLoad");
+    eventEmitter.emit("phaserLoad");
 
     //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
   }
@@ -132,11 +181,11 @@ export default class MMOScene extends Phaser.Scene {
   /**anything that needs to update, should get it's update function called here**/
   update(time, delta) {
     if (this.player) {
-      this.player.update();
+      this.player.update(time, delta);
     }
     if (this.otherPlayers) {
       for (const [id, player] of Object.entries(this.otherPlayers)) {
-        player.update();
+        player.update(time, delta);
       }
     }
   }
