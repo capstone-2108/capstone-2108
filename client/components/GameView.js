@@ -10,7 +10,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 import { fetchCharacterData, fetchNearbyPlayers, updateHealth } from "../store/player";
 import io from "socket.io-client";
 import { addNewMessage } from "../store/chat";
-import Inventory from "./Inventory";
+import Ui from "./Ui";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -29,7 +29,7 @@ export const GameView = () => {
   useEffect(() => {
     //loads the game
     window.game = new Game();
-    console.log('USE EFFECT*******************');
+    console.log("USE EFFECT*******************");
 
     /****************
      * Socket.io *
@@ -80,9 +80,9 @@ export const GameView = () => {
           <Chat />
         </div>
       </div>
-      <div className="inventory">
+      <div className="ui">
         <div>
-          <Inventory />
+          <Ui />
         </div>
 
         <div>

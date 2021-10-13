@@ -76,13 +76,16 @@ const initialState = {
   userId: null,
   characterId: null,
   name: "",
-  health: 100,
   nearbyPlayers: [],
   xPos: 0,
   yPos: 0,
+  health: 100,
   totalHealth: 500,
+  exp: 40,
+  totalExp: 120,
   gold: 0,
-  scene: "village"
+  scene: "village",
+  level: 1
 };
 
 export default (state = initialState, action) => {

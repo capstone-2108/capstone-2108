@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const Healthbar = () => {
+const PlayerInfo = () => {
   const player = useSelector((state) => state.player);
   const ratio = player.health / player.totalHealth;
-  const healthWidth = 300 * ratio;
+  const healthWidth = player.totalHealth * ratio;
+  console.log("playerName", player);
+  const expWidth = (player.exp / player.totalExp) * player.totalExp;
 
   let healthStyle = "";
 
@@ -18,9 +20,9 @@ const Healthbar = () => {
     };
   } else if (healthWidth >= 30 && healthWidth <= 60) {
     healthStyle = {
-      background: "rgb(159,159,3)",
+      background: "rgb(105,105,0);",
       background:
-        "linear-gradient(180deg, rgba(159,159,0,1) 0%, rgba(255,255,0,1) 48%, rgba(159,159,0,1) 88%)",
+        "linear-gradient(0deg, rgba(105,105,0,1) 0%, rgba(255,255,0,1) 48%, rgba(105,105,0,1) 100%)",
       width: `${healthWidth}px`,
       height: "20px"
     };
@@ -40,7 +42,8 @@ const Healthbar = () => {
         <img src="b7c6549290654353cdcf3c0db0d7b38d.png" width="20px" height="20px" />
         <h3 id="playerName">{player.name}</h3>
       </div>
-      <div className="health">
+
+      <div className="bar">
         <div>
           <h4 className="whiteText">HP</h4>
         </div>
@@ -52,11 +55,39 @@ const Healthbar = () => {
             height: "20px",
             margin: "5px"
           }}>
-          <div style={healthStyle}></div>
+          <div
+            style={healthStyle}
+            className="barRatio">{`${player.health}/${player.totalHealth}`}</div>
         </div>
       </div>
+
+      <div className="bar">
+        <div>
+          <h4 className="whiteText">EXP</h4>
+        </div>
+
+        <div
+          style={{
+            backgroundColor: "black",
+            width: "280px",
+            height: "20px",
+            margin: "5px"
+          }}>
+          <div
+            style={{
+              background: "rgb(0,0,96)",
+              background:
+                "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,96,1) 100%)",
+              width: `${expWidth}px`,
+              height: "20px"
+            }}
+            className="barRatio">{`${player.exp}/${player.totalExp}`}</div>
+        </div>
+      </div>
+
+      <h3>{`Level ${player.level}`}</h3>
     </div>
   );
 };
 
-export default Healthbar;
+export default PlayerInfo;

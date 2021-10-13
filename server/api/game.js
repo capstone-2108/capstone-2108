@@ -35,7 +35,6 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
   }
 });
 
-
 //get /api/game/character/:id - fetches character data by id
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   //@todo: make sure the player can only load characters belonging to them
@@ -47,7 +46,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   playerCharacter = (
     await req.user.getPlayerCharacters({
       // where: { id },
-      attributes: ["id", "name", "health", "gold"],
+      attributes: ["id", "name", "health", "gold", "level", "experience"],
       include: [
         {
           model: TemplateCharacter,

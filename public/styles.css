@@ -18,7 +18,7 @@ body {
   padding: 0;
 }
 
-.inventory {
+.ui {
   display: flex;
   width: 300px;
   color: white;
@@ -46,11 +46,16 @@ body {
 .whiteText {
   font-size: 12px;
 }
-.health {
+.bar {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin: 10px 25px;
+}
+
+.barRatio {
+  font-size: 12px;
+  text-shadow: 0.5px 0.5px #888;
 }
 
 img {
