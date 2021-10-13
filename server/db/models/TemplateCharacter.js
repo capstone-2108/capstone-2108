@@ -17,6 +17,17 @@ const TemplateCharacter = db.define("templateCharacter", {
   baseHealth: {
     type: Sequelize.INTEGER,
     defaultValue: 100
+  },
+  baseIntelligence: {
+    type: Sequelize.INTEGER,
+    defaultValue: 100
+  },
+  portrait: {
+    type: Sequelize.TEXT,
+    defaultValue: "/images/NoImageAvailable.jpeg"
+  },
+  description: {
+    type: Sequelize.STRING,
   }
 });
 

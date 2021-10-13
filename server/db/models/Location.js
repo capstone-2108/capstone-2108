@@ -11,7 +11,7 @@ const Location = db.define("location", {
     allowNull: false
   },
   facingDirection: {
-    type: Sequelize.STRING,
+    type: Sequelize.ENUM("n", "s", "e", "w", "ne", "nw", "se", "sw"),
     allowNull: false
   }
 });

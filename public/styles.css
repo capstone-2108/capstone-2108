@@ -31,6 +31,7 @@ body {
   justify-content: flex-start;
   background-color: rgb(50, 50, 50);
 }
+
 .player {
   display: flex;
   align-items: center;
@@ -116,6 +117,22 @@ img {
 .new-chat-message {
   width: 1015px;
   border: 1px solid #504137;
+}
+
+.authForm {
+  height: 100vh;
+  background-image: url("/images/colorfulTreeLandscape.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center
+}
+
+.selectContainer {
+  height: 100vh;
+  background-image: url("/images/croppedColorfulTreeLandscape.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 #playerName {

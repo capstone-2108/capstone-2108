@@ -57,7 +57,9 @@ export const GameView = () => {
      ***************/
     //Subscribes to an event which lets us know when phaser has fully loaded
     eventEmitter.subscribe("phaserLoad", async (data) => {
+      //not sure if this characterId is anything at the moment
       const characterId = await dispatch(fetchCharacterData()); //load the players data into redux
+      console.log('CHARACTER ID', characterId)
       if (characterId) {
         dispatch(fetchNearbyPlayers(characterId)); //load any players which are in the same scene as the player
       }
