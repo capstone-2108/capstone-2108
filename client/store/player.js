@@ -49,7 +49,8 @@ const initialState = {
   name: "",
   health: 100,
   totalHealth: 500,
-  gold: 0
+  gold: 0,
+  scene: "village"
 };
 
 export default (state = initialState, action) => {

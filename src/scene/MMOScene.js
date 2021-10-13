@@ -90,7 +90,7 @@ export default class MMOScene extends Phaser.Scene {
       // this.minimap.scrollY = 700;
 
       // Make the border
-      this.add.sprite(716, 85, "mini").setScale(2.52);
+      // this.add.sprite(716, 85, "mini").setScale(2.52);
 
       this.minimap.centerOn(0, 0);
       const minimapCircle = new Phaser.GameObjects.Graphics(this);

@@ -43,25 +43,28 @@ export const GameView = () => {
   }, []);
 
   return (
-    <div>
-      <div className="top">
+    <div className="layout">
+      <div className="left">
         <div id="phaser"></div>
-        <div className="inventory">
-          <h3>inventory</h3>
-
-          <div>
-            <Inventory />
-          </div>
-
-          <div id="logoutButton">
-            <Link to="/">
-              <button onClick={() => dispatch(logout())}>Logout</button>
-            </Link>
-          </div>
+        <div className="worldChat">
+          <Chat />
         </div>
       </div>
-      <div className="worldChat">
-        <Chat />
+      <div className="inventory">
+        <div>
+          <Inventory />
+        </div>
+
+        <div>
+          <Link to="/select">
+            <button id="characterButton">CHARACTERS</button>
+          </Link>
+          <Link to="/">
+            <button onClick={() => dispatch(logout())} id="logoutButton">
+              QUIT
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
