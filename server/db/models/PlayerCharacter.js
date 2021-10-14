@@ -12,7 +12,7 @@ const PlayerCharacter = db.define("playerCharacter", {
   },
   health: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    allowNull: false
   },
   totalHealth: {
     type: Sequelize.INTEGER,
@@ -42,7 +42,8 @@ const PlayerCharacter = db.define("playerCharacter", {
   },
   experience: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   }
 });
 
