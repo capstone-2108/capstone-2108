@@ -7,6 +7,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 export const UPDATE_HEALTH = "UPDATE_HEALTH";
 export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
 export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
+export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
 
 /*************************
  * Action Creators       *
@@ -92,6 +93,12 @@ export const createPlayerCharacter = (name, character, history) => {
   };
 };
 
+export const clearPlayerState = () => {
+  return {
+    type: CLEAR_PLAYER_STATE
+  };
+};
+
 /*************************
  * Reducer       *
  ************************/
@@ -111,6 +118,20 @@ const initialState = {
   level: 1
 };
 
+const clearState = {
+  userId: null,
+  characterId: null,
+  name: "",
+  health: null,
+  nearbyPlayers: [],
+  xPos: 0,
+  yPos: 0,
+  totalHealth: null,
+  gold: 0,
+  //Change to sceneName
+  scene: null
+};
+
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYER_CHARACTER:
@@ -119,6 +140,8 @@ export default (state = initialState, action) => {
       return { ...state, nearbyPlayers: action.characters };
     case UPDATE_HEALTH:
       return { ...state, health: action.health };
+    case CLEAR_PLAYER_STATE:
+      return clearState;
     default:
       return state;
   }

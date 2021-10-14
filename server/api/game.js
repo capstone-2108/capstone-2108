@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
 const { TemplateCharacter, SpriteSheet, Location, User, PlayerCharacter, Scene } = require("../db");
+
 const { Op } = require("sequelize");
 
 //This fetches all template characters
