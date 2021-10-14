@@ -18,7 +18,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
    *
    * @param {Phaser.Scene} scene
-   * @param {PathGrid} grid
    * @param {number} x
    * @param {number} y
    * @param {string} spriteKey
@@ -41,6 +40,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.direction = SOUTH; //the direction the character is facing or moving towards
     this.movementMode = "walk"; //the current movement mode, walk or run
     this.id = id; //the characterId of this player
+    this.animationChanged = false;
 
     //Enable physics on this sprite
     this.scene.physics.world.enable(this);
@@ -79,8 +79,29 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       up: Phaser.Input.Keyboard.KeyCodes.W,
       left: Phaser.Input.Keyboard.KeyCodes.A,
       down: Phaser.Input.Keyboard.KeyCodes.S,
-      right: Phaser.Input.Keyboard.KeyCodes.D
+      right: Phaser.Input.Keyboard.KeyCodes.D,
+      shift: Phaser.Input.Keyboard.KeyCodes.SHIFT
     });
+
+    this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
+      if (!this.isAttacking()) {
+        this.animationChanged = true;
+        this.mode = "melee";
+      }
+    })
+    // const shift = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+    //
+    // shift.on("down", () => {
+    //   console.log('shift');
+    //   this.mode = "melee";
+    // });
+
+    // this.cursors.shift.on("down", () => {
+    //   if (!this.isAttacking()) {
+    //     this.animationChanged = true;
+    //     this.mode = "melee";
+    //   }
+    // });
   }
 
   //changes the character from run to walk or vice-versa
@@ -139,7 +160,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
           lastSnapshot.endY = Math.floor(this.y);
         }
         eventEmitter.emit("phaserUpdate", {
-          action: 'playerPositionChanged',
+          action: "playerPositionChanged",
           data: {
             characterId: this.id,
             waypoints: this.moveSnapshots
@@ -205,7 +226,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   createAnimations() {
-    const modes = ["idle", "walk" /*"run"*/];
+    const modes = ["idle", "walk", "melee"];
     const directions = {
       [NORTH]: { start: 12, end: 15 },
       [EAST]: { start: 8, end: 11 },
@@ -216,6 +237,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     for (const [dir, dirOptions] of Object.entries(directions)) {
       for (const mode of modes) {
         const animationName = `${this.name}-${mode}-${dir}`; //what to call the animation so we can refer to it later
+        console.log("creating animation", animationName);
         const atlasKey = `${this.name}`; //which atlas should we use
         this.anims.create({
           key: animationName,
@@ -295,16 +317,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     ) {
       vdx = 0;
       vdy = 0;
-      this.mode = "idle";
     }
     return { vdx, vdy, direction };
+  }
+
+  isAttacking() {
+    return this.anims.isPlaying && this.anims.currentFrame.textureFrame.includes("melee");
+
   }
 
   playAnimation(waypoint = undefined) {
     let vdy = 0;
     let vdx = 0;
     let direction = this.direction;
-    let animationChanged = false;
     if (!this.mainPlayer && waypoint) {
       //remote player
       vdx = waypoint.vdx;
@@ -319,27 +344,28 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
     let mode = this.mode; //save the current mode
 
-    //if there is velocity, then the player is considered to be moving
-    if (vdx !== 0 || vdy !== 0) {
-      this.mode = this.mode === "attack" && this.anims.isPlaying ? "attack" : this.movementMode;
-      mode = this.mode;
-    } else {
-      //player is standing still
-      this.mode = this.mode === "attack" && this.anims.isPlaying ? "attack" : "idle";
-      mode = this.mode;
-    }
+      //if there is velocity, then the player is considered to be moving
+      if (vdx !== 0 || vdy !== 0) {
+        this.mode = this.mode === "melee" && this.anims.isPlaying ? "melee" : this.movementMode;
+      } else {
+        //player is standing still
+        this.mode = this.mode === "melee" && this.anims.isPlaying ? "melee" : "idle";
+      }
 
-    //note if the direction changed or if the mode changed, if so, then we have to play a different animation
-    animationChanged = direction !== this.direction || this.mode !== mode;
-    direction = this.direction;
+      //note if the direction changed or if the mode changed, if so, then we have to play a different animation
+      this.animationChanged =
+        this.animationChanged || direction !== this.direction || this.mode !== mode;
+      direction = this.direction;
 
-    let convertedDir = DIRECTION_CONVERSION[direction];
-    const animationToPlay = `${this.name}-${this.mode}-${convertedDir}`;
-    if (animationChanged || !this.anims.isPlaying) {
-      this.anims.play(animationToPlay);
-    }
-    this.setVelocityX(this.speeds[this.movementMode] * vdx);
-    this.setVelocityY(this.speeds[this.movementMode] * vdy);
+      let convertedDir = DIRECTION_CONVERSION[direction];
+      const animationToPlay = `${this.name}-${this.mode}-${convertedDir}`;
+      if (this.animationChanged || !this.anims.isPlaying) {
+        this.anims.play(animationToPlay);
+        this.animationChanged = false;
+      }
+      this.setVelocityX(this.speeds[this.movementMode] * vdx);
+      this.setVelocityY(this.speeds[this.movementMode] * vdy);
+
     return { vdx, vdy, direction, mode };
   }
 

@@ -25,6 +25,12 @@ export default class Preloader extends Phaser.Scene {
       "spritesheets/heroes/swashbuckler/swashbuckler.json"
     );
 
+    this.load.atlas(
+      "ogre",
+      "spritesheets/monsters/ogre/ogre.png",
+      "spritesheets/monsters/ogre/ogre.json"
+    );
+
     //How to load a map, this is a .json file which tells phaser how to layout a map, you can generate this in the Tiled application
     this.load.tilemapTiledJSON("start-scene", "/maps/start-scene.json");
 
