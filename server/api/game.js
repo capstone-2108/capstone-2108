@@ -47,6 +47,8 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     id: playerCharacter.id,
     name: playerCharacter.name,
     health: playerCharacter.health,
+    experience: playerCharacter.experience,
+    level: playerCharacter.level,
     templateName: playerCharacter.templateCharacter.name,
     spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
@@ -145,7 +147,6 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
   }
 });
 
-//get /api/game/character/:id - fetches character data by id
 // router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
 //   //@todo: make sure the player can only load characters belonging to them
 

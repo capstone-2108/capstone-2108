@@ -1,15 +1,15 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Healthbar from "./Healthbar";
+import PlayerInfo from "./PlayerInfo";
 import Gold from "./Gold";
 
-const Inventory = () => {
+const Ui = () => {
   const player = useSelector((state) => state.player);
   const currentScene = player.scene;
   const items = 16;
   return (
     <div>
-      <Healthbar />
+      <PlayerInfo />
       <Gold />
 
       <div className="itemList">
@@ -27,4 +27,4 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+export default Ui;

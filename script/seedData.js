@@ -21,7 +21,7 @@ const userData = [
 
 const templateCharacterData = [
   {
-    id:1,
+    id: 1,
     name: "fox",
     baseStrength: 55,
     isPlayable: true,
@@ -31,7 +31,7 @@ const templateCharacterData = [
     description: "Increased healthspan, but less damage"
   },
   {
-    id:2,
+    id: 2,
     name: "sorcerer",
     baseStrength: 75,
     isPlayable: true,
@@ -41,14 +41,14 @@ const templateCharacterData = [
     description: "High intelligence, but dies faster"
   },
   {
-  id: 3,
-  name: "beastmaster",
-  baseStrength: 100,
-  isPlayable: true,
-  baseHealth: 100,
-  baseIntelligence: 50,
-  portrait: "/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png",
-  description: "High strength, but not the brightest"
+    id: 3,
+    name: "beastmaster",
+    baseStrength: 100,
+    isPlayable: true,
+    baseHealth: 100,
+    baseIntelligence: 50,
+    portrait: "/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png",
+    description: "High strength, but not the brightest"
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ const templateCharacterData = [
     baseIntelligence: 70,
     portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
     description: "Average strength and intelligence"
-    },
+  }
 ];
 
 const spriteSheetData = [
@@ -107,7 +107,9 @@ const playerCharacterData = [
     templateCharacterId: 1,
     locationId: 1,
     active: false,
-    gold: 15
+    gold: 15,
+    experience: 70,
+    level: 3
   },
   {
     name: "Arcana",
@@ -119,7 +121,9 @@ const playerCharacterData = [
     templateCharacterId: 2,
     locationId: 2,
     active: false,
-    gold: 30
+    gold: 30,
+    experience: 50,
+    level: 5
   }
 ];
 
