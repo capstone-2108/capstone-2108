@@ -2,6 +2,7 @@ import "phaser";
 import { Player } from "../entity/Player";
 import { PathGrid } from "../pathfinding/PathGrid";
 import { eventEmitter } from "../event/EventEmitter";
+import { Monster } from "../entity/Monster";
 
 export default class MMOScene extends Phaser.Scene {
   constructor() {
@@ -103,6 +104,8 @@ export default class MMOScene extends Phaser.Scene {
       this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
+    this.monster = new Monster(this,200, 400, "ogre", "ogre", 1);
+
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
      */
@@ -190,5 +193,6 @@ export default class MMOScene extends Phaser.Scene {
         player.update(time, delta);
       }
     }
+    this.monster.update();
   }
 }

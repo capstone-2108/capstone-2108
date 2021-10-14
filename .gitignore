@@ -8,3 +8,4 @@ package-lock.json
 .idea
 .env
 public/index_bundle.js
+music

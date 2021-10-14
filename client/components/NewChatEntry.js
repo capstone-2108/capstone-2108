@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { sendMessage } from "../store/chat";
+import {addNewMessage, sendMessage} from '../store/chat';
 
 export const NewChatEntry = (props) => {
   const [messageEntry, setMessageEntry] = useState("");
@@ -22,13 +22,15 @@ export const NewChatEntry = (props) => {
   const sendMessage = (evt) => {
     evt.stopPropagation();
     if (evt.key === "Enter") {
-      socket.emit("sendMessage", {
+      const message = {
         channel: "world",
         message: {
           name: player.name,
           message: evt.target.value
         }
-      });
+      }
+      socket.emit("sendMessage", message);
+      dispatch(addNewMessage(message));
       setMessageEntry("");
     }
   };

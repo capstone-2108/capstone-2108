@@ -1,0 +1,693 @@
+{
+	"textures": [
+		{
+			"image": "ogre.png",
+			"normalMap": "ogre_n.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 828,
+				"h": 26
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "ogre_idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 26,
+						"h": 24
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 26,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 26,
+						"h": 24
+					},
+					"frame": {
+						"x": 29,
+						"y": 1,
+						"w": 26,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 26,
+						"h": 24
+					},
+					"frame": {
+						"x": 57,
+						"y": 1,
+						"w": 26,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 26,
+						"h": 24
+					},
+					"frame": {
+						"x": 85,
+						"y": 1,
+						"w": 26,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 8,
+						"w": 25,
+						"h": 24
+					},
+					"frame": {
+						"x": 113,
+						"y": 1,
+						"w": 25,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 8,
+						"w": 25,
+						"h": 24
+					},
+					"frame": {
+						"x": 140,
+						"y": 1,
+						"w": 25,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 8,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 167,
+						"y": 1,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 8,
+						"w": 24,
+						"h": 24
+					},
+					"frame": {
+						"x": 193,
+						"y": 1,
+						"w": 24,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 8,
+						"w": 23,
+						"h": 24
+					},
+					"frame": {
+						"x": 219,
+						"y": 1,
+						"w": 23,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 23,
+						"h": 24
+					},
+					"frame": {
+						"x": 244,
+						"y": 1,
+						"w": 23,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 22,
+						"h": 24
+					},
+					"frame": {
+						"x": 269,
+						"y": 1,
+						"w": 22,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 22,
+						"h": 24
+					},
+					"frame": {
+						"x": 293,
+						"y": 1,
+						"w": 22,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 22,
+						"h": 24
+					},
+					"frame": {
+						"x": 317,
+						"y": 1,
+						"w": 22,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 22,
+						"h": 24
+					},
+					"frame": {
+						"x": 341,
+						"y": 1,
+						"w": 22,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 22,
+						"h": 24
+					},
+					"frame": {
+						"x": 365,
+						"y": 1,
+						"w": 22,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_walk-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 22,
+						"h": 24
+					},
+					"frame": {
+						"x": 389,
+						"y": 1,
+						"w": 22,
+						"h": 24
+					}
+				},
+				{
+					"filename": "ogre_idle-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 413,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 441,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 469,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 497,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 525,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 553,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 581,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 9,
+						"w": 26,
+						"h": 23
+					},
+					"frame": {
+						"x": 609,
+						"y": 1,
+						"w": 26,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 637,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 661,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 685,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_idle-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 709,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 733,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 757,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 781,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				},
+				{
+					"filename": "ogre_walk-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 9,
+						"w": 22,
+						"h": 23
+					},
+					"frame": {
+						"x": 805,
+						"y": 1,
+						"w": 22,
+						"h": 23
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:541474b56a22c5e7def826a2a059de6d:d8e175d34aeaf3149cbc31bd2d1a978e:340dc597331dd8b0014adaf17a7bfab3$"
+	}
+}
