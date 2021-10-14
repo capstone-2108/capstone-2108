@@ -35,7 +35,6 @@ const useStyles = makeStyles(() => ({
 }))
 
 const editCharacter = () => {
-  // console.log('STATE', useSelector((state) => state))
   const classes = useStyles();
   const character = useSelector(state => state.chosenCharacter);
   const [characterName, setCharacterName] = useState("");

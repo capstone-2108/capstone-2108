@@ -18,7 +18,6 @@ router.get("/templates", async (req, res, next) => {
 
 //gets called if user is LOGGING IN (pulling their playerCharacter info)
 router.get("/character", requireTokenMiddleware, async (req, res, next) => {
-  // console.log('req.user', req.user)
   const playerCharacter = await PlayerCharacter.findOne({
     where: {
       userId: req.user.id
@@ -55,7 +54,6 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     yPos: playerCharacter.location.yPos,
     gold: playerCharacter.gold
   };
-  console.log("payload", payload);
   res.json(payload);
 
   // Tell the world this player has joined!
