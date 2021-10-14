@@ -17,10 +17,16 @@ export default class MMOScene extends Phaser.Scene {
   create() {
     // eventEmitter.dispatch("requestPlayersOnMap");
 
+    //if you click anywhere in the phaser screen, you will be taken to the forest scene
+    //does not bring in characters or functionality yet
+    this.input.on('pointerup', function(pointer) {
+      this.scene.start('ForestScene')
+    }, this)
+
+
     /**creating a map based on a tileset**/
     const map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
-    // const groundTiles = map.addTilesetImage("town", "town"); //loads the tileset used to make up this map
     const groundTiles = map.addTilesetImage("town", "town"); //loads the tileset used to make up this map
 
     this.groundLayer = map.createLayer("ground", groundTiles, 0, 0);
@@ -196,3 +202,5 @@ export default class MMOScene extends Phaser.Scene {
     this.monster.update();
   }
 }
+
+

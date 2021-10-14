@@ -98,3 +98,4 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     return { vdx, vdy, direction, mode };
   }
 }
+

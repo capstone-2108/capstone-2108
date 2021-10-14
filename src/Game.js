@@ -1,6 +1,7 @@
 
 import MMOScene from './scene/MMOScene';
 import Preloader from './scene/Preloader';
+import ForestScene from './scene/ForestScene'
 
 const config = {
   type: Phaser.AUTO,  // Specify the underlying browser rendering engine (AUTO, CANVAS, WEBGL)
@@ -45,6 +46,7 @@ export class Game extends Phaser.Game {
     super(config);
     this.scene.add('Preloader', Preloader);
     this.scene.add('MMOScene', MMOScene);
+    this.scene.add('ForestScene', ForestScene)
 
     //starts the game with the main scene
     this.scene.start('Preloader');

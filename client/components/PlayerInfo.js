@@ -5,9 +5,9 @@ const PlayerInfo = () => {
   const player = useSelector((state) => state.player);
   const ratio = player.health / player.totalHealth;
   const healthWidth = player.totalHealth * ratio;
-  console.log("playerName", player);
+  // console.log("playerName", player);
   const expWidth = (player.experience / player.totalExp) * player.totalExp;
-  console.log("expWidth", expWidth);
+  // console.log("expWidth", expWidth);
 
   let healthStyle = "";
 
