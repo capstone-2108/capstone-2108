@@ -38,12 +38,12 @@ const PlayerCharacter = db.define("playerCharacter", {
   level: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    defaultValue: 1
+    defaultValue: 0
   },
   experience: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    defaultValue: 0
+    defaultValue: 1
   }
 });
 

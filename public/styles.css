@@ -29,13 +29,16 @@ body {
   justify-content: space-between;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: rgb(50, 50, 50);
+  background-color: #252441;
+  border-style: solid;
+  border-width: 7px;
+  border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1;
 }
 
 .player {
   display: flex;
   align-items: center;
-  margin: 0px 80px;
+  margin: 0px 130px;
 }
 
 .gold {
@@ -51,7 +54,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin: 10px 25px;
+  margin: 0px 25px;
 }
 
 .barRatio {
@@ -72,7 +75,7 @@ img {
 }
 
 .item {
-  background-color: black;
+  background-color: rgb(14, 14, 14);
   width: 61px;
   height: 61px;
   border-radius: 5px;
@@ -81,19 +84,19 @@ img {
 #logoutButton {
   padding: 10px;
   color: black;
-  border-radius: 7px;
+  border-radius: 5px;
   width: 253px;
   margin: 10px;
-  background-color: white;
+  background-color: #6153da;
 }
 
 #characterButton {
   padding: 10px;
   color: black;
-  border-radius: 7px;
+  border-radius: 5px;
   width: 253px;
   margin: 10px;
-  background-color: rgb(232, 232, 20);
+  background-color: rgb(223, 119, 149);
 }
 
 #chat_history {
@@ -124,7 +127,7 @@ img {
   background-image: url("/images/colorfulTreeLandscape.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center
+  background-position: center;
 }
 
 .selectContainer {

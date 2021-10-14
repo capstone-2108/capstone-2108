@@ -104,7 +104,7 @@ const initialState = {
   yPos: 0,
   health: 100,
   totalHealth: 500,
-  exp: 40,
+  experience: 40,
   totalExp: 120,
   gold: 0,
   scene: "village",

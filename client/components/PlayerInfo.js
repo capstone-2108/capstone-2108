@@ -6,7 +6,8 @@ const PlayerInfo = () => {
   const ratio = player.health / player.totalHealth;
   const healthWidth = player.totalHealth * ratio;
   console.log("playerName", player);
-  const expWidth = (player.exp / player.totalExp) * player.totalExp;
+  const expWidth = (player.experience / player.totalExp) * player.totalExp;
+  console.log("expWidth", expWidth);
 
   let healthStyle = "";
 
@@ -39,7 +40,6 @@ const PlayerInfo = () => {
   return (
     <div>
       <div className="player">
-        <img src="b7c6549290654353cdcf3c0db0d7b38d.png" width="20px" height="20px" />
         <h3 id="playerName">{player.name}</h3>
       </div>
 
@@ -81,7 +81,7 @@ const PlayerInfo = () => {
               width: `${expWidth}px`,
               height: "20px"
             }}
-            className="barRatio">{`${player.exp}/${player.totalExp}`}</div>
+            className="barRatio">{`${player.experience}/${player.totalExp}`}</div>
         </div>
       </div>
 
