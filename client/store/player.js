@@ -39,7 +39,6 @@ export const updateHealth = (health) => {
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
     let state = getState();
-    console.log("STATE", state);
     try {
       //if the player has already been set on redux
       // AKA this is a new user who just signed up
