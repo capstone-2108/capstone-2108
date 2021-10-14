@@ -4,7 +4,6 @@ const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
 const { TemplateCharacter, SpriteSheet, Location, User, PlayerCharacter, Scene } = require("../db");
-
 const { Op } = require("sequelize");
 
 //This fetches all template characters
@@ -19,7 +18,6 @@ router.get("/templates", async (req, res, next) => {
 
 //gets called if user is LOGGING IN (pulling their playerCharacter info)
 router.get("/character", requireTokenMiddleware, async (req, res, next) => {
-  // console.log('req.user', req.user)
   const playerCharacter = await PlayerCharacter.findOne({
     where: {
       userId: req.user.id
@@ -49,6 +47,8 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     id: playerCharacter.id,
     name: playerCharacter.name,
     health: playerCharacter.health,
+    experience: playerCharacter.experience,
+    level: playerCharacter.level,
     templateName: playerCharacter.templateCharacter.name,
     spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
@@ -56,7 +56,6 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     yPos: playerCharacter.location.yPos,
     gold: playerCharacter.gold
   };
-  console.log("payload", payload);
   res.json(payload);
 
   // Tell the world this player has joined!
@@ -148,7 +147,6 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
   }
 });
 
-//get /api/game/character/:id - fetches character data by id
 // router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
 //   //@todo: make sure the player can only load characters belonging to them
 

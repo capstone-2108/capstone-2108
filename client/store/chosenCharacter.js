@@ -10,7 +10,6 @@ export const SET_CHOSEN_CHARACTER = "SET_CHOSEN_CHARACTER";
  ************************/
 // ACTION CREATOR TO SET CHOSEN TEMPLATE CHARACTER
 export const setChosenCharacter = (chosenCharacter) => {
-console.log('in setchosen character')
   return {
     type: SET_CHOSEN_CHARACTER,
     chosenCharacter

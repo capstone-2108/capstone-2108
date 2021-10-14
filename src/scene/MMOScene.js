@@ -67,7 +67,6 @@ export default class MMOScene extends Phaser.Scene {
      * @param {{}} data
      */
     eventEmitter.subscribe("playerLoad", (data) => {
-      console.log("playerLoad", data);
       this.playerData = data;
       this.player = new Player(
         this,

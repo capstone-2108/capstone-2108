@@ -39,7 +39,6 @@ export const updateHealth = (health) => {
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
     let state = getState();
-    console.log("STATE", state);
     try {
       //if the player has already been set on redux
       // AKA this is a new user who just signed up
@@ -106,14 +105,16 @@ const initialState = {
   userId: null,
   characterId: null,
   name: "",
-  health: 100,
   nearbyPlayers: [],
   xPos: 0,
   yPos: 0,
+  health: 100,
   totalHealth: 500,
+  experience: 40,
+  totalExp: 120,
   gold: 0,
-  //Change to sceneName
-  scene: "village"
+  scene: "village",
+  level: 1
 };
 
 const clearState = {
