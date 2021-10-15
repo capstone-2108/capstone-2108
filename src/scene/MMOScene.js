@@ -3,6 +3,7 @@ import { Player } from "../entity/Player";
 import { PathGrid } from "../pathfinding/PathGrid";
 import { eventEmitter } from "../event/EventEmitter";
 import { Monster } from "../entity/Monster";
+import EasyStar from "easystarjs";
 
 export default class MMOScene extends Phaser.Scene {
   constructor() {
@@ -38,6 +39,46 @@ export default class MMOScene extends Phaser.Scene {
     this.groundLayer.setCollisionByProperty({ collides: true });
     this.worldLayer.setCollisionByProperty({ collides: true });
     this.belowCharLayer.setCollisionByProperty({ collides: true });
+
+    this.finder = new EasyStar.js();
+
+    // console.log('ground layer tilesets', this.groundLayer.tileset[0])
+
+    this.getTileID = function(x,y){
+      var tile = this.groundLayer.getTileAt(x, y);
+      return tile.index;
+  };
+    const grid = [];
+    for(let y = 0; y < map.height; y++) {
+        let col = []
+        for (let x = 0; x < map.width; x++) {
+          col.push(this.getTileID(x, y))
+        }
+        grid.push(col)
+      }
+
+
+      this.finder.setGrid(grid);
+
+      console.log('GRID', grid)
+
+      const tileset = map.tilesets[0]
+      const properties = tileset.tileProperties
+      let acceptableTiles = [];
+
+      for(let i = tileset.firstgid-1; i < groundTiles.total; i++) {
+        if(!properties[i].collides) {
+          acceptableTiles.push(i+1);
+          continue
+        }
+      }
+
+      this.finder.setAcceptableTiles(acceptableTiles);
+
+      console.log('acceptable tiles', acceptableTiles)
+
+
+
 
     /*** collision debugging code ***/
 
