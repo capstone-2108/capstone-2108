@@ -18,7 +18,7 @@ export default class MMOScene extends Phaser.Scene {
   create() {
     // eventEmitter.dispatch("requestPlayersOnMap");
 
-    let rect = this.add.rectangle(0, 0, 100, 100, 0xff0000)
+    let rect = this.add.rectangle(0, 0, 100, 100, 0xff0000, .5).setDepth(1)
     // rect.setStrokeStyle(4, 0xefc53f)
 
 
