@@ -20,10 +20,9 @@ export default class MMOScene extends Phaser.Scene {
 
     //if you click anywhere in the phaser screen, you will be taken to the forest scene
     //does not bring in characters or functionality yet
-    this.input.on('pointerup', function(pointer) {
-      this.scene.start('ForestScene')
-    }, this)
-
+    // this.input.on('pointerup', function(pointer) {
+    //   this.scene.start('ForestScene')
+    // }, this)
 
     /**creating a map based on a tileset**/
     const map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
@@ -151,7 +150,22 @@ export default class MMOScene extends Phaser.Scene {
       this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
-    this.monster = new Monster(this,200, 400, "ogre", "ogre", 1);
+    this.monster = new Monster(this, 200, 400, "ogre", "ogre", 1);
+    // console.log('MONSTER', this.monster.x)
+
+    const handleClick = (pointer) => {
+      //need access to this.monster
+      let x = this.cameras.main.scrollX + pointer.x;
+      let y = this.cameras.main.scrollY + pointer.y;
+      let toX = Math.floor(x);
+      let toY = Math.floor(y);
+      let fromX = Math.floor(this.monster.x/16);
+      let fromY = Math.floor(this.monster.y/16);
+      console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+    }
+
+    this.input.on('pointerup', handleClick);
+
 
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
@@ -231,6 +245,7 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   /**anything that needs to update, should get it's update function called here**/
+
   update(time, delta) {
     if (this.player) {
       this.player.update(time, delta);
