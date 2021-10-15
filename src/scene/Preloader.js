@@ -39,7 +39,6 @@ export default class Preloader extends Phaser.Scene {
     /**How to load a tile set**/
     this.load.image("town", "tilesets/tileset/RPG tileset (full) v1.5 - 200_.png");
     this.load.image("grass", "tilesets/forest/grass.png");
-    this.load.image("grass", "tilesets/forest/grass.png");
     this.load.image("plant", "tilesets/forest/plant.png");
     this.load.image("props", "tilesets/forest/props.png");
     this.load.image("stone", "tilesets/forest/stone.png");
