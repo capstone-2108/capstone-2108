@@ -18,6 +18,10 @@ export default class MMOScene extends Phaser.Scene {
   create() {
     // eventEmitter.dispatch("requestPlayersOnMap");
 
+    let rect = this.add.rectangle(0, 0, 100, 100, 0xff0000)
+    // rect.setStrokeStyle(4, 0xefc53f)
+
+
     //if you click anywhere in the phaser screen, you will be taken to the forest scene
     //does not bring in characters or functionality yet
     this.input.on('pointerup', function(pointer) {
@@ -115,6 +119,7 @@ export default class MMOScene extends Phaser.Scene {
      */
     eventEmitter.subscribe("playerLoad", (data) => {
       this.playerData = data;
+      console.log('data', data)
       this.player = new Player(
         this,
         data.xPos,
@@ -243,5 +248,4 @@ export default class MMOScene extends Phaser.Scene {
     this.monster.update();
   }
 }
-
 
