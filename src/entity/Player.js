@@ -83,12 +83,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       shift: Phaser.Input.Keyboard.KeyCodes.SHIFT
     });
 
-    this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
-      if (!this.isAttacking()) {
-        this.animationChanged = true;
-        this.mode = "melee";
-      }
-    })
+    // this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
+    //   if (!this.isAttacking()) {
+    //     this.animationChanged = true;
+    //     this.mode = "melee";
+    //   }
+    // })
     // const shift = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     //
     // shift.on("down", () => {

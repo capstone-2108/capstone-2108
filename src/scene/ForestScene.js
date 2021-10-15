@@ -28,3 +28,8 @@ export default class ForestScene extends Phaser.Scene {
     this.trees2Layer.setCollisionByProperty({ collides: true });
   }
 }
+
+
+// this.physics.add.collider(this.player, this.groundLayer);
+// this.physics.add.collider(this.player, this.worldLayer);
+// this.physics.add.collider(this.player, this.belowCharLayer);

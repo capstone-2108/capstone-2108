@@ -43,41 +43,44 @@ export default class MMOScene extends Phaser.Scene {
 
     // console.log('ground layer tilesets', this.groundLayer.tileset[0])
 
-    this.getTileID = function(x,y){
-      var tile = this.groundLayer.getTileAt(x, y);
+    const getTileID = (x, y) => {
+      // console.log('map', map)
+      let tile = map.getTileAt(x, y);
       return tile.index;
-  };
+    };
+
     const grid = [];
-    for(let y = 0; y < map.height; y++) {
-        let col = []
-        for (let x = 0; x < map.width; x++) {
-          col.push(this.getTileID(x, y))
-        }
-        grid.push(col)
+    for (let y = 0; y < map.height; y++) {
+      let col = [];
+      for (let x = 0; x < map.width; x++) {
+        col.push(getTileID(x, y));
       }
+      grid.push(col);
+    }
+    console.log('mapheight', map.height)
+    console.log('mapwidth', map.width)
+    console.log('groundheiught', this.groundLayer.height)
+    console.log('groundwid', this.groundLayer.width)
+    this.finder.setGrid(grid);
 
+    const tileset = map.tilesets[0];
+    console.log('TILESET', map.tilesets)
+    const properties = tileset.tileProperties;
+    let acceptableTiles = [];
 
-      this.finder.setGrid(grid);
-
-      console.log('GRID', grid)
-
-      const tileset = map.tilesets[0]
-      const properties = tileset.tileProperties
-      let acceptableTiles = [];
-
-      for(let i = tileset.firstgid-1; i < groundTiles.total; i++) {
-        if(!properties[i].collides) {
-          acceptableTiles.push(i+1);
-          continue
-        }
+    for (let i = tileset.firstgid - 1; i < groundTiles.total; i++) {
+      if (!properties[i].collides) {
+        //need to check all layers for collisions
+        acceptableTiles.push(i + 1);
+        continue;
+      } else {
+        console.log('NOT ACCEPTABLE')
       }
+    }
 
-      this.finder.setAcceptableTiles(acceptableTiles);
+    this.finder.setAcceptableTiles(acceptableTiles);
 
-      console.log('acceptable tiles', acceptableTiles)
-
-
-
+    console.log("acceptable tiles", acceptableTiles);
 
     /*** collision debugging code ***/
 
@@ -145,6 +148,7 @@ export default class MMOScene extends Phaser.Scene {
 
       const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
       this.minimap.setMask(circle, true);
+
       this.physics.add.collider(this.player, this.groundLayer);
       this.physics.add.collider(this.player, this.worldLayer);
       this.physics.add.collider(this.player, this.belowCharLayer);
@@ -153,39 +157,56 @@ export default class MMOScene extends Phaser.Scene {
     this.monster = new Monster(this, 200, 400, "ogre", "ogre", 1);
     // console.log('MONSTER', this.monster.x)
 
+    const moveMonster = (path) => {
+      if (path === null) {
+        console.warn("Path was not found.");
+      } else {
+        console.log("PATHHHHH", path);
+      }
+      let pathIndex = 0;
+      const intervalId = window.setInterval(() => {
+        if (path[pathIndex]) {
+          this.monster.x = path[pathIndex].x*16;
+          this.monster.y = path[pathIndex].y*16;
+          pathIndex++;
+        } else {
+          window.clearInterval(intervalId);
+        }
+      }, 100);
+    };
+
     const handleClick = (pointer) => {
       //need access to this.monster
       let x = this.cameras.main.scrollX + pointer.x;
       let y = this.cameras.main.scrollY + pointer.y;
-      let toX = Math.floor(x/16);
-      let toY = Math.floor(y/16);
-      let fromX = Math.floor(this.monster.x/16);
-      let fromY = Math.floor(this.monster.y/16);
-      console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
-      //findPath
+      let toX = Math.floor(x / 16);
+      let toY = Math.floor(y / 16);
+      let fromX = Math.floor(this.monster.x / 16);
+      let fromY = Math.floor(this.monster.y / 16);
+      console.log("going from (" + fromX + "," + fromY + ") to (" + toX + "," + toY + ")");
+      const test = this.finder.findPath(fromX, fromY, toX, toY, moveMonster);
+      this.finder.calculate();
+    };
+    //window.setInterval clear the interval once the path is complete
 
-      //window.setInterval clear the interval once the path is complete
-    }
-
-    this.input.on('pointerup', handleClick);
-
+    this.input.on("pointerup", handleClick);
 
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
      */
-    // eventEmitter.subscribe("otherPlayerLoad", (data) => {
-    //   if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
-    //     this.otherPlayers[data.id] = new Player(
-    //       this,
-    //       data.x,
-    //       data.y,
-    //       `${data.name}-${data.id}`,
-    //       data.templateName,
-    //       false,
-    //       data.id
-    //     );
-    //   }
-    // });
+    eventEmitter.subscribe("otherPlayerLoad", (data) => {
+      if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
+        this.otherPlayers[data.id] = new Player(
+          this,
+          data.x,
+          data.y,
+          `${data.name}-${data.id}`,
+          data.templateName,
+          false,
+          data.id
+        );
+      }
+    });
 
     eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
       console.log("phaser got nearbyPlayerLoad", players);
@@ -261,5 +282,3 @@ export default class MMOScene extends Phaser.Scene {
     this.monster.update();
   }
 }
-
-
