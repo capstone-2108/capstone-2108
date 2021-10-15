@@ -157,11 +157,14 @@ export default class MMOScene extends Phaser.Scene {
       //need access to this.monster
       let x = this.cameras.main.scrollX + pointer.x;
       let y = this.cameras.main.scrollY + pointer.y;
-      let toX = Math.floor(x);
-      let toY = Math.floor(y);
+      let toX = Math.floor(x/16);
+      let toY = Math.floor(y/16);
       let fromX = Math.floor(this.monster.x/16);
       let fromY = Math.floor(this.monster.y/16);
       console.log('going from ('+fromX+','+fromY+') to ('+toX+','+toY+')');
+      //findPath
+
+      //window.setInterval clear the interval once the path is complete
     }
 
     this.input.on('pointerup', handleClick);
