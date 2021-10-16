@@ -19,6 +19,7 @@ export default class MMOScene extends Phaser.Scene {
 
     /**creating a map based on a tileset**/
     const map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
+
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
     // const groundTiles = map.addTilesetImage("town", "town"); //loads the tileset used to make up this map
     const groundTiles = map.addTilesetImage("town", "town"); //loads the tileset used to make up this map
@@ -60,6 +61,11 @@ export default class MMOScene extends Phaser.Scene {
     //   collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
     //   faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
     // });
+
+    this.monster = new Monster(this, 200, 400, "orc", "orc", 1);
+    this.monsterGroup = this.physics.add.group();
+    this.monsterGroup.add(this.monster);
+    // console.log('monster', this.monster);
 
     //These events should exist on every scene
     /*
@@ -104,8 +110,6 @@ export default class MMOScene extends Phaser.Scene {
       this.physics.add.collider(this.player, this.belowCharLayer);
     });
 
-    this.monster = new Monster(this,200, 400, "ogre", "ogre", 1);
-
     /**
      * loads another player (not the main player) when receiving an otherPlayerLoad event from react
      */
@@ -148,13 +152,15 @@ export default class MMOScene extends Phaser.Scene {
 
     //this event lets us know that another player has moved, we should make this position move to
     //the position we received
-    eventEmitter.subscribe("otherPlayerPositionChanged", (waypoints) => {
+    eventEmitter.subscribe("otherPlayerPositionChanged", (stateSnapshots) => {
       //set a `move to` position, and let update take care of the rest
-      //should consider making `moveTo` waypoints a queue in case more events come in before
+      //should consider making `moveTo` stateSnapshots a queue in case more events come in before
       //the player character has finished moving
-      const remotePlayer = this.otherPlayers[waypoints.characterId];
+      const remotePlayer = this.otherPlayers[stateSnapshots.characterId];
       if (remotePlayer) {
-        remotePlayer.waypoints = remotePlayer.waypoints.concat(waypoints.waypoints);
+        remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(
+          stateSnapshots.stateSnapshots
+        );
       }
     });
 
@@ -193,6 +199,6 @@ export default class MMOScene extends Phaser.Scene {
         player.update(time, delta);
       }
     }
-    this.monster.update();
+    this.monster.update(time, delta);
   }
 }

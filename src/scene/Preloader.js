@@ -31,6 +31,12 @@ export default class Preloader extends Phaser.Scene {
       "spritesheets/monsters/ogre/ogre.json"
     );
 
+    this.load.atlas(
+      "orc",
+      "spritesheets/monsters/orc/orc.png",
+      "spritesheets/monsters/orc/orc.json"
+    );
+
     //How to load a map, this is a .json file which tells phaser how to layout a map, you can generate this in the Tiled application
     this.load.tilemapTiledJSON("start-scene", "/maps/start-scene.json");
     // this.load.tilemapTiledJSON("start-scene", "/maps/second-scene.json");
