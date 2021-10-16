@@ -276,7 +276,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       for (const [direction, frameConfigs] of Object.entries(config.frameConfigs)) {
         let frameNames = [];
         for (let i = 0; i < frameConfigs.length; i++) {
-          console.log("key name", this.name + frameConfigs[i].frame);
           frameNames.push({
             key: this.name,
             frame: this.name + frameConfigs[i].frame + ".png",
@@ -285,8 +284,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           });
         }
         const animationName = `${this.name}-${stateName}-${direction}`; //what to call the animation so we can refer to it later
-        console.log("animationName", animationName);
-        console.log("frameNames", frameNames);
         this.anims.create({
           key: animationName,
           frameRate: 10,
