@@ -38,22 +38,17 @@ export const updateHealth = (health) => {
 //--Thunks--
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
-    let state = getState();
     try {
-      //if the player has already been set on redux
-      // AKA this is a new user who just signed up
+      let state = getState();
+      //if the player data is already in redux
       if (state.player.characterId !== null) {
-        eventEmitter.emit("playerLoad", state.player);
-        return state.player.characterId;
+        return state.player;
       } else {
-        //go find this user's player character and then set it on state
-        //then load
+        //fetch the player data
         const response = await axios.get(`/api/game/character`);
         dispatch(setPlayerCharacter(response.data));
-        state = getState();
-        //This actually starts the load of the player character into Phaser
-        eventEmitter.emit("playerLoad", state.player);
-        return response.data.characterId;
+        const state = getState();
+        return state.player;
       }
     } catch (err) {
       console.log(err);
@@ -113,7 +108,8 @@ const initialState = {
   experience: 40,
   totalExp: 120,
   gold: 0,
-  scene: "village",
+  sceneId: 1,
+  sceneName: 'StarterTown',
   level: 1
 };
 

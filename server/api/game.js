@@ -36,7 +36,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         include: {
           model: Scene,
-          attributes: ["name"]
+          attributes: ["id", "name"]
         }
       }
     ]
@@ -54,7 +54,9 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
-    gold: playerCharacter.gold
+    gold: playerCharacter.gold,
+    sceneId: playerCharacter.location.scene.id,
+    sceneName: playerCharacter.location.scene.name
   };
   res.json(payload);
 

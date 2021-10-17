@@ -1,4 +1,6 @@
-export default class ForestScene extends Phaser.Scene {
+import MMOScene from "./MMOScene";
+
+export default class ForestScene extends MMOScene {
   constructor() {
     super("ForestScene");
     // this.playerData = {};
