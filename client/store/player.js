@@ -65,9 +65,10 @@ export const fetchNearbyPlayers = (characterId) => {
     let state = getState();
     try {
       const response = await axios.get(`/api/game/character/${characterId}/nearby`);
+      console.log('response', response.data);
       dispatch(setNearbyPlayers(response.data));
       state = getState();
-      eventEmitter.emit("nearbyPlayerLoad", response.data);
+      return state.player.nearbyPlayers;
     } catch (err) {
       console.log(err);
     }
@@ -109,7 +110,7 @@ const initialState = {
   totalExp: 120,
   gold: 0,
   sceneId: 1,
-  sceneName: 'StarterTown',
+  sceneName: "StarterTown",
   level: 1
 };
 

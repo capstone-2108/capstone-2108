@@ -25,9 +25,10 @@ export const InitSubscriptionsToPhaser = () => {
     setSocket(newSocket); //save the socket into the component state
 
     //listens for other players loading in
-    newSocket.on("otherPlayerLoad", (data) => {
-      eventEmitter.emit("otherPlayerLoad", data);
-    });
+    //todo: put this back in
+    // newSocket.on("otherPlayerLoad", (data) => {
+    //   eventEmitter.emit("otherPlayerLoad", data);
+    // });
 
     //this is where the server lets us know that others players have moved, once we receive this signal we
     //tell phaser to move those characters on the screen
@@ -49,8 +50,8 @@ export const InitSubscriptionsToPhaser = () => {
       const player = await dispatch(fetchCharacterData()); //load the players data into redux
       eventEmitter.emit("scenePlayerLoad", player);
       //load any players which are in the same scene as the player
-      const remotePlayers = await dispatch(fetchNearbyPlayers(player.characterId));
-      eventEmitter.emit("nearbyPlayerLoad", remotePlayers);
+      const nearbyPlayers = await dispatch(fetchNearbyPlayers(player.characterId));
+      eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
     });
 
     //phaser will send us updates via the "phaserUpdate" event

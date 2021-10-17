@@ -2,6 +2,8 @@ import "phaser";
 import { Player } from "../entity/Player";
 import { eventEmitter } from "../event/EventEmitter";
 import { Monster } from "../entity/Monster";
+import { LocalPlayer } from "../entity/LocalPlayer";
+import { RemotePlayer } from "../entity/RemotePlayer";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -32,13 +34,12 @@ export default class MMOScene extends Phaser.Scene {
     //These events should exist on every scene
     eventEmitter.subscribe("scenePlayerLoad", (data) => {
       this.playerData = data;
-      this.player = new Player(
+      this.player = new LocalPlayer(
         this,
         data.xPos,
         data.yPos,
         "player",
         data.templateName,
-        true,
         data.characterId
       );
 
@@ -75,13 +76,12 @@ export default class MMOScene extends Phaser.Scene {
           player.characterId !== this.player.characterId &&
           !this.otherPlayers[player.characterId]
         ) {
-          this.otherPlayers[player.characterId] = new Player(
+          this.otherPlayers[player.characterId] = new RemotePlayer(
             this,
             player.xPos,
             player.yPos,
             `${player.name}-${player.characterId}`,
             player.templateName,
-            false,
             player.characterId
           );
         }
@@ -94,6 +94,8 @@ export default class MMOScene extends Phaser.Scene {
       //set a `move to` position, and let update take care of the rest
       //should consider making `moveTo` stateSnapshots a queue in case more events come in before
       //the player character has finished moving
+      console.log('otherPlayerPositionChanged');
+      console.log('otherPlayers', this.otherPlayers);
       const remotePlayer = this.otherPlayers[stateSnapshots.characterId];
       if (remotePlayer) {
         remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(
@@ -111,7 +113,6 @@ export default class MMOScene extends Phaser.Scene {
           data.yPos,
           `${data.name}-${data.id}`,
           data.templateName,
-          false,
           data.id
         );
       }
