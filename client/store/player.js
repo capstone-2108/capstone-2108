@@ -66,6 +66,7 @@ export const fetchNearbyPlayers = (characterId) => {
       const response = await axios.get(`/api/game/character/${characterId}/nearby`);
       dispatch(setNearbyPlayers(response.data));
       state = getState();
+      return state.player.nearbyPlayers;
     } catch (err) {
       console.log(err);
     }

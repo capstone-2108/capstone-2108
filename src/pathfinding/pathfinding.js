@@ -10,7 +10,6 @@ export const createPathFinder = (map, layers) => {
   pathFinder.enableDiagonals();
 
   const tileset = map.tilesets[0];
-  console.log(map);
   const tilesetProperties = tileset.tileProperties;
 
   const grid = [];

@@ -7,9 +7,6 @@ import { Monster } from "../entity/Monster";
 export default class ForestScene extends MMOScene {
   constructor() {
     super("ForestScene");
-    // this.playerData = {};
-    // this.otherPlayers = {};
-    // this.subscribes = [];
   }
 
   preload() {
@@ -55,11 +52,6 @@ export default class ForestScene extends MMOScene {
     super.create();
   }
 
-  // this.pathfinder = createPathFinder(this.map, [
-  //   this.groundLayer,
-  //   this.worldLayer,
-  //   this.belowCharLayer
-  // ]);
   update(time, delta) {
     super.update(time, delta);
   }
