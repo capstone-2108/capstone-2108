@@ -181,38 +181,38 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">images/sorcerer_idle-0.png</key>
-            <key type="filename">images/sorcerer_idle-1.png</key>
-            <key type="filename">images/sorcerer_idle-10.png</key>
-            <key type="filename">images/sorcerer_idle-11.png</key>
-            <key type="filename">images/sorcerer_idle-12.png</key>
-            <key type="filename">images/sorcerer_idle-13.png</key>
-            <key type="filename">images/sorcerer_idle-14.png</key>
-            <key type="filename">images/sorcerer_idle-15.png</key>
-            <key type="filename">images/sorcerer_idle-2.png</key>
-            <key type="filename">images/sorcerer_idle-3.png</key>
-            <key type="filename">images/sorcerer_idle-4.png</key>
-            <key type="filename">images/sorcerer_idle-5.png</key>
-            <key type="filename">images/sorcerer_idle-6.png</key>
-            <key type="filename">images/sorcerer_idle-7.png</key>
-            <key type="filename">images/sorcerer_idle-8.png</key>
-            <key type="filename">images/sorcerer_idle-9.png</key>
-            <key type="filename">images/sorcerer_walk-0.png</key>
-            <key type="filename">images/sorcerer_walk-1.png</key>
-            <key type="filename">images/sorcerer_walk-10.png</key>
-            <key type="filename">images/sorcerer_walk-11.png</key>
-            <key type="filename">images/sorcerer_walk-12.png</key>
-            <key type="filename">images/sorcerer_walk-13.png</key>
-            <key type="filename">images/sorcerer_walk-14.png</key>
-            <key type="filename">images/sorcerer_walk-15.png</key>
-            <key type="filename">images/sorcerer_walk-2.png</key>
-            <key type="filename">images/sorcerer_walk-3.png</key>
-            <key type="filename">images/sorcerer_walk-4.png</key>
-            <key type="filename">images/sorcerer_walk-5.png</key>
-            <key type="filename">images/sorcerer_walk-6.png</key>
-            <key type="filename">images/sorcerer_walk-7.png</key>
-            <key type="filename">images/sorcerer_walk-8.png</key>
-            <key type="filename">images/sorcerer_walk-9.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-0.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-1.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-10.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-11.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-12.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-13.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-14.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-15.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-2.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-3.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-4.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-5.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-6.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-7.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-8.png</key>
+            <key type="filename">sorcerer_idle/sorcerer_idle-9.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-0.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-1.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-10.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-11.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-12.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-13.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-14.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-15.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-2.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-3.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-4.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-5.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-6.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-7.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-8.png</key>
+            <key type="filename">sorcerer_walk/sorcerer_walk-9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -221,28 +221,28 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>8,24,16,48</rect>
+                <rect>8,8,16,16</rect>
                 <key>scale9Paddings</key>
-                <rect>8,24,16,48</rect>
+                <rect>8,8,16,16</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">images/sorcerer_melee-0.png</key>
-            <key type="filename">images/sorcerer_melee-1.png</key>
-            <key type="filename">images/sorcerer_melee-10.png</key>
-            <key type="filename">images/sorcerer_melee-11.png</key>
-            <key type="filename">images/sorcerer_melee-12.png</key>
-            <key type="filename">images/sorcerer_melee-13.png</key>
-            <key type="filename">images/sorcerer_melee-14.png</key>
-            <key type="filename">images/sorcerer_melee-15.png</key>
-            <key type="filename">images/sorcerer_melee-2.png</key>
-            <key type="filename">images/sorcerer_melee-3.png</key>
-            <key type="filename">images/sorcerer_melee-4.png</key>
-            <key type="filename">images/sorcerer_melee-5.png</key>
-            <key type="filename">images/sorcerer_melee-6.png</key>
-            <key type="filename">images/sorcerer_melee-7.png</key>
-            <key type="filename">images/sorcerer_melee-8.png</key>
-            <key type="filename">images/sorcerer_melee-9.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-0.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-1.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-10.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-11.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-12.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-13.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-14.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-15.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-2.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-3.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-4.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-5.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-6.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-7.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-8.png</key>
+            <key type="filename">sorcerer_melee/sorcerer_melee-9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -260,54 +260,54 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>images/sorcerer_idle-0.png</filename>
-            <filename>images/sorcerer_idle-1.png</filename>
-            <filename>images/sorcerer_idle-10.png</filename>
-            <filename>images/sorcerer_idle-11.png</filename>
-            <filename>images/sorcerer_idle-12.png</filename>
-            <filename>images/sorcerer_idle-13.png</filename>
-            <filename>images/sorcerer_idle-14.png</filename>
-            <filename>images/sorcerer_idle-15.png</filename>
-            <filename>images/sorcerer_idle-2.png</filename>
-            <filename>images/sorcerer_idle-3.png</filename>
-            <filename>images/sorcerer_idle-4.png</filename>
-            <filename>images/sorcerer_idle-5.png</filename>
-            <filename>images/sorcerer_idle-6.png</filename>
-            <filename>images/sorcerer_idle-7.png</filename>
-            <filename>images/sorcerer_idle-8.png</filename>
-            <filename>images/sorcerer_idle-9.png</filename>
-            <filename>images/sorcerer_walk-0.png</filename>
-            <filename>images/sorcerer_walk-1.png</filename>
-            <filename>images/sorcerer_walk-10.png</filename>
-            <filename>images/sorcerer_walk-11.png</filename>
-            <filename>images/sorcerer_walk-12.png</filename>
-            <filename>images/sorcerer_walk-13.png</filename>
-            <filename>images/sorcerer_walk-14.png</filename>
-            <filename>images/sorcerer_walk-15.png</filename>
-            <filename>images/sorcerer_walk-2.png</filename>
-            <filename>images/sorcerer_walk-3.png</filename>
-            <filename>images/sorcerer_walk-4.png</filename>
-            <filename>images/sorcerer_walk-5.png</filename>
-            <filename>images/sorcerer_walk-6.png</filename>
-            <filename>images/sorcerer_walk-7.png</filename>
-            <filename>images/sorcerer_walk-8.png</filename>
-            <filename>images/sorcerer_walk-9.png</filename>
-            <filename>images/sorcerer_melee-0.png</filename>
-            <filename>images/sorcerer_melee-1.png</filename>
-            <filename>images/sorcerer_melee-10.png</filename>
-            <filename>images/sorcerer_melee-11.png</filename>
-            <filename>images/sorcerer_melee-12.png</filename>
-            <filename>images/sorcerer_melee-13.png</filename>
-            <filename>images/sorcerer_melee-14.png</filename>
-            <filename>images/sorcerer_melee-15.png</filename>
-            <filename>images/sorcerer_melee-2.png</filename>
-            <filename>images/sorcerer_melee-3.png</filename>
-            <filename>images/sorcerer_melee-4.png</filename>
-            <filename>images/sorcerer_melee-5.png</filename>
-            <filename>images/sorcerer_melee-6.png</filename>
-            <filename>images/sorcerer_melee-7.png</filename>
-            <filename>images/sorcerer_melee-8.png</filename>
-            <filename>images/sorcerer_melee-9.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-0.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-1.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-10.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-11.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-12.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-13.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-14.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-15.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-2.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-3.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-4.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-5.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-6.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-7.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-8.png</filename>
+            <filename>sorcerer_idle/sorcerer_idle-9.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-0.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-1.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-10.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-11.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-12.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-13.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-14.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-15.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-2.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-3.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-4.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-5.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-6.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-7.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-8.png</filename>
+            <filename>sorcerer_melee/sorcerer_melee-9.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-0.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-1.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-10.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-11.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-12.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-13.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-14.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-15.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-2.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-3.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-4.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-5.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-6.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-7.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-8.png</filename>
+            <filename>sorcerer_walk/sorcerer_walk-9.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

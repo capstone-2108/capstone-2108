@@ -1,4 +1,5 @@
 import "phaser";
+import { eventEmitter } from "../event/EventEmitter";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -31,6 +32,12 @@ export default class Preloader extends Phaser.Scene {
       "spritesheets/monsters/ogre/ogre.json"
     );
 
+    this.load.atlas(
+      "orc",
+      "spritesheets/monsters/orc/orc.png",
+      "spritesheets/monsters/orc/orc.json"
+    );
+
     //How to load a map, this is a .json file which tells phaser how to layout a map, you can generate this in the Tiled application
     this.load.tilemapTiledJSON("start-scene", "/maps/start-scene.json");
     this.load.tilemapTiledJSON("second-scene", "/maps/second-scene.json");
@@ -47,6 +54,11 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.launch("MMOScene");
+    eventEmitter.emit("phaserLoad"); //tell react that phaser has loaded
+
+    //listen for an even from react to let us know when the player data is available
+    eventEmitter.subscribe("playerLoad", (data) => {
+      this.scene.launch(data.sceneName);
+    });
   }
 }

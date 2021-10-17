@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   signup: {
     color: "#f5f3e6",
     paddingTop: 20
+  },
+  titleGridItem: {
+    height:"200px",
+    display:"flex",
+    alignItems:"center"
   }
 }));
 
@@ -81,7 +86,7 @@ const AuthForm = (props) => {
       let path = `/select`;
       history.push(path);
     } else {
-      let path = "/game"
+      let path = "/game";
       history.push(path);
     }
   };
@@ -127,77 +132,84 @@ const AuthForm = (props) => {
           Incorrect Email/Password
         </Alert>
       </Snackbar>
-      <Card elevation={15} className={classes.form}>
-        <Grid align="center" className={classes.text}>
-          <Avatar style={{ backgroundColor: "#344a95" }}>
-            <LockedOutlinedIcon />
-          </Avatar>
-          <h2>{displayName}</h2>
+      <Grid container alignContent="center" direction="column">
+        <Grid item className={classes.titleGridItem}>
+          <div className="title">World of Arcana</div>
         </Grid>
-        <Box component="form" onSubmit={handleSubmit} name={name}>
-          <TextField
-            required
-            fullWidth
-            label="Email Address"
-            value={email}
-            onChange={(evt) => {
-              setEmail(evt.target.value);
-            }}
-            name="email"
-            type="text"
-            className={classes.textfield}
-            InputLabelProps={{
-              className: classes.text
-            }}
-            variant="outlined"></TextField>
-          <TextField
-            required
-            fullWidth
-            label="Password"
-            value={password}
-            onChange={(evt) => {
-              setPassword(evt.target.value);
-            }}
-            name="password"
-            // styling goes to hell if I add this
-            // so currently, the password is not hidden when typing
-            // type="password"
-            className={classes.textfield}
-            InputLabelProps={{
-              className: classes.text
-            }}
-            variant="outlined"></TextField>
-          {name === "signup" && (
-            <TextField
-              required
-              fullWidth
-              label="First Name"
-              value={firstName}
-              onChange={(evt) => {
-                setFirstName(evt.target.value);
-              }}
-              name="firstName"
-              type="text"
-              className={classes.textfield}
-              InputLabelProps={{
-                className: classes.text
-              }}
-              variant="outlined"></TextField>
-          )}
-          <Grid align="center">
-            <Button type="submit" className={classes.btn}>
-              {displayName}
-            </Button>
-          </Grid>
-          {name === "login" && (
-            <Link to="signup" style={{ textDecoration: "none" }}>
-              <Grid align="center" className={classes.signup}>
-                <p>New player? Sign Up Here</p>
+        <Grid item>
+          <Card elevation={15} className={classes.form}>
+            <Grid align="center" className={classes.text}>
+              <Avatar style={{ backgroundColor: "#344a95" }}>
+                <LockedOutlinedIcon />
+              </Avatar>
+              <h2>{displayName}</h2>
+            </Grid>
+            <Box component="form" onSubmit={handleSubmit} name={name}>
+              <TextField
+                required
+                fullWidth
+                label="Email Address"
+                value={email}
+                onChange={(evt) => {
+                  setEmail(evt.target.value);
+                }}
+                name="email"
+                type="text"
+                className={classes.textfield}
+                InputLabelProps={{
+                  className: classes.text
+                }}
+                variant="outlined"></TextField>
+              <TextField
+                required
+                fullWidth
+                label="Password"
+                value={password}
+                onChange={(evt) => {
+                  setPassword(evt.target.value);
+                }}
+                name="password"
+                // styling goes to hell if I add this
+                // so currently, the password is not hidden when typing
+                // type="password"
+                className={classes.textfield}
+                InputLabelProps={{
+                  className: classes.text
+                }}
+                variant="outlined"></TextField>
+              {name === "signup" && (
+                <TextField
+                  required
+                  fullWidth
+                  label="First Name"
+                  value={firstName}
+                  onChange={(evt) => {
+                    setFirstName(evt.target.value);
+                  }}
+                  name="firstName"
+                  type="text"
+                  className={classes.textfield}
+                  InputLabelProps={{
+                    className: classes.text
+                  }}
+                  variant="outlined"></TextField>
+              )}
+              <Grid align="center">
+                <Button type="submit" className={classes.btn}>
+                  {displayName}
+                </Button>
               </Grid>
-            </Link>
-          )}
-        </Box>
-      </Card>
+              {name === "login" && (
+                <Link to="signup" style={{ textDecoration: "none" }}>
+                  <Grid align="center" className={classes.signup}>
+                    <p>New player? Sign Up Here</p>
+                  </Grid>
+                </Link>
+              )}
+            </Box>
+          </Card>
+        </Grid>
+      </Grid>
     </div>
   );
 };
