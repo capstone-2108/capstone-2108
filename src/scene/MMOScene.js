@@ -40,7 +40,8 @@ export default class MMOScene extends Phaser.Scene {
         data.yPos,
         "player",
         data.templateName,
-        data.characterId
+        data.name,
+        data.characterId,
       );
 
       this.cameras.main.startFollow(this.player);
@@ -82,7 +83,9 @@ export default class MMOScene extends Phaser.Scene {
             player.yPos,
             `${player.name}-${player.characterId}`,
             player.templateName,
-            player.characterId
+            player.name,
+            player.characterId,
+            false
           );
         }
       }

@@ -23,7 +23,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
    * @param {string} spriteKey
    * @param {string} name
    */
-  constructor(scene, x, y, spriteKey, templateName, id, localPlayer = false) {
+  constructor(scene, x, y, spriteKey, templateName, id, playerName, localPlayer = false) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -42,6 +42,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.id = id; //the characterId of this player
     this.animationChanged = false;
     this.isInstant = false; //a flag to indicate that this state should only be transmitted once, such as an attack
+    this.playerName = playerName;
+
+    let style = {
+      font: "15px",
+      align: "center",
+      wordWrap: true,
+      wordWrapWidth: this.width
+    }
+
+    this.nameTag = this.scene.add.text(this.x, this.y, this.playerName, style);
+    this.nameTag.setShadow(1, 1, "rgba(0,0,0,0.5)", 10);
 
     //Enable physics on this sprite
     this.scene.physics.world.enable(this);
@@ -189,6 +200,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   toggleMovementMode() {
     this.movementMode = this.movementMode === "walk" ? "run" : "walk";
   }
+
+  update(time, delta) {
+    this.nameTag.x = Math.floor(this.x - this.nameTag.width / 2);
+    this.nameTag.y = Math.floor(this.y - this.height / 2);
+  }
+
 
   getVelocityFromDirection(direction) {
     let vdx = 0;
