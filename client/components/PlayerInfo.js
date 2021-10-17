@@ -40,49 +40,50 @@ const PlayerInfo = () => {
       <div className="player">
         <h3 id="playerName">{player.name}</h3>
       </div>
-      <div className="playerImg">
-        <img src="goldRing.png" width="100px" height="100px" />
-        <img src={player.portrait} className="portrait" />
-      </div>
-
-      <div className="bar">
-        <div>
-          <h4 className="whiteText">HP</h4>
+      <div className="playerDetails">
+        <div className="playerImg">
+          <img src="goldRing.png" width="78px" height="78px" />
+          <img src={player.portrait} className="portrait" />
         </div>
+        <div className="bars">
+          <div className="bar">
+            <div>
+              {/* <h4 className="whiteText">HP</h4> */}
+            </div>
 
-        <div
-          style={{
-            backgroundColor: "black",
-            width: "280px",
-            height: "20px",
-            margin: "5px"
-          }}>
-          <div
-            style={healthStyle}
-            className="barRatio">{`${player.health}/${player.totalHealth}`}</div>
-        </div>
-      </div>
-      <div className="bar">
-        <div>
-          <h4 className="whiteText">EXP</h4>
-        </div>
+            <div
+              style={{
+                backgroundColor: "black",
+                width: "200px",
+                height: "20px",
+              }}>
+              <div
+                style={healthStyle}
+                className="barRatio">{`${player.health}/${player.totalHealth}`}</div>
+            </div>
+          </div>
+          <div className="bar">
+            <div>
+              {/* <h4 className="whiteText">EXP</h4> */}
+            </div>
 
-        <div
-          style={{
-            backgroundColor: "black",
-            width: "280px",
-            height: "20px",
-            margin: "5px"
-          }}>
-          <div
-            style={{
-              background: "rgb(0,0,96)",
-              background:
-                "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,96,1) 100%)",
-              width: `${expWidth}px`,
-              height: "20px"
-            }}
-            className="barRatio">{`${player.experience}/${player.totalExp}`}</div>
+            <div
+              style={{
+                backgroundColor: "black",
+                width: "200px",
+                height: "20px",
+              }}>
+              <div
+                style={{
+                  background: "rgb(0,0,96)",
+                  background:
+                    "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,96,1) 100%)",
+                  width: `${expWidth}px`,
+                  height: "20px"
+                }}
+                className="barRatio">{`${player.experience}/${player.totalExp}`}</div>
+            </div>
+          </div>
         </div>
       </div>
       <h3>{`Level ${player.level}`}</h3>
