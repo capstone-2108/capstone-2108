@@ -41,10 +41,16 @@ export const InitSubscriptionsToPhaser = () => {
      ***************/
     //Subscribes to an event which lets us know when phaser has fully loaded
     eventEmitter.subscribe("phaserLoad", async (data) => {
-      const characterId = await dispatch(fetchCharacterData()); //load the players data into redux
-      if (characterId) {
-        dispatch(fetchNearbyPlayers(characterId)); //load any players which are in the same scene as the player
-      }
+      const player = await dispatch(fetchCharacterData()); //load the players data into redux
+      eventEmitter.emit("playerLoad", player);
+    });
+
+    eventEmitter.subscribe("sceneLoad", async (data) => {
+      const player = await dispatch(fetchCharacterData()); //load the players data into redux
+      eventEmitter.emit("scenePlayerLoad", player);
+      //load any players which are in the same scene as the player
+      const remotePlayers = await dispatch(fetchNearbyPlayers(player.characterId));
+      eventEmitter.emit("nearbyPlayerLoad", remotePlayers);
     });
 
     //phaser will send us updates via the "phaserUpdate" event

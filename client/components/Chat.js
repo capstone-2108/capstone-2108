@@ -16,7 +16,6 @@ const Chat = (props) => {
     });
     setSocket(chatSocket);
     chatSocket.on("newMessage", (message) => {
-      console.log("newMessage", message);
       dispatch(addNewMessage(message));
     });
     return () => chatSocket.close();

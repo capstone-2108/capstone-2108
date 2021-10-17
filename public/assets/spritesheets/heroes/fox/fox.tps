@@ -132,7 +132,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>fox.json</filename>
+                <filename></filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -149,7 +149,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <false/>
+        <true/>
         <key>trimSpriteNames</key>
         <false/>
         <key>prependSmartFolderName</key>
@@ -163,7 +163,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>0</uint>
+            <uint>1</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -177,58 +177,58 @@
             <key>defaultPivotPoint</key>
             <point_f>0.5,0.5</point_f>
             <key>writePivotPoints</key>
-            <false/>
+            <true/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">idle/images/fox_idle-0.png</key>
-            <key type="filename">idle/images/fox_idle-1.png</key>
-            <key type="filename">idle/images/fox_idle-10.png</key>
-            <key type="filename">idle/images/fox_idle-11.png</key>
-            <key type="filename">idle/images/fox_idle-12.png</key>
-            <key type="filename">idle/images/fox_idle-13.png</key>
-            <key type="filename">idle/images/fox_idle-14.png</key>
-            <key type="filename">idle/images/fox_idle-15.png</key>
-            <key type="filename">idle/images/fox_idle-2.png</key>
-            <key type="filename">idle/images/fox_idle-3.png</key>
-            <key type="filename">idle/images/fox_idle-4.png</key>
-            <key type="filename">idle/images/fox_idle-5.png</key>
-            <key type="filename">idle/images/fox_idle-6.png</key>
-            <key type="filename">idle/images/fox_idle-7.png</key>
-            <key type="filename">idle/images/fox_idle-8.png</key>
-            <key type="filename">idle/images/fox_idle-9.png</key>
-            <key type="filename">run/images/fox_run-0.png</key>
-            <key type="filename">run/images/fox_run-1.png</key>
-            <key type="filename">run/images/fox_run-10.png</key>
-            <key type="filename">run/images/fox_run-11.png</key>
-            <key type="filename">run/images/fox_run-12.png</key>
-            <key type="filename">run/images/fox_run-13.png</key>
-            <key type="filename">run/images/fox_run-14.png</key>
-            <key type="filename">run/images/fox_run-15.png</key>
-            <key type="filename">run/images/fox_run-2.png</key>
-            <key type="filename">run/images/fox_run-3.png</key>
-            <key type="filename">run/images/fox_run-4.png</key>
-            <key type="filename">run/images/fox_run-5.png</key>
-            <key type="filename">run/images/fox_run-6.png</key>
-            <key type="filename">run/images/fox_run-7.png</key>
-            <key type="filename">run/images/fox_run-8.png</key>
-            <key type="filename">run/images/fox_run-9.png</key>
-            <key type="filename">walk/images/fox_walk-0.png</key>
-            <key type="filename">walk/images/fox_walk-1.png</key>
-            <key type="filename">walk/images/fox_walk-10.png</key>
-            <key type="filename">walk/images/fox_walk-11.png</key>
-            <key type="filename">walk/images/fox_walk-12.png</key>
-            <key type="filename">walk/images/fox_walk-13.png</key>
-            <key type="filename">walk/images/fox_walk-14.png</key>
-            <key type="filename">walk/images/fox_walk-15.png</key>
-            <key type="filename">walk/images/fox_walk-2.png</key>
-            <key type="filename">walk/images/fox_walk-3.png</key>
-            <key type="filename">walk/images/fox_walk-4.png</key>
-            <key type="filename">walk/images/fox_walk-5.png</key>
-            <key type="filename">walk/images/fox_walk-6.png</key>
-            <key type="filename">walk/images/fox_walk-7.png</key>
-            <key type="filename">walk/images/fox_walk-8.png</key>
-            <key type="filename">walk/images/fox_walk-9.png</key>
+            <key type="filename">fox_idle/fox_idle-0.png</key>
+            <key type="filename">fox_idle/fox_idle-1.png</key>
+            <key type="filename">fox_idle/fox_idle-10.png</key>
+            <key type="filename">fox_idle/fox_idle-11.png</key>
+            <key type="filename">fox_idle/fox_idle-12.png</key>
+            <key type="filename">fox_idle/fox_idle-13.png</key>
+            <key type="filename">fox_idle/fox_idle-14.png</key>
+            <key type="filename">fox_idle/fox_idle-15.png</key>
+            <key type="filename">fox_idle/fox_idle-2.png</key>
+            <key type="filename">fox_idle/fox_idle-3.png</key>
+            <key type="filename">fox_idle/fox_idle-4.png</key>
+            <key type="filename">fox_idle/fox_idle-5.png</key>
+            <key type="filename">fox_idle/fox_idle-6.png</key>
+            <key type="filename">fox_idle/fox_idle-7.png</key>
+            <key type="filename">fox_idle/fox_idle-8.png</key>
+            <key type="filename">fox_idle/fox_idle-9.png</key>
+            <key type="filename">fox_melee/fox_melee-0.png</key>
+            <key type="filename">fox_melee/fox_melee-1.png</key>
+            <key type="filename">fox_melee/fox_melee-10.png</key>
+            <key type="filename">fox_melee/fox_melee-11.png</key>
+            <key type="filename">fox_melee/fox_melee-12.png</key>
+            <key type="filename">fox_melee/fox_melee-13.png</key>
+            <key type="filename">fox_melee/fox_melee-14.png</key>
+            <key type="filename">fox_melee/fox_melee-15.png</key>
+            <key type="filename">fox_melee/fox_melee-2.png</key>
+            <key type="filename">fox_melee/fox_melee-3.png</key>
+            <key type="filename">fox_melee/fox_melee-4.png</key>
+            <key type="filename">fox_melee/fox_melee-5.png</key>
+            <key type="filename">fox_melee/fox_melee-6.png</key>
+            <key type="filename">fox_melee/fox_melee-7.png</key>
+            <key type="filename">fox_melee/fox_melee-8.png</key>
+            <key type="filename">fox_melee/fox_melee-9.png</key>
+            <key type="filename">fox_walk/fox_walk-0.png</key>
+            <key type="filename">fox_walk/fox_walk-1.png</key>
+            <key type="filename">fox_walk/fox_walk-10.png</key>
+            <key type="filename">fox_walk/fox_walk-11.png</key>
+            <key type="filename">fox_walk/fox_walk-12.png</key>
+            <key type="filename">fox_walk/fox_walk-13.png</key>
+            <key type="filename">fox_walk/fox_walk-14.png</key>
+            <key type="filename">fox_walk/fox_walk-15.png</key>
+            <key type="filename">fox_walk/fox_walk-2.png</key>
+            <key type="filename">fox_walk/fox_walk-3.png</key>
+            <key type="filename">fox_walk/fox_walk-4.png</key>
+            <key type="filename">fox_walk/fox_walk-5.png</key>
+            <key type="filename">fox_walk/fox_walk-6.png</key>
+            <key type="filename">fox_walk/fox_walk-7.png</key>
+            <key type="filename">fox_walk/fox_walk-8.png</key>
+            <key type="filename">fox_walk/fox_walk-9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -246,54 +246,54 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>idle/images/fox_idle-0.png</filename>
-            <filename>idle/images/fox_idle-1.png</filename>
-            <filename>idle/images/fox_idle-10.png</filename>
-            <filename>idle/images/fox_idle-11.png</filename>
-            <filename>idle/images/fox_idle-12.png</filename>
-            <filename>idle/images/fox_idle-13.png</filename>
-            <filename>idle/images/fox_idle-14.png</filename>
-            <filename>idle/images/fox_idle-15.png</filename>
-            <filename>idle/images/fox_idle-2.png</filename>
-            <filename>idle/images/fox_idle-3.png</filename>
-            <filename>idle/images/fox_idle-4.png</filename>
-            <filename>idle/images/fox_idle-5.png</filename>
-            <filename>idle/images/fox_idle-6.png</filename>
-            <filename>idle/images/fox_idle-7.png</filename>
-            <filename>idle/images/fox_idle-8.png</filename>
-            <filename>idle/images/fox_idle-9.png</filename>
-            <filename>walk/images/fox_walk-0.png</filename>
-            <filename>walk/images/fox_walk-1.png</filename>
-            <filename>walk/images/fox_walk-10.png</filename>
-            <filename>walk/images/fox_walk-11.png</filename>
-            <filename>walk/images/fox_walk-12.png</filename>
-            <filename>walk/images/fox_walk-13.png</filename>
-            <filename>walk/images/fox_walk-14.png</filename>
-            <filename>walk/images/fox_walk-15.png</filename>
-            <filename>walk/images/fox_walk-2.png</filename>
-            <filename>walk/images/fox_walk-3.png</filename>
-            <filename>walk/images/fox_walk-4.png</filename>
-            <filename>walk/images/fox_walk-5.png</filename>
-            <filename>walk/images/fox_walk-6.png</filename>
-            <filename>walk/images/fox_walk-7.png</filename>
-            <filename>walk/images/fox_walk-8.png</filename>
-            <filename>walk/images/fox_walk-9.png</filename>
-            <filename>run/images/fox_run-0.png</filename>
-            <filename>run/images/fox_run-1.png</filename>
-            <filename>run/images/fox_run-10.png</filename>
-            <filename>run/images/fox_run-11.png</filename>
-            <filename>run/images/fox_run-12.png</filename>
-            <filename>run/images/fox_run-13.png</filename>
-            <filename>run/images/fox_run-14.png</filename>
-            <filename>run/images/fox_run-15.png</filename>
-            <filename>run/images/fox_run-2.png</filename>
-            <filename>run/images/fox_run-3.png</filename>
-            <filename>run/images/fox_run-4.png</filename>
-            <filename>run/images/fox_run-5.png</filename>
-            <filename>run/images/fox_run-6.png</filename>
-            <filename>run/images/fox_run-7.png</filename>
-            <filename>run/images/fox_run-8.png</filename>
-            <filename>run/images/fox_run-9.png</filename>
+            <filename>fox_idle/fox_idle-0.png</filename>
+            <filename>fox_idle/fox_idle-1.png</filename>
+            <filename>fox_idle/fox_idle-10.png</filename>
+            <filename>fox_idle/fox_idle-11.png</filename>
+            <filename>fox_idle/fox_idle-12.png</filename>
+            <filename>fox_idle/fox_idle-13.png</filename>
+            <filename>fox_idle/fox_idle-14.png</filename>
+            <filename>fox_idle/fox_idle-15.png</filename>
+            <filename>fox_idle/fox_idle-2.png</filename>
+            <filename>fox_idle/fox_idle-3.png</filename>
+            <filename>fox_idle/fox_idle-4.png</filename>
+            <filename>fox_idle/fox_idle-5.png</filename>
+            <filename>fox_idle/fox_idle-6.png</filename>
+            <filename>fox_idle/fox_idle-7.png</filename>
+            <filename>fox_idle/fox_idle-8.png</filename>
+            <filename>fox_idle/fox_idle-9.png</filename>
+            <filename>fox_melee/fox_melee-0.png</filename>
+            <filename>fox_melee/fox_melee-1.png</filename>
+            <filename>fox_melee/fox_melee-10.png</filename>
+            <filename>fox_melee/fox_melee-11.png</filename>
+            <filename>fox_melee/fox_melee-12.png</filename>
+            <filename>fox_melee/fox_melee-13.png</filename>
+            <filename>fox_melee/fox_melee-14.png</filename>
+            <filename>fox_melee/fox_melee-15.png</filename>
+            <filename>fox_melee/fox_melee-2.png</filename>
+            <filename>fox_melee/fox_melee-3.png</filename>
+            <filename>fox_melee/fox_melee-4.png</filename>
+            <filename>fox_melee/fox_melee-5.png</filename>
+            <filename>fox_melee/fox_melee-6.png</filename>
+            <filename>fox_melee/fox_melee-7.png</filename>
+            <filename>fox_melee/fox_melee-8.png</filename>
+            <filename>fox_melee/fox_melee-9.png</filename>
+            <filename>fox_walk/fox_walk-0.png</filename>
+            <filename>fox_walk/fox_walk-1.png</filename>
+            <filename>fox_walk/fox_walk-10.png</filename>
+            <filename>fox_walk/fox_walk-11.png</filename>
+            <filename>fox_walk/fox_walk-12.png</filename>
+            <filename>fox_walk/fox_walk-13.png</filename>
+            <filename>fox_walk/fox_walk-14.png</filename>
+            <filename>fox_walk/fox_walk-15.png</filename>
+            <filename>fox_walk/fox_walk-2.png</filename>
+            <filename>fox_walk/fox_walk-3.png</filename>
+            <filename>fox_walk/fox_walk-4.png</filename>
+            <filename>fox_walk/fox_walk-5.png</filename>
+            <filename>fox_walk/fox_walk-6.png</filename>
+            <filename>fox_walk/fox_walk-7.png</filename>
+            <filename>fox_walk/fox_walk-8.png</filename>
+            <filename>fox_walk/fox_walk-9.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
@@ -306,7 +306,7 @@
         <key>commonDivisorY</key>
         <uint>1</uint>
         <key>packNormalMaps</key>
-        <true/>
+        <false/>
         <key>autodetectNormalMaps</key>
         <true/>
         <key>normalMapFilter</key>

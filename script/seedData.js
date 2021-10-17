@@ -91,7 +91,7 @@ const spriteSheetData = [
 
 const sceneData = [
   {
-    name: "village",
+    name: "StarterTown",
     mapId: 1
   }
 ];
