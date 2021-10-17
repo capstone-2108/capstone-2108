@@ -39,7 +39,8 @@ export default class MMOScene extends Phaser.Scene {
         "player",
         data.templateName,
         true,
-        data.characterId
+        data.characterId,
+        data.name
       );
 
       this.cameras.main.startFollow(this.player);
@@ -82,7 +83,8 @@ export default class MMOScene extends Phaser.Scene {
             `${player.name}-${player.characterId}`,
             player.templateName,
             false,
-            player.characterId
+            player.characterId,
+            player.name
           );
         }
       }
