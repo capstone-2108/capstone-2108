@@ -43,6 +43,10 @@ function initGameSync() {
       socket.broadcast.emit("otherPlayerPositionChanged", data);
     });
 
+    socket.on("playerSceneChanged", (data) => {
+      //update the database with the new location
+    });
+
     console.log(`${socket.user.firstName} has connected to game sync!`);
   });
 }

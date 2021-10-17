@@ -15,6 +15,7 @@ import {
 
 import { eventEmitter } from "../event/EventEmitter";
 import StateMachine from "../StateMachine";
+import { createPlayerAnimation } from "../animation/createAnimations";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -49,7 +50,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
 
     //Create all the animations, running, walking attacking, in all directions of movement
-    this.createAnimations();
+    createPlayerAnimation(this);
 
     /*************************
      * Multiplayer Variables *
@@ -419,34 +420,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   moveToCoordinate(x, y) {
     this.x = x;
     this.y = y;
-  }
-
-  createAnimations() {
-    const modes = ["idle", "walk", "melee"];
-    const directions = {
-      [NORTH]: { start: 12, end: 15 },
-      [EAST]: { start: 8, end: 11 },
-      [SOUTH]: { start: 0, end: 3 },
-      [WEST]: { start: 4, end: 7 }
-    };
-
-    for (const [dir, dirOptions] of Object.entries(directions)) {
-      for (const mode of modes) {
-        const animationName = `${this.name}-${mode}-${dir}`; //what to call the animation so we can refer to it later
-        const atlasKey = `${this.name}`; //which atlas should we use
-        this.anims.create({
-          key: animationName,
-          frameRate: 10,
-          frames: this.anims.generateFrameNames(atlasKey, {
-            prefix: `${atlasKey}_${mode}-`, //this will match the file name in the .json file for this atlas
-            suffix: ".png",
-            start: dirOptions.start,
-            end: dirOptions.end
-            // repeat: -1
-          })
-        });
-      }
-    }
   }
 
   //returns velocity modifiers and the direction the character is facing/moving based on player inputs

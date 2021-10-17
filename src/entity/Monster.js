@@ -1,5 +1,8 @@
 import { DIRECTION_CONVERSION, EAST, NORTH, SOUTH, WEST } from "../constants/constants";
 import StateMachine from "../StateMachine";
+import { screenToMap } from "../util/conversion";
+import { AggroZone } from "./AggroZone";
+import { createMonsterAnimations } from "../animation/createAnimations";
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -29,13 +32,23 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.movementMode = "walk"; //the current movement mode, walk or run
     this.id = id; //the characterId of this player
 
+    //my original position
+    this.spawnPoint = screenToMap(this.x, this.y);
+
+    //Pathfinding
+    this.pathIntervalId = undefined;
+    this.pathId = undefined;
+
+    //Monster Aggro Zone
+    this.aggroZone = new AggroZone(this.scene, this.x, this.y, 100, 100, this);
+
     //Enable physics on this sprite
     this.scene.physics.world.enable(this);
-    this.setScale(1.75, 1.75);
+    this.setScale(2, 2);
     this.setBodySize(22, 22);
 
     //Create all the animations, running, walking attacking, in all directions of movement
-    this.createAnimations();
+    createMonsterAnimations(this);
 
     this.stateMachine = new StateMachine(this, "monsterStateMachine")
       .addState("idle", {
@@ -56,6 +69,8 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta) {
     this.stateMachine.update(time, delta);
+    this.checkAggroZone();
+    this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
   }
 
   hitEnter() {
@@ -64,21 +79,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     let convertedDir = DIRECTION_CONVERSION[this.direction];
     const flash = (animation, frame) => {
       if (frame.index === 3) {
-        // const startColor = Phaser.Display.Color.ValueToColor(0xffffff);
-        // const endColor = Phaser.Display.Color.ValueToColor(0x000000);
         this.scene.tweens.addCounter({
           from: 0,
           to: 100,
           duration: 200,
           onUpdate: (tween) => {
             const tweenVal = tween.getValue();
-            // const colorObj = Phaser.Display.Color.Interpolate.ColorWithColor(
-            //   startColor,
-            //   endColor,
-            //   100,
-            //   tweenVal
-            // );
-            // const color = Phaser.Display.Color.GetColor(colorObj.r, colorObj.b, colorObj.g);
             if (tweenVal % 2) {
               this.setTintFill(0xffffff);
             } else {
@@ -119,198 +125,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.animationPlayer("idle");
   }
 
-  createAnimations() {
-    const directions = [NORTH, EAST, SOUTH, WEST];
-    // const threeFrames = {
-    //   [NORTH]: { start: 9, end: 11 },
-    //   [EAST]: { start: 6, end: 8 },
-    //   [SOUTH]: { start: 0, end: 2 },
-    //   [WEST]: { start: 3, end: 5 }
-    // };
-    const fourFrames = {
-      [NORTH]: { start: 12, end: 15 },
-      [EAST]: { start: 8, end: 11 },
-      [SOUTH]: { start: 0, end: 3 },
-      [WEST]: { start: 4, end: 7 }
-    };
 
-    const states = {
-      idle: {
-        frameConfigs: {
-          // [NORTH]: {0, 1, 2, 1],
-          [NORTH]: [
-            { frame: "_idle-0", duration: 640 },
-            { frame: "_idle-1", duration: 80 },
-            { frame: "_idle-2", duration: 640 },
-            { frame: "_idle-1", duration: 80 }
-          ],
-          // [EAST]: [0, 1, 2, 1],
-          [EAST]: [
-            { frame: "_idle-0", duration: 640 },
-            { frame: "_idle-1", duration: 80 },
-            { frame: "_idle-2", duration: 640 },
-            { frame: "_idle-1", duration: 80 }
-          ],
-          [SOUTH]: [
-            { frame: "_idle-0", duration: 640 },
-            { frame: "_idle-1", duration: 80 },
-            { frame: "_idle-2", duration: 640 },
-            { frame: "_idle-1", duration: 80 }
-          ],
-          [WEST]: [
-            { frame: "_idle-0", duration: 640 },
-            { frame: "_idle-1", duration: 80 },
-            { frame: "_idle-2", duration: 640 },
-            { frame: "_idle-1", duration: 80 }
-          ]
-        },
-        repeat: "yoyo"
-      },
-      hit: {
-        frameConfigs: {
-          // [NORTH]: [9, 10, 11, 10, 11, 9],
-          [NORTH]: [
-            { frame: "_hit-9", duration: 120 },
-            { frame: "_hit-10", duration: 80 },
-            { frame: "_hit-11", duration: 80 },
-            { frame: "_hit-10", duration: 80 },
-            { frame: "_hit-11", duration: 80 },
-            { frame: "_hit-9", duration: 80 }
-          ],
-          // [EAST]: [6, 7, 8, 7, 8, 6],
-          [EAST]: [
-            { frame: "_hit-6", duration: 120 },
-            { frame: "_hit-7", duration: 80 },
-            { frame: "_hit-8", duration: 80 },
-            { frame: "_hit-7", duration: 80 },
-            { frame: "_hit-8", duration: 80 },
-            { frame: "_hit-6", duration: 80 }
-          ],
-          // [SOUTH]: [0, 1, 2, 1, 2, 0],
-          [SOUTH]: [
-            { frame: "_hit-0", duration: 120 },
-            { frame: "_hit-1", duration: 80 },
-            { frame: "_hit-2", duration: 80 },
-            { frame: "_hit-1", duration: 80 },
-            { frame: "_hit-2", duration: 80 },
-            { frame: "_hit-0", duration: 80 }
-          ],
-          // [WEST]: [3, 4, 5, 4, 5, 3]
-          [WEST]: [
-            { frame: "_hit-3", duration: 120 },
-            { frame: "_hit-4", duration: 80 },
-            { frame: "_hit-5", duration: 80 },
-            { frame: "_hit-4", duration: 80 },
-            { frame: "_hit-5", duration: 80 },
-            { frame: "_hit-3", duration: 80 }
-          ]
-        }
-      },
-      walk: {
-        frameConfigs: {
-          // [NORTH]: [12, 13, 14, 15],
-          [NORTH]: [
-            { frame: "_walk-12", duration: 120 },
-            { frame: "_walk-13", duration: 120 },
-            { frame: "_walk-14", duration: 120 },
-            { frame: "_walk-15", duration: 120 }
-          ],
-          // [EAST]: [8, 9, 10, 11],
-          [EAST]: [
-            { frame: "_walk-8", duration: 120 },
-            { frame: "_walk-9", duration: 120 },
-            { frame: "_walk-10", duration: 120 },
-            { frame: "_walk-11", duration: 120 }
-          ],
-          // [SOUTH]: [0, 1, 2, 3],
-          [SOUTH]: [
-            { frame: "_walk-0", duration: 120 },
-            { frame: "_walk-1", duration: 120 },
-            { frame: "_walk-2", duration: 120 },
-            { frame: "_walk-3", duration: 120 }
-          ],
-          // [WEST]: [4, 5, 6, 7]
-          [WEST]: [
-            { frame: "_walk-4", duration: 120 },
-            { frame: "_walk-5", duration: 120 },
-            { frame: "_walk-6", duration: 120 },
-            { frame: "_walk-7", duration: 120 }
-          ]
-        }
-      },
-      attack: {
-        frameConfigs: {
-          // [NORTH]: [12, 13, 14, 15],
-          [NORTH]: [
-            { frame: "_attack-12", duration: 300 },
-            { frame: "_attack-13", duration: 100 },
-            { frame: "_attack-14", duration: 100 },
-            { frame: "_attack-15", duration: 200 }
-          ],
-          // [EAST]: [8, 9, 10, 11],
-          [EAST]: [
-            { frame: "_attack-8", duration: 300 },
-            { frame: "_attack-9", duration: 100 },
-            { frame: "_attack-10", duration: 100 },
-            { frame: "_attack-11", duration: 200 }
-          ],
-          // [SOUTH]: [0, 1, 2, 3],
-          [SOUTH]: [
-            { frame: "_attack-0", duration: 300 },
-            { frame: "_attack-1", duration: 100 },
-            { frame: "_attack-2", duration: 100 },
-            { frame: "_attack-3", duration: 200 }
-          ],
-          // [WEST]: [4, 5, 6, 7]
-          [WEST]: [
-            { frame: "_attack-4", duration: 300 },
-            { frame: "_attack-5", duration: 100 },
-            { frame: "_attack-6", duration: 100 },
-            { frame: "_attack-7", duration: 200 }
-          ]
-        }
-      }
-    };
-
-    for (const [stateName, config] of Object.entries(states)) {
-      for (const [direction, frameConfigs] of Object.entries(config.frameConfigs)) {
-        let frameNames = [];
-        for (let i = 0; i < frameConfigs.length; i++) {
-          frameNames.push({
-            key: this.name,
-            frame: this.name + frameConfigs[i].frame + ".png",
-            delay: frameConfigs[i].delay,
-            duration: frameConfigs[i].duration
-          });
-        }
-        const animationName = `${this.name}-${stateName}-${direction}`; //what to call the animation so we can refer to it later
-        this.anims.create({
-          key: animationName,
-          frameRate: 10,
-          frames: frameNames
-          // repeat: frameConfigs.repeat
-        });
-      }
-
-      // for (const [frameDirection, framesConfig] of Object.entries(animationOptions.framesConfigs)) {
-      //   const animationName = `${this.name}-${stateName}-${frameDirection}`; //what to call the animation so we can refer to it later
-      //   //iterate over the
-      //   console.log("creating animation", animationName);
-      //   const atlasKey = `${this.name}`; //which atlas should we use
-      //   const frameNames = framesConfig.map((frameNumber) => {
-      //     console.log('frameNumber', frameNumber);
-      //       // `${atlasKey}_${stateName}-${frameNumber}.png`
-      //     }
-      //   );
-      //   console.log("frameNames", frameNames);
-      //   this.anims.create({
-      //     key: animationName,
-      //     frameRate: 10,
-      //     frames: frameNames
-      //   });
-      // }
-    }
-  }
 
   //plays the correct animation based on the state
   animationPlayer(state) {
@@ -345,5 +160,48 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.setVelocityY(
       this.speeds.walk * (this.stateMachine.currentStateName === "melee" ? 0 : vdy)
     );
+  }
+
+  checkAggroZone(zoneStatus) {
+    if (this.aggroZone.hasTarget()) {
+      const zoneStatus = this.aggroZone.checkZone();
+      if (zoneStatus.isTargetInZone) {
+        if (zoneStatus.targetHasMoved) {
+          this.moveTo(zoneStatus.targetX, zoneStatus.targetY);
+        }
+      } else {
+        this.moveTo(this.spawnPoint.x, this.spawnPoint.y);
+      }
+    }
+  }
+
+  moveTo(x, y) {
+    const chaseAlongPath = (path) => {
+      if (path === null) {
+        console.warn("Path was not found.");
+        return;
+      } else {
+        console.log("PATHHHHH", path);
+      }
+      path = path.slice(1, path.length - 1);
+      let pathIndex = 0;
+      this.pathIntervalId = window.setInterval(() => {
+        if (path[pathIndex]) {
+          this.x = path[pathIndex].x * 16;
+          this.y = path[pathIndex].y * 16;
+          pathIndex++;
+        } else {
+          window.clearInterval(this.pathIntervalId);
+          this.pathIntervalId = undefined;
+          this.pathId = undefined;
+        }
+      }, 300);
+    };
+    const startNode = screenToMap(this.x, this.y);
+    const boundCallback = chaseAlongPath.bind(this);
+    this.scene.pathfinder.cancelPath(this.pathId);
+    window.clearInterval(this.pathIntervalId);
+    this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, boundCallback);
+    this.scene.pathfinder.calculate();
   }
 }

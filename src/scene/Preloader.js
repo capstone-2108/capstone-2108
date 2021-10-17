@@ -1,4 +1,5 @@
 import "phaser";
+import { eventEmitter } from "../event/EventEmitter";
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -44,10 +45,14 @@ export default class Preloader extends Phaser.Scene {
     /**How to load a tile set**/
     this.load.image("town", "tilesets/tileset/RPG tileset (full) v1.5 - 200_.png");
     this.load.image("grass", "tilesets/forest/grass.png");
-
   }
 
   create() {
-    this.scene.launch("MMOScene");
+    eventEmitter.emit("phaserLoad"); //tell react that phaser has loaded
+
+    //listen for an even from react to let us know when the player data is available
+    eventEmitter.subscribe("playerLoad", (data) => {
+      this.scene.launch(data.sceneName);
+    });
   }
 }
