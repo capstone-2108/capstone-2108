@@ -6,7 +6,6 @@ import EasyStar from "easystarjs";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
-    console.log("sceneName", sceneName);
     super(sceneName);
     this.playerData = {};
     this.otherPlayers = {};
@@ -30,10 +29,8 @@ export default class MMOScene extends Phaser.Scene {
     this.monsterGroup = this.physics.add.group();
     this.monsterGroup.add(this.monster);
 
-    //These events should exist on every scene
-    eventEmitter.subscribe("scenePlayerLoad", (data) => {
+    const scenePlayerLoad = (data) => {
       this.playerData = data;
-      console.log('data', data)
       this.player = new Player(
         this,
         data.xPos,
@@ -43,6 +40,16 @@ export default class MMOScene extends Phaser.Scene {
         true,
         data.characterId
       );
+
+      this.physics.add.overlap(this.transitionRectangle, this.player, () => {
+
+
+        scenePlayerLoadUnsubscribe()
+        nearbyPlayerLoadUnsubscribe()
+        otherPlayerPositionChangedUnsubscribe()
+        otherPlayerLoadUnsubscribe()
+        this.scene.start("ForestScene")
+      });
 
       this.cameras.main.startFollow(this.player);
       this.minimap = this.cameras
@@ -59,15 +66,18 @@ export default class MMOScene extends Phaser.Scene {
 
       const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
       this.minimap.setMask(circle, true);
-      this.physics.add.collider(this.player, this.groundLayer);
-      this.physics.add.collider(this.player, this.worldLayer);
-      this.physics.add.collider(this.player, this.belowCharLayer);
+      this.layers.forEach((layer) => {
+        this.physics.add.collider(this.player, layer);
+      })
       this.physics.add.overlap(this.monster.aggroZone, this.player, (aggroZone, player) => {
         aggroZone.setAggroTarget(player);
       });
-    });
+    }
 
-    eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
+    //These events should exist on every scene
+    const scenePlayerLoadUnsubscribe = eventEmitter.subscribe("scenePlayerLoad", scenePlayerLoad);
+
+    const nearbyPlayerLoadUnsubscribe = eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
       console.log("phaser got nearbyPlayerLoad", players);
       let i = 0;
       let len = players.length;
@@ -90,9 +100,7 @@ export default class MMOScene extends Phaser.Scene {
       }
     });
 
-    //this event lets us know that another player has moved, we should make this position move to
-    //the position we received
-    eventEmitter.subscribe("otherPlayerPositionChanged", (stateSnapshots) => {
+    const otherPlayerPositionChanged = (stateSnapshots) => {
       //set a `move to` position, and let update take care of the rest
       //should consider making `moveTo` stateSnapshots a queue in case more events come in before
       //the player character has finished moving
@@ -102,10 +110,13 @@ export default class MMOScene extends Phaser.Scene {
           stateSnapshots.stateSnapshots
         );
       }
-    });
+    }
 
-    //loads another player (not the main player) when receiving an otherPlayerLoad event from react
-    eventEmitter.subscribe("otherPlayerLoad", (data) => {
+    //this event lets us know that another player has moved, we should make this position move to
+    //the position we received
+    const otherPlayerPositionChangedUnsubscribe = eventEmitter.subscribe("otherPlayerPositionChanged", otherPlayerPositionChanged);
+
+    const otherPlayerLoad = (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
         this.otherPlayers[data.id] = new Player(
           this,
@@ -117,7 +128,9 @@ export default class MMOScene extends Phaser.Scene {
           data.id
         );
       }
-    });
+    }
+    //loads another player (not the main player) when receiving an otherPlayerLoad event from react
+    const otherPlayerLoadUnsubscribe = eventEmitter.subscribe("otherPlayerLoad", otherPlayerLoad);
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
 

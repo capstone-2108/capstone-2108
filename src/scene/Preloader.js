@@ -56,7 +56,7 @@ export default class Preloader extends Phaser.Scene {
   create() {
     eventEmitter.emit("phaserLoad"); //tell react that phaser has loaded
 
-    //listen for an even from react to let us know when the player data is available
+    //listen for an event from react to let us know when the player data is available
     eventEmitter.subscribe("playerLoad", (data) => {
       this.scene.launch(data.sceneName);
     });

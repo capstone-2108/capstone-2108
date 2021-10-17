@@ -47,6 +47,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.isInstant = false; //a flag to indicate that this state should only be transmitted once, such as an attack
 
     //Enable physics on this sprite
+    console.log('SCENE', this.scene)
     this.scene.physics.world.enable(this);
 
     //Create all the animations, running, walking attacking, in all directions of movement

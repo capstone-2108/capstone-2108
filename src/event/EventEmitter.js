@@ -8,11 +8,11 @@ export class EventEmitter {
     else { this.events[eventName] = [callback]; }
 
     //returns a function which unsubscribes from this event
-    return function unsubscribe() {
+    return () => {
       if (this.events[eventName]) {
         const indexOfCallback = this.events[eventName].indexOf(callback);
         if (indexOfCallback !== -1) {
-          this.events[eventName] = this.events[eventName].splice(indexOfCallback, 1);
+          this.events[eventName].splice(indexOfCallback, 1);
         }
       }
     };
