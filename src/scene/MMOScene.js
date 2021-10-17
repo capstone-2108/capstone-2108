@@ -10,6 +10,7 @@ export default class MMOScene extends Phaser.Scene {
     this.playerData = {};
     this.otherPlayers = {};
     this.subscribes = [];
+    this.transitionZones = [];
   }
 
   preload() {}
@@ -41,14 +42,14 @@ export default class MMOScene extends Phaser.Scene {
         data.characterId
       );
 
-      this.physics.add.overlap(this.transitionRectangle, this.player, () => {
-
-
-        scenePlayerLoadUnsubscribe()
-        nearbyPlayerLoadUnsubscribe()
-        otherPlayerPositionChangedUnsubscribe()
-        otherPlayerLoadUnsubscribe()
-        this.scene.start("ForestScene")
+      this.transitionZones.forEach((transitionZone) => {
+        this.physics.add.overlap(transitionZone, this.player, () => {
+          scenePlayerLoadUnsubscribe();
+          nearbyPlayerLoadUnsubscribe();
+          otherPlayerPositionChangedUnsubscribe();
+          otherPlayerLoadUnsubscribe();
+          this.scene.start("ForestScene");
+        });
       });
 
       this.cameras.main.startFollow(this.player);
@@ -72,32 +73,32 @@ export default class MMOScene extends Phaser.Scene {
       this.physics.add.overlap(this.monster.aggroZone, this.player, (aggroZone, player) => {
         aggroZone.setAggroTarget(player);
       });
-    }
+    };
 
     //These events should exist on every scene
     const scenePlayerLoadUnsubscribe = eventEmitter.subscribe("scenePlayerLoad", scenePlayerLoad);
 
     const nearbyPlayerLoadUnsubscribe = eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
-      console.log("phaser got nearbyPlayerLoad", players);
-      let i = 0;
-      let len = players.length;
-      for (; i < len; i++) {
-        const player = players[i];
-        if (
-          player.characterId !== this.player.characterId &&
-          !this.otherPlayers[player.characterId]
-        ) {
-          this.otherPlayers[player.characterId] = new Player(
-            this,
-            player.xPos,
-            player.yPos,
-            `${player.name}-${player.characterId}`,
-            player.templateName,
-            false,
-            player.characterId
-          );
-        }
-      }
+      // console.log("phaser got nearbyPlayerLoad", players);
+      // let i = 0;
+      // let len = players.length;
+      // for (; i < len; i++) {
+      //   const player = players[i];
+      //   if (
+      //     player.characterId !== this.player.characterId &&
+      //     !this.otherPlayers[player.characterId]
+      //   ) {
+      //     this.otherPlayers[player.characterId] = new Player(
+      //       this,
+      //       player.xPos,
+      //       player.yPos,
+      //       `${player.name}-${player.characterId}`,
+      //       player.templateName,
+      //       false,
+      //       player.characterId
+      //     );
+      //   }
+      // }
     });
 
     const otherPlayerPositionChanged = (stateSnapshots) => {
@@ -110,11 +111,14 @@ export default class MMOScene extends Phaser.Scene {
           stateSnapshots.stateSnapshots
         );
       }
-    }
+    };
 
     //this event lets us know that another player has moved, we should make this position move to
     //the position we received
-    const otherPlayerPositionChangedUnsubscribe = eventEmitter.subscribe("otherPlayerPositionChanged", otherPlayerPositionChanged);
+    const otherPlayerPositionChangedUnsubscribe = eventEmitter.subscribe(
+      "otherPlayerPositionChanged",
+      otherPlayerPositionChanged
+    );
 
     const otherPlayerLoad = (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
@@ -128,7 +132,7 @@ export default class MMOScene extends Phaser.Scene {
           data.id
         );
       }
-    }
+    };
     //loads another player (not the main player) when receiving an otherPlayerLoad event from react
     const otherPlayerLoadUnsubscribe = eventEmitter.subscribe("otherPlayerLoad", otherPlayerLoad);
     //this has to go last because we need all our events setup before react starts dispatching events
@@ -147,7 +151,8 @@ export default class MMOScene extends Phaser.Scene {
         player.update(time, delta);
       }
     }
-    this.monster.update(time, delta);
+    if (this.monster) {
+      this.monster.update(time, delta);
+    }
   }
 }
-
