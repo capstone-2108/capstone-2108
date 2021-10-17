@@ -50,6 +50,7 @@ export default class MMOScene extends Phaser.Scene {
         remotePlayerPositionChangedCallback.bind(this)
       )
     );
+
     //loads another player (not the main player) when receiving an otherPlayerLoad event from react
     this.unsubscribes.push(
       eventEmitter.subscribe("otherPlayerLoad", otherPlayerLoadCallback.bind(this))
