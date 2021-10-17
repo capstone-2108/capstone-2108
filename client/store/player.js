@@ -109,8 +109,9 @@ const initialState = {
   totalExp: 120,
   gold: 0,
   sceneId: 1,
-  sceneName: 'StarterTown',
-  level: 1
+  sceneName: "StarterTown",
+  level: 1,
+  portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png"
 };
 
 const clearState = {

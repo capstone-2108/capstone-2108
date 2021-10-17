@@ -27,14 +27,14 @@ body {
   font-family: "cinzel-decorative";
   font-weight: 700;
   font-size: 72px;
-  color:gold;
+  color: gold;
 }
 
 .ui {
   display: flex;
   width: 300px;
   color: white;
-  text-align: center;
+  /* text-align: center; */
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
     Verdana, sans-serif;
   padding: 0;
@@ -47,11 +47,44 @@ body {
   border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1;
 }
 
-.player {
+/* .playerInfo {
+  position: relative;
+  top: 0;
+  left: 0;
+} */
+.portrait {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  /* position:fixed;
+        z-index:2;
+        top:0;
+        left:0; */
+  border-radius: 50%;
+}
+
+.playerImg {
+  position: relative;
+  margin: 0px;
+}
+.playerImg > img {
+  position: absolute;
+  top: inherit;
+  left: inherit;
+}
+.playerImg > img:first-child {
+  z-index: 2;
+}
+
+.playerImg > img:nth-child(2) {
+  margin: 14px;
+}
+/* .player {
   display: flex;
   align-items: center;
+
   margin: 0px 130px;
-}
+} */
 
 .gold {
   display: flex;

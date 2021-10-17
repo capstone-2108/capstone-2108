@@ -36,9 +36,13 @@ const PlayerInfo = () => {
   }
 
   return (
-    <div>
+    <div className="playerInfo">
       <div className="player">
         <h3 id="playerName">{player.name}</h3>
+      </div>
+      <div className="playerImg">
+        <img src="goldRing.png" width="100px" height="100px" />
+        <img src={player.portrait} className="portrait" />
       </div>
 
       <div className="bar">
@@ -58,7 +62,6 @@ const PlayerInfo = () => {
             className="barRatio">{`${player.health}/${player.totalHealth}`}</div>
         </div>
       </div>
-
       <div className="bar">
         <div>
           <h4 className="whiteText">EXP</h4>
@@ -82,7 +85,6 @@ const PlayerInfo = () => {
             className="barRatio">{`${player.experience}/${player.totalExp}`}</div>
         </div>
       </div>
-
       <h3>{`Level ${player.level}`}</h3>
     </div>
   );
