@@ -105,7 +105,7 @@ export default class MMOScene extends Phaser.Scene {
     });
 
     //loads another player (not the main player) when receiving an otherPlayerLoad event from react
-    eventEmitter.subscribe("otherPlayerLoad", (data) => {
+    const test = eventEmitter.subscribe("otherPlayerLoad", (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
         this.otherPlayers[data.id] = new Player(
           this,
@@ -117,6 +117,8 @@ export default class MMOScene extends Phaser.Scene {
         );
       }
     });
+    test();
+    console.log('emitter', eventEmitter);
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
 

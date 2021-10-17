@@ -132,6 +132,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       }
       this.meleeHitbox.body.enable = true;
       this.scene.physics.world.add(this.meleeHitbox.body);
+
+      this.transitionRectangle.body.enable = true;
+      this.scene.physics.world.add(this.transitionRectangle.body);
       this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
     };
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
