@@ -24,7 +24,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
     include: [
       {
         model: TemplateCharacter,
-        attributes: ["id", "name"],
+        attributes: ["id", "name", "portrait"],
         include: {
           model: SpriteSheet,
           attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
@@ -55,7 +55,8 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
     yPos: playerCharacter.location.yPos,
     gold: playerCharacter.gold,
     sceneId: playerCharacter.location.scene.id,
-    sceneName: playerCharacter.location.scene.name
+    sceneName: playerCharacter.location.scene.name,
+    portrait: playerCharacter.templateCharacter.portrait
   };
   res.json(payload);
 });
