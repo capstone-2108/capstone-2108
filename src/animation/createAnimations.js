@@ -11,8 +11,8 @@ export const createPlayerAnimation = (player) => {
 
   for (const [dir, dirOptions] of Object.entries(directions)) {
     for (const mode of modes) {
-      const animationName = `${player.name}-${mode}-${dir}`; //what to call the animation so we can refer to it later
-      const atlasKey = `${player.name}`; //which atlas should we use
+      const animationName = `${player.templateName}-${mode}-${dir}`; //what to call the animation so we can refer to it later
+      const atlasKey = `${player.templateName}`; //which atlas should we use
       player.anims.create({
         key: animationName,
         frameRate: 10,

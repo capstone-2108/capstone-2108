@@ -1,8 +1,19 @@
-import { DIRECTION_CONVERSION, EAST, NORTH, SOUTH, WEST } from "../constants/constants";
+import {
+  DIRECTION_CONVERSION,
+  EAST,
+  NORTH,
+  NORTHEAST,
+  NORTHWEST,
+  SOUTH,
+  SOUTHEAST,
+  SOUTHWEST,
+  WEST
+} from "../constants/constants";
 import StateMachine from "../StateMachine";
-import { screenToMap } from "../util/conversion";
+import { mapToScreen, screenToMap } from "../util/conversion";
 import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
+import { Vertex } from "../pathfinding/Vertex";
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -32,12 +43,20 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.movementMode = "walk"; //the current movement mode, walk or run
     this.id = id; //the characterId of this player
 
-    //my original position
+    //the original position of the monster
     this.spawnPoint = screenToMap(this.x, this.y);
 
     //Pathfinding
-    this.pathIntervalId = undefined;
-    this.pathId = undefined;
+    this.pathIntervalId = undefined; //for testing purposes, an intervalId for the interval which is moving the monster through path nodes
+    this.pathId = undefined; //an integer identifier for the last path generated
+    this.waypoints = []; //waypoints of the current path
+    this.waypointIdx = 0; //index of the current path node
+    this.nextWaypoint = undefined; //the next waypoint to travel to
+    this.previousWaypoint = undefined;
+    this.vdx = 0;
+    this.vdy = 0;
+    this.dx = 0;
+    this.dy = 0;
 
     //Monster Aggro Zone
     this.aggroZone = new AggroZone(this.scene, this.x, this.y, 100, 100, this);
@@ -68,9 +87,133 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
-    this.stateMachine.update(time, delta);
-    this.checkAggroZone();
+    this.checkAggroZone(); //check if a player is in my aggro zone
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
+
+    if (this.waypoints.length) {
+      this.stateMachine.setState("walk");
+      this.updatePathMovement();
+    } else {
+    }
+    this.stateMachine.update(time, delta);
+  }
+
+  updatePathMovement() {
+    if (this.nextWaypoint) {
+      const previousMapVertex = this.previousWaypoint
+        ? mapToScreen(this.previousWaypoint.x, this.previousWaypoint.y)
+        : new Vertex(this.x, this.y);
+
+      const nextMapVertex = mapToScreen(this.nextWaypoint.x, this.nextWaypoint.y);
+      this.dx = nextMapVertex.x - this.x;
+      this.dy = nextMapVertex.y - this.y;
+
+      if (Math.abs(this.dx) < 8) {
+        this.dx = 0;
+      }
+      if (Math.abs(this.dy) < 8) {
+        this.dy = 0;
+      }
+      this.getMovementDirection(previousMapVertex, nextMapVertex);
+
+      //reached the waypoint, get the next waypoint
+      if (this.dx === 0 && this.dy === 0) {
+        if (this.waypoints.length > 0) {
+          this.previousWaypoint = this.nextWaypoint;
+          let nextWaypoint = this.waypoints[++this.waypointIdx];
+          console.log("next waypoint", this.nextWaypoint);
+          if (nextWaypoint) {
+            this.setNextWaypoint(nextWaypoint);
+          } else {
+            this.vdx = 0;
+            this.vdy = 0;
+            this.clearPath();
+            this.nextWaypoint = undefined;
+          }
+        }
+      }
+    }
+  }
+
+  setNextWaypoint(node) {
+    this.nextWaypoint = node;
+  }
+
+  getMovementDirection(start, end) {
+    let dx = end.x - start.x;
+    let dy = end.y - start.y;
+
+    const east = dx > 0;
+    const west = dx < 0;
+    const north = dy < 0;
+    const south = dy > 0;
+
+    let vdx = 0;
+    let vdy = 0;
+    let direction = this.direction;
+    if (east) {
+      vdx = 1;
+      direction = EAST;
+    } else if (west) {
+      vdx = -1;
+      direction = WEST;
+    } else if (north) {
+      vdy = -1;
+      direction = NORTH;
+    } else if (south) {
+      vdy = 1;
+      direction = SOUTH;
+    }
+
+    // if (north) {
+    //   vdy = -1;
+    // } else if (south) {
+    //   vdy = 1;
+    // } else {
+    //   vdy = 0;
+    // }
+    // if (east) {
+    //   vdx = 1;
+    //   if (vdy === 0) {
+    //     direction = EAST;
+    //   } else if (vdy === 1) {
+    //     direction = SOUTHEAST;
+    //     vdx = 1;
+    //     vdy = 1;
+    //   } else {
+    //     direction = NORTHEAST;
+    //     vdx = 1;
+    //     vdy = -1;
+    //   }
+    // } else if (west) {
+    //   vdx = -1;
+    //   if (vdy === 0) {
+    //     direction = WEST;
+    //   } else if (vdy === 1) {
+    //     direction = SOUTHWEST;
+    //     vdy = 1;
+    //     vdx = -1;
+    //   } else {
+    //     direction = NORTHWEST;
+    //     vdx = -1;
+    //     vdy = -1;
+    //   }
+    // } else {
+    //   vdx = 0;
+    //   if (vdy === 0) {
+    //   } else if (vdy === 1) {
+    //     direction = SOUTH;
+    //   } else {
+    //     direction = NORTH;
+    //   }
+    // }
+    this.vdx = vdx;
+    this.vdy = vdy;
+    this.directionChanged = direction !== this.direction;
+    this.direction = direction;
+    if (this.directionChanged) {
+      console.log(`direction changed from ${direction} to ${this.direction}`);
+    }
   }
 
   hitEnter() {
@@ -125,8 +268,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.animationPlayer("idle");
   }
 
-
-
   //plays the correct animation based on the state
   animationPlayer(state) {
     const currentAnimationPlaying = this.anims.getName();
@@ -134,18 +275,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     let vdy = 0;
     let direction = this.direction;
     //get movement data based on player inputs
-    if (this.localPlayer) {
-      let moveData = this.detectKeyInput();
-      vdx = moveData.vdx;
-      vdy = moveData.vdy;
-      direction = moveData.direction;
-    }
-    //get movement data based on the state snapshots
-    if (!this.localPlayer && this.nextStatesSnapshot) {
-      vdx = this.nextStatesSnapshot.vdx;
-      vdy = this.nextStatesSnapshot.vdy;
-      direction = this.getDirectionFromVelocity(vdx, vdy);
-    }
     this.direction = direction;
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.name}-${state}-${convertedDir}`;
@@ -154,19 +283,27 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       this.anims.play(animationToPlay);
     }
     this.setVelocityX(
-      this.speeds.walk * (this.stateMachine.currentStateName === "melee" ? 0 : vdx)
+      this.speeds.walk * (this.stateMachine.currentStateName === "melee" ? 0 : this.vdx)
     );
     this.setVelocityY(
-      this.speeds.walk * (this.stateMachine.currentStateName === "melee" ? 0 : vdy)
+      this.speeds.walk * (this.stateMachine.currentStateName === "melee" ? 0 : this.vdy)
     );
   }
 
-  checkAggroZone(zoneStatus) {
+  checkAggroZone() {
     if (this.aggroZone.hasTarget()) {
       const zoneStatus = this.aggroZone.checkZone();
       if (zoneStatus.isTargetInZone) {
         if (zoneStatus.targetHasMoved) {
-          this.moveTo(zoneStatus.targetX, zoneStatus.targetY);
+          this.getPathTo(zoneStatus.targetX, zoneStatus.targetY).then((path) => {
+            this.waypoints = path;
+            let nextWaypoint = this.waypoints[0];
+            const startingPoint = mapToScreen(nextWaypoint);
+            this.teleportTo();
+            this.setNextWaypoint(nextWaypoint);
+          });
+        } else if (zoneStatus.isNextToTarget) {
+          this.clearPath();
         }
       } else {
         this.moveTo(this.spawnPoint.x, this.spawnPoint.y);
@@ -174,10 +311,40 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  clearPath() {
+    window.clearInterval(this.pathIntervalId);
+    this.pathIntervalId = undefined;
+    this.pathId = undefined;
+    this.waypoints = [];
+    this.waypointIdx = 0;
+  }
+
+  getPathTo(x, y) {
+    return new Promise((resolve, reject) => {
+      const startNode = screenToMap(this.x, this.y);
+      this.scene.pathfinder.cancelPath(this.pathId);
+      console.log(`Pathing from ${startNode.x},${startNode.y} to ${x},${y}`);
+      this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
+        console.log(path);
+        resolve(path);
+      });
+      this.scene.pathfinder.calculate();
+    });
+  }
+
+  teleportTo(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
   moveTo(x, y) {
     const chaseAlongPath = (path) => {
-      if (path === null) { return; }
+      if (path === null) {
+        this.clearPath();
+        return;
+      }
       path = path.slice(1, path.length - 1);
+      // this.waypoints = path;
       let pathIndex = 0;
       this.pathIntervalId = window.setInterval(() => {
         if (path[pathIndex]) {
@@ -185,9 +352,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           this.y = path[pathIndex].y * 16;
           pathIndex++;
         } else {
-          window.clearInterval(this.pathIntervalId);
-          this.pathIntervalId = undefined;
-          this.pathId = undefined;
+          this.clearPath();
         }
       }, 300);
     };

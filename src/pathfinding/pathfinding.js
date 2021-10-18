@@ -7,7 +7,9 @@ import EasyStar from "easystarjs";
  */
 export const createPathFinder = (map, layers) => {
   const pathFinder = new EasyStar.js();
-  pathFinder.enableDiagonals();
+  // pathFinder.enableDiagonals();
+  pathFinder.disableDiagonals();
+  pathFinder.disableCornerCutting();
 
   const tileset = map.tilesets[0];
   const tilesetProperties = tileset.tileProperties;
