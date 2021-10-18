@@ -13,8 +13,8 @@ const {
 const { eventEmitter } = require("../event/EventEmitter");
 
 export class LocalPlayer extends Player {
-  constructor(scene, x, y, spriteKey, templateName, id) {
-    super(scene, x, y, spriteKey, templateName, id, true);
+  constructor(scene, x, y, spriteKey, templateName, characterName, id) {
+    super(scene, x, y, spriteKey, templateName, characterName, id, true);
     this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     /*************************
@@ -62,6 +62,7 @@ export class LocalPlayer extends Player {
       }
     }
     this.stateMachine.update(time, delta);
+    super.update(time, delta);
   }
 
   //saves snapshots of the local players state, which will be transmitted to the server later on

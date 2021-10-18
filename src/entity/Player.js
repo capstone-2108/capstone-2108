@@ -21,9 +21,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
    * @param {number} x
    * @param {number} y
    * @param {string} spriteKey
-   * @param {string} name
+   * @param {string} templateName
+   * @param {string} characterName
+   * @param {number} id
+   * @param {boolean} localPlayer
    */
-  constructor(scene, x, y, spriteKey, templateName, id, playerName, localPlayer = false) {
+  constructor(scene, x, y, spriteKey, templateName, characterName, id, localPlayer = false) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -42,17 +45,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.id = id; //the characterId of this player
     this.animationChanged = false;
     this.isInstant = false; //a flag to indicate that this state should only be transmitted once, such as an attack
-    this.playerName = playerName;
+    this.characterName = characterName;
 
     let style = {
       font: "15px",
       align: "center",
       wordWrap: true,
-      wordWrapWidth: this.width
+      wordWrapWidth: this.width,
+      color: "#554b87"
     }
 
-    this.nameTag = this.scene.add.text(this.x, this.y, this.playerName, style);
-    this.nameTag.setShadow(1, 1, "rgba(0,0,0,0.5)", 10);
+    this.nameTag = this.scene.add.text(this.x, this.y, this.characterName, style);
+    // this.nameTag.setShadow(1, 1, "rgba(0,0,0,0.5)", 10);
 
     //Enable physics on this sprite
     this.scene.physics.world.enable(this);
@@ -143,9 +147,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       }
       this.meleeHitbox.body.enable = true;
       this.scene.physics.world.add(this.meleeHitbox.body);
-
-      this.transitionRectangle.body.enable = true;
-      this.scene.physics.world.add(this.transitionRectangle.body);
       this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
     };
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);

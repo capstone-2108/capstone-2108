@@ -1,8 +1,8 @@
 import { Player } from "./Player";
 
 export class RemotePlayer extends Player {
-  constructor(scene, x, y, spriteKey, templateName, id) {
-    super(scene, x, y, spriteKey, templateName, id, false);
+  constructor(scene, x, y, spriteKey, templateName, characterName, id) {
+    super(scene, x, y, spriteKey, templateName, characterName, id, false);
     this.stateSnapshots = []; //where we store state snapshots sent from the server to control this character
     this.nextStatesSnapshot = null; //the next snapshot to play
     this.stateSnapshotStartTime = null; //the start time of the currently playing snapshot
@@ -28,6 +28,7 @@ export class RemotePlayer extends Player {
       this.stateMachine.setState(this.nextStatesSnapshot ? this.nextStatesSnapshot.state : "idle");
     }
     this.stateMachine.update(time, delta);
+    super.update(time, delta);
   }
 
   playRemotePlayerSnapshots(time, delta) {

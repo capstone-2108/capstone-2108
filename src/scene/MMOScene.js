@@ -68,7 +68,6 @@ export default class MMOScene extends Phaser.Scene {
     });
 
     eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
-      console.log("phaser got nearbyPlayerLoad", players);
       let i = 0;
       let len = players.length;
       for (; i < len; i++) {
@@ -97,8 +96,6 @@ export default class MMOScene extends Phaser.Scene {
       //set a `move to` position, and let update take care of the rest
       //should consider making `moveTo` stateSnapshots a queue in case more events come in before
       //the player character has finished moving
-      console.log('otherPlayerPositionChanged');
-      console.log('otherPlayers', this.otherPlayers);
       const remotePlayer = this.otherPlayers[stateSnapshots.characterId];
       if (remotePlayer) {
         remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(
@@ -108,7 +105,7 @@ export default class MMOScene extends Phaser.Scene {
     });
 
     //loads another player (not the main player) when receiving an otherPlayerLoad event from react
-    const test = eventEmitter.subscribe("otherPlayerLoad", (data) => {
+    eventEmitter.subscribe("otherPlayerLoad", (data) => {
       if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
         this.otherPlayers[data.id] = new Player(
           this,
@@ -120,8 +117,6 @@ export default class MMOScene extends Phaser.Scene {
         );
       }
     });
-    test();
-    console.log('emitter', eventEmitter);
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
 
