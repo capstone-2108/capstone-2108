@@ -5,13 +5,20 @@ import { Monster } from "../entity/Monster";
 import { LocalPlayer } from "../entity/LocalPlayer";
 import { RemotePlayer } from "../entity/RemotePlayer";
 
+import {
+  nearbyPlayerLoadCallback,
+  otherPlayerLoadCallback,
+  remotePlayerPositionChangedCallback,
+  scenePlayerLoadCallback
+} from "../event/callbacks";
+
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
-    console.log("sceneName", sceneName);
     super(sceneName);
-    this.playerData = {};
     this.otherPlayers = {};
-    this.subscribes = [];
+    this.unsubscribes = [];
+    this.transitionZones = [];
+    this.monsterGroup = undefined;
   }
 
   preload() {}
@@ -32,95 +39,26 @@ export default class MMOScene extends Phaser.Scene {
     this.monsterGroup.add(this.monster);
 
     //These events should exist on every scene
-    eventEmitter.subscribe("scenePlayerLoad", (data) => {
-      this.playerData = data;
-      this.player = new LocalPlayer(
-        this,
-        data.xPos,
-        data.yPos,
-        "player",
-        data.templateName,
-        data.name,
-        data.characterId,
-      );
-
-      this.cameras.main.startFollow(this.player);
-      this.minimap = this.cameras
-        .add(795, 0, 230, 230)
-        .setZoom(0.15)
-        .setName("mini")
-        .startFollow(this.player);
-      this.minimap.setBackgroundColor(0x002244);
-
-      this.minimap.centerOn(0, 0);
-      const minimapCircle = new Phaser.GameObjects.Graphics(this);
-      minimapCircle.fillCircle(910, 115, 110);
-      minimapCircle.fillCircle(910, 115, 110, "mini");
-
-      const circle = new Phaser.Display.Masks.GeometryMask(this, minimapCircle);
-      this.minimap.setMask(circle, true);
-      this.physics.add.collider(this.player, this.groundLayer);
-      this.physics.add.collider(this.player, this.worldLayer);
-      this.physics.add.collider(this.player, this.belowCharLayer);
-      this.physics.add.overlap(this.monster.aggroZone, this.player, (aggroZone, player) => {
-        aggroZone.setAggroTarget(player);
-      });
-    });
-
-    eventEmitter.subscribe("nearbyPlayerLoad", (players) => {
-      let i = 0;
-      let len = players.length;
-      for (; i < len; i++) {
-        const player = players[i];
-        if (
-          player.characterId !== this.player.characterId &&
-          !this.otherPlayers[player.characterId]
-        ) {
-          this.otherPlayers[player.characterId] = new RemotePlayer(
-            this,
-            player.xPos,
-            player.yPos,
-            `${player.name}-${player.characterId}`,
-            player.templateName,
-            player.name,
-            player.characterId,
-            false
-          );
-        }
-      }
-    });
-
-    //this event lets us know that another player has moved, we should make this position move to
-    //the position we received
-    eventEmitter.subscribe("otherPlayerPositionChanged", (stateSnapshots) => {
-      //set a `move to` position, and let update take care of the rest
-      //should consider making `moveTo` stateSnapshots a queue in case more events come in before
-      //the player character has finished moving
-      const remotePlayer = this.otherPlayers[stateSnapshots.characterId];
-      if (remotePlayer) {
-        remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(
-          stateSnapshots.stateSnapshots
-        );
-      }
-    });
+    this.unsubscribes.push(
+      eventEmitter.subscribe("scenePlayerLoad", scenePlayerLoadCallback.bind(this))
+    );
+    this.unsubscribes.push(
+      eventEmitter.subscribe("nearbyPlayerLoad", nearbyPlayerLoadCallback.bind(this))
+    );
+    // //this event lets us know that another player has moved,
+    this.unsubscribes.push(
+      eventEmitter.subscribe(
+        "otherPlayerPositionChanged",
+        remotePlayerPositionChangedCallback.bind(this)
+      )
+    );
 
     //loads another player (not the main player) when receiving an otherPlayerLoad event from react
-    eventEmitter.subscribe("otherPlayerLoad", (data) => {
-      if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
-        this.otherPlayers[data.id] = new Player(
-          this,
-          data.xPos,
-          data.yPos,
-          `${data.name}-${data.id}`,
-          data.templateName,
-          data.id
-        );
-      }
-    });
+    this.unsubscribes.push(
+      eventEmitter.subscribe("otherPlayerLoad", otherPlayerLoadCallback.bind(this))
+    );
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
-
-    //  The miniCam is 400px wide, so can display the whole world at a zoom of 0.2
   }
 
   /**anything that needs to update, should get it's update function called here**/
@@ -133,6 +71,8 @@ export default class MMOScene extends Phaser.Scene {
         player.update(time, delta);
       }
     }
-    this.monster.update(time, delta);
+    if (this.monster) {
+      this.monster.update(time, delta);
+    }
   }
 }

@@ -93,7 +93,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
-      // target.direction = 'east';
       target.stateMachine.setState("hit");
     });
   }

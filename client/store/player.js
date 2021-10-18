@@ -1,5 +1,4 @@
 import axios from "axios";
-import { eventEmitter } from "../../src/event/EventEmitter";
 
 /*************************
  * Action Types          *

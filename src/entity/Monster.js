@@ -280,7 +280,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     const animationToPlay = `${this.name}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
       //if a different animation is playing, then lets change
-      // console.log("playing animation", animationToPlay);
       this.anims.play(animationToPlay);
     }
     this.setVelocityX(
@@ -365,3 +364,4 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.scene.pathfinder.calculate();
   }
 }
+

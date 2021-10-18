@@ -47,6 +47,7 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     eventEmitter.subscribe("sceneLoad", async (data) => {
+      console.log('sceneLoad');
       const player = await dispatch(fetchCharacterData()); //load the players data into redux
       eventEmitter.emit("scenePlayerLoad", player);
       //load any players which are in the same scene as the player
