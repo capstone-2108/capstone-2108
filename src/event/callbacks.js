@@ -1,13 +1,15 @@
 import { Player } from "../entity/Player";
+import { RemotePlayer } from "../entity/RemotePlayer";
+import { LocalPlayer } from "../entity/LocalPlayer";
 
 export function scenePlayerLoadCallback(data) {
-  this.player = new Player(
+  this.player = new LocalPlayer(
     this,
     data.xPos,
     data.yPos,
     "player",
     data.templateName,
-    true,
+    data.name,
     data.characterId
   );
 
@@ -47,13 +49,13 @@ export function nearbyPlayerLoadCallback(players) {
   for (; i < len; i++) {
     const player = players[i];
     if (player.characterId !== this.player.characterId && !this.otherPlayers[player.characterId]) {
-      this.otherPlayers[player.characterId] = new Player(
+      this.otherPlayers[player.characterId] = new RemotePlayer(
         this,
         player.xPos,
         player.yPos,
         `${player.name}-${player.characterId}`,
         player.templateName,
-        false,
+        player.name,
         player.characterId
       );
     }
@@ -72,13 +74,13 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
 
 export function otherPlayerLoadCallback(data) {
   if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
-    this.otherPlayers[data.id] = new Player(
+    this.otherPlayers[data.id] = new RemotePlayer(
       this,
       data.xPos,
       data.yPos,
       `${data.name}-${data.id}`,
       data.templateName,
-      false,
+      data.name,
       data.id
     );
   }
