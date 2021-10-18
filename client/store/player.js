@@ -1,5 +1,4 @@
 import axios from "axios";
-import { eventEmitter } from "../../src/event/EventEmitter";
 
 /*************************
  * Action Types          *
@@ -67,7 +66,7 @@ export const fetchNearbyPlayers = (characterId) => {
       const response = await axios.get(`/api/game/character/${characterId}/nearby`);
       dispatch(setNearbyPlayers(response.data));
       state = getState();
-      eventEmitter.emit("nearbyPlayerLoad", response.data);
+      return state.player.nearbyPlayers;
     } catch (err) {
       console.log(err);
     }

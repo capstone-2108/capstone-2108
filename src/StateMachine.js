@@ -62,11 +62,11 @@ export default class StateMachine {
     }
     this.isSwitchingState = true;
 
-    console.log(
-      `State Machine ${this.name} is switching from ${
-        this.currentState ? this.currentState.name : "none"
-      } to ${name}`
-    );
+    // console.log(
+    //   `State Machine ${this.name} is switching from ${
+    //     this.currentState ? this.currentState.name : "none"
+    //   } to ${name}`
+    // );
     //if we have a current state, and it has an onExit, then lets call that before moving on to the new state
     if (this.currentState && this.currentState.onExit) {
       this.currentState.onExit();
