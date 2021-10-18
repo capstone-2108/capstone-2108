@@ -47,6 +47,11 @@ body {
   border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1;
 }
 
+#playerName {
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+
 .playerInfo {
   /* position: relative;
   top: 0;
@@ -55,13 +60,54 @@ body {
   flex-direction: column;
   align-items: center;
   margin-right: -25px;
-
+}
+#otherPlayerName {
+  font-size: 14px;
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+.OtherCharacterInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: -25px;
+}
+.otherLevelRing {
+  position: fixed;
+  z-index: 2;
+  top: 167px;
+  left: 1090px;
+}
+.otherLevel {
+  position: fixed;
+  z-index: 2;
+  top: 160px;
+  left: 1105px;
+}
+.otherPortrait {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  /* position:fixed;
+        z-index:2;
+        top:0;
+        left:0; */
+  border-radius: 50%;
+}
+.otherBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 50px;
+  margin-top: 15px;
+  padding: 5px;
+  font-size: 12px;
+  height: 3%;
 }
 
 .playerDetails {
   display: flex;
 }
-
 
 .portrait {
   width: 60px;
@@ -99,28 +145,70 @@ body {
 
   margin: 0px 130px;
 } */
+.levelRing {
+  position: fixed;
+  z-index: 2;
+  top: 35px;
+  left: 1100px;
+}
+.level {
+  position: fixed;
+  z-index: 2;
+  top: 28px;
+  left: 1115px;
+}
 
 .gold {
   display: flex;
   align-items: center;
-  margin: 0px 125px;
-}
-
-.whiteText {
+  position: fixed;
+  z-index: 2;
   font-size: 12px;
+  top: 105px;
+  left: 1100px;
+}
+.hp {
+  position: fixed;
+  z-index: 2;
+  top: 55px;
+  left: 1125px;
+}
+.exp {
+  position: fixed;
+  z-index: 2;
+  top: 85px;
+  left: 1125px;
 }
 .bar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   margin-left: 60px;
+  margin-top: 15px;
   padding: 5px;
-  /* height: 50%; */
+  font-size: 12px;
+  height: 5%;
 }
 
-.barRatio {
-  font-size: 12px;
+.barRatioMp {
+  font-size: 9px;
   text-shadow: 0.5px 0.5px #888;
+  word-wrap: normal;
+  display: flex;
+  position: fixed;
+  z-index: 2;
+  top: 75px;
+  left: 1190px;
+}
+.barRatioEx {
+  font-size: 9px;
+  text-shadow: 0.5px 0.5px #888;
+  word-wrap: normal;
+  display: flex;
+  position: fixed;
+  z-index: 2;
+  top: 102px;
+  left: 1190px;
 }
 
 img {
@@ -197,10 +285,6 @@ img {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-}
-
-#playerName {
-  padding-top: 50px;
 }
 
 .currentScene {
