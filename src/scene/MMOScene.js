@@ -2,6 +2,8 @@ import "phaser";
 import { Player } from "../entity/Player";
 import { eventEmitter } from "../event/EventEmitter";
 import { Monster } from "../entity/Monster";
+import { LocalPlayer } from "../entity/LocalPlayer";
+import { RemotePlayer } from "../entity/RemotePlayer";
 
 import {
   nearbyPlayerLoadCallback,

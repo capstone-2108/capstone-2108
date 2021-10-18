@@ -108,7 +108,7 @@ const initialState = {
   totalExp: 120,
   gold: 0,
   sceneId: 1,
-  sceneName: 'StarterTown',
+  sceneName: "StarterTown",
   level: 1
 };
 
