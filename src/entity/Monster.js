@@ -151,7 +151,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     const animationToPlay = `${this.name}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
       //if a different animation is playing, then lets change
-      console.log("playing animation", animationToPlay);
       this.anims.play(animationToPlay);
     }
     this.setVelocityX(
@@ -177,12 +176,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   moveTo(x, y) {
     const chaseAlongPath = (path) => {
-      if (path === null) {
-        console.warn("Path was not found.");
-        return;
-      } else {
-        console.log("PATHHHHH", path);
-      }
+      if (path === null) { return; }
       path = path.slice(1, path.length - 1);
       let pathIndex = 0;
       this.pathIntervalId = window.setInterval(() => {
@@ -205,3 +199,4 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.scene.pathfinder.calculate();
   }
 }
+

@@ -1,3 +1,4 @@
+import ForestScene from './scene/ForestScene'
 import MMOScene from "./scene/MMOScene";
 import Preloader from "./scene/Preloader";
 import StarterTown from "./scene/StarterTown";
@@ -28,6 +29,7 @@ export class Game extends Phaser.Game {
     super(config);
     this.scene.add("Preloader", Preloader);
     this.scene.add("StarterTown", StarterTown);
+    this.scene.add('ForestScene', ForestScene)
     // this.scene.add('MMOScene', MMOScene);
 
     //starts the game with the main scene
