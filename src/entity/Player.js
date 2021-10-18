@@ -52,7 +52,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       align: "center",
       wordWrap: true,
       wordWrapWidth: this.width,
-      color: "#554b87"
+      color: "#554b87",
+      shadowColor: ""
     }
 
     this.nameTag = this.scene.add.text(this.x, this.y, this.characterName, style);

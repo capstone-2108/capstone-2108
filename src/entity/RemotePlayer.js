@@ -14,12 +14,14 @@ export class RemotePlayer extends Player {
 
   clickPlayer() {
     this.on("pointerup", (evt) => {
-      console.log("you clicked me", this.id, this.characterName);
+      this.nameTag.setColor("#FFFFFF");
+      // this.nameTag.setShadow(1, 1, "(rgba(255,0,0,0.5)", 10);
       eventEmitter.emit("requestPlayerInfo", this.id);
     });
   }
 
   update(time, delta) {
+
     this.playRemotePlayerSnapshots(time, delta);
     if (this.stateMachine.currentStateName !== "melee") {
       let vdx = 0;
