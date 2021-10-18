@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import PlayerInfo from "./PlayerInfo";
 import Gold from "./Gold";
-import OtherCharacterInfo from "./OtherCharacterInfo";
+import SelectedPlayerInfo from "./SelectedPlayerInfo";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
@@ -12,7 +12,7 @@ const Ui = () => {
     <div>
       <PlayerInfo />
       <Gold />
-      <OtherCharacterInfo />
+      <SelectedPlayerInfo />
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {

@@ -203,7 +203,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta) {
     this.nameTag.x = Math.floor(this.x - this.nameTag.width / 2);
-    this.nameTag.y = Math.floor(this.y - this.height / 2);
+    this.nameTag.y = Math.floor(this.y - this.height);
   }
 
 

@@ -1,4 +1,6 @@
 import { Player } from "./Player";
+import { eventEmitter } from "../event/EventEmitter";
+
 
 export class RemotePlayer extends Player {
   constructor(scene, x, y, spriteKey, templateName, characterName, id) {
@@ -10,9 +12,10 @@ export class RemotePlayer extends Player {
     this.clickPlayer();
   }
 
-  clickPlayer () {
+  clickPlayer() {
     this.on("pointerup", (evt) => {
-      console.log("you clicked me");
+      console.log("you clicked me", this.id, this.characterName);
+      eventEmitter.emit("requestPlayerInfo", this.id);
     });
   }
 

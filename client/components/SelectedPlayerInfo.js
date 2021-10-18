@@ -1,13 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"
 
-const PlayerInfo = () => {
-  const player = useSelector((state) => state.player);
-  const ratio = player.health / player.totalHealth;
-  const healthWidth = player.totalHealth * ratio;
-  const expWidth = (player.experience / player.totalExp) * player.totalExp;
 
-  let healthStyle = "";
+const SelectedPlayerInfo = () => {
+  const selectedPlayer = useSelector((state) => state.player.selectedPlayer);
+  const ratio = selectedPlayer.health / selectedPlayer.totalHealth;
+  const healthWidth = selectedPlayer.totalHealth * ratio;
+  const expWidth = (selectedPlayer.experience / selectedPlayer.totalExp) * selectedPlayer.totalExp;
+
+  let healthStyle = '';
 
   if (healthWidth <= 30) {
     healthStyle = {
@@ -34,27 +35,25 @@ const PlayerInfo = () => {
       height: "12px"
     };
   }
-
   return (
     <div className="OtherCharacterInfo">
       <div className="player">
-        <h3 id="otherPlayerName">{player.name}</h3>
+        <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
       </div>
       <div className="playerDetails">
         <div className="playerImg">
           <img src="goldRing.png" width="50px" height="50px" />
-          <img src={player.portrait} className="otherPortrait" />
+          <img src={selectedPlayer.portrait} className="otherPortrait" />
         </div>
         <div className="otherLevelRing">
           <img src="goldRing.png" width="35px" height="35px" />
         </div>
-        <h3 className="otherLevel">{player.level}</h3>
+        <h3 className="otherLevel">{selectedPlayer.level}</h3>
         <div className="bars">
           <div className="otherBar">
             <div className="hp">
               <h4 className="whiteText">HP</h4>
             </div>
-
             <div
               style={{
                 backgroundColor: "black",
@@ -64,12 +63,10 @@ const PlayerInfo = () => {
               <div style={healthStyle}></div>
             </div>
           </div>
-
           <div className="otherBar">
             <div className="exp">
               <h4 className="whiteText">EXP</h4>
             </div>
-
             <div
               style={{
                 backgroundColor: "black",
@@ -91,5 +88,4 @@ const PlayerInfo = () => {
     </div>
   );
 };
-
-export default PlayerInfo;
+export default SelectedPlayerInfo;
