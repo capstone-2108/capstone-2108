@@ -91,7 +91,13 @@ const spriteSheetData = [
 
 const sceneData = [
   {
+    id: 1,
     name: "StarterTown",
+    mapId: 1
+  },
+  {
+    id: 2,
+    name: "ForestScene",
     mapId: 1
   }
 ];

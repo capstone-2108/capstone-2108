@@ -40,6 +40,7 @@ export default class StarterTown extends MMOScene {
     this.physics.world.add(this.transitionRectangle.body);
     this.transitionZones.push({
       sceneName: 'ForestScene',
+      sceneId: 2,
       transitionPoint: this.transitionRectangle
     });
 

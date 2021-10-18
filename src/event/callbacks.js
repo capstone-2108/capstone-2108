@@ -1,6 +1,8 @@
 import { Player } from "../entity/Player";
 import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
+import { eventEmitter } from "../event/EventEmitter";
+
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -16,6 +18,11 @@ export function scenePlayerLoadCallback(data) {
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+      //On overlap this function gets called
+      eventEmitter.emit("phaserUpdate", {
+        action: "playerChangedScenes",
+        data: {sceneId: transitionZone.sceneId, userId: data.userId, sceneName: transitionZone.sceneName}
+      })
       this.scene.start(transitionZone.sceneName);
     });
   });

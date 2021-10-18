@@ -7,6 +7,7 @@ export const UPDATE_HEALTH = "UPDATE_HEALTH";
 export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
 export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
+export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
 
 /*************************
  * Action Creators       *
@@ -16,6 +17,13 @@ export const setPlayerCharacter = (character) => {
   return {
     type: SET_PLAYER_CHARACTER,
     character
+  };
+};
+
+export const updatePlayerCharacter = (updates) => {
+  return {
+    type: UPDATE_PLAYER_CHARACTER,
+    updates
   };
 };
 
@@ -41,6 +49,8 @@ export const fetchCharacterData = () => {
       let state = getState();
       //if the player data is already in redux
       if (state.player.characterId !== null) {
+        console.log("in fetch character data");
+        console.log("state.player", state.player);
         return state.player;
       } else {
         //fetch the player data
@@ -136,6 +146,9 @@ export default (state = initialState, action) => {
       return { ...state, health: action.health };
     case CLEAR_PLAYER_STATE:
       return clearState;
+    case UPDATE_PLAYER_CHARACTER:
+      console.log("in update player character reducer");
+      return { ...state, ...action.updates };
     default:
       return state;
   }

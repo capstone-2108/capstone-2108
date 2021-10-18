@@ -49,6 +49,17 @@ export default class ForestScene extends MMOScene {
     // this.groundLayer.setCollisionByProperty({ collides: true });
     // this.treesLayer.setCollisionByProperty({ collides: true });
     // this.trees2Layer.setCollisionByProperty({ collides: true });
+
+    this.transitionToStarter = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5);
+    this.physics.add.existing(this.transitionToStarter);
+    this.transitionToStarter.body.enable = true;
+    this.physics.world.add(this.transitionToStarter.body);
+    this.transitionZones.push({
+      sceneName: 'StarterTown',
+      sceneId: 1,
+      transitionPoint: this.transitionToStarter
+    });
+
     super.create();
   }
 
