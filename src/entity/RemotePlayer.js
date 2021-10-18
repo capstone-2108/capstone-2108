@@ -6,6 +6,14 @@ export class RemotePlayer extends Player {
     this.stateSnapshots = []; //where we store state snapshots sent from the server to control this character
     this.nextStatesSnapshot = null; //the next snapshot to play
     this.stateSnapshotStartTime = null; //the start time of the currently playing snapshot
+
+    this.clickPlayer();
+  }
+
+  clickPlayer () {
+    this.on("pointerup", (evt) => {
+      console.log("you clicked me");
+    });
   }
 
   update(time, delta) {

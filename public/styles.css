@@ -73,13 +73,13 @@ body {
   margin-right: -25px;
 }
 .otherLevelRing {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 167px;
   left: 1090px;
 }
 .otherLevel {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 160px;
   left: 1105px;
@@ -146,13 +146,13 @@ body {
   margin: 0px 130px;
 } */
 .levelRing {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 35px;
   left: 1100px;
 }
 .level {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 28px;
   left: 1115px;
@@ -161,20 +161,20 @@ body {
 .gold {
   display: flex;
   align-items: center;
-  position: fixed;
+  position: absolute;
   z-index: 2;
   font-size: 12px;
   top: 105px;
   left: 1100px;
 }
 .hp {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 55px;
   left: 1125px;
 }
 .exp {
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 85px;
   left: 1125px;
@@ -195,7 +195,7 @@ body {
   text-shadow: 0.5px 0.5px #888;
   word-wrap: normal;
   display: flex;
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 75px;
   left: 1190px;
@@ -205,7 +205,7 @@ body {
   text-shadow: 0.5px 0.5px #888;
   word-wrap: normal;
   display: flex;
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 102px;
   left: 1190px;
