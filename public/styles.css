@@ -215,6 +215,12 @@ body {
   left: 1190px;
 }
 
+.monster {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 img {
   margin: 5px;
 }

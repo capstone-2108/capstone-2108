@@ -7,6 +7,8 @@ const PlayerInfo = () => {
   const healthWidth = 200 * ratio;
   const expWidth = (player.experience / player.totalExp) * 200;
 
+  console.log('PLAYERINFO', player)
+
   let healthStyle = "";
 
   if (healthWidth <= 30) {

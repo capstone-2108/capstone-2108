@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData } from "../store/player";
+import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData, fetchSeletedMonster } from "../store/player";
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
-import { fetchSeletedMonster } from "../store/monster";
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
