@@ -17,11 +17,11 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
+      console.log('THIS', this.player.id)
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
-      eventEmitter.emit("phaserUpdate", {
-        action: "playerChangedScenes",
-        data: {sceneId: transitionZone.sceneId, userId: data.userId, sceneName: transitionZone.sceneName}
+      eventEmitter.emit("playerChangedScenes", {
+        sceneId: transitionZone.sceneId, characterId: this.player.id, sceneName: transitionZone.sceneName
       })
       this.scene.start(transitionZone.sceneName);
     });
@@ -51,6 +51,7 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
+  console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
   for (; i < len; i++) {

@@ -62,13 +62,16 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
     });
 
+    eventEmitter.subscribe("playerChangedScenes", async (data) => {
+      //update store state with new sceneName and sceneId for this player
+      console.log('IN PLAYER CHANGED SCENES')
+      dispatch(updatePlayerCharacter({sceneName: data.sceneName, sceneId: data.sceneId}))
+      newSocket.emit("playerChangedScenes", data)
+    })
+
     //phaser will send us updates via the "phaserUpdate" event
     eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
       //send a message using socket.io to let the server know that the player changed position
-      if (action === "playerChangedScenes") {
-        //update store state with new sceneName and sceneId for this player
-        dispatch(updatePlayerCharacter({sceneName: data.sceneName, sceneId: data.sceneId}))
-      }
       newSocket.emit(action, data);
     });
 

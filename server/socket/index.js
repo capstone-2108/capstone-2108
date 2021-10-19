@@ -45,9 +45,10 @@ function initGameSync() {
 
     socket.on("playerChangedScenes", async (data) => {
       //update the database with the new location
+      console.log('index data', data)
       try {
         const playerChar = await PlayerCharacter.findOne({
-          where: { userId: data.userId },
+          where: { id: data.characterId },
           include: Location
         })
         const locationInfo = await Location.findOne({
