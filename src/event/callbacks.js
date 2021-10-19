@@ -1,6 +1,6 @@
-import { Player } from "../entity/Player";
 import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
+import { Monster } from "../entity/Monster";
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -38,9 +38,10 @@ export function scenePlayerLoadCallback(data) {
   this.layers.forEach((layer) => {
     this.physics.add.collider(this.player, layer);
   });
-  this.physics.add.overlap(this.monster.aggroZone, this.player, (aggroZone, player) => {
-    aggroZone.setAggroTarget(player);
-  });
+  // this.physics.add.overlap(this.monsterAggroZones, this.player, (aggroZone, player) => {
+  //   console.log(aggroZone, player);
+  //   aggroZone.setAggroTarget(player);
+  // });
 }
 
 export function nearbyPlayerLoadCallback(players) {
@@ -59,6 +60,22 @@ export function nearbyPlayerLoadCallback(players) {
         player.characterId
       );
     }
+  }
+}
+
+export function nearbyMonsterLoadCallback(monsters) {
+  let i = 0;
+  let len = monsters.length;
+  for (; i < len; i++) {
+    const monster = monsters[i];
+    this.monsters[monster.characterId] = new Monster(
+      this,
+      monster.xPos,
+      monster.yPos,
+      `${monster.name}-${monster.monsterId}`,
+      monster.templateName,
+      monster.monsterId
+    );
   }
 }
 

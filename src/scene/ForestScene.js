@@ -14,10 +14,6 @@ export default class ForestScene extends MMOScene {
   }
 
   create() {
-    this.monster = new Monster(this, 200, 400, "orc", "orc", 1);
-    this.monsterGroup = this.physics.add.group();
-    this.monsterGroup.add(this.monster);
-
     const map = this.make.tilemap({ key: "second-scene" });
     const grassTiles = map.addTilesetImage("grass", "grass");
     const plantTiles = map.addTilesetImage("plant", "plant");

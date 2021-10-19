@@ -3,8 +3,15 @@ const router = require("express").Router();
 const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
-const { TemplateCharacter, SpriteSheet, Location, User, PlayerCharacter, Scene } = require("../db");
-const { Op } = require("sequelize");
+const {
+  TemplateCharacter,
+  SpriteSheet,
+  Location,
+  User,
+  PlayerCharacter,
+  Scene,
+  Npc
+} = require("../db");
 
 //This fetches all template characters
 router.get("/templates", async (req, res, next) => {
@@ -19,7 +26,7 @@ router.get("/templates", async (req, res, next) => {
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   const playerCharacter = await PlayerCharacter.findOne({
     where: {
-     id: req.params.id
+      id: req.params.id
     },
     include: [
       {
@@ -86,6 +93,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
       }
     ]
   });
+  await playerCharacter.update({active: true});
   const payload = {
     userId: req.user.id,
     characterId: playerCharacter.id,
@@ -117,6 +125,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
   gameSync.emit("otherPlayerLoad", payload);
 });
 
+//POST /api/character - creates a new character
 router.post("/character", requireTokenMiddleware, async (req, res, next) => {
   try {
     //create new entry in location table for this new character
@@ -192,6 +201,40 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
   } catch (err) {
     console.log(err);
   }
+});
+
+//get /api/game/character/nearby - fetches all npc's in a given scene
+router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, next) => {
+  try {
+    const monsters = await Npc.getNearbyMonsters(req.params.sceneId);
+    console.log(monsters);
+    const payload = [];
+    let i = 0;
+    let len = monsters.length;
+    for (; i < len; i++) {
+      const monster = monsters[i];
+      payload[i] = {
+        monsterId: monster.id,
+        name: monster.name,
+        health: monster.health,
+        templateName: monster.templateCharacter.name,
+        spriteSheetImageUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+        spriteSheetJsonUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+        xPos: monster.location.xPos,
+        yPos: monster.location.yPos,
+        facingDirection: monster.location.facingDirection
+      };
+    }
+    res.json(payload);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/character/:characterId/logout", requireTokenMiddleware, async (req, res, next) => {
+  try {
+    await PlayerCharacter.logout(req.params.characterId);
+  } catch (err) {}
 });
 
 // router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {

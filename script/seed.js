@@ -18,33 +18,36 @@ const {
   spriteSheetData,
   playerCharacterData,
   sceneData,
-  locationData,
   mapData,
   npcData
 } = require("./seedData");
+
+function getObjectIndexedBy(dataRows, indexField) {
+  const indexedObj = {}
+  dataRows.forEach(templateCharacter => {
+    indexedObj[templateCharacter[indexField]] = templateCharacter;
+  });
+  return indexedObj;
+}
 
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
 
-  const userArray = await Promise.all(
-    userData.map((user) => {
-      return User.create(user);
-    })
-  );
-
-
-  const templateCharacterArray = await Promise.all(
+  const templateCharactersArr = await Promise.all(
     templateCharacterData.map((templateCharacter) => {
       return TemplateCharacter.create(templateCharacter);
     })
   );
+  let templateCharacterObj = getObjectIndexedBy(templateCharactersArr, "name");
 
   const spriteSheetArray = await Promise.all(
     spriteSheetData.map((spriteSheet) => {
+      spriteSheet.templateCharacterId = templateCharacterObj[spriteSheet.name].id;
       return SpriteSheet.create(spriteSheet);
     })
   );
+
   const mapArray = await Promise.all(
     mapData.map((map) => {
       return Map.create(map);
@@ -57,23 +60,26 @@ async function seed() {
     })
   );
 
-  const locationArray = await Promise.all(
-    locationData.map((location) => {
-      return Location.create(location);
-    })
-  );
+  for(let i = 0; i < userData.length; i++) {
+    const userObj = userData[i];
+    const user = await User.create(userObj.user);
+    const location = await Location.create(userObj.location);
+    userObj.playerCharacter.userId = user.id;
+    userObj.playerCharacter.locationId = location.id;
+    userObj.playerCharacter.templateCharacterId = templateCharacterObj[userObj.templateCharacter].id
+    await PlayerCharacter.create(userObj.playerCharacter);
+  }
 
-  const playerCharacterArray = await Promise.all(
-    playerCharacterData.map((playerCharacter) => {
-      return PlayerCharacter.create(playerCharacter);
-    })
-  );
-
-  const npcArray = await Promise.all(
-    npcData.map((npc) => {
-      return Npc.create(npc);
-    })
-  );
+  let npcObj = {};
+  for(let i = 0; i < npcData.length; i++) {
+    let npcArr = npcData[i].npc;
+    let locationArr = npcData[i].location;
+    let templateCharacterName = npcData[i].templateCharacter;
+    const location = await Location.create(locationArr);
+    npcArr.locationId = location.id;
+    npcArr.templateCharacterId = templateCharacterObj[templateCharacterName].id
+    npcObj[npcArr.name] = await Npc.create(npcArr);
+  }
 }
 
 async function runSeed() {

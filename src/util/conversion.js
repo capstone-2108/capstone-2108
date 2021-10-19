@@ -8,8 +8,6 @@ export function mapToScreen(mapX, mapY) {
 }
 
 export function screenToMap(screenX, screenY) {
-  screenX = Math.floor(screenX);
-  screenY = Math.floor(screenY);
   let mapX = Math.floor(screenX / TILE_WIDTH);
   let mapY = Math.floor(screenY / TILE_HEIGHT);
   return new Vertex(mapX, mapY);
