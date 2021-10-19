@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-<<<<<<< HEAD
 import {
   fetchCharacterData, fetchNearbyMonsters,
   fetchNearbyPlayers,
