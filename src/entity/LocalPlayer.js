@@ -45,7 +45,7 @@ export class LocalPlayer extends Player {
     // this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
     //   this.stateMachine.setState("melee");
     // });
-    
+
   }
 
   update(time, delta) {

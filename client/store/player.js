@@ -7,6 +7,7 @@ export const UPDATE_HEALTH = "UPDATE_HEALTH";
 export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
 export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
+export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
 export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
 
 export const SET_SELECTED_MONSTER = "SET_SELECTED_MONSTER";
@@ -19,6 +20,13 @@ export const setPlayerCharacter = (character) => {
   return {
     type: SET_PLAYER_CHARACTER,
     character
+  };
+};
+
+export const updatePlayerCharacter = (updates) => {
+  return {
+    type: UPDATE_PLAYER_CHARACTER,
+    updates
   };
 };
 
@@ -182,6 +190,8 @@ export default (state = initialState, action) => {
       return { ...state, health: action.health };
     case CLEAR_PLAYER_STATE:
       return clearState;
+    case UPDATE_PLAYER_CHARACTER:
+      return { ...state, ...action.updates };
     case SET_SELECTED_PLAYER:
       return { ...state, selectedPlayer: action.character };
     case SET_SELECTED_MONSTER:

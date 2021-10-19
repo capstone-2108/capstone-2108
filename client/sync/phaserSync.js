@@ -4,6 +4,7 @@ import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData, fetch
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
+import { updatePlayerCharacter } from "../store/player";
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
@@ -24,11 +25,16 @@ export const InitSubscriptionsToPhaser = () => {
     });
     setSocket(newSocket); //save the socket into the component state
 
-    //listens for other players loading in
-    //todo: put this back in
+    // listens for other players loading in
+    // todo: put this back in
     // newSocket.on("otherPlayerLoad", (data) => {
     //   eventEmitter.emit("otherPlayerLoad", data);
     // });
+
+    // newSocket.on("playerChangedScenes", (scene) => {
+    //   console.log("CLIENT SIDE PHASERSYNC")
+    //   eventEmitter.emit("playerChangedScenes", (scene))
+    // })
 
     //this is where the server lets us know that others players have moved, once we receive this signal we
     //tell phaser to move those characters on the screen
@@ -55,6 +61,13 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
     });
 
+    eventEmitter.subscribe("playerChangedScenes", async (data) => {
+      //update store state with new sceneName and sceneId for this player
+      console.log('IN PLAYER CHANGED SCENES')
+      dispatch(updatePlayerCharacter({sceneName: data.sceneName, sceneId: data.sceneId}))
+      newSocket.emit("playerChangedScenes", data)
+    })
+
     //phaser will send us updates via the "phaserUpdate" event
     eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
       //send a message using socket.io to let the server know that the player changed position
@@ -62,9 +75,6 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
-      //send a message using socket.io to let the server know that the player changed position
-      // newSocket.emit(action, data);
-      console.log("requestPlayerInfo");
       dispatch(fetchRemoteCharacterData(characterId));
     });
 

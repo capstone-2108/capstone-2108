@@ -7,7 +7,7 @@ const SelectedPlayerInfo = () => {
   const healthWidth = 150 * ratio;
   const expWidth = (selectedPlayer.experience / 100) * 150;
 
-  console.log("selected**", selectedPlayer);
+  // console.log("selected**", selectedPlayer);
 
   let healthStyle = "";
 

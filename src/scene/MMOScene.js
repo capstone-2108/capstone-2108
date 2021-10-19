@@ -68,6 +68,7 @@ export default class MMOScene extends Phaser.Scene {
     }
     if (this.otherPlayers) {
       for (const [id, player] of Object.entries(this.otherPlayers)) {
+        // console.log('remote player', this.otherPlayers)
         player.update(time, delta);
       }
     }
