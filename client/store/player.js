@@ -11,7 +11,6 @@ export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
 
 export const SET_SELECTED_MONSTER = "SET_SELECTED_MONSTER";
 
-
 /*************************
  * Action Creators       *
  ************************/
@@ -44,7 +43,6 @@ export const setSelectedPlayer = (character) => {
     character
   };
 };
-
 
 export const setSelectedMonster = (monster) => {
   return {
@@ -124,7 +122,6 @@ export const clearPlayerState = () => {
   };
 };
 
-
 export const fetchSeletedMonster = (id) => {
   return async (dispatch, getState) => {
     try {
@@ -188,7 +185,7 @@ export default (state = initialState, action) => {
     case SET_SELECTED_PLAYER:
       return { ...state, selectedPlayer: action.character };
     case SET_SELECTED_MONSTER:
-      return { ...state, selectedMonster: action.monster };
+      return { ...state, selectedPlayer: action.monster };
     default:
       return state;
   }

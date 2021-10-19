@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 
 const SelectedMonsterInfo = () => {
+  const selectedMonster = useSelector((state) => state.player.selectedMonster);
+  console.log("***MON***", selectedMonster);
 
-  const selectedMonster = useSelector((state) => state.player.selectedMonster)
-  console.log("***MON***", selectedMonster)
-
-  const ratio = selectedMonster.health / 500
-  const healthWidth = 150 * ratio
+  const ratio = selectedMonster.health / 500;
+  const healthWidth = 150 * ratio;
 
   let healthStyle = "";
 
@@ -37,7 +37,6 @@ const SelectedMonsterInfo = () => {
     };
   }
 
-
   return (
     <div className="monster">
       <div className="monster-info">
@@ -52,6 +51,6 @@ const SelectedMonsterInfo = () => {
       </div>
     </div>
   );
-}
+};
 
-export default SelectedMonsterInfo
+export default SelectedMonsterInfo;
