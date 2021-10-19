@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import { fetchCharacterData, fetchNearbyPlayers } from "../store/player";
+import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData } from "../store/player";
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
@@ -70,6 +70,13 @@ export const InitSubscriptionsToPhaser = () => {
         dispatch(updatePlayerCharacter({sceneName: data.sceneName, sceneId: data.sceneId}))
       }
       newSocket.emit(action, data);
+    });
+
+    eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
+      //send a message using socket.io to let the server know that the player changed position
+      // newSocket.emit(action, data);
+      console.log("requestPlayerInfo");
+      dispatch(fetchRemoteCharacterData(characterId));
     });
 
     return () => newSocket.close();
