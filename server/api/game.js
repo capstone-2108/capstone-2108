@@ -19,7 +19,7 @@ router.get("/templates", async (req, res, next) => {
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   const playerCharacter = await PlayerCharacter.findOne({
     where: {
-      userId: req.params.id
+      id: req.params.id
     },
     include: [
       {
