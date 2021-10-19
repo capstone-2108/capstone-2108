@@ -7,6 +7,8 @@ export const UPDATE_HEALTH = "UPDATE_HEALTH";
 export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
 export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
+export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
+
 
 /*************************
  * Action Creators       *
@@ -34,6 +36,13 @@ export const updateHealth = (health) => {
   };
 };
 
+export const setSelectedPlayer = (character) => {
+  return {
+    type: SET_SELECTED_PLAYER,
+    character
+  };
+};
+
 //--Thunks--
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
@@ -49,6 +58,19 @@ export const fetchCharacterData = () => {
         const state = getState();
         return state.player;
       }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const fetchRemoteCharacterData = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await axios.get(`/api/game/character/${id}`);
+      dispatch(setSelectedPlayer(response.data));
+      const state = getState();
+      return state.player;
     } catch (err) {
       console.log(err);
     }
@@ -100,6 +122,7 @@ const initialState = {
   characterId: null,
   name: "",
   nearbyPlayers: [],
+  selectedPlayer: {},
   xPos: 0,
   yPos: 0,
   health: 100,
@@ -109,7 +132,8 @@ const initialState = {
   gold: 0,
   sceneId: 1,
   sceneName: "StarterTown",
-  level: 1
+  level: 1,
+  portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png"
 };
 
 const clearState = {
@@ -136,6 +160,8 @@ export default (state = initialState, action) => {
       return { ...state, health: action.health };
     case CLEAR_PLAYER_STATE:
       return clearState;
+    case SET_SELECTED_PLAYER:
+      return { ...state, selectedPlayer: action.character };
     default:
       return state;
   }

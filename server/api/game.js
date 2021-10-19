@@ -16,6 +16,51 @@ router.get("/templates", async (req, res, next) => {
   }
 });
 
+router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
+  const playerCharacter = await PlayerCharacter.findOne({
+    where: {
+      userId: req.params.id
+    },
+    include: [
+      {
+        model: TemplateCharacter,
+        attributes: ["id", "name", "portrait"],
+        include: {
+          model: SpriteSheet,
+          attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
+        }
+      },
+      {
+        model: Location,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: {
+          model: Scene,
+          attributes: ["id", "name"]
+        }
+      }
+    ]
+  });
+  const payload = {
+    // userId: req.user.id,
+    characterId: playerCharacter.id,
+    id: playerCharacter.id,
+    name: playerCharacter.name,
+    health: playerCharacter.health,
+    experience: playerCharacter.experience,
+    level: playerCharacter.level,
+    templateName: playerCharacter.templateCharacter.name,
+    spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
+    xPos: playerCharacter.location.xPos,
+    yPos: playerCharacter.location.yPos,
+    gold: playerCharacter.gold,
+    sceneId: playerCharacter.location.scene.id,
+    sceneName: playerCharacter.location.scene.name,
+    portrait: playerCharacter.templateCharacter.portrait
+  };
+  res.json(payload);
+});
+
 //gets called if user is LOGGING IN (pulling their playerCharacter info)
 router.get("/character", requireTokenMiddleware, async (req, res, next) => {
   const playerCharacter = await PlayerCharacter.findOne({

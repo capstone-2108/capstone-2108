@@ -27,14 +27,14 @@ body {
   font-family: "cinzel-decorative";
   font-weight: 700;
   font-size: 72px;
-  color:gold;
+  color: gold;
 }
 
 .ui {
   display: flex;
   width: 300px;
   color: white;
-  text-align: center;
+  /* text-align: center; */
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
     Verdana, sans-serif;
   padding: 0;
@@ -47,31 +47,172 @@ body {
   border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1;
 }
 
-.player {
+#playerName {
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+
+.playerInfo {
+  /* position: relative;
+  top: 0;
+  left: 0; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: -25px;
+}
+#otherPlayerName {
+  font-size: 12px;
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+#anonymous {
+  margin: 0px;
+  font-size: 12px;
+}
+.OtherCharacterInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: -25px;
+}
+.otherLevelRing {
+  position: absolute;
+  z-index: 2;
+  top: 150px;
+  left: 1115px;
+}
+.otherLevel {
+  position: absolute;
+  z-index: 2;
+  top: 145px;
+  left: 1130px;
+}
+.otherPortrait {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  /* position:fixed;
+        z-index:2;
+        top:0;
+        left:0; */
+  border-radius: 50%;
+}
+.otherBar {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  margin-left: 50px;
+  margin-top: 5px;
+  padding: 5px;
+  font-size: 12px;
+  height: 5%;
+}
+
+.playerDetails {
+  display: flex;
+}
+
+.portrait {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  /* position:fixed;
+        z-index:2;
+        top:0;
+        left:0; */
+  border-radius: 50%;
+}
+
+.playerImg {
+  position: relative;
+  margin: 0px;
+  margin-left: -30px;
+  margin-top: -15px;
+}
+
+.playerImg > img {
+  position: absolute;
+  top: inherit;
+  left: inherit;
+}
+.playerImg > img:first-child {
+  z-index: 2;
+}
+
+.playerImg > img:nth-child(2) {
+  margin: 14px;
+}
+/* .player {
+  display: flex;
+  align-items: center;
+
   margin: 0px 130px;
+} */
+.levelRing {
+  position: absolute;
+  z-index: 2;
+  top: 35px;
+  left: 1100px;
+}
+.level {
+  position: absolute;
+  z-index: 2;
+  top: 28px;
+  left: 1115px;
 }
 
 .gold {
   display: flex;
   align-items: center;
-  margin: 0px 125px;
-}
-
-.whiteText {
+  position: absolute;
+  z-index: 2;
   font-size: 12px;
+  top: 105px;
+  left: 1100px;
+}
+.hp {
+  position: absolute;
+  z-index: 2;
+  top: 55px;
+  left: 1125px;
+}
+.exp {
+  position: absolute;
+  z-index: 2;
+  top: 85px;
+  left: 1125px;
 }
 .bar {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin: 0px 25px;
+  justify-content: flex-end;
+  margin-left: 60px;
+  margin-top: 15px;
+  padding: 5px;
+  font-size: 12px;
+  height: 5%;
 }
 
-.barRatio {
-  font-size: 12px;
+.barRatioMp {
+  font-size: 9px;
   text-shadow: 0.5px 0.5px #888;
+  word-wrap: normal;
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  top: 75px;
+  left: 1190px;
+}
+.barRatioEx {
+  font-size: 9px;
+  text-shadow: 0.5px 0.5px #888;
+  word-wrap: normal;
+  display: flex;
+  position: absolute;
+  z-index: 2;
+  top: 102px;
+  left: 1190px;
 }
 
 img {
@@ -148,10 +289,6 @@ img {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-}
-
-#playerName {
-  padding-top: 50px;
 }
 
 .currentScene {
