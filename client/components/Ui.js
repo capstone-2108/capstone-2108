@@ -12,7 +12,7 @@ const Ui = () => {
     <div>
       <PlayerInfo />
       <Gold />
-      <SelectedPlayerInfo />
+      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div />}
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {

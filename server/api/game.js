@@ -3,7 +3,7 @@ const router = require("express").Router();
 const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
-const { TemplateCharacter, SpriteSheet, Location, User, PlayerCharacter, Scene } = require("../db");
+const { TemplateCharacter, SpriteSheet, Location, User, PlayerCharacter, Scene, Npc } = require("../db");
 const { Op } = require("sequelize");
 
 //This fetches all template characters
@@ -19,7 +19,7 @@ router.get("/templates", async (req, res, next) => {
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   const playerCharacter = await PlayerCharacter.findOne({
     where: {
-      userId: req.params.id
+      id: req.params.id
     },
     include: [
       {
@@ -256,5 +256,18 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
 
 //   gameSync.emit("otherPlayerLoad", payload);
 // });
+
+router.get("/monster/:id", async (req, res, next) => {
+  try {
+    const monster = await Npc.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.json(monster)
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = router;

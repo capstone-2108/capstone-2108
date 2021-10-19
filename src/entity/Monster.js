@@ -14,6 +14,7 @@ import { mapToScreen, screenToMap } from "../util/conversion";
 import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { Vertex } from "../pathfinding/Vertex";
+import { eventEmitter } from "../event/EventEmitter";
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -84,6 +85,14 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       });
 
     this.stateMachine.setState("idle");
+    this.clickMonster();
+  }
+
+  clickMonster() {
+    this.on("pointerup", (evt) => {
+      eventEmitter.emit("requestMonsterInfo", this.id);
+      console.log('HI')
+    });
   }
 
   update(time, delta) {
@@ -364,4 +373,3 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.scene.pathfinder.calculate();
   }
 }
-

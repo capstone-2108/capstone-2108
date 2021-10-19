@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData } from "../store/player";
+import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData, fetchSeletedMonster } from "../store/player";
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
@@ -77,6 +77,10 @@ export const InitSubscriptionsToPhaser = () => {
     eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
       dispatch(fetchRemoteCharacterData(characterId));
     });
+
+    eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
+      dispatch(fetchSeletedMonster(monsterId))
+    })
 
     return () => newSocket.close();
   }, []);

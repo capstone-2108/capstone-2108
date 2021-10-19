@@ -170,7 +170,7 @@ const npcData = [
     health: 100,
     locationId: 1,
     templateCharacterId: 2
-  }
+  },
 ];
 
 module.exports = {
