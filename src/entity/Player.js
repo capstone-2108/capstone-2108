@@ -26,11 +26,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
    * @param {string} spriteKey
    * @param {string} name
    */
-<<<<<<< HEAD
-  constructor(scene, x, y, spriteKey, name, localPlayer = false, id) {
-=======
   constructor(scene, x, y, spriteKey, templateName, characterName, id, localPlayer = false, stuff='nothing') {
->>>>>>> main
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
