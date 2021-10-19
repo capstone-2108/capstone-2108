@@ -15,6 +15,7 @@ export function scenePlayerLoadCallback(data) {
     data.characterId
   );
 
+  console.log("scenePlayerloadCallback")
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
       console.log('THIS', this.player.id)

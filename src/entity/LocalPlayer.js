@@ -34,15 +34,6 @@ export class LocalPlayer extends Player {
     this.createHotKeys();
   }
 
-  // animationPlayer() {
-  //   if (!this.anims) {
-  //     // console.log('animation player')
-  //     return
-  //   } else {
-  //     super.animationPlayer(this.stateMachine.currentStateName)
-  //   }
-  // }
-
   createHotKeys() {
     this.cursors = this.scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
