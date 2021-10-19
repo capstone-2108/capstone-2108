@@ -64,7 +64,7 @@ body {
 #otherPlayerName {
   font-size: 12px;
   padding-top: 10px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
 }
 #anonymous {
   margin: 0px;
@@ -176,6 +176,13 @@ body {
   z-index: 2;
   top: 55px;
   left: 1125px;
+}
+.monsterHp {
+  position: absolute;
+  z-index: 2;
+  top: 182px;
+  left: 1110px;
+  font-size: 10px;
 }
 .exp {
   position: absolute;

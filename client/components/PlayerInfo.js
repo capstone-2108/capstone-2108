@@ -7,11 +7,11 @@ const PlayerInfo = () => {
   const healthWidth = 200 * ratio;
   const expWidth = (player.experience / player.totalExp) * 200;
 
-  console.log('PLAYERINFO', player)
+  console.log("PLAYERINFO", player);
 
   let healthStyle = "";
 
-  if (healthWidth <= 30) {
+  if (healthWidth <= 40) {
     healthStyle = {
       background: "rgb(87,0,0)",
       background:
@@ -19,7 +19,7 @@ const PlayerInfo = () => {
       width: `${healthWidth}px`,
       height: "20px"
     };
-  } else if (healthWidth >= 30 && healthWidth <= 60) {
+  } else if (healthWidth >= 40 && healthWidth <= 120) {
     healthStyle = {
       background: "rgb(105,105,0);",
       background:
