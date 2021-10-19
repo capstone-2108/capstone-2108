@@ -53,6 +53,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("stone", "tilesets/forest/stone.png");
     this.load.image("structure", "tilesets/forest/structure.png");
     this.load.image("wall", "tilesets/forest/wall.png");
+    this.input.mouse.disableContextMenu();
   }
 
   create() {

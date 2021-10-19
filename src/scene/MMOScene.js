@@ -1,11 +1,8 @@
 import "phaser";
-import { Player } from "../entity/Player";
 import { eventEmitter } from "../event/EventEmitter";
-import { Monster } from "../entity/Monster";
-import { LocalPlayer } from "../entity/LocalPlayer";
-import { RemotePlayer } from "../entity/RemotePlayer";
 
 import {
+  nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
   otherPlayerLoadCallback,
   remotePlayerPositionChangedCallback,
@@ -16,27 +13,21 @@ export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
     super(sceneName);
     this.otherPlayers = {};
+    this.monsters = {};
     this.unsubscribes = [];
     this.transitionZones = [];
-    this.monsterGroup = undefined;
   }
 
-  preload() {}
-
-  enableCollisionDebug(layer) {
-    /*** collision debugging code ***/
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
-    layer.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    });
+  preload() {
+    this.monsterGroup = this.physics.add.group();
+    this.monsterAggroZones = this.physics.add.group();
   }
 
   create() {
-    this.monster = new Monster(this, 200, 400, "orc", "orc", 1);
-    this.monsterGroup = this.physics.add.group();
-    this.monsterGroup.add(this.monster);
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("nearbyMonsterLoad", nearbyMonsterLoadCallback.bind(this))
+    );
 
     //These events should exist on every scene
     this.unsubscribes.push(
@@ -66,14 +57,28 @@ export default class MMOScene extends Phaser.Scene {
     if (this.player) {
       this.player.update(time, delta);
     }
-    if (this.otherPlayers) {
-      for (const [id, player] of Object.entries(this.otherPlayers)) {
-        // console.log('remote player', this.otherPlayers)
-        player.update(time, delta);
+    for (const [id, player] of Object.entries(this.otherPlayers)) {
+      player.update(time, delta);
+    }
+
+    for (const [id, monster] of Object.entries(this.monsters)) {
+      if(!this.monsterGroup.contains(monster)) {
+        this.monsterGroup.add(monster)
+        this.physics.add.overlap(monster.aggroZone, this.player, (aggroZone, player) => {
+          aggroZone.setAggroTarget(this.player);
+        });
       }
+      monster.update(time, delta);
     }
-    if (this.monster) {
-      this.monster.update(time, delta);
-    }
+  }
+
+  enableCollisionDebug(layer) {
+    /*** collision debugging code ***/
+    const debugGraphics = this.add.graphics().setAlpha(0.75);
+    layer.renderDebug(debugGraphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    });
   }
 }

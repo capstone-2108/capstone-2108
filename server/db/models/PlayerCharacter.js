@@ -59,7 +59,8 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
       where: {
         id: {
           [Op.ne]: characterId
-        }
+        },
+        active: true
       },
       attributes: ["id", "name", "health"],
       include: [
@@ -83,5 +84,9 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
   }
   return nearbyPlayers;
 };
+
+PlayerCharacter.logout = function (characterId) {
+  this.update({active: false}, {where: { id: characterId}});
+}
 
 module.exports = { PlayerCharacter };
