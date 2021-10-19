@@ -62,9 +62,13 @@ body {
   margin-right: -25px;
 }
 #otherPlayerName {
-  font-size: 14px;
+  font-size: 12px;
   padding-top: 10px;
   margin-bottom: 0px;
+}
+#anonymous {
+  margin: 0px;
+  font-size: 12px;
 }
 .OtherCharacterInfo {
   display: flex;
@@ -75,14 +79,14 @@ body {
 .otherLevelRing {
   position: absolute;
   z-index: 2;
-  top: 167px;
-  left: 1090px;
+  top: 150px;
+  left: 1115px;
 }
 .otherLevel {
   position: absolute;
   z-index: 2;
-  top: 160px;
-  left: 1105px;
+  top: 145px;
+  left: 1130px;
 }
 .otherPortrait {
   width: 40px;
@@ -99,10 +103,10 @@ body {
   align-items: center;
   justify-content: flex-end;
   margin-left: 50px;
-  margin-top: 15px;
+  margin-top: 5px;
   padding: 5px;
   font-size: 12px;
-  height: 3%;
+  height: 5%;
 }
 
 .playerDetails {

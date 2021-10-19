@@ -1,16 +1,15 @@
 import React from "react";
-import { useSelector } from "react-redux"
-
+import { useSelector } from "react-redux";
 
 const SelectedPlayerInfo = () => {
   const selectedPlayer = useSelector((state) => state.player.selectedPlayer);
   const ratio = selectedPlayer.health / 500;
-  const healthWidth = 500 * ratio;
-  const expWidth = (selectedPlayer.experience / 100) * 100;
+  const healthWidth = 150 * ratio;
+  const expWidth = (selectedPlayer.experience / 100) * 150;
 
-  console.log('selected**', selectedPlayer)
+  console.log("selected**", selectedPlayer);
 
-  let healthStyle = '';
+  let healthStyle = "";
 
   if (healthWidth <= 30) {
     healthStyle = {
@@ -40,17 +39,30 @@ const SelectedPlayerInfo = () => {
   return (
     <div className="OtherCharacterInfo">
       <div className="player">
-        <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
+        {selectedPlayer.name ? (
+          <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
+        ) : (
+          <h3 id="anonymous">?</h3>
+        )}
       </div>
       <div className="playerDetails">
         <div className="playerImg">
           <img src="goldRing.png" width="50px" height="50px" />
-          <img src={selectedPlayer.portrait} className="otherPortrait" />
+          {selectedPlayer.portrait ? (
+            <img src={selectedPlayer.portrait} className="otherPortrait" />
+          ) : (
+            <img src="question.png" className="otherPortrait" />
+          )}
         </div>
         <div className="otherLevelRing">
           <img src="goldRing.png" width="35px" height="35px" />
         </div>
-        <h3 className="otherLevel">{selectedPlayer.level}</h3>
+        {selectedPlayer.level ? (
+          <h3 className="otherLevel">{selectedPlayer.level}</h3>
+        ) : (
+          <h3 className="otherLevel">0</h3>
+        )}
+
         <div className="bars">
           <div className="otherBar">
             <div className="hp">
@@ -79,7 +91,7 @@ const SelectedPlayerInfo = () => {
                 style={{
                   background: "rgb(0,0,96)",
                   background:
-                    "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,96,1) 100%)",
+                    "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,250,1) 100%)",
                   width: `${expWidth}px`,
                   height: "12px"
                 }}></div>

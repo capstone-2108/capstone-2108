@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 const PlayerInfo = () => {
   const player = useSelector((state) => state.player);
   const ratio = player.health / player.totalHealth;
-  const healthWidth = player.totalHealth * ratio;
-  const expWidth = (player.experience / player.totalExp) * player.totalExp;
+  const healthWidth = 200 * ratio;
+  const expWidth = (player.experience / player.totalExp) * 200;
 
   let healthStyle = "";
 
@@ -81,7 +81,7 @@ const PlayerInfo = () => {
                 style={{
                   background: "rgb(0,0,96)",
                   background:
-                    "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,96,1) 100%)",
+                    "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,220,1) 100%)",
                   width: `${expWidth}px`,
                   height: "20px"
                 }}></div>
