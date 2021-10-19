@@ -34,14 +34,14 @@ export default class StarterTown extends MMOScene {
 
     // this.transitionRectangle = this.add.rectangle(3200, 625, 100, 100, 0xffffff, .5).setDepth(1)
 
-    this.transitionRectangle = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5);
-    this.physics.add.existing(this.transitionRectangle);
-    this.transitionRectangle.body.enable = true;
-    this.physics.world.add(this.transitionRectangle.body);
+    this.transitionToForest = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5);
+    this.physics.add.existing(this.transitionToForest);
+    this.transitionToForest.body.enable = true;
+    this.physics.world.add(this.transitionToForest.body);
     this.transitionZones.push({
       sceneName: 'ForestScene',
       sceneId: 2,
-      transitionPoint: this.transitionRectangle
+      transitionPoint: this.transitionToForest
     });
 
     super.create();

@@ -45,10 +45,9 @@ export default class ForestScene extends MMOScene {
     // this.pathfinder = createPathFinder(map, this.layers);
 
     // collision
-    // I DON"T THINK THIS IS CURRENTLY WORKING
     // this.groundLayer.setCollisionByProperty({ collides: true });
-    // this.treesLayer.setCollisionByProperty({ collides: true });
-    // this.trees2Layer.setCollisionByProperty({ collides: true });
+    this.treesLayer.setCollisionByProperty({ collides: true });
+    this.trees2Layer.setCollisionByProperty({ collides: true });
 
     this.transitionToStarter = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5);
     this.physics.add.existing(this.transitionToStarter);
@@ -59,6 +58,8 @@ export default class ForestScene extends MMOScene {
       sceneId: 1,
       transitionPoint: this.transitionToStarter
     });
+
+    this.enableCollisionDebug(this.treesLayer)
 
     super.create();
   }
