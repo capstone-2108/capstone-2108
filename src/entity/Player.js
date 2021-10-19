@@ -26,7 +26,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
    * @param {number} id
    * @param {boolean} localPlayer
    */
-  constructor(scene, x, y, spriteKey, templateName, characterName, id, localPlayer = false) {
+  constructor(scene, x, y, spriteKey, templateName, characterName, id, localPlayer = false, stuff='nothing') {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -93,9 +93,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       onUpdate: this.walkStateUpdate
     });
 
+    this.stateMachine.setState("idle");
+
     this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
       target.stateMachine.setState("hit");
     });
+
+    this.setDepth(5)
   }
 
   idleStateUpdate() {
@@ -165,6 +169,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   //plays the correct animation based on the players state
   animationPlayer(state) {
+    if (!this.anims) return
     const currentAnimationPlaying = this.anims.getName();
     let vdx = 0;
     let vdy = 0;

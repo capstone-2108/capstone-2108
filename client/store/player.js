@@ -8,8 +8,10 @@ export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
 export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const SET_NEARBY_MONSTERS = "SET_NEARBY_MONSTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
+export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
 export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
 
+export const SET_SELECTED_MONSTER = "SET_SELECTED_MONSTER";
 
 /*************************
  * Action Creators       *
@@ -19,6 +21,14 @@ export const setPlayerCharacter = (character) => {
   return {
     type: SET_PLAYER_CHARACTER,
     character
+  };
+};
+
+
+export const updatePlayerCharacter = (updates) => {
+  return {
+    type: UPDATE_PLAYER_CHARACTER,
+    updates
   };
 };
 
@@ -47,6 +57,13 @@ export const setSelectedPlayer = (character) => {
   return {
     type: SET_SELECTED_PLAYER,
     character
+  };
+};
+
+export const setSelectedMonster = (monster) => {
+  return {
+    type: SET_SELECTED_MONSTER,
+    monster
   };
 };
 
@@ -142,6 +159,19 @@ export const clearPlayerState = () => {
   };
 };
 
+export const fetchSeletedMonster = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await axios.get(`/api/game/monster/${id}`);
+      dispatch(setSelectedMonster(response.data));
+      let state = getState();
+      return state.player.selectedMonster;
+    } catch (error) {
+      console.log(err);
+    }
+  };
+};
+
 /*************************
  * Reducer       *
  ************************/
@@ -152,6 +182,7 @@ const initialState = {
   nearbyPlayers: [],
   nearbyMonsters: [],
   selectedPlayer: {},
+  selectedMonster: {},
   xPos: 0,
   yPos: 0,
   health: 100,
@@ -197,8 +228,12 @@ export default (state = initialState, action) => {
       return { ...state, health: action.health };
     case CLEAR_PLAYER_STATE:
       return clearState;
+    case UPDATE_PLAYER_CHARACTER:
+      return { ...state, ...action.updates };
     case SET_SELECTED_PLAYER:
       return { ...state, selectedPlayer: action.character };
+    case SET_SELECTED_MONSTER:
+      return { ...state, selectedPlayer: action.monster };
     default:
       return state;
   }

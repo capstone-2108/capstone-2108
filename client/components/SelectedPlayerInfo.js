@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const SelectedPlayerInfo = () => {
   const selectedPlayer = useSelector((state) => state.player.selectedPlayer);
-  const ratio = selectedPlayer.health / 500;
+  const ratio = selectedPlayer.health / selectedPlayer.totalHealth;
   const healthWidth = 150 * ratio;
   const expWidth = (selectedPlayer.experience / 100) * 150;
 
@@ -34,70 +34,89 @@ const SelectedPlayerInfo = () => {
       height: "12px"
     };
   }
-  return (
-    <div className="OtherCharacterInfo">
-      <div className="player">
-        {selectedPlayer.name ? (
+  if (selectedPlayer.gold) {
+    return (
+      <div className="OtherCharacterInfo">
+        <div className="player">
           <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
-        ) : (
-          <h3 id="anonymous">?</h3>
-        )}
-      </div>
-      <div className="playerDetails">
-        <div className="playerImg">
-          <img src="goldRing.png" width="50px" height="50px" />
-          {selectedPlayer.portrait ? (
-            <img src={selectedPlayer.portrait} className="otherPortrait" />
-          ) : (
-            <img src="question.png" className="otherPortrait" />
-          )}
         </div>
-        <div className="otherLevelRing">
-          <img src="goldRing.png" width="35px" height="35px" />
-        </div>
-        {selectedPlayer.level ? (
-          <h3 className="otherLevel">{selectedPlayer.level}</h3>
-        ) : (
-          <h3 className="otherLevel">0</h3>
-        )}
-
-        <div className="bars">
-          <div className="otherBar">
-            <div className="hp">
-              <h4 className="whiteText">HP</h4>
-            </div>
-            <div
-              style={{
-                backgroundColor: "black",
-                width: "150px",
-                height: "12px"
-              }}>
-              <div style={healthStyle}></div>
-            </div>
+        <div className="playerDetails">
+          <div className="playerImg">
+            <img src="goldRing.png" width="50px" height="50px" />
+            {selectedPlayer.portrait ? (
+              <img src={selectedPlayer.portrait} className="otherPortrait" />
+            ) : (
+              <img src="question.png" className="otherPortrait" />
+            )}
           </div>
-          <div className="otherBar">
-            <div className="exp">
-              <h4 className="whiteText">EXP</h4>
-            </div>
-            <div
-              style={{
-                backgroundColor: "black",
-                width: "150px",
-                height: "12px"
-              }}>
+          <div className="otherLevelRing">
+            <img src="goldRing.png" width="35px" height="35px" />
+          </div>
+          {selectedPlayer.level ? (
+            <h3 className="otherLevel">{selectedPlayer.level}</h3>
+          ) : (
+            <h3 className="otherLevel">0</h3>
+          )}
+
+          <div className="bars">
+            <div className="otherBar">
+              <div className="hp">
+                <h4 className="whiteText">HP</h4>
+              </div>
               <div
                 style={{
-                  background: "rgb(0,0,96)",
-                  background:
-                    "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,250,1) 100%)",
-                  width: `${expWidth}px`,
+                  backgroundColor: "black",
+                  width: "150px",
                   height: "12px"
-                }}></div>
+                }}>
+                <div style={healthStyle}></div>
+              </div>
+            </div>
+            <div className="otherBar">
+              <div className="exp">
+                <h4 className="whiteText">EXP</h4>
+              </div>
+              <div
+                style={{
+                  backgroundColor: "black",
+                  width: "150px",
+                  height: "12px"
+                }}>
+                <div
+                  style={{
+                    background: "rgb(0,0,96)",
+                    background:
+                      "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,250,1) 100%)",
+                    width: `${expWidth}px`,
+                    height: "12px"
+                  }}></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="monster">
+        <div className="monster-info">
+          <div className="player">
+            <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
+          </div>
+          <div className="monsterHp">
+            <h4 className="whiteText">HP</h4>
+          </div>
+          <div
+            style={{
+              backgroundColor: "black",
+              width: "150px",
+              height: "12px"
+            }}>
+            <div style={healthStyle}></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 export default SelectedPlayerInfo;

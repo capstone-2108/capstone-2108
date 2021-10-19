@@ -1,6 +1,7 @@
 import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
 import { Monster } from "../entity/Monster";
+import { eventEmitter } from "../event/EventEmitter";
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -15,7 +16,12 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
+      console.log('transitionpoint', transitionZone.transitionPoint)
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+      //On overlap this function gets called
+      eventEmitter.emit("playerChangedScenes", {
+        sceneId: transitionZone.sceneId, characterId: this.player.id, sceneName: transitionZone.sceneName
+      })
       this.scene.start(transitionZone.sceneName);
     });
   });
@@ -45,6 +51,7 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
+  // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
   for (; i < len; i++) {
