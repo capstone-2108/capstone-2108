@@ -4,6 +4,7 @@ import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData } from
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
+import { fetchSeletedMonster } from "../store/monster";
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
@@ -67,6 +68,10 @@ export const InitSubscriptionsToPhaser = () => {
       console.log("requestPlayerInfo");
       dispatch(fetchRemoteCharacterData(characterId));
     });
+
+    eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
+      dispatch(fetchSeletedMonster(monsterId))
+    })
 
     return () => newSocket.close();
   }, []);

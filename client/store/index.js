@@ -7,6 +7,7 @@ import chat from './chat';
 import player from './player';
 import templateCharacters from "./templateCharacters";
 import chosenCharacter from "./chosenCharacter";
+import monster from "./monster";
 
 
 const reducer = combineReducers({
@@ -14,7 +15,8 @@ const reducer = combineReducers({
   chat,
   player,
   templateCharacters,
-  chosenCharacter
+  chosenCharacter,
+  monster
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
