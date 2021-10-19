@@ -58,8 +58,6 @@ export const fetchCharacterData = () => {
       let state = getState();
       //if the player data is already in redux
       if (state.player.characterId !== null) {
-        console.log("in fetch character data");
-        console.log("state.player", state.player);
         return state.player;
       } else {
         //fetch the player data
@@ -171,7 +169,6 @@ export default (state = initialState, action) => {
     case CLEAR_PLAYER_STATE:
       return clearState;
     case UPDATE_PLAYER_CHARACTER:
-      console.log("in update player character reducer");
       return { ...state, ...action.updates };
     case SET_SELECTED_PLAYER:
       return { ...state, selectedPlayer: action.character };

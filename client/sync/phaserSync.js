@@ -40,7 +40,6 @@ export const InitSubscriptionsToPhaser = () => {
     //tell phaser to move those characters on the screen
     newSocket.on("otherPlayerPositionChanged", (position) => {
       //this is how we tell phaser that another player has moved
-      console.log('CLIENT SIDE OTHER PLAYER PHASER SYNC')
       eventEmitter.emit("otherPlayerPositionChanged", position);
     });
 
@@ -76,9 +75,6 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
-      //send a message using socket.io to let the server know that the player changed position
-      // newSocket.emit(action, data);
-      console.log("requestPlayerInfo");
       dispatch(fetchRemoteCharacterData(characterId));
     });
 

@@ -32,16 +32,14 @@ export default class StarterTown extends MMOScene {
       this.belowCharLayer
     ]);
 
-    // this.transitionRectangle = this.add.rectangle(3200, 625, 100, 100, 0xffffff, .5).setDepth(1)
-
-    this.transitionToForest = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5);
-    this.physics.add.existing(this.transitionToForest);
-    this.transitionToForest.body.enable = true;
-    this.physics.world.add(this.transitionToForest.body);
+    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 0.5).setDepth(1);
+    this.physics.add.existing(this.transitionToForestSceneFromStarterTown);
+    this.transitionToForestSceneFromStarterTown.body.enable = true;
+    this.physics.world.add(this.transitionToForestSceneFromStarterTown.body);
     this.transitionZones.push({
       sceneName: 'ForestScene',
       sceneId: 2,
-      transitionPoint: this.transitionToForest
+      transitionPoint: this.transitionToForestSceneFromStarterTown
     });
 
     super.create();

@@ -99,6 +99,16 @@ const sceneData = [
     id: 2,
     name: "ForestScene",
     mapId: 1
+  },
+  {
+    id: 3,
+    name: "ForestPath",
+    mapId: 1
+  },
+  {
+    id: 4,
+    name: "MiddleTown",
+    mapId: 1
   }
 ];
 

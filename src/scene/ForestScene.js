@@ -44,22 +44,28 @@ export default class ForestScene extends MMOScene {
 
     // this.pathfinder = createPathFinder(map, this.layers);
 
-    // collision
-    // this.groundLayer.setCollisionByProperty({ collides: true });
     this.treesLayer.setCollisionByProperty({ collides: true });
     this.trees2Layer.setCollisionByProperty({ collides: true });
 
-    this.transitionToStarter = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5);
-    this.physics.add.existing(this.transitionToStarter);
-    this.transitionToStarter.body.enable = true;
-    this.physics.world.add(this.transitionToStarter.body);
+    this.transitionToStarterTownFromForestScene = this.add.rectangle(0, 650, 100, 100, 0xffffff, 0.5);
+    this.physics.add.existing(this.transitionToStarterTownFromForestScene);
+    this.transitionToStarterTownFromForestScene.body.enable = true;
+    this.physics.world.add(this.transitionToStarterTownFromForestScene.body);
     this.transitionZones.push({
       sceneName: 'StarterTown',
       sceneId: 1,
-      transitionPoint: this.transitionToStarter
+      transitionPoint: this.transitionToStarterTownFromForestScene
     });
 
-    this.enableCollisionDebug(this.treesLayer)
+    this.transitionToForestPathFromForestScene = this.add.rectangle(1340, 0, 100, 100, 0xffffff, 0.5);
+    this.physics.add.existing(this.transitionToForestPathFromForestScene);
+    this.transitionToForestPathFromForestScene.body.enable = true;
+    this.physics.world.add(this.transitionToForestPathFromForestScene.body);
+    this.transitionZones.push({
+      sceneName: 'ForestPath',
+      sceneId: 3,
+      transitionPoint: this.transitionToForestPathFromForestScene
+    });
 
     super.create();
   }

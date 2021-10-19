@@ -15,10 +15,9 @@ export function scenePlayerLoadCallback(data) {
     data.characterId
   );
 
-  console.log("scenePlayerloadCallback")
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
-      console.log('THIS', this.player.id)
+      console.log('transitionpoint', transitionZone.transitionPoint)
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
       eventEmitter.emit("playerChangedScenes", {
@@ -52,7 +51,7 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
-  console.log('got nearby players and this', this, players)
+  // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
   for (; i < len; i++) {
