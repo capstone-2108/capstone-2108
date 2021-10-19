@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import { fetchCharacterData, fetchNearbyPlayers, fetchRemoteCharacterData, fetchSeletedMonster } from "../store/player";
+import {
+  fetchCharacterData, fetchNearbyMonsters,
+  fetchNearbyPlayers,
+  fetchRemoteCharacterData,
+  fetchSeletedMonster
+} from '../store/player';
+
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
@@ -20,7 +26,7 @@ export const InitSubscriptionsToPhaser = () => {
      * Socket.io *
      ***************/
     //sets up a socket for 2 way persistent communication via socket.io
-    const newSocket = io(`http://${window.location.hostname}:1337/gameSync`, {
+    const newSocket = io(`http://${window.location.host}/gameSync`, {
       withCredentials: true
     });
     setSocket(newSocket); //save the socket into the component state
@@ -53,12 +59,14 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     eventEmitter.subscribe("sceneLoad", async (data) => {
-      console.log('sceneLoad');
+      console.log("sceneLoad");
       const player = await dispatch(fetchCharacterData()); //load the players data into redux
       eventEmitter.emit("scenePlayerLoad", player);
       //load any players which are in the same scene as the player
       const nearbyPlayers = await dispatch(fetchNearbyPlayers(player.characterId));
       eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
+      const nearbyMonsters = await dispatch(fetchNearbyMonsters(player.sceneId));
+      eventEmitter.emit("nearbyMonsterLoad", nearbyMonsters);
     });
 
     eventEmitter.subscribe("playerChangedScenes", async (data) => {

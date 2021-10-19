@@ -42,10 +42,11 @@ export class LocalPlayer extends Player {
       right: Phaser.Input.Keyboard.KeyCodes.D
     });
 
-    // this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer) => {
-    //   this.stateMachine.setState("melee");
-    // });
-
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer) => {
+      if(pointer.rightButtonDown()) {
+        this.stateMachine.setState("melee");
+      }
+    });
   }
 
   update(time, delta) {
