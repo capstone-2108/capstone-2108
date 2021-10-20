@@ -11,7 +11,7 @@ const Chat = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const chatSocket = io(`{window.location.protocol}//${window.location.hostname}:1337/worldChat`, {
+    const chatSocket = io(`${window.location.protocol}//${window.location.host}/worldChat`, {
       withCredentials: true
     });
     setSocket(chatSocket);
