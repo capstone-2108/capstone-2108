@@ -53,6 +53,7 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
+  console.log('nearbyPlayer this', this);
   // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
@@ -98,8 +99,17 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   }
 }
 
-export function remotePlayerChangedSceneCallback(characterId) {
-  console.log('remotePlayerChangedScene');
+export function remotePlayerChangedSceneCallback(remotePlayer) {
+  //has the player entered the scene or left the scene?
+  //if they exist on remotePlayers, they've likely left, otherwise they entered
+  if (this.remotePlayers[remotePlayer.characterId]) {
+    this.remotePlayers[remotePlayer.characterId].cleanUp();
+    this.remotePlayers[remotePlayer.characterId].destroy();
+    delete this.remotePlayers[remotePlayer.characterId];
+  } else {
+    const boundCallback = nearbyPlayerLoadCallback.bind(this);
+    boundCallback([remotePlayer]);
+  }
 }
 
 export function remotePlayerLoadCallback(data) {

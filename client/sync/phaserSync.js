@@ -5,10 +5,10 @@ import {
   fetchNearbyMonsters,
   fetchNearbyPlayers,
   fetchRemoteCharacterData,
-  fetchSeletedMonster
-} from "../store/player";
+  fetchSeletedMonster, remotePlayerChangedScenes, remotePlayerChangesScenes
+} from '../store/player';
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
@@ -18,6 +18,7 @@ import { updatePlayerCharacter } from "../store/player";
 export const InitSubscriptionsToPhaser = () => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
+  const playerState = useSelector((state) => state.player);
 
   useEffect(() => {
     //loads the game
@@ -54,10 +55,11 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     //server lets us know that a remote player has changed scenes
-    newSocket.on("remotePlayerChangedScenes", (characterId) => {
-      //this is how we tell phaser that another player has moved
-      console.log('remote player changed scenes!')
-      eventEmitter.emit("remotePlayerChangedScenes", characterId);
+    newSocket.on("remotePlayerChangedScenes", (remotePlayer) => {
+      //lets tell phaser that this player has changed scenes so it can update accordingly
+      //if they entered my scene, lets add them to redux, otherwise remove,
+      dispatch(remotePlayerChangedScenes(remotePlayer));
+      eventEmitter.emit("remotePlayerChangedScenes", remotePlayer);
     });
 
     /****************

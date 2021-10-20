@@ -29,11 +29,15 @@ export const GameView = () => {
     eventEmitter.emit("localPlayerLogout");
   };
 
+  const enableKeys = () => {
+    eventEmitter.emit('enableKeyEvents');
+  }
+
   return (
     <div className="layout">
       <InitSubscriptionsToPhaser />
       <div className="left">
-        <div id="phaser"></div>
+        <div onClick={enableKeys} id="phaser"></div>
         <div className="worldChat">
           <Chat />
         </div>

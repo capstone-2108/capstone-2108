@@ -3,6 +3,7 @@ const server = require("../app");
 const { requireSocketToken } = require("./socket-middleware");
 const io = new Server(server);
 const { PlayerCharacter, Location } = require("../db");
+const {transformToPayload} = require('../db/models/PlayerCharacter');
 
 const worldChat = io.of("/worldChat");
 const gameSync = io.of("/gameSync");
@@ -24,7 +25,9 @@ function initWorldChat() {
         console.log("worldChat namespace connect error!");
         console.log(error);
       });
-      console.log(`${socket.user.firstName} has connected to world chat!`);
+      if(socket.user) {
+        console.log(`${socket.user.firstName} has connected to world chat!`);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -48,18 +51,13 @@ function initGameSync() {
     });
 
     socket.on("playerChangedScenes", async (data) => {
-      //update the database with the new location
       try {
-        const playerChar = await PlayerCharacter.findOne({
-          where: { id: data.characterId },
-          include: Location
-        });
-        const locationInfo = await Location.findOne({
-          where: { id: playerChar.locationId }
-        });
-        const updated = await locationInfo.update({ sceneId: data.sceneId });
+        const playerCharacter = await  PlayerCharacter.getCharacter(data.characterId);
+        await playerCharacter.location.update({sceneId: data.sceneId});
+        await playerCharacter.reload();
+        const characterPayload = transformToPayload(playerCharacter);
         //let the world know that this player has moved to a new scene
-        socket.broadcast.emit("remotePlayerChangedScenes", playerChar.id);
+        socket.broadcast.emit("remotePlayerChangedScenes", characterPayload);
       } catch (err) {
         console.log(err);
       }

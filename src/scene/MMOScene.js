@@ -11,7 +11,6 @@ import {
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
 } from "../event/callbacks";
-import { Player } from "../entity/Player";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -28,6 +27,20 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   create() {
+    this.unsubscribes.push(
+      eventEmitter.subscribe("disabledEvents", () => {
+        this.input.keyboard.enabled = false;
+        this.input.keyboard.disableGlobalCapture();
+      })
+    );
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("enableKeyEvents", () => {
+        this.input.keyboard.enabled = true;
+        this.input.keyboard.enableGlobalCapture();
+      })
+    );
+
     this.unsubscribes.push(
       eventEmitter.subscribe("nearbyMonsterLoad", nearbyMonsterLoadCallback.bind(this))
     );

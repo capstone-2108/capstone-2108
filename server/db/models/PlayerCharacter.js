@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const { TemplateCharacter } = require("./TemplateCharacter");
 const { SpriteSheet } = require("./SpriteSheet");
 const { Location } = require("./Location");
+const {Scene} = require('./Scene');
 
 const PlayerCharacter = db.define("playerCharacter", {
   name: {
@@ -85,6 +86,35 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
   return nearbyPlayers;
 };
 
+PlayerCharacter.getCharacter = function (characterId) {
+  //@todo: if the user id is included, then include it in the return payload
+  return this.findOne({
+    where: {
+      id: characterId
+    },
+    include: [
+      {
+        model: TemplateCharacter,
+        attributes: ["id", "name", "portrait"],
+        include: {
+          model: SpriteSheet,
+          attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
+        }
+      },
+      {
+        model: Location,
+        attributes: {exclude: ["createdAt", "updatedAt"]},
+        include: {
+          model: Scene,
+          attributes: ["id", "name"]
+        }
+      }
+    ]
+  });
+}
+
+
+
 PlayerCharacter.logout = async function (userId, characterId) {
   let playerCharacter = await PlayerCharacter.findAll({
     where: {
@@ -99,4 +129,28 @@ PlayerCharacter.logout = async function (userId, characterId) {
   return playerCharacter;
 };
 
-module.exports = { PlayerCharacter };
+
+/************************
+ Helper Functions       *
+ ***********************/
+const transformToPayload = (playerCharacter) => {
+  return {
+    characterId: playerCharacter.id,
+    id: playerCharacter.id,
+    name: playerCharacter.name,
+    health: playerCharacter.health,
+    experience: playerCharacter.experience,
+    level: playerCharacter.level,
+    templateName: playerCharacter.templateCharacter.name,
+    spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
+    xPos: playerCharacter.location.xPos,
+    yPos: playerCharacter.location.yPos,
+    gold: playerCharacter.gold,
+    sceneId: playerCharacter.location.scene.id,
+    sceneName: playerCharacter.location.scene.name,
+    portrait: playerCharacter.templateCharacter.portrait
+  };
+}
+
+module.exports = { PlayerCharacter, transformToPayload };
