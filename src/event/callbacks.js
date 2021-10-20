@@ -16,12 +16,14 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
-      console.log('transitionpoint', transitionZone.transitionPoint)
+      console.log("transitionpoint", transitionZone.transitionPoint);
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
       eventEmitter.emit("playerChangedScenes", {
-        sceneId: transitionZone.sceneId, characterId: this.player.id, sceneName: transitionZone.sceneName
-      })
+        sceneId: transitionZone.sceneId,
+        characterId: this.player.id,
+        sceneName: transitionZone.sceneName
+      });
       this.scene.start(transitionZone.sceneName);
     });
   });
@@ -56,8 +58,8 @@ export function nearbyPlayerLoadCallback(players) {
   let len = players.length;
   for (; i < len; i++) {
     const player = players[i];
-    if (player.characterId !== this.player.characterId && !this.otherPlayers[player.characterId]) {
-      this.otherPlayers[player.characterId] = new RemotePlayer(
+    if (player.characterId !== this.player.characterId && !this.remotePlayers[player.characterId]) {
+      this.remotePlayers[player.characterId] = new RemotePlayer(
         this,
         player.xPos,
         player.yPos,
@@ -90,15 +92,15 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   //set a `move to` position, and let update take care of the rest
   //should consider making `moveTo` stateSnapshots a queue in case more events come in before
   //the player character has finished moving
-  const remotePlayer = this.otherPlayers[stateSnapshots.characterId];
+  const remotePlayer = this.remotePlayers[stateSnapshots.characterId];
   if (remotePlayer) {
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
   }
 }
 
-export function otherPlayerLoadCallback(data) {
-  if (data.id !== this.player.id && !this.otherPlayers[data.id]) {
-    this.otherPlayers[data.id] = new RemotePlayer(
+export function remotePlayerLoadCallback(data) {
+  if (data.id !== this.player.id && !this.remotePlayers[data.id]) {
+    this.remotePlayers[data.id] = new RemotePlayer(
       this,
       data.xPos,
       data.yPos,
@@ -107,5 +109,28 @@ export function otherPlayerLoadCallback(data) {
       data.name,
       data.id
     );
+  }
+}
+
+export function localPlayerLogoutCallback() {
+  this.player.destroy();
+  this.player = undefined;
+  for (const [id, remotePlayer] of Object.entries(this.remotePlayers)) {
+    remotePlayer.destroy();
+  }
+  this.remotePlayers = {};
+  for (const [id, monster] of Object.entries(this.monsters)) {
+    monster.aggroZone.destroy();
+    monster.destroy();
+  }
+  this.monsters = {};
+  this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+}
+
+export function remotePlayerLogoutCallback(remotePlayerCharacterId) {
+  if (this.remotePlayers[remotePlayerCharacterId]) {
+    console.log("test");
+    this.remotePlayers[remotePlayerCharacterId].destroy();
+    delete this.remotePlayers[remotePlayerCharacterId];
   }
 }

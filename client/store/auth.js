@@ -59,7 +59,7 @@ export const logout = () => {
         dispatch(setLoggedOut());
         dispatch(loginSuccess(false));
         dispatch(clearPlayerState());
-        dispatch(logoutCharacters());
+
       } else {
         console.log("Failed to logout");
         //@todo failed to logout
