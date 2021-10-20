@@ -67,7 +67,7 @@ export const InitSubscriptionsToPhaser = () => {
      ***************/
     //Subscribes to an event which lets us know when phaser has fully loaded
     const unsubscribes = [];
-<<<<<<< HEAD
+
     unsubscribes.push(
       eventEmitter.subscribe("phaserLoad", async (data) => {
         const player = await dispatch(fetchCharacterData()); //load the players data into redux
