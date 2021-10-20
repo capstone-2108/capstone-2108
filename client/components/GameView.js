@@ -47,10 +47,10 @@ export const GameView = () => {
           <Ui />
         </div>
 
-        <div>
-          <Link to="/select">
+        <div className="buttonDiv">
+          {/* <Link to="/select">
             <button id="characterButton">CHARACTERS</button>
-          </Link>
+          </Link> */}
           <Link to="/">
             <button onClick={doLogout} id="logoutButton">
               QUIT

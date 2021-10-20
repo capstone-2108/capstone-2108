@@ -16,8 +16,12 @@ export const NewChatEntry = (props) => {
   //     setMessageEntry('');
   //   }
   // }
+  const disablePhaserEvents = (evt) => {
+    eventEmitter.emit("disabledEvents");
+  };
   const handleTyping = (evt) => {
     setMessageEntry(evt.target.value);
+    // eventEmitter.emit("disabledEvent");
   };
 
   const disablePhaserEvents = (evt) => {
