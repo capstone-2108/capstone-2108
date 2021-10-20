@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
 import {
-  fetchCharacterData, fetchNearbyMonsters,
+  fetchCharacterData,
+  fetchNearbyMonsters,
   fetchNearbyPlayers,
   fetchRemoteCharacterData,
   fetchSeletedMonster
-} from '../store/player';
+} from "../store/player";
 
 import { useDispatch } from "react-redux";
 import { Game } from "../../src/Game";
@@ -32,10 +33,13 @@ export const InitSubscriptionsToPhaser = () => {
     setSocket(newSocket); //save the socket into the component state
 
     // listens for other players loading in
-    // todo: put this back in
-    // newSocket.on("otherPlayerLoad", (data) => {
-    //   eventEmitter.emit("otherPlayerLoad", data);
-    // });
+    newSocket.on("remotePlayerLoad", (data) => {
+      eventEmitter.emit("remotePlayerLoad", data);
+    });
+
+    newSocket.on("remotePlayerLogout", (characterId) => {
+      eventEmitter.emit("remotePlayerLogout", characterId);
+    });
 
     // newSocket.on("playerChangedScenes", (scene) => {
     //   console.log("CLIENT SIDE PHASERSYNC")
@@ -44,21 +48,22 @@ export const InitSubscriptionsToPhaser = () => {
 
     //this is where the server lets us know that others players have moved, once we receive this signal we
     //tell phaser to move those characters on the screen
-    newSocket.on("otherPlayerPositionChanged", (position) => {
+    newSocket.on("remotePlayerPositionChanged", (position) => {
       //this is how we tell phaser that another player has moved
-      eventEmitter.emit("otherPlayerPositionChanged", position);
+      eventEmitter.emit("remotePlayerPositionChanged", position);
     });
 
     /****************
      * Event Emitter *
      ***************/
     //Subscribes to an event which lets us know when phaser has fully loaded
-    eventEmitter.subscribe("phaserLoad", async (data) => {
+    const unsubscribes = [];
+    unsubscribes.push(eventEmitter.subscribe("phaserLoad", async (data) => {
       const player = await dispatch(fetchCharacterData()); //load the players data into redux
       eventEmitter.emit("playerLoad", player);
-    });
+    }));
 
-    eventEmitter.subscribe("sceneLoad", async (data) => {
+    unsubscribes.push(eventEmitter.subscribe("sceneLoad", async (data) => {
       console.log("sceneLoad");
       const player = await dispatch(fetchCharacterData()); //load the players data into redux
       eventEmitter.emit("scenePlayerLoad", player);
@@ -67,30 +72,34 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
       const nearbyMonsters = await dispatch(fetchNearbyMonsters(player.sceneId));
       eventEmitter.emit("nearbyMonsterLoad", nearbyMonsters);
-    });
+    }));
 
-    eventEmitter.subscribe("playerChangedScenes", async (data) => {
+    unsubscribes.push(eventEmitter.subscribe("playerChangedScenes", async (data) => {
       //update store state with new sceneName and sceneId for this player
-      console.log('IN PLAYER CHANGED SCENES')
-      dispatch(updatePlayerCharacter({sceneName: data.sceneName, sceneId: data.sceneId}))
-      newSocket.emit("playerChangedScenes", data)
-    })
+      console.log("IN PLAYER CHANGED SCENES");
+      dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId }));
+      newSocket.emit("playerChangedScenes", data);
+    }));
 
     //phaser will send us updates via the "phaserUpdate" event
-    eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
+    unsubscribes.push(eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
       //send a message using socket.io to let the server know that the player changed position
       newSocket.emit(action, data);
-    });
+    }));
 
-    eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
+    unsubscribes.push(eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
       dispatch(fetchRemoteCharacterData(characterId));
-    });
+    }));
 
-    eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
-      dispatch(fetchSeletedMonster(monsterId))
-    })
+    unsubscribes.push(eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
+      dispatch(fetchSeletedMonster(monsterId));
+    }));
 
-    return () => newSocket.close();
+    return () => {
+      unsubscribes.forEach(unsubscribe => unsubscribe());
+      newSocket.close();
+    }
+
   }, []);
 
   return <></>;

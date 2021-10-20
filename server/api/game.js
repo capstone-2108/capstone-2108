@@ -122,7 +122,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     }
   });
 
-  gameSync.emit("otherPlayerLoad", payload);
+  gameSync.emit("remotePlayerLoad", payload);
 });
 
 //POST /api/character - creates a new character
@@ -230,10 +230,26 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
   }
 });
 
-router.get("/character/:characterId/logout", requireTokenMiddleware, async (req, res, next) => {
+router.put("/character/:characterId/logout", requireTokenMiddleware, async (req, res, next) => {
   try {
-    await PlayerCharacter.logout(req.params.characterId);
-  } catch (err) {}
+    const playerCharacter = await PlayerCharacter.logout(req.user.id, req.params.characterId);
+    if(playerCharacter) {
+      worldChat.emit("newMessage", {
+        channel: "world",
+        message: {
+          name: "WORLD", //todo: change this to the person's character name
+          message: playerCharacter.name + " has logged out!"
+        }
+      });
+      gameSync.emit('remotePlayerLogout', playerCharacter.id);
+      res.sendStatus(200);
+    }
+    else {
+     res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 // router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
