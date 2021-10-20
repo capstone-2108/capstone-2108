@@ -16,7 +16,11 @@ const {
 //This fetches all template characters
 router.get("/templates", async (req, res, next) => {
   try {
-    const result = await TemplateCharacter.findAll();
+    const result = await TemplateCharacter.findAll({
+      where: {
+        isPlayable: true
+      }
+    });
     res.json(result);
   } catch {
     next(err);
