@@ -47,7 +47,7 @@ export const GameView = () => {
           <Ui />
         </div>
 
-        <div>
+        <div className="buttonDiv">
           {/* <Link to="/select">
             <button id="characterButton">CHARACTERS</button>
           </Link> */}
