@@ -26,7 +26,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
    * @param {number} id
    * @param {boolean} localPlayer
    */
-  constructor(scene, x, y, spriteKey, templateName, characterName, id, localPlayer = false, stuff='nothing') {
+  constructor(
+    scene,
+    x,
+    y,
+    spriteKey,
+    templateName,
+    characterName,
+    id,
+    localPlayer = false,
+    stuff = "nothing"
+  ) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -54,13 +64,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       wordWrapWidth: this.width,
       color: "#554b87",
       shadowColor: ""
-    }
+    };
 
     this.nameTag = this.scene.add.text(this.x, this.y, this.characterName, style);
     // this.nameTag.setShadow(1, 1, "rgba(0,0,0,0.5)", 10);
 
     //Enable physics on this sprite
     this.scene.physics.world.enable(this);
+
+    this.body.offset.x = this.body.width
+    this.body.offset.y = this.body.height
+
 
     //Create all the animations, running, walking attacking, in all directions of movement
     createPlayerAnimation(this);
@@ -99,7 +113,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       target.stateMachine.setState("hit");
     });
 
-    this.setDepth(5)
+    this.setDepth(5);
   }
 
   idleStateUpdate() {
@@ -169,7 +183,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   //plays the correct animation based on the players state
   animationPlayer(state) {
-    if (!this.anims) return
+    if (!this.anims) return;
     const currentAnimationPlaying = this.anims.getName();
     let vdx = 0;
     let vdy = 0;
@@ -211,7 +225,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.nameTag.x = Math.floor(this.x - this.nameTag.width / 2);
     this.nameTag.y = Math.floor(this.y - this.height);
   }
-
 
   getVelocityFromDirection(direction) {
     let vdx = 0;
