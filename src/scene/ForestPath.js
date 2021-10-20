@@ -14,10 +14,6 @@ export default class ForestPath extends MMOScene {
   }
 
   create() {
-    this.monster = new Monster(this, 200, 400, "orc", "orc", 1);
-    this.monsterGroup = this.physics.add.group();
-    this.monsterGroup.add(this.monster);
-
     const map = this.make.tilemap({ key: "forest-path" });
     const grassTiles = map.addTilesetImage("grass", "grass");
     const plantTiles = map.addTilesetImage("plant", "plant");
@@ -50,8 +46,8 @@ export default class ForestPath extends MMOScene {
     this.transitionZones.push({
       sceneName: "MiddleTown",
       sceneId: 4,
-      xPos: 835,
-      yPos: 1520,
+      xPos: 800,
+      yPos: 1400,
       transitionPoint: this.transitionToMiddleTownFromForestPath
     });
 
