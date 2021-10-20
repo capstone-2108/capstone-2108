@@ -291,6 +291,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   //plays the correct animation based on the state
   animationPlayer(state) {
+    if (!this.anims) return
     const currentAnimationPlaying = this.anims.getName();
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.name}-${state}-${convertedDir}`;
