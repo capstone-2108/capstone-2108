@@ -198,7 +198,7 @@ const initialState = {
   sceneId: 1,
   sceneName: "StarterTown",
   level: 1,
-  portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png"
+  portrait: '',
 };
 
 const clearState = {
