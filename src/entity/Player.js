@@ -72,9 +72,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     //Enable physics on this sprite
     this.scene.physics.world.enable(this);
 
-    this.body.offset.x = this.body.width
-    this.body.offset.y = this.body.height
-
+    if (this.templateName !== "sorcerer") {
+      this.body.offset.x = this.body.width;
+      this.body.offset.y = this.body.height;
+    }
 
     //Create all the animations, running, walking attacking, in all directions of movement
     createPlayerAnimation(this);
@@ -223,7 +224,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta) {
     this.nameTag.x = Math.floor(this.x - this.nameTag.width / 2);
-    this.nameTag.y = Math.floor(this.y - this.height);
+    if (this.templateName !== "sorcerer") {
+      this.nameTag.y = Math.floor(this.y - this.body.height);
+    } else {
+      this.nameTag.y = Math.floor(this.y - this.height);
+    }
   }
 
   getVelocityFromDirection(direction) {
