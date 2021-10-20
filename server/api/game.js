@@ -93,7 +93,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
       }
     ]
   });
-  await playerCharacter.update({active: true});
+  await playerCharacter.update({ active: true });
   const payload = {
     userId: req.user.id,
     characterId: playerCharacter.id,
@@ -207,7 +207,6 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
 router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, next) => {
   try {
     const monsters = await Npc.getNearbyMonsters(req.params.sceneId);
-    console.log(monsters);
     const payload = [];
     let i = 0;
     let len = monsters.length;
@@ -306,8 +305,8 @@ router.get("/monster/:id", async (req, res, next) => {
       where: {
         id: req.params.id
       }
-    })
-    res.json(monster)
+    });
+    res.json(monster);
   } catch (error) {
     console.log(error);
   }

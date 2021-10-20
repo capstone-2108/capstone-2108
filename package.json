@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build:dev": "webpack --watch --config ./webpack.config.js  --mode=development",
+    "build": "webpack --config ./webpack.config.js  --mode=production",
     "start:dev": "npm run build:dev & npm run start-server",
     "start-server": "nodemon server -e html,js,scss --ignore public --ignore client",
+    "start": "npm run build & node server",
     "seed": "node script/seed.js"
   },
   "author": "",
