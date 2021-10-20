@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const server = require("../app");
 const { requireSocketToken } = require("./socket-middleware");
 const io = new Server(server);
-const {PlayerCharacter, Location } = require("../db")
+const { PlayerCharacter, Location } = require("../db");
 
 const worldChat = io.of("/worldChat");
 const gameSync = io.of("/gameSync");
@@ -15,15 +15,19 @@ function initSocketServer() {
 function initWorldChat() {
   worldChat.use(requireSocketToken);
   worldChat.on("connection", async (socket) => {
-    socket.on("sendMessage", (message) => {
-      socket.broadcast.emit("newMessage", message);
-    });
+    try {
+      socket.on("sendMessage", (message) => {
+        socket.broadcast.emit("newMessage", message);
+      });
 
-    socket.on("connect_error", (error) => {
-      console.log("worldChat namespace connect error!");
-      console.log(error);
-    });
-    console.log(`${socket.user.firstName} has connected to world chat!`);
+      socket.on("connect_error", (error) => {
+        console.log("worldChat namespace connect error!");
+        console.log(error);
+      });
+      console.log(`${socket.user.firstName} has connected to world chat!`);
+    } catch (err) {
+      console.log(err);
+    }
   });
 }
 
@@ -45,24 +49,21 @@ function initGameSync() {
 
     socket.on("playerChangedScenes", async (data) => {
       //update the database with the new location
-      console.log('index data', data)
       try {
         const playerChar = await PlayerCharacter.findOne({
           where: { id: data.characterId },
           include: Location
-        })
+        });
         const locationInfo = await Location.findOne({
           where: { id: playerChar.locationId }
-        })
-        const updated = await locationInfo.update({sceneId: data.sceneId})
-      } catch(err) {
-        console.log(err)
+        });
+        const updated = await locationInfo.update({ sceneId: data.sceneId });
+        //let the world know that this player has moved to a new scene
+        socket.broadcast.emit("remotePlayerChangedScenes", playerChar.id);
+      } catch (err) {
+        console.log(err);
       }
-      //don't know what this is doing
-      socket.broadcast.emit("playerChangedScenes")
     });
-
-    console.log(`${socket.user.firstName} has connected to game sync!`);
   });
 }
 

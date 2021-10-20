@@ -92,7 +92,6 @@ PlayerCharacter.logout = async function (userId, characterId) {
       userId
     }
   });
-  console.log('playerCharacter', playerCharacter);
   if (playerCharacter.length) {
     playerCharacter = playerCharacter[0];
     playerCharacter.update({ active: false });

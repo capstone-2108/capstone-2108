@@ -5,6 +5,7 @@ import {
   localPlayerLogoutCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
+  remotePlayerChangedSceneCallback,
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
@@ -51,6 +52,14 @@ export default class MMOScene extends Phaser.Scene {
       eventEmitter.subscribe("remotePlayerLoad", remotePlayerLoadCallback.bind(this))
     );
 
+    //react lets us know that a remote player has moved on to a different scene
+    this.unsubscribes.push(
+      eventEmitter.subscribe(
+        "remotePlayerChangedScenes",
+        remotePlayerChangedSceneCallback.bind(this)
+      )
+    );
+
     //cleans up any unsubscribes
     this.unsubscribes.push(
       eventEmitter.subscribe("localPlayerLogout", localPlayerLogoutCallback.bind(this))
@@ -62,7 +71,6 @@ export default class MMOScene extends Phaser.Scene {
 
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
-    console.log(eventEmitter);
   }
 
   /**anything that needs to update, should get it's update function called here**/
@@ -84,6 +92,21 @@ export default class MMOScene extends Phaser.Scene {
       }
       monster.update(time, delta);
     }
+  }
+
+  cleanUp() {
+    this.player.destroy();
+    this.player = undefined;
+    for (const [id, remotePlayer] of Object.entries(this.remotePlayers)) {
+      remotePlayer.destroy();
+    }
+    this.remotePlayers = {};
+    for (const [id, monster] of Object.entries(this.monsters)) {
+      monster.aggroZone.destroy();
+      monster.destroy();
+    }
+    this.monsters = {};
+    this.unsubscribes.forEach((unsubscribe) => unsubscribe());
   }
 
   enableCollisionDebug(layer) {

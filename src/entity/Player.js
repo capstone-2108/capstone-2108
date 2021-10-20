@@ -99,7 +99,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       target.stateMachine.setState("hit");
     });
 
-    console.log('Player constructor ran', this);
   }
 
   idleStateUpdate() {
@@ -108,6 +107,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   walkStateUpdate() {
     this.animationPlayer(this.stateMachine.currentStateName);
+  }
+
+  cleanUp() {
+    this.nameTag.destroy();
   }
 
   meleeAttackEnter() {

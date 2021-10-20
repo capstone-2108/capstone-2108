@@ -22,7 +22,6 @@ export const InitSubscriptionsToPhaser = () => {
   useEffect(() => {
     //loads the game
     window.game = new Game();
-    console.log('MAKING GAME');
 
     /****************
      * Socket.io *
@@ -54,53 +53,71 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("remotePlayerPositionChanged", position);
     });
 
+    //server lets us know that a remote player has changed scenes
+    newSocket.on("remotePlayerChangedScenes", (characterId) => {
+      //this is how we tell phaser that another player has moved
+      console.log('remote player changed scenes!')
+      eventEmitter.emit("remotePlayerChangedScenes", characterId);
+    });
+
     /****************
      * Event Emitter *
      ***************/
     //Subscribes to an event which lets us know when phaser has fully loaded
     const unsubscribes = [];
-    unsubscribes.push(eventEmitter.subscribe("phaserLoad", async (data) => {
-      const player = await dispatch(fetchCharacterData()); //load the players data into redux
-      eventEmitter.emit("playerLoad", player);
-    }));
+    unsubscribes.push(
+      eventEmitter.subscribe("phaserLoad", async (data) => {
+        const player = await dispatch(fetchCharacterData()); //load the players data into redux
+        eventEmitter.emit("playerLoad", player);
+      })
+    );
 
-    unsubscribes.push(eventEmitter.subscribe("sceneLoad", async (data) => {
-      console.log("sceneLoad");
-      const player = await dispatch(fetchCharacterData()); //load the players data into redux
-      eventEmitter.emit("scenePlayerLoad", player);
-      //load any players which are in the same scene as the player
-      const nearbyPlayers = await dispatch(fetchNearbyPlayers(player.characterId));
-      eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
-      const nearbyMonsters = await dispatch(fetchNearbyMonsters(player.sceneId));
-      eventEmitter.emit("nearbyMonsterLoad", nearbyMonsters);
-    }));
+    unsubscribes.push(
+      eventEmitter.subscribe("sceneLoad", async (data) => {
+        const player = await dispatch(fetchCharacterData()); //load the players data into redux
+        eventEmitter.emit("scenePlayerLoad", player);
+        //load any players which are in the same scene as the player
+        const nearbyPlayers = await dispatch(fetchNearbyPlayers(player.characterId));
+        eventEmitter.emit("nearbyPlayerLoad", nearbyPlayers);
+        const nearbyMonsters = await dispatch(fetchNearbyMonsters(player.sceneId));
+        eventEmitter.emit("nearbyMonsterLoad", nearbyMonsters);
+      })
+    );
 
-    unsubscribes.push(eventEmitter.subscribe("playerChangedScenes", async (data) => {
-      //update store state with new sceneName and sceneId for this player
-      console.log("IN PLAYER CHANGED SCENES");
-      dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId }));
-      newSocket.emit("playerChangedScenes", data);
-    }));
+    //phaser lets us know when the local player moves to another scene
+    unsubscribes.push(
+      eventEmitter.subscribe("playerChangedScenes", async (data) => {
+        //update store state with new sceneName and sceneId for this player
+        dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId }));
+        //let the server know about the changes
+        newSocket.emit("playerChangedScenes", data);
+      })
+    );
 
     //phaser will send us updates via the "phaserUpdate" event
-    unsubscribes.push(eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
-      //send a message using socket.io to let the server know that the player changed position
-      newSocket.emit(action, data);
-    }));
+    unsubscribes.push(
+      eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
+        //send a message using socket.io to let the server know that the player changed position
+        newSocket.emit(action, data);
+      })
+    );
 
-    unsubscribes.push(eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
-      dispatch(fetchRemoteCharacterData(characterId));
-    }));
+    unsubscribes.push(
+      eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
+        dispatch(fetchRemoteCharacterData(characterId));
+      })
+    );
 
-    unsubscribes.push(eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
-      dispatch(fetchSeletedMonster(monsterId));
-    }));
+    unsubscribes.push(
+      eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
+        dispatch(fetchSeletedMonster(monsterId));
+      })
+    );
 
     return () => {
-      unsubscribes.forEach(unsubscribe => unsubscribe());
-      newSocket.close();
-    }
-
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
+      socket.close();
+    };
   }, []);
 
   return <></>;

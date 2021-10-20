@@ -16,7 +16,6 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
-      console.log("transitionpoint", transitionZone.transitionPoint);
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
       eventEmitter.emit("playerChangedScenes", {
@@ -24,6 +23,7 @@ export function scenePlayerLoadCallback(data) {
         characterId: this.player.id,
         sceneName: transitionZone.sceneName
       });
+      this.cleanUp();
       this.scene.start(transitionZone.sceneName);
     });
   });
@@ -98,6 +98,10 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   }
 }
 
+export function remotePlayerChangedSceneCallback(characterId) {
+  console.log('remotePlayerChangedScene');
+}
+
 export function remotePlayerLoadCallback(data) {
   if (data.id !== this.player.id && !this.remotePlayers[data.id]) {
     this.remotePlayers[data.id] = new RemotePlayer(
@@ -113,23 +117,13 @@ export function remotePlayerLoadCallback(data) {
 }
 
 export function localPlayerLogoutCallback() {
-  this.player.destroy();
-  this.player = undefined;
-  for (const [id, remotePlayer] of Object.entries(this.remotePlayers)) {
-    remotePlayer.destroy();
-  }
-  this.remotePlayers = {};
-  for (const [id, monster] of Object.entries(this.monsters)) {
-    monster.aggroZone.destroy();
-    monster.destroy();
-  }
-  this.monsters = {};
-  // this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+  this.cleanup();
   eventEmitter.unsubscribeAll();
 }
 
 export function remotePlayerLogoutCallback(remotePlayerCharacterId) {
   if (this.remotePlayers[remotePlayerCharacterId]) {
+    this.remotePlayers[remotePlayerCharacterId].cleanUp();
     this.remotePlayers[remotePlayerCharacterId].destroy();
     delete this.remotePlayers[remotePlayerCharacterId];
   }

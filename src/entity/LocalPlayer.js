@@ -35,7 +35,6 @@ export class LocalPlayer extends Player {
   }
 
   createHotKeys() {
-    console.log("creating hotkeys");
     this.scene.input.keyboard.enabled = true;
 
     this.cursors = this.scene.input.keyboard.addKeys({
@@ -50,9 +49,6 @@ export class LocalPlayer extends Player {
         this.stateMachine.setState("melee");
       }
     });
-    // this.scene.input.keyboard.startListeners();
-    // Phaser.Input.InputPlugin.keyboard.enabled = true;
-    console.log(this.scene, this.scene.input.keyboard);
   }
 
   update(time, delta) {
