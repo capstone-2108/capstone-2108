@@ -28,7 +28,7 @@ export const InitSubscriptionsToPhaser = () => {
      * Socket.io *
      ***************/
     //sets up a socket for 2 way persistent communication via socket.io
-    const newSocket = io(`http://${window.location.host}/gameSync`, {
+    const newSocket = io(`${window.location.protocol}//${window.location.host}/gameSync`, {
       withCredentials: true
     });
     setSocket(newSocket); //save the socket into the component state
