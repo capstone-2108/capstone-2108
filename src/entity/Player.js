@@ -159,7 +159,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
 
     this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + "sorcerer-melee-" + convertedDir,
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.templateName}-melee-` + convertedDir,
       () => {
         this.meleeHitbox.body.enable = false;
         this.scene.physics.world.remove(this.meleeHitbox.body);
@@ -172,7 +172,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   //plays the correct animation based on the players state
   animationPlayer(state) {
-    if (!this.anims) return
+    if (!this.anims) return;
     const currentAnimationPlaying = this.anims.getName();
     let vdx = 0;
     let vdy = 0;
@@ -194,7 +194,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
-      //if a different animation is playing, then lets change
       this.anims.play(animationToPlay);
     }
     this.setVelocityX(
