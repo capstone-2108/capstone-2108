@@ -13,6 +13,7 @@ import {
 
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
+import { BlockRounded } from "@material-ui/icons";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -62,7 +63,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       align: "center",
       wordWrap: true,
       wordWrapWidth: this.width,
-      color: "#554b87",
+      color: "#872340",
       shadowColor: ""
     };
 
