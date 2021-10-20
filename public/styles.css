@@ -127,7 +127,7 @@ body {
 .playerImg {
   position: relative;
   margin: 0px;
-  margin-left: -30px;
+  margin-left: -40px;
   margin-top: -15px;
 }
 
@@ -253,7 +253,13 @@ img {
   border-radius: 5px;
   width: 253px;
   margin: 10px;
+  padding-left: 10px;
   background-color: #6153da;
+}
+.buttonDiv {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #characterButton {

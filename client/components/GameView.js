@@ -9,7 +9,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 import Ui from "./Ui";
 
 import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
-import {logoutCharacters} from '../store/player';
+import { logoutCharacters } from "../store/player";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -21,19 +21,23 @@ const useStyles = makeStyles((theme) => ({
 export const GameView = () => {
   const dispatch = useDispatch();
   const muiClasses = useStyles(); //this is used to override material ui styles
-  const player = useSelector(state => state.player);
+  const player = useSelector((state) => state.player);
+
+  const enableKeys = () => {
+    eventEmitter.emit("enableKeyEvents");
+  };
 
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
-    eventEmitter.emit('localPlayerLogout');
-  }
+    eventEmitter.emit("localPlayerLogout");
+  };
 
   return (
     <div className="layout">
       <InitSubscriptionsToPhaser />
       <div className="left">
-        <div id="phaser"></div>
+        <div onClick={enableKeys} id="phaser"></div>
         <div className="worldChat">
           <Chat />
         </div>
@@ -43,10 +47,10 @@ export const GameView = () => {
           <Ui />
         </div>
 
-        <div>
-          <Link to="/select">
+        <div className="buttonDiv">
+          {/* <Link to="/select">
             <button id="characterButton">CHARACTERS</button>
-          </Link>
+          </Link> */}
           <Link to="/">
             <button onClick={doLogout} id="logoutButton">
               QUIT
