@@ -54,7 +54,7 @@ function initGameSync() {
         const locationInfo = await Location.findOne({
           where: { id: playerChar.locationId }
         })
-        const updated = await locationInfo.update({sceneId: data.sceneId})
+        const updated = await locationInfo.update({sceneId: data.sceneId, xPos: data.xPos, yPos: data.yPos})
       } catch(err) {
         console.log(err)
       }

@@ -16,13 +16,15 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
-      console.log("transitionpoint", transitionZone.transitionPoint);
+      console.log("transitionpoint", transitionZone);
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
       eventEmitter.emit("playerChangedScenes", {
         sceneId: transitionZone.sceneId,
         characterId: this.player.id,
-        sceneName: transitionZone.sceneName
+        sceneName: transitionZone.sceneName,
+        xPos: transitionZone.xPos,
+        yPos: transitionZone.yPos
       });
       this.scene.start(transitionZone.sceneName);
     });
