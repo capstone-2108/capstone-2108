@@ -11,7 +11,7 @@ const Ui = () => {
   return (
     <div>
       <PlayerInfo />
-      <Gold />
+      {/* <Gold /> */}
       {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div />}
 
       <div className="itemList">
@@ -19,7 +19,6 @@ const Ui = () => {
           return (
             <div className="item">
               {i === 0 ? <img src="minecraft_sword.png" width="50px" height="50px" /> : ""}
-              {i === 1 ? <img src="Torch.png" width="60px" height="60px" /> : ""}
             </div>
           );
         })}
