@@ -15,7 +15,7 @@ const init = async () => {
     // start listening (and create a 'server' object representing our server)
     // app.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`));
     initSocketServer();
-    server.listen(1337, () => console.log(`Super Awesome MMO running on ${PORT}`));
+    server.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`));
   } catch (ex) {
     console.log(ex);
   }
