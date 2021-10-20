@@ -67,6 +67,7 @@ export const InitSubscriptionsToPhaser = () => {
      ***************/
     //Subscribes to an event which lets us know when phaser has fully loaded
     const unsubscribes = [];
+<<<<<<< HEAD
     unsubscribes.push(
       eventEmitter.subscribe("phaserLoad", async (data) => {
         const player = await dispatch(fetchCharacterData()); //load the players data into redux
@@ -90,7 +91,7 @@ export const InitSubscriptionsToPhaser = () => {
     unsubscribes.push(
       eventEmitter.subscribe("playerChangedScenes", async (data) => {
         //update store state with new sceneName and sceneId for this player
-        dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId }));
+        dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId, xPos: data.xPos, yPos: data.yPos }));
         //let the server know about the changes
         newSocket.emit("playerChangedScenes", data);
       })

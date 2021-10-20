@@ -38,6 +38,8 @@ export default class ForestPath extends MMOScene {
     this.transitionZones.push({
       sceneName: "ForestScene",
       sceneId: 2,
+      xPos: 1375,
+      yPos: 150,
       transitionPoint: this.transitionToForestSceneFromForestPath
     });
 
@@ -48,6 +50,8 @@ export default class ForestPath extends MMOScene {
     this.transitionZones.push({
       sceneName: "MiddleTown",
       sceneId: 4,
+      xPos: 835,
+      yPos: 1520,
       transitionPoint: this.transitionToMiddleTownFromForestPath
     });
 

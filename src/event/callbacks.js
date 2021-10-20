@@ -21,7 +21,9 @@ export function scenePlayerLoadCallback(data) {
       eventEmitter.emit("playerChangedScenes", {
         sceneId: transitionZone.sceneId,
         characterId: this.player.id,
-        sceneName: transitionZone.sceneName
+        sceneName: transitionZone.sceneName,
+        xPos: transitionZone.xPos,
+        yPos: transitionZone.yPos
       });
       this.cleanUp();
       this.scene.start(transitionZone.sceneName);

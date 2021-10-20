@@ -53,7 +53,7 @@ function initGameSync() {
     socket.on("playerChangedScenes", async (data) => {
       try {
         const playerCharacter = await  PlayerCharacter.getCharacter(data.characterId);
-        await playerCharacter.location.update({sceneId: data.sceneId});
+        await playerCharacter.location.update({sceneId: data.sceneId, xPos: data.xPos, yPos: data.yPos});
         await playerCharacter.reload();
         const characterPayload = transformToPayload(playerCharacter);
         //let the world know that this player has moved to a new scene
