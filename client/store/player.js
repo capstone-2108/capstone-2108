@@ -145,7 +145,7 @@ export const createPlayerCharacter = (name, character, history) => {
 export const logoutCharacters = (characterId) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post(`/api/game/character/${characterId}/logout`);
+      const response = await axios.put(`/api/game/character/${characterId}/logout`);
     } catch (err) {
       console.log(err);
     }

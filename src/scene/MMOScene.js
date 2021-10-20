@@ -2,17 +2,20 @@ import "phaser";
 import { eventEmitter } from "../event/EventEmitter";
 
 import {
+  localPlayerLogoutCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
-  otherPlayerLoadCallback,
+  remotePlayerLoadCallback,
+  remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
 } from "../event/callbacks";
+import { Player } from "../entity/Player";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
     super(sceneName);
-    this.otherPlayers = {};
+    this.remotePlayers = {};
     this.monsters = {};
     this.unsubscribes = [];
     this.transitionZones = [];
@@ -24,7 +27,6 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   create() {
-
     this.unsubscribes.push(
       eventEmitter.subscribe("nearbyMonsterLoad", nearbyMonsterLoadCallback.bind(this))
     );
@@ -39,15 +41,25 @@ export default class MMOScene extends Phaser.Scene {
     // //this event lets us know that another player has moved,
     this.unsubscribes.push(
       eventEmitter.subscribe(
-        "otherPlayerPositionChanged",
+        "remotePlayerPositionChanged",
         remotePlayerPositionChangedCallback.bind(this)
       )
     );
 
-    //loads another player (not the main player) when receiving an otherPlayerLoad event from react
+    //loads another player (not the main player) when receiving an remotePlayerLoad event from react
     this.unsubscribes.push(
-      eventEmitter.subscribe("otherPlayerLoad", otherPlayerLoadCallback.bind(this))
+      eventEmitter.subscribe("remotePlayerLoad", remotePlayerLoadCallback.bind(this))
     );
+
+    //cleans up any unsubscribes
+    this.unsubscribes.push(
+      eventEmitter.subscribe("localPlayerLogout", localPlayerLogoutCallback.bind(this))
+    );
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("remotePlayerLogout", remotePlayerLogoutCallback.bind(this))
+    );
+
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
   }
@@ -57,13 +69,13 @@ export default class MMOScene extends Phaser.Scene {
     if (this.player) {
       this.player.update(time, delta);
     }
-    for (const [id, player] of Object.entries(this.otherPlayers)) {
+    for (const [id, player] of Object.entries(this.remotePlayers)) {
       player.update(time, delta);
     }
 
     for (const [id, monster] of Object.entries(this.monsters)) {
-      if(!this.monsterGroup.contains(monster)) {
-        this.monsterGroup.add(monster)
+      if (!this.monsterGroup.contains(monster)) {
+        this.monsterGroup.add(monster);
         this.physics.add.overlap(monster.aggroZone, this.player, (aggroZone, player) => {
           aggroZone.setAggroTarget(this.player);
         });

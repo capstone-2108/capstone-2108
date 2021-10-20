@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Game } from "../../src/Game";
 import { logout } from "../store";
 import Chat from "./Chat";
-import Grid from "@material-ui/core/Grid";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import { fetchCharacterData, fetchNearbyPlayers, updateHealth } from "../store/player";
-import io from "socket.io-client";
-import { addNewMessage } from "../store/chat";
 
 import Ui from "./Ui";
 
 import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
+import {logoutCharacters} from '../store/player';
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -25,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
 export const GameView = () => {
   const dispatch = useDispatch();
   const muiClasses = useStyles(); //this is used to override material ui styles
+  const player = useSelector(state => state.player);
+
+  const doLogout = () => {
+    dispatch(logoutCharacters(player.characterId));
+    dispatch(logout());
+    eventEmitter.emit('localPlayerLogout');
+  }
 
   return (
     <div className="layout">
@@ -45,7 +48,7 @@ export const GameView = () => {
             <button id="characterButton">CHARACTERS</button>
           </Link>
           <Link to="/">
-            <button onClick={() => dispatch(logout())} id="logoutButton">
+            <button onClick={doLogout} id="logoutButton">
               QUIT
             </button>
           </Link>

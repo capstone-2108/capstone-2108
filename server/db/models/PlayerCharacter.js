@@ -85,8 +85,19 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
   return nearbyPlayers;
 };
 
-PlayerCharacter.logout = function (characterId) {
-  this.update({active: false}, {where: { id: characterId}});
-}
+PlayerCharacter.logout = async function (userId, characterId) {
+  let playerCharacter = await PlayerCharacter.findAll({
+    where: {
+      id: characterId,
+      userId
+    }
+  });
+  console.log('playerCharacter', playerCharacter);
+  if (playerCharacter.length) {
+    playerCharacter = playerCharacter[0];
+    playerCharacter.update({ active: false });
+  }
+  return playerCharacter;
+};
 
 module.exports = { PlayerCharacter };

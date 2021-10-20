@@ -93,7 +93,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
       }
     ]
   });
-  await playerCharacter.update({active: true});
+  await playerCharacter.update({ active: true });
   const payload = {
     userId: req.user.id,
     characterId: playerCharacter.id,
@@ -122,7 +122,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     }
   });
 
-  gameSync.emit("otherPlayerLoad", payload);
+  gameSync.emit("remotePlayerLoad", payload);
 });
 
 //POST /api/character - creates a new character
@@ -207,7 +207,6 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
 router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, next) => {
   try {
     const monsters = await Npc.getNearbyMonsters(req.params.sceneId);
-    console.log(monsters);
     const payload = [];
     let i = 0;
     let len = monsters.length;
@@ -231,10 +230,26 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
   }
 });
 
-router.get("/character/:characterId/logout", requireTokenMiddleware, async (req, res, next) => {
+router.put("/character/:characterId/logout", requireTokenMiddleware, async (req, res, next) => {
   try {
-    await PlayerCharacter.logout(req.params.characterId);
-  } catch (err) {}
+    const playerCharacter = await PlayerCharacter.logout(req.user.id, req.params.characterId);
+    if(playerCharacter) {
+      worldChat.emit("newMessage", {
+        channel: "world",
+        message: {
+          name: "WORLD", //todo: change this to the person's character name
+          message: playerCharacter.name + " has logged out!"
+        }
+      });
+      gameSync.emit('remotePlayerLogout', playerCharacter.id);
+      res.sendStatus(200);
+    }
+    else {
+     res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
+  }
 });
 
 // router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
@@ -306,8 +321,8 @@ router.get("/monster/:id", async (req, res, next) => {
       where: {
         id: req.params.id
       }
-    })
-    res.json(monster)
+    });
+    res.json(monster);
   } catch (error) {
     console.log(error);
   }
