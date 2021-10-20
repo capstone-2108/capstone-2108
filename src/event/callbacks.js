@@ -16,12 +16,14 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
-      console.log('transitionpoint', transitionZone.transitionPoint)
+      console.log("transitionpoint", transitionZone.transitionPoint);
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
       eventEmitter.emit("playerChangedScenes", {
-        sceneId: transitionZone.sceneId, characterId: this.player.id, sceneName: transitionZone.sceneName
-      })
+        sceneId: transitionZone.sceneId,
+        characterId: this.player.id,
+        sceneName: transitionZone.sceneName
+      });
       this.scene.start(transitionZone.sceneName);
     });
   });
@@ -126,5 +128,9 @@ export function localPlayerLogoutCallback() {
 }
 
 export function remotePlayerLogoutCallback(remotePlayerCharacterId) {
-  console.log('remotePlayerlogoutCallback');
+  if (this.remotePlayers[remotePlayerCharacterId]) {
+    console.log("test");
+    this.remotePlayers[remotePlayerCharacterId].destroy();
+    delete this.remotePlayers[remotePlayerCharacterId];
+  }
 }

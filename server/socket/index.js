@@ -40,7 +40,7 @@ function initGameSync() {
     //them know that this player has moved
     socket.on("playerPositionChanged", (data) => {
       //let other clients know this this player has moved
-      socket.broadcast.emit("otherPlayerPositionChanged", data);
+      socket.broadcast.emit("remotePlayerPositionChanged", data);
     });
 
     socket.on("playerChangedScenes", async (data) => {
