@@ -28,6 +28,19 @@ export default class MMOScene extends Phaser.Scene {
 
   create() {
     this.unsubscribes.push(
+      eventEmitter.subscribe("disabledEvents", () => {
+        console.log("disabledEvents", this);
+        this.input.keyboard.enabled = false;
+        this.input.keyboard.disableGlobalCapture();
+      })
+    );
+    this.unsubscribes.push(
+      eventEmitter.subscribe("enableKeyEvents", () => {
+        this.input.keyboard.enabled = true;
+        this.input.keyboard.enableGlobalCapture();
+      })
+    );
+    this.unsubscribes.push(
       eventEmitter.subscribe("nearbyMonsterLoad", nearbyMonsterLoadCallback.bind(this))
     );
 
