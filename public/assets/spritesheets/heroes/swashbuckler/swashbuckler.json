@@ -5,263 +5,11 @@
 			"normalMap": "swashbuckler_n.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 100,
-				"h": 470
+				"w": 239,
+				"h": 389
 			},
 			"scale": 1,
 			"frames": [
-				{
-					"filename": "swashbuckler_idle-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 31,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 1,
-						"y": 1,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_idle-5.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 31,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 35,
-						"y": 1,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-0.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 30,
-						"h": 44
-					},
-					"frame": {
-						"x": 69,
-						"y": 1,
-						"w": 30,
-						"h": 44
-					}
-				},
-				{
-					"filename": "swashbuckler_idle-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 1,
-						"y": 45,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_idle-9.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 35,
-						"y": 45,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-12.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 30,
-						"h": 44
-					},
-					"frame": {
-						"x": 69,
-						"y": 47,
-						"w": 30,
-						"h": 44
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-10.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 1,
-						"y": 89,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-4.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 31,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 35,
-						"y": 89,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-14.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 30,
-						"h": 44
-					},
-					"frame": {
-						"x": 69,
-						"y": 93,
-						"w": 30,
-						"h": 44
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-6.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 31,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 1,
-						"y": 133,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-8.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 32,
-						"h": 42
-					},
-					"frame": {
-						"x": 35,
-						"y": 133,
-						"w": 32,
-						"h": 42
-					}
-				},
-				{
-					"filename": "swashbuckler_walk-2.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 30,
-						"h": 44
-					},
-					"frame": {
-						"x": 69,
-						"y": 139,
-						"w": 30,
-						"h": 44
-					}
-				},
 				{
 					"filename": "swashbuckler_idle-10.png",
 					"rotated": false,
@@ -278,7 +26,7 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 177,
+						"y": 1,
 						"w": 32,
 						"h": 40
 					}
@@ -299,13 +47,13 @@
 					},
 					"frame": {
 						"x": 35,
-						"y": 177,
+						"y": 1,
 						"w": 32,
 						"h": 40
 					}
 				},
 				{
-					"filename": "swashbuckler_idle-0.png",
+					"filename": "swashbuckler_idle-14.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -314,15 +62,78 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 23,
+						"y": 25,
 						"w": 30,
-						"h": 42
+						"h": 40
 					},
 					"frame": {
 						"x": 69,
-						"y": 185,
+						"y": 1,
 						"w": 30,
-						"h": 42
+						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 25,
+						"w": 30,
+						"h": 40
+					},
+					"frame": {
+						"x": 101,
+						"y": 1,
+						"w": 30,
+						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 25,
+						"w": 30,
+						"h": 40
+					},
+					"frame": {
+						"x": 133,
+						"y": 1,
+						"w": 30,
+						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 25,
+						"w": 30,
+						"h": 40
+					},
+					"frame": {
+						"x": 165,
+						"y": 1,
+						"w": 30,
+						"h": 40
 					}
 				},
 				{
@@ -340,8 +151,8 @@
 						"h": 40
 					},
 					"frame": {
-						"x": 1,
-						"y": 219,
+						"x": 197,
+						"y": 1,
 						"w": 32,
 						"h": 40
 					}
@@ -361,14 +172,14 @@
 						"h": 40
 					},
 					"frame": {
-						"x": 35,
-						"y": 219,
+						"x": 1,
+						"y": 43,
 						"w": 32,
 						"h": 40
 					}
 				},
 				{
-					"filename": "swashbuckler_idle-1.png",
+					"filename": "swashbuckler_walk-1.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -377,15 +188,15 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 23,
+						"y": 25,
 						"w": 30,
-						"h": 42
+						"h": 40
 					},
 					"frame": {
-						"x": 69,
-						"y": 229,
+						"x": 35,
+						"y": 43,
 						"w": 30,
-						"h": 42
+						"h": 40
 					}
 				},
 				{
@@ -403,9 +214,72 @@
 						"h": 40
 					},
 					"frame": {
-						"x": 1,
-						"y": 261,
+						"x": 67,
+						"y": 43,
 						"w": 32,
+						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 25,
+						"w": 30,
+						"h": 40
+					},
+					"frame": {
+						"x": 101,
+						"y": 43,
+						"w": 30,
+						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 25,
+						"w": 30,
+						"h": 40
+					},
+					"frame": {
+						"x": 133,
+						"y": 43,
+						"w": 30,
+						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 25,
+						"w": 30,
+						"h": 40
+					},
+					"frame": {
+						"x": 165,
+						"y": 43,
+						"w": 30,
 						"h": 40
 					}
 				},
@@ -424,31 +298,10 @@
 						"h": 40
 					},
 					"frame": {
-						"x": 35,
-						"y": 261,
+						"x": 197,
+						"y": 43,
 						"w": 32,
 						"h": 40
-					}
-				},
-				{
-					"filename": "swashbuckler_idle-12.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 96,
-						"h": 96
-					},
-					"spriteSourceSize": {
-						"x": 33,
-						"y": 23,
-						"w": 30,
-						"h": 42
-					},
-					"frame": {
-						"x": 69,
-						"y": 273,
-						"w": 30,
-						"h": 42
 					}
 				},
 				{
@@ -467,7 +320,7 @@
 					},
 					"frame": {
 						"x": 1,
-						"y": 303,
+						"y": 85,
 						"w": 32,
 						"h": 40
 					}
@@ -488,9 +341,72 @@
 					},
 					"frame": {
 						"x": 35,
-						"y": 303,
+						"y": 85,
 						"w": 32,
 						"h": 40
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 23,
+						"w": 30,
+						"h": 42
+					},
+					"frame": {
+						"x": 69,
+						"y": 85,
+						"w": 30,
+						"h": 42
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 23,
+						"w": 30,
+						"h": 42
+					},
+					"frame": {
+						"x": 101,
+						"y": 85,
+						"w": 30,
+						"h": 42
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 23,
+						"w": 30,
+						"h": 42
+					},
+					"frame": {
+						"x": 133,
+						"y": 85,
+						"w": 30,
+						"h": 42
 					}
 				},
 				{
@@ -508,14 +424,14 @@
 						"h": 42
 					},
 					"frame": {
-						"x": 69,
-						"y": 317,
+						"x": 165,
+						"y": 85,
 						"w": 30,
 						"h": 42
 					}
 				},
 				{
-					"filename": "swashbuckler_idle-14.png",
+					"filename": "swashbuckler_idle-4.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -523,20 +439,41 @@
 						"h": 96
 					},
 					"spriteSourceSize": {
-						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"x": 31,
+						"y": 23,
+						"w": 32,
+						"h": 42
+					},
+					"frame": {
+						"x": 197,
+						"y": 85,
+						"w": 32,
+						"h": 42
+					}
+				},
+				{
+					"filename": "swashbuckler_idle-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 23,
+						"w": 32,
+						"h": 42
 					},
 					"frame": {
 						"x": 1,
-						"y": 345,
-						"w": 30,
-						"h": 40
+						"y": 127,
+						"w": 32,
+						"h": 42
 					}
 				},
 				{
-					"filename": "swashbuckler_idle-15.png",
+					"filename": "swashbuckler_idle-8.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -545,19 +482,19 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"y": 23,
+						"w": 32,
+						"h": 42
 					},
 					"frame": {
-						"x": 33,
-						"y": 345,
-						"w": 30,
-						"h": 40
+						"x": 35,
+						"y": 127,
+						"w": 32,
+						"h": 42
 					}
 				},
 				{
-					"filename": "swashbuckler_idle-2.png",
+					"filename": "swashbuckler_idle-9.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -566,19 +503,40 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"y": 23,
+						"w": 32,
+						"h": 42
 					},
 					"frame": {
-						"x": 65,
-						"y": 361,
-						"w": 30,
-						"h": 40
+						"x": 69,
+						"y": 129,
+						"w": 32,
+						"h": 42
 					}
 				},
 				{
-					"filename": "swashbuckler_idle-3.png",
+					"filename": "swashbuckler_melee-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 25,
+						"w": 42,
+						"h": 42
+					},
+					"frame": {
+						"x": 103,
+						"y": 129,
+						"w": 42,
+						"h": 42
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-10.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -587,19 +545,61 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"y": 23,
+						"w": 32,
+						"h": 42
+					},
+					"frame": {
+						"x": 147,
+						"y": 129,
+						"w": 32,
+						"h": 42
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 23,
+						"w": 32,
+						"h": 42
+					},
+					"frame": {
+						"x": 181,
+						"y": 129,
+						"w": 32,
+						"h": 42
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 31,
+						"y": 23,
+						"w": 32,
+						"h": 42
 					},
 					"frame": {
 						"x": 1,
-						"y": 387,
-						"w": 30,
-						"h": 40
+						"y": 171,
+						"w": 32,
+						"h": 42
 					}
 				},
 				{
-					"filename": "swashbuckler_walk-1.png",
+					"filename": "swashbuckler_walk-8.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -608,19 +608,19 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"y": 23,
+						"w": 32,
+						"h": 42
 					},
 					"frame": {
-						"x": 33,
-						"y": 387,
-						"w": 30,
-						"h": 40
+						"x": 35,
+						"y": 171,
+						"w": 32,
+						"h": 42
 					}
 				},
 				{
-					"filename": "swashbuckler_walk-13.png",
+					"filename": "swashbuckler_melee-10.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -628,20 +628,41 @@
 						"h": 96
 					},
 					"spriteSourceSize": {
-						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"x": 37,
+						"y": 21,
+						"w": 32,
+						"h": 44
 					},
 					"frame": {
-						"x": 65,
-						"y": 403,
-						"w": 30,
-						"h": 40
+						"x": 69,
+						"y": 173,
+						"w": 32,
+						"h": 44
 					}
 				},
 				{
-					"filename": "swashbuckler_walk-15.png",
+					"filename": "swashbuckler_melee-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 37,
+						"y": 21,
+						"w": 32,
+						"h": 44
+					},
+					"frame": {
+						"x": 103,
+						"y": 173,
+						"w": 32,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-15.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -650,19 +671,166 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 25,
-						"w": 30,
-						"h": 40
+						"y": 23,
+						"w": 42,
+						"h": 44
+					},
+					"frame": {
+						"x": 137,
+						"y": 173,
+						"w": 42,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 23,
+						"w": 44,
+						"h": 44
+					},
+					"frame": {
+						"x": 181,
+						"y": 173,
+						"w": 44,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 21,
+						"w": 61,
+						"h": 44
 					},
 					"frame": {
 						"x": 1,
-						"y": 429,
-						"w": 30,
-						"h": 40
+						"y": 215,
+						"w": 61,
+						"h": 44
 					}
 				},
 				{
-					"filename": "swashbuckler_walk-3.png",
+					"filename": "swashbuckler_melee-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 21,
+						"w": 52,
+						"h": 44
+					},
+					"frame": {
+						"x": 64,
+						"y": 219,
+						"w": 52,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 21,
+						"w": 32,
+						"h": 44
+					},
+					"frame": {
+						"x": 118,
+						"y": 219,
+						"w": 32,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 21,
+						"w": 32,
+						"h": 44
+					},
+					"frame": {
+						"x": 152,
+						"y": 219,
+						"w": 32,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 21,
+						"w": 52,
+						"h": 44
+					},
+					"frame": {
+						"x": 186,
+						"y": 219,
+						"w": 52,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 35,
+						"y": 21,
+						"w": 61,
+						"h": 44
+					},
+					"frame": {
+						"x": 1,
+						"y": 261,
+						"w": 61,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-0.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -671,15 +839,183 @@
 					},
 					"spriteSourceSize": {
 						"x": 33,
-						"y": 25,
+						"y": 23,
 						"w": 30,
-						"h": 40
+						"h": 44
 					},
 					"frame": {
-						"x": 33,
-						"y": 429,
+						"x": 64,
+						"y": 265,
 						"w": 30,
-						"h": 40
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 23,
+						"w": 30,
+						"h": 44
+					},
+					"frame": {
+						"x": 96,
+						"y": 265,
+						"w": 30,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 23,
+						"w": 30,
+						"h": 44
+					},
+					"frame": {
+						"x": 128,
+						"y": 265,
+						"w": 30,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_walk-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 23,
+						"w": 30,
+						"h": 44
+					},
+					"frame": {
+						"x": 160,
+						"y": 265,
+						"w": 30,
+						"h": 44
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 21,
+						"w": 42,
+						"h": 46
+					},
+					"frame": {
+						"x": 192,
+						"y": 265,
+						"w": 42,
+						"h": 46
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 7,
+						"w": 42,
+						"h": 60
+					},
+					"frame": {
+						"x": 1,
+						"y": 307,
+						"w": 42,
+						"h": 60
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 0,
+						"w": 54,
+						"h": 67
+					},
+					"frame": {
+						"x": 45,
+						"y": 311,
+						"w": 54,
+						"h": 67
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 21,
+						"w": 42,
+						"h": 68
+					},
+					"frame": {
+						"x": 101,
+						"y": 311,
+						"w": 42,
+						"h": 68
+					}
+				},
+				{
+					"filename": "swashbuckler_melee-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 21,
+						"w": 54,
+						"h": 75
+					},
+					"frame": {
+						"x": 145,
+						"y": 313,
+						"w": 54,
+						"h": 75
 					}
 				}
 			]
@@ -688,6 +1024,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:9eb77e484189bacf0737f300de95caff:57e26926083f593e6fc6753487d56fc0:989dbac3e0f1ad7baab278f0e8a10e89$"
+		"smartupdate": "$TexturePacker:SmartUpdate:f6bff3df66bff39a7d9fcdf3459f5c6c:a6ccca0bc46ef0d6820cb15fad2d4e1f:989dbac3e0f1ad7baab278f0e8a10e89$"
 	}
 }

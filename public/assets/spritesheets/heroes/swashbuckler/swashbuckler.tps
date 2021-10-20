@@ -213,6 +213,22 @@
             <key type="filename">images/swashbuckler_walk-7.png</key>
             <key type="filename">images/swashbuckler_walk-8.png</key>
             <key type="filename">images/swashbuckler_walk-9.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-0.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-1.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-10.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-11.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-12.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-13.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-14.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-15.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-2.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-3.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-4.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-5.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-6.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-7.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-8.png</key>
+            <key type="filename">swashbuckler_melee/swashbuckler_melee-9.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -262,6 +278,22 @@
             <filename>images/swashbuckler_walk-7.png</filename>
             <filename>images/swashbuckler_walk-8.png</filename>
             <filename>images/swashbuckler_walk-9.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-0.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-1.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-10.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-11.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-12.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-13.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-14.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-15.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-2.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-3.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-4.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-5.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-6.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-7.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-8.png</filename>
+            <filename>swashbuckler_melee/swashbuckler_melee-9.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

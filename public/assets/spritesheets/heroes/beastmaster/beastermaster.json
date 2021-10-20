@@ -1,8 +1,8 @@
 {
 	"textures": [
 		{
-			"image": "beastmaster.png",
-			"normalMap": "beastmaster_n.png",
+			"image": "beastermaster.png",
+			"normalMap": "beastermaster_n.png",
 			"format": "RGBA8888",
 			"size": {
 				"w": 1536,
@@ -1024,6 +1024,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:bd3ac1f6dedc5e46ed4dbbc1eb31d10c:1b500322428b033dd1ad1e02975179da:f90816e2cc6def49afc7e2443372cfa2$"
+		"smartupdate": "$TexturePacker:SmartUpdate:5cffcf87b11ac342dec15803bc640571:1b500322428b033dd1ad1e02975179da:c6d38397ff59d88237153c17c512652c$"
 	}
 }
