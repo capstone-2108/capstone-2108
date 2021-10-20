@@ -30,13 +30,15 @@ export default class MiddleTown extends MMOScene {
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
 
-    this.transitionToForestPathFromMiddleTown = this.add.rectangle(800, 1600, 100, 100, 0xffffff, 0.5);
+    this.transitionToForestPathFromMiddleTown = this.add.rectangle(810, 1600, 100, 100, 0xffffff, 0.5);
     this.physics.add.existing(this.transitionToForestPathFromMiddleTown);
     this.transitionToForestPathFromMiddleTown.body.enable = true;
     this.physics.world.add(this.transitionToForestPathFromMiddleTown.body);
     this.transitionZones.push({
       sceneName: "ForestPath",
       sceneId: 3,
+      xPos: 425,
+      yPos: 125,
       transitionPoint: this.transitionToForestPathFromMiddleTown
     });
 

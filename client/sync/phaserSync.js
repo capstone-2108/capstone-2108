@@ -76,8 +76,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     unsubscribes.push(eventEmitter.subscribe("playerChangedScenes", async (data) => {
       //update store state with new sceneName and sceneId for this player
-      console.log("IN PLAYER CHANGED SCENES");
-      dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId }));
+      dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId, xPos: data.xPos, yPos: data.yPos }));
       newSocket.emit("playerChangedScenes", data);
     }));
 
