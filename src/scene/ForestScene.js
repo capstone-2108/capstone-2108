@@ -64,6 +64,8 @@ export default class ForestScene extends MMOScene {
     });
 
     super.create();
+    this.enableCollisionDebug(this.treesLayer)
+    this.enableCollisionDebug(this.trees2Layer)
   }
 
   update(time, delta) {

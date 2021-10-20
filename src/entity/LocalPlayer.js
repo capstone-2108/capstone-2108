@@ -143,7 +143,7 @@ export class LocalPlayer extends Player {
     let numDirectionsPressed = 0;
 
     if (cursors.up.isDown) {
-      console.log('test', this.characterName);
+      // console.log('test', this.characterName);
       vdy = -1;
       numDirectionsPressed++;
     } else if (cursors.down.isDown) {

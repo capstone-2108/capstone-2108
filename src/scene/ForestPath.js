@@ -52,6 +52,7 @@ export default class ForestPath extends MMOScene {
     });
 
     super.create();
+    this.enableCollisionDebug(this.collisionLayer)
   }
 
   update(time, delta) {

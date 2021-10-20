@@ -19,7 +19,7 @@ export default class MiddleTown extends MMOScene {
     this.monsterGroup.add(this.monster);
 
     const map = this.make.tilemap({ key: "middle-town" });
-    const townTiles = map.addTilesetImage("town", "town2");
+    const townTiles = map.addTilesetImage("town", "town");
 
     this.groundLayer = map.createLayer("ground", townTiles, 0, 0);
     this.collisionLayer = map.createLayer("collisionLayer", townTiles, 0, 0);
@@ -30,7 +30,7 @@ export default class MiddleTown extends MMOScene {
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
 
-    this.transitionToForestPathFromMiddleTown = this.add.rectangle(400, 800, 100, 100, 0xffffff, 0.5);
+    this.transitionToForestPathFromMiddleTown = this.add.rectangle(800, 1600, 100, 100, 0xffffff, 0.5);
     this.physics.add.existing(this.transitionToForestPathFromMiddleTown);
     this.transitionToForestPathFromMiddleTown.body.enable = true;
     this.physics.world.add(this.transitionToForestPathFromMiddleTown.body);
@@ -39,6 +39,7 @@ export default class MiddleTown extends MMOScene {
       sceneId: 3,
       transitionPoint: this.transitionToForestPathFromMiddleTown
     });
+
 
     super.create();
   }
