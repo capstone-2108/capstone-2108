@@ -15,7 +15,7 @@ const { eventEmitter } = require("../event/EventEmitter");
 export class LocalPlayer extends Player {
   constructor(scene, x, y, spriteKey, templateName, characterName, id) {
     super(scene, x, y, spriteKey, templateName, characterName, id, true);
-    this.cursors = this.scene.input.keyboard.createCursorKeys();
+    // this.cursors = this.scene.input.keyboard.createCursorKeys();
 
     /*************************
      * Multiplayer Variables *
@@ -35,6 +35,9 @@ export class LocalPlayer extends Player {
   }
 
   createHotKeys() {
+    console.log("creating hotkeys");
+    this.scene.input.keyboard.enabled = true;
+
     this.cursors = this.scene.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
       left: Phaser.Input.Keyboard.KeyCodes.A,
@@ -43,10 +46,13 @@ export class LocalPlayer extends Player {
     });
 
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer) => {
-      if(pointer.rightButtonDown()) {
+      if (pointer.rightButtonDown()) {
         this.stateMachine.setState("melee");
       }
     });
+    // this.scene.input.keyboard.startListeners();
+    // Phaser.Input.InputPlugin.keyboard.enabled = true;
+    console.log(this.scene, this.scene.input.keyboard);
   }
 
   update(time, delta) {
@@ -143,7 +149,6 @@ export class LocalPlayer extends Player {
     let numDirectionsPressed = 0;
 
     if (cursors.up.isDown) {
-      console.log('test', this.characterName);
       vdy = -1;
       numDirectionsPressed++;
     } else if (cursors.down.isDown) {

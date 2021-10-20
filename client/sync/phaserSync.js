@@ -22,6 +22,7 @@ export const InitSubscriptionsToPhaser = () => {
   useEffect(() => {
     //loads the game
     window.game = new Game();
+    console.log('MAKING GAME');
 
     /****************
      * Socket.io *

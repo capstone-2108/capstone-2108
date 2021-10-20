@@ -99,7 +99,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       target.stateMachine.setState("hit");
     });
 
-    this.setDepth(5)
+    console.log('Player constructor ran', this);
   }
 
   idleStateUpdate() {

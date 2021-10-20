@@ -124,12 +124,12 @@ export function localPlayerLogoutCallback() {
     monster.destroy();
   }
   this.monsters = {};
-  this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+  // this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+  eventEmitter.unsubscribeAll();
 }
 
 export function remotePlayerLogoutCallback(remotePlayerCharacterId) {
   if (this.remotePlayers[remotePlayerCharacterId]) {
-    console.log("test");
     this.remotePlayers[remotePlayerCharacterId].destroy();
     delete this.remotePlayers[remotePlayerCharacterId];
   }

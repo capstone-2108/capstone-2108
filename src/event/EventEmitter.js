@@ -24,6 +24,10 @@ export class EventEmitter {
       for (; i < len; i++) {this.events[eventName][i](data);}
     }
   }
+
+  unsubscribeAll() {
+    this.events = {};
+  }
 }
 
 export const eventEmitter = new EventEmitter();

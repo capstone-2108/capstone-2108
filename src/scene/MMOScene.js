@@ -62,11 +62,13 @@ export default class MMOScene extends Phaser.Scene {
 
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
+    console.log(eventEmitter);
   }
 
   /**anything that needs to update, should get it's update function called here**/
   update(time, delta) {
     if (this.player) {
+      this.player.setActive(true);
       this.player.update(time, delta);
     }
     for (const [id, player] of Object.entries(this.remotePlayers)) {

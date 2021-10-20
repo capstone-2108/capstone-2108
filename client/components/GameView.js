@@ -9,7 +9,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 import Ui from "./Ui";
 
 import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
-import {logoutCharacters} from '../store/player';
+import { logoutCharacters } from "../store/player";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
 export const GameView = () => {
   const dispatch = useDispatch();
   const muiClasses = useStyles(); //this is used to override material ui styles
-  const player = useSelector(state => state.player);
+  const player = useSelector((state) => state.player);
 
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
-    eventEmitter.emit('localPlayerLogout');
-  }
+    eventEmitter.emit("localPlayerLogout");
+  };
 
   return (
     <div className="layout">
