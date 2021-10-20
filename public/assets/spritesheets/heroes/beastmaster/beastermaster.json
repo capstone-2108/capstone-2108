@@ -1,7 +1,8 @@
 {
 	"textures": [
 		{
-			"image": "fox.png",
+			"image": "beastermaster.png",
+			"normalMap": "beastermaster_n.png",
 			"format": "RGBA8888",
 			"size": {
 				"w": 1536,
@@ -10,7 +11,7 @@
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "fox_idle-0.png",
+					"filename": "beastmaster_idle-0.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -28,14 +29,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-1.png",
+					"filename": "beastmaster_idle-1.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -53,14 +50,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-2.png",
+					"filename": "beastmaster_idle-2.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -78,14 +71,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-3.png",
+					"filename": "beastmaster_idle-3.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -103,14 +92,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-4.png",
+					"filename": "beastmaster_idle-4.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -128,14 +113,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-5.png",
+					"filename": "beastmaster_idle-5.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -153,14 +134,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-6.png",
+					"filename": "beastmaster_idle-6.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -178,14 +155,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-7.png",
+					"filename": "beastmaster_idle-7.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -203,14 +176,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-8.png",
+					"filename": "beastmaster_idle-8.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -228,14 +197,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-9.png",
+					"filename": "beastmaster_idle-9.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -253,14 +218,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-10.png",
+					"filename": "beastmaster_idle-10.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -278,14 +239,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-11.png",
+					"filename": "beastmaster_idle-11.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -303,14 +260,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-12.png",
+					"filename": "beastmaster_idle-12.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -328,14 +281,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-13.png",
+					"filename": "beastmaster_idle-13.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -353,14 +302,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-14.png",
+					"filename": "beastmaster_idle-14.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -378,14 +323,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_idle-15.png",
+					"filename": "beastmaster_idle-15.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -403,14 +344,10 @@
 						"y": 0,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-0.png",
+					"filename": "beastmaster_melee-0.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -428,14 +365,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-1.png",
+					"filename": "beastmaster_melee-1.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -453,14 +386,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-2.png",
+					"filename": "beastmaster_melee-2.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -478,14 +407,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-3.png",
+					"filename": "beastmaster_melee-3.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -503,14 +428,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-4.png",
+					"filename": "beastmaster_melee-4.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -528,14 +449,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-5.png",
+					"filename": "beastmaster_melee-5.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -553,14 +470,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-6.png",
+					"filename": "beastmaster_melee-6.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -578,14 +491,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-7.png",
+					"filename": "beastmaster_melee-7.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -603,14 +512,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-8.png",
+					"filename": "beastmaster_melee-8.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -628,14 +533,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-9.png",
+					"filename": "beastmaster_melee-9.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -653,14 +554,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-10.png",
+					"filename": "beastmaster_melee-10.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -678,14 +575,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-11.png",
+					"filename": "beastmaster_melee-11.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -703,14 +596,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-12.png",
+					"filename": "beastmaster_melee-12.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -728,14 +617,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-13.png",
+					"filename": "beastmaster_melee-13.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -753,14 +638,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-14.png",
+					"filename": "beastmaster_melee-14.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -778,14 +659,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_melee-15.png",
+					"filename": "beastmaster_melee-15.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -803,14 +680,10 @@
 						"y": 96,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-0.png",
+					"filename": "beastmaster_walk-0.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -828,14 +701,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-1.png",
+					"filename": "beastmaster_walk-1.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -853,14 +722,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-2.png",
+					"filename": "beastmaster_walk-2.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -878,14 +743,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-3.png",
+					"filename": "beastmaster_walk-3.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -903,14 +764,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-4.png",
+					"filename": "beastmaster_walk-4.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -928,14 +785,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-5.png",
+					"filename": "beastmaster_walk-5.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -953,14 +806,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-6.png",
+					"filename": "beastmaster_walk-6.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -978,14 +827,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-7.png",
+					"filename": "beastmaster_walk-7.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1003,14 +848,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-8.png",
+					"filename": "beastmaster_walk-8.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1028,14 +869,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-9.png",
+					"filename": "beastmaster_walk-9.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1053,14 +890,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-10.png",
+					"filename": "beastmaster_walk-10.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1078,14 +911,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-11.png",
+					"filename": "beastmaster_walk-11.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1103,14 +932,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-12.png",
+					"filename": "beastmaster_walk-12.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1128,14 +953,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-13.png",
+					"filename": "beastmaster_walk-13.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1153,14 +974,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-14.png",
+					"filename": "beastmaster_walk-14.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1178,14 +995,10 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				},
 				{
-					"filename": "fox_walk-15.png",
+					"filename": "beastmaster_walk-15.png",
 					"rotated": false,
 					"trimmed": false,
 					"sourceSize": {
@@ -1203,10 +1016,6 @@
 						"y": 192,
 						"w": 96,
 						"h": 96
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
 					}
 				}
 			]
@@ -1215,6 +1024,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:ab5d0c0cf0e6cbc637d1a34118a92318:04d4aa340f525cb74642340b8c2ee310:7a63b402a041f768da36d40249078b3b$"
+		"smartupdate": "$TexturePacker:SmartUpdate:5cffcf87b11ac342dec15803bc640571:1b500322428b033dd1ad1e02975179da:c6d38397ff59d88237153c17c512652c$"
 	}
 }

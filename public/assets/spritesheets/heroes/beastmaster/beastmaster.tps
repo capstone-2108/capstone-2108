@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Grid</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -163,13 +163,13 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Trim</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -181,6 +181,22 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">beastmaster_melee/beastmaster_melee-0.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-1.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-10.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-11.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-12.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-13.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-14.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-15.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-2.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-3.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-4.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-5.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-6.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-7.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-8.png</key>
+            <key type="filename">beastmaster_melee/beastmaster_melee-9.png</key>
             <key type="filename">images/beastmaster_idle-0.png</key>
             <key type="filename">images/beastmaster_idle-1.png</key>
             <key type="filename">images/beastmaster_idle-10.png</key>
@@ -262,6 +278,22 @@
             <filename>images/beastmaster_walk-7.png</filename>
             <filename>images/beastmaster_walk-8.png</filename>
             <filename>images/beastmaster_walk-9.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-0.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-1.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-10.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-11.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-12.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-13.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-14.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-15.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-2.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-3.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-4.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-5.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-6.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-7.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-8.png</filename>
+            <filename>beastmaster_melee/beastmaster_melee-9.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

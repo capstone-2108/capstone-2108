@@ -5,12 +5,12 @@ import {
   localPlayerLogoutCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
+  remotePlayerChangedSceneCallback,
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
 } from "../event/callbacks";
-import { Player } from "../entity/Player";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -40,6 +40,7 @@ export default class MMOScene extends Phaser.Scene {
         this.input.keyboard.enableGlobalCapture();
       })
     );
+
     this.unsubscribes.push(
       eventEmitter.subscribe("nearbyMonsterLoad", nearbyMonsterLoadCallback.bind(this))
     );
@@ -64,6 +65,14 @@ export default class MMOScene extends Phaser.Scene {
       eventEmitter.subscribe("remotePlayerLoad", remotePlayerLoadCallback.bind(this))
     );
 
+    //react lets us know that a remote player has moved on to a different scene
+    this.unsubscribes.push(
+      eventEmitter.subscribe(
+        "remotePlayerChangedScenes",
+        remotePlayerChangedSceneCallback.bind(this)
+      )
+    );
+
     //cleans up any unsubscribes
     this.unsubscribes.push(
       eventEmitter.subscribe("localPlayerLogout", localPlayerLogoutCallback.bind(this))
@@ -80,6 +89,7 @@ export default class MMOScene extends Phaser.Scene {
   /**anything that needs to update, should get it's update function called here**/
   update(time, delta) {
     if (this.player) {
+      this.player.setActive(true);
       this.player.update(time, delta);
     }
     for (const [id, player] of Object.entries(this.remotePlayers)) {
@@ -95,6 +105,21 @@ export default class MMOScene extends Phaser.Scene {
       }
       monster.update(time, delta);
     }
+  }
+
+  cleanUp() {
+    this.player.destroy();
+    this.player = undefined;
+    for (const [id, remotePlayer] of Object.entries(this.remotePlayers)) {
+      remotePlayer.destroy();
+    }
+    this.remotePlayers = {};
+    for (const [id, monster] of Object.entries(this.monsters)) {
+      monster.aggroZone.destroy();
+      monster.destroy();
+    }
+    this.monsters = {};
+    this.unsubscribes.forEach((unsubscribe) => unsubscribe());
   }
 
   enableCollisionDebug(layer) {

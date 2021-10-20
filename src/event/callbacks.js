@@ -16,7 +16,6 @@ export function scenePlayerLoadCallback(data) {
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
-      console.log("transitionpoint", transitionZone);
       this.unsubscribes.forEach((unsubscribe) => unsubscribe());
       //On overlap this function gets called
       eventEmitter.emit("playerChangedScenes", {
@@ -26,6 +25,7 @@ export function scenePlayerLoadCallback(data) {
         xPos: transitionZone.xPos,
         yPos: transitionZone.yPos
       });
+      this.cleanUp();
       this.scene.start(transitionZone.sceneName);
     });
   });
@@ -55,6 +55,7 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
+  console.log('nearbyPlayer this', this);
   // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
@@ -100,6 +101,19 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   }
 }
 
+export function remotePlayerChangedSceneCallback(remotePlayer) {
+  //has the player entered the scene or left the scene?
+  //if they exist on remotePlayers, they've likely left, otherwise they entered
+  if (this.remotePlayers[remotePlayer.characterId]) {
+    this.remotePlayers[remotePlayer.characterId].cleanUp();
+    this.remotePlayers[remotePlayer.characterId].destroy();
+    delete this.remotePlayers[remotePlayer.characterId];
+  } else {
+    const boundCallback = nearbyPlayerLoadCallback.bind(this);
+    boundCallback([remotePlayer]);
+  }
+}
+
 export function remotePlayerLoadCallback(data) {
   if (data.id !== this.player.id && !this.remotePlayers[data.id]) {
     this.remotePlayers[data.id] = new RemotePlayer(
@@ -115,23 +129,13 @@ export function remotePlayerLoadCallback(data) {
 }
 
 export function localPlayerLogoutCallback() {
-  this.player.destroy();
-  this.player = undefined;
-  for (const [id, remotePlayer] of Object.entries(this.remotePlayers)) {
-    remotePlayer.destroy();
-  }
-  this.remotePlayers = {};
-  for (const [id, monster] of Object.entries(this.monsters)) {
-    monster.aggroZone.destroy();
-    monster.destroy();
-  }
-  this.monsters = {};
-  this.unsubscribes.forEach((unsubscribe) => unsubscribe());
+  this.cleanup();
+  eventEmitter.unsubscribeAll();
 }
 
 export function remotePlayerLogoutCallback(remotePlayerCharacterId) {
   if (this.remotePlayers[remotePlayerCharacterId]) {
-    console.log("test");
+    this.remotePlayers[remotePlayerCharacterId].cleanUp();
     this.remotePlayers[remotePlayerCharacterId].destroy();
     delete this.remotePlayers[remotePlayerCharacterId];
   }

@@ -23,15 +23,15 @@ export const GameView = () => {
   const muiClasses = useStyles(); //this is used to override material ui styles
   const player = useSelector((state) => state.player);
 
-  const enableKeys = () => {
-    eventEmitter.emit("enableKeyEvents");
-  };
-
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
     eventEmitter.emit("localPlayerLogout");
   };
+
+  const enableKeys = () => {
+    eventEmitter.emit('enableKeyEvents');
+  }
 
   return (
     <div className="layout">

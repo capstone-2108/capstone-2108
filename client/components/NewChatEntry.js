@@ -24,6 +24,11 @@ export const NewChatEntry = (props) => {
     // eventEmitter.emit("disabledEvent");
   };
 
+  const disablePhaserEvents = (evt) => {
+    console.log('test');
+    eventEmitter.emit("disabledEvents");
+  };
+
   const sendMessage = (evt) => {
     evt.stopPropagation();
     if (evt.key === "Enter") {

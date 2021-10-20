@@ -10,6 +10,7 @@ export const SET_NEARBY_MONSTERS = "SET_NEARBY_MONSTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
 export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
 export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
+export const REMOTE_PLAYER_CHANGED_SCENE = "REMOTE_PLAYER_CHANGED_SCENE";
 export const SET_SELECTED_MONSTER = "SET_SELECTED_MONSTER";
 
 /*************************
@@ -22,7 +23,6 @@ export const setPlayerCharacter = (character) => {
     character
   };
 };
-
 
 export const updatePlayerCharacter = (updates) => {
   return {
@@ -66,6 +66,13 @@ export const setSelectedMonster = (monster) => {
   };
 };
 
+export const remotePlayerChangedScenes = (player) => {
+  return {
+    type: REMOTE_PLAYER_CHANGED_SCENE,
+    player
+  };
+};
+
 //--Thunks--
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
@@ -99,7 +106,6 @@ export const fetchRemoteCharacterData = (id) => {
     }
   };
 };
-
 
 export const fetchNearbyPlayers = (characterId) => {
   return async (dispatch, getState) => {
@@ -150,7 +156,7 @@ export const logoutCharacters = (characterId) => {
       console.log(err);
     }
   };
-}
+};
 
 export const clearPlayerState = () => {
   return {
@@ -212,7 +218,7 @@ const clearState = {
   sceneId: 1,
   sceneName: "StarterTown",
   level: 1,
-  portrait: undefined,
+  portrait: undefined
 };
 
 export default (state = initialState, action) => {
@@ -233,6 +239,23 @@ export default (state = initialState, action) => {
       return { ...state, selectedPlayer: action.character };
     case SET_SELECTED_MONSTER:
       return { ...state, selectedPlayer: action.monster };
+    case REMOTE_PLAYER_CHANGED_SCENE: {
+      const nearbyPlayers = state.nearbyPlayers.filter(
+        (nearbyPlayer) => nearbyPlayer.characterId !== action.player.characterId
+      );
+      //add or update this player
+      if (action.player.sceneId === state.sceneId) {
+        nearbyPlayers.push(action.player);
+        return {
+          ...state, nearbyPlayers: nearbyPlayers
+        }
+      } else { //remove this player
+        return {
+          ...state,
+          nearbyPlayers
+        }
+      }
+    }
     default:
       return state;
   }

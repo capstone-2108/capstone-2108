@@ -27,17 +27,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
    * @param {number} id
    * @param {boolean} localPlayer
    */
-  constructor(
-    scene,
-    x,
-    y,
-    spriteKey,
-    templateName,
-    characterName,
-    id,
-    localPlayer = false,
-    stuff = "nothing"
-  ) {
+  constructor(scene, x, y, spriteKey, templateName, characterName, id, localPlayer = false) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -115,7 +105,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       target.stateMachine.setState("hit");
     });
 
-    this.setDepth(5);
   }
 
   idleStateUpdate() {
@@ -124,6 +113,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   walkStateUpdate() {
     this.animationPlayer(this.stateMachine.currentStateName);
+  }
+
+  cleanUp() {
+    this.nameTag.destroy();
   }
 
   meleeAttackEnter() {
@@ -172,7 +165,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
 
     this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + "sorcerer-melee-" + convertedDir,
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.templateName}-melee-` + convertedDir,
       () => {
         this.meleeHitbox.body.enable = false;
         this.scene.physics.world.remove(this.meleeHitbox.body);
@@ -207,7 +200,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
-      //if a different animation is playing, then lets change
       this.anims.play(animationToPlay);
     }
     this.setVelocityX(

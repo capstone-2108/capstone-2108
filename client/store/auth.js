@@ -56,6 +56,7 @@ export const logout = () => {
     try {
       const response = await axios.get("/auth/logout");
       if (!response.data.loggedIn) {
+        window.location.href = window.location.protocol + "//" + window.location.host;
         dispatch(setLoggedOut());
         dispatch(loginSuccess(false));
         dispatch(clearPlayerState());
