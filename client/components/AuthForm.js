@@ -27,15 +27,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     fontFamily: "Cinzel Decorative",
     padding: 20,
+    borderRadius: "8%"
   },
   text: {
     color: "#f5f3e6",
-    fontFamily: "Cinzel Decorative",
+    fontFamily: "Cinzel Decorative"
   },
   textfield: {
-    backgroundColor: "#5194b6",
+    background: "rgb(150,192,213)",
+    background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)",
+    // backgroundColor: "#adbe39",
     marginBottom: 20,
     color: "primary",
+    textShadow: "3px 3px #888"
   },
   btn: {
     fontFamily: "Cinzel Decorative",
@@ -51,9 +55,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20
   },
   titleGridItem: {
-    height:"200px",
-    display:"flex",
-    alignItems:"center"
+    height: "200px",
+    display: "flex",
+    alignItems: "center"
   }
 }));
 
