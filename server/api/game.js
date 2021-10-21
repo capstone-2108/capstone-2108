@@ -121,7 +121,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       health: req.body.character.baseHealth,
       strength: req.body.character.baseStrength,
       intelligence: req.body.character.baseIntelligence,
-      locationId: location.id
+      locationId: location.id,
+      active: true
     });
 
     await newPlayer.setUser(req.user);
