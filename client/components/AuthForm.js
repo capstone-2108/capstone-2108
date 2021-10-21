@@ -24,21 +24,22 @@ const useStyles = makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#211510",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     fontFamily: "Cinzel Decorative",
-    padding: 20
+    padding: 20,
   },
   text: {
     color: "#f5f3e6",
-    fontFamily: "Cinzel Decorative"
+    fontFamily: "Cinzel Decorative",
   },
   textfield: {
-    backgroundColor: "#872441",
-    marginBottom: 20
+    backgroundColor: "#5194b6",
+    marginBottom: 20,
+    color: "primary",
   },
   btn: {
     fontFamily: "Cinzel Decorative",
-    backgroundColor: "#872441",
+    backgroundColor: "#5194b6",
     color: "#f5f3e6",
     marginTop: 20,
     "&:hover": {
@@ -139,7 +140,7 @@ const AuthForm = (props) => {
         <Grid item>
           <Card elevation={15} className={classes.form}>
             <Grid align="center" className={classes.text}>
-              <Avatar style={{ backgroundColor: "#344a95" }}>
+              <Avatar style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
                 <LockedOutlinedIcon />
               </Avatar>
               <h2>{displayName}</h2>

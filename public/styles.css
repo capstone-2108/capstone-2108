@@ -27,7 +27,7 @@ body {
   font-family: "cinzel-decorative";
   font-weight: 700;
   font-size: 72px;
-  color: gold;
+  color: #ffffff;
 }
 
 .ui {
@@ -296,7 +296,7 @@ img {
 
 .authForm {
   height: 100vh;
-  background-image: url("/images/colorfulTreeLandscape.jpeg");
+  background-image: url("/images/wallpaperflare.com_wallpaper.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
