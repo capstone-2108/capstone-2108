@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
     maxWidth: "100%",
     margin: "auto",
     fontFamily: "Cinzel Decorative",
-    backgroundColor: "#211511",
+    backgroundColor: "#75735f",
     color: "#f5f3e6"
   },
   media: {
@@ -23,37 +23,48 @@ const useStyles = makeStyles(() => ({
     width: "100%",
     paddingTop: 0
   },
+
   heading: {
     paddingTop: 75,
     marginTop: 0,
     fontFamily: "Cinzel Decorative",
     textAlign: "center",
-    color: "#e8e5d3"
+    color: "#dbd9cc"
   }
 }));
 
 const selectCharacter = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState(false)
+  const [selected, setSelected] = useState(false);
 
   const history = useHistory();
 
   const routeChange = (character) => {
-    dispatch(setChosenCharacter(character))
+    dispatch(setChosenCharacter(character));
     let path = `/select/${character.id}`;
     history.push(path);
   };
 
   useEffect(() => {
-    dispatch(fetchTemplateCharacters())
-  }, [])
+    dispatch(fetchTemplateCharacters());
+  }, []);
 
-  const templates = useSelector(state => state.templateCharacters)
+  const templates = useSelector((state) => state.templateCharacters);
 
   return (
     <div className="selectContainer">
-      <h1 className={classes.heading}>Select Your Character</h1>
+      <h1
+        className="title"
+        style={{
+          color: "#312731",
+          fontSize: "60px",
+          marginTop: "0px",
+          textAlign: "center",
+          paddingTop: "100px"
+        }}>
+        Select Your Character
+      </h1>
       <Grid container justifyContent="space-evenly">
         {templates.map((character) => (
           <Grid item key={character.id} xs={12} md={4} lg={2} className={classes.cardArea}>
