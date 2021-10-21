@@ -317,3 +317,7 @@ img {
 .sign-up-emphasize {
   color: #344a95;
 }
+
+.sign-up-emphasize:hover {
+  color: white;
+}

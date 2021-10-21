@@ -27,14 +27,12 @@ app.get("/", (req, res) => {
 });
 
 app.get("/game", async (req, res, next) => {
-  console.log(chalk.red('Unlogged in user trying to access game'));
   const user = await isLoggedIn(req);
-  console.log('user', user);
   if(user) {
     res.sendFile(path.join(__dirname, "..", "public/index.html"))
   }
   else {
-    console.log(chalk.red('redirecting'));
+    console.log(chalk.red('Unlogged in user trying to access game - redirecting to login'));
     res.redirect('/');
   }
 });
