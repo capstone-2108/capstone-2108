@@ -3,10 +3,12 @@ const server = require("../app");
 const { requireSocketToken } = require("./socket-middleware");
 const io = new Server(server);
 const { PlayerCharacter, Location } = require("../db");
-const {transformToPayload} = require('../db/models/PlayerCharacter');
+const { transformToPayload } = require("../db/models/PlayerCharacter");
+const chalk = require('chalk');
 
 const worldChat = io.of("/worldChat");
 const gameSync = io.of("/gameSync");
+const heartBeats = {};
 
 function initSocketServer() {
   initWorldChat();
@@ -25,7 +27,7 @@ function initWorldChat() {
         console.log("worldChat namespace connect error!");
         console.log(error);
       });
-      if(socket.user) {
+      if (socket.user) {
         console.log(`${socket.user.firstName} has connected to world chat!`);
       }
     } catch (err) {
@@ -52,8 +54,12 @@ function initGameSync() {
 
     socket.on("playerChangedScenes", async (data) => {
       try {
-        const playerCharacter = await  PlayerCharacter.getCharacter(data.characterId);
-        await playerCharacter.location.update({sceneId: data.sceneId, xPos: data.xPos, yPos: data.yPos});
+        const playerCharacter = await PlayerCharacter.getCharacter(data.characterId);
+        await playerCharacter.location.update({
+          sceneId: data.sceneId,
+          xPos: data.xPos,
+          yPos: data.yPos
+        });
         await playerCharacter.reload();
         const characterPayload = transformToPayload(playerCharacter);
         //let the world know that this player has moved to a new scene
@@ -62,11 +68,55 @@ function initGameSync() {
         console.log(err);
       }
     });
+
+    //we'll receive heartbeats from players to let us know they are still logged in
+    //heartbeats are sent out when a player logs in, and on request from the server
+    socket.on("heartbeat", async ({ userId, characterName, characterId }) => {
+      console.log("Received heart beat for " + characterName);
+      heartBeats[characterId] = {
+        userId,
+        characterName,
+        lastSeen: Date.now()
+      };
+    });
+
+    socket.on("monsterAggroedPlayer", async ({ monsterId, playerCharacterId }) => {
+      chalk.red(`Monster ${monsterId} aggroed player ${playerCharacterId}`);
+    });
   });
+}
+
+function initHeartbeat() {
+  setInterval(() => {
+    try {
+      for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
+        const {characterName, lastSeen, userId} = heartBeatInfo;
+        if (Date.now() - lastSeen > 60000) {
+          PlayerCharacter.logout(userId, characterId)
+          console.log(`Logging out ${characterName} due to inactivity`);
+          worldChat.emit("newMessage", {
+            channel: "world",
+            message: {
+              name: "WORLD",
+              message: characterName + " has been logged out by the server!"
+            }
+          });
+          gameSync.emit('remotePlayerLogout', characterId);
+          delete heartBeats[characterId];
+        }
+      }
+      console.log("Sending out heart beat check");
+      gameSync.emit("heartbeatCheck");
+    }
+    catch(err) {
+      console.log(err);
+    }
+  }, 20000);
 }
 
 module.exports = {
   initSocketServer,
   gameSync,
-  worldChat
+  worldChat,
+  initHeartbeat
 };

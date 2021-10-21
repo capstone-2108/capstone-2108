@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
 /*************************
  * Action Types          *
  ************************/
-export const UPDATE_HEALTH = "UPDATE_HEALTH";
-export const SET_PLAYER_CHARACTER = "SET_PLAYER_CHARACTER";
-export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
-export const SET_NEARBY_MONSTERS = "SET_NEARBY_MONSTERS";
-export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
-export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
-export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
-export const REMOTE_PLAYER_CHANGED_SCENE = "REMOTE_PLAYER_CHANGED_SCENE";
-export const SET_SELECTED_MONSTER = "SET_SELECTED_MONSTER";
+export const UPDATE_HEALTH = 'UPDATE_HEALTH';
+export const SET_PLAYER_CHARACTER = 'SET_PLAYER_CHARACTER';
+export const SET_NEARBY_PLAYER_CHARACTERS = 'SET_NEARBY_PLAYER_CHARACTERS';
+export const SET_NEARBY_MONSTERS = 'SET_NEARBY_MONSTERS';
+export const CLEAR_PLAYER_STATE = 'CLEAR_PLAYER_STATE';
+export const UPDATE_PLAYER_CHARACTER = 'UPDATE_PLAYER_CHARACTER';
+export const SET_SELECTED_PLAYER = 'SET_SELECTED_PLAYER';
+export const REMOTE_PLAYER_CHANGED_SCENE = 'REMOTE_PLAYER_CHANGED_SCENE';
+export const SET_SELECTED_MONSTER = 'SET_SELECTED_MONSTER';
 
 /*************************
  * Action Creators       *
@@ -73,6 +73,12 @@ export const remotePlayerChangedScenes = (player) => {
   };
 };
 
+export const clearPlayerState = () => {
+  return {
+    type: CLEAR_PLAYER_STATE
+  };
+};
+
 //--Thunks--
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
@@ -81,14 +87,16 @@ export const fetchCharacterData = () => {
       //if the player data is already in redux
       if (state.player.characterId !== null) {
         return state.player;
-      } else {
+      }
+      else {
         //fetch the player data
         const response = await axios.get(`/api/game/character`);
         dispatch(setPlayerCharacter(response.data));
         const state = getState();
         return state.player;
       }
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err);
     }
   };
@@ -101,7 +109,8 @@ export const fetchRemoteCharacterData = (id) => {
       dispatch(setSelectedPlayer(response.data));
       const state = getState();
       return state.player;
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err);
     }
   };
@@ -115,7 +124,8 @@ export const fetchNearbyPlayers = (characterId) => {
       dispatch(setNearbyPlayers(response.data));
       state = getState();
       return state.player.nearbyPlayers;
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err);
     }
   };
@@ -129,7 +139,8 @@ export const fetchNearbyMonsters = (sceneId) => {
       dispatch(setNearbyMonsters(response.data));
       state = getState();
       return state.player.nearbyMonsters;
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err);
     }
   };
@@ -139,10 +150,11 @@ export const fetchNearbyMonsters = (sceneId) => {
 export const createPlayerCharacter = (name, character, history) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("/api/game/character", { name, character });
+      const response = await axios.post('/api/game/character', {name, character});
       dispatch(setPlayerCharacter(response.data));
-      history.push("/game");
-    } catch (err) {
+      history.push('/game');
+    }
+    catch (err) {
       console.log(err);
     }
   };
@@ -152,15 +164,10 @@ export const logoutCharacters = (characterId) => {
   return async (dispatch) => {
     try {
       const response = await axios.put(`/api/game/character/${characterId}/logout`);
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err);
     }
-  };
-};
-
-export const clearPlayerState = () => {
-  return {
-    type: CLEAR_PLAYER_STATE
   };
 };
 
@@ -171,9 +178,22 @@ export const fetchSeletedMonster = (id) => {
       dispatch(setSelectedMonster(response.data));
       let state = getState();
       return state.player.selectedMonster;
-    } catch (error) {
+    }
+    catch (error) {
       console.log(err);
     }
+  };
+};
+
+export const heartbeat = (socket) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    socket.emit('heartbeat', {
+      userId: state.player.userId,
+      characterName: state.player.name,
+      characterId: state.player.characterId
+    });
+    return true;
   };
 };
 
@@ -183,7 +203,7 @@ export const fetchSeletedMonster = (id) => {
 const initialState = {
   userId: null,
   characterId: null,
-  name: "",
+  name: '',
   nearbyPlayers: [],
   nearbyMonsters: [],
   selectedPlayer: {},
@@ -196,15 +216,15 @@ const initialState = {
   totalExp: 120,
   gold: 0,
   sceneId: 1,
-  sceneName: "StarterTown",
+  sceneName: 'StarterTown',
   level: 1,
-  portrait: '',
+  portrait: ''
 };
 
 const clearState = {
   userId: null,
   characterId: null,
-  name: "",
+  name: '',
   nearbyPlayers: [],
   nearbyMonsters: [],
   selectedPlayer: {},
@@ -216,7 +236,7 @@ const clearState = {
   totalExp: 0,
   gold: 0,
   sceneId: 1,
-  sceneName: "StarterTown",
+  sceneName: 'StarterTown',
   level: 1,
   portrait: undefined
 };
@@ -224,21 +244,21 @@ const clearState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYER_CHARACTER:
-      return { ...state, ...action.character };
+      return {...state, ...action.character};
     case SET_NEARBY_PLAYER_CHARACTERS:
-      return { ...state, nearbyPlayers: action.characters };
+      return {...state, nearbyPlayers: action.characters};
     case SET_NEARBY_MONSTERS:
-      return { ...state, nearbyMonsters: action.monsters };
+      return {...state, nearbyMonsters: action.monsters};
     case UPDATE_HEALTH:
-      return { ...state, health: action.health };
+      return {...state, health: action.health};
     case CLEAR_PLAYER_STATE:
       return clearState;
     case UPDATE_PLAYER_CHARACTER:
-      return { ...state, ...action.updates };
+      return {...state, ...action.updates};
     case SET_SELECTED_PLAYER:
-      return { ...state, selectedPlayer: action.character };
+      return {...state, selectedPlayer: action.character};
     case SET_SELECTED_MONSTER:
-      return { ...state, selectedPlayer: action.monster };
+      return {...state, selectedPlayer: action.monster};
     case REMOTE_PLAYER_CHANGED_SCENE: {
       const nearbyPlayers = state.nearbyPlayers.filter(
         (nearbyPlayer) => nearbyPlayer.characterId !== action.player.characterId
@@ -247,13 +267,16 @@ export default (state = initialState, action) => {
       if (action.player.sceneId === state.sceneId) {
         nearbyPlayers.push(action.player);
         return {
-          ...state, nearbyPlayers: nearbyPlayers
-        }
-      } else { //remove this player
+          ...state,
+          nearbyPlayers: nearbyPlayers
+        };
+      }
+      else {
+        //remove this player
         return {
           ...state,
           nearbyPlayers
-        }
+        };
       }
     }
     default:

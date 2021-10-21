@@ -169,48 +169,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       vdy = 1;
     }
 
-    // if (north) {
-    //   vdy = -1;
-    // } else if (south) {
-    //   vdy = 1;
-    // } else {
-    //   vdy = 0;
-    // }
-    // if (east) {
-    //   vdx = 1;
-    //   if (vdy === 0) {
-    //     direction = EAST;
-    //   } else if (vdy === 1) {
-    //     direction = SOUTHEAST;
-    //     vdx = 1;
-    //     vdy = 1;
-    //   } else {
-    //     direction = NORTHEAST;
-    //     vdx = 1;
-    //     vdy = -1;
-    //   }
-    // } else if (west) {
-    //   vdx = -1;
-    //   if (vdy === 0) {
-    //     direction = WEST;
-    //   } else if (vdy === 1) {
-    //     direction = SOUTHWEST;
-    //     vdy = 1;
-    //     vdx = -1;
-    //   } else {
-    //     direction = NORTHWEST;
-    //     vdx = -1;
-    //     vdy = -1;
-    //   }
-    // } else {
-    //   vdx = 0;
-    //   if (vdy === 0) {
-    //   } else if (vdy === 1) {
-    //     direction = SOUTH;
-    //   } else {
-    //     direction = NORTH;
-    //   }
-    // }
     this.vdx = vdx;
     this.vdy = vdy;
     this.directionChanged = direction !== this.direction;
@@ -219,23 +177,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       console.log(`direction changed from ${direction} to ${this.direction}`);
     }
   }
-  flash(animation, frame) {
-    if (frame.index === 3) {
-      this.scene.tweens.addCounter({
-        from: 0,
-        to: 100,
-        duration: 200,
-        onUpdate: (tween) => {
-          const tweenVal = tween.getValue();
-          if (tweenVal % 2) {
-            this.setTintFill(0xffffff);
-          } else {
-            this.clearTint();
-          }
-        }
-      });
-    }
-  }
+
 
   hitEnter() {
     this.animationPlayer("hit");

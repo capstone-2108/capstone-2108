@@ -1,4 +1,5 @@
 import { screenToMap } from "../util/conversion";
+import {eventEmitter} from '../event/EventEmitter';
 
 export class AggroZone extends Phaser.GameObjects.Zone {
   constructor(scene, x, y, width, height, owner) {
@@ -22,8 +23,14 @@ export class AggroZone extends Phaser.GameObjects.Zone {
   }
 
   setAggroTarget(target) {
-    this.expandAggroZone();
-    this.target = target;
+    if(this.target !== target) {
+      this.expandAggroZone();
+      this.target = target;
+      eventEmitter.emit('monsterAggroedPlayer', {
+        monsterId: this.id,
+        playerCharacterId: target.id
+      });
+    }
   }
 
   shrinkAggroZone() {

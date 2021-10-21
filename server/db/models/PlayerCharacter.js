@@ -45,7 +45,7 @@ const PlayerCharacter = db.define("playerCharacter", {
     type: Sequelize.INTEGER,
     allowNull: false,
     defaultValue: 1
-  }
+  },
 });
 
 /************************

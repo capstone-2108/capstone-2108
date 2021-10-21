@@ -5,8 +5,11 @@ import {
   fetchNearbyMonsters,
   fetchNearbyPlayers,
   fetchRemoteCharacterData,
-  fetchSeletedMonster, remotePlayerChangedScenes, remotePlayerChangesScenes
-} from '../store/player';
+  fetchSeletedMonster,
+  heartbeat,
+  remotePlayerChangedScenes,
+  remotePlayerChangesScenes
+} from "../store/player";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
@@ -62,6 +65,10 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("remotePlayerChangedScenes", remotePlayer);
     });
 
+    newSocket.on("heartbeatCheck", async (data) => {
+      dispatch(heartbeat(newSocket));
+    });
+
     /****************
      * Event Emitter *
      ***************/
@@ -72,8 +79,11 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.subscribe("phaserLoad", async (data) => {
         const player = await dispatch(fetchCharacterData()); //load the players data into redux
         eventEmitter.emit("playerLoad", player);
+        dispatch(heartbeat(newSocket));
       })
     );
+
+    unsubscribes.push();
 
     unsubscribes.push(
       eventEmitter.subscribe("sceneLoad", async (data) => {
@@ -91,7 +101,14 @@ export const InitSubscriptionsToPhaser = () => {
     unsubscribes.push(
       eventEmitter.subscribe("playerChangedScenes", async (data) => {
         //update store state with new sceneName and sceneId for this player
-        dispatch(updatePlayerCharacter({ sceneName: data.sceneName, sceneId: data.sceneId, xPos: data.xPos, yPos: data.yPos }));
+        dispatch(
+          updatePlayerCharacter({
+            sceneName: data.sceneName,
+            sceneId: data.sceneId,
+            xPos: data.xPos,
+            yPos: data.yPos
+          })
+        );
         //let the server know about the changes
         newSocket.emit("playerChangedScenes", data);
       })
@@ -117,9 +134,15 @@ export const InitSubscriptionsToPhaser = () => {
       })
     );
 
+    unsubscribes.push(
+      eventEmitter.subscribe("monsterAggroedPlayer", ({ monsterId, playerCharacterId }) => {
+        newSocket.emit("monsterAggroedPlayer", { monsterId, playerCharacterId });
+      })
+    );
+
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe());
-      socket.close();
+      newSocket.close();
     };
   }, []);
 
