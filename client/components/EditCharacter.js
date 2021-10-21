@@ -16,12 +16,13 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     fontFamily: "Cinzel Decorative",
     padding: 20,
-    color: "#e8e5d3"
+    color: "#e8e5d3",
+    borderRadius: "8%"
   },
   textfield: {
     backgroundColor: "rgb(150,192,213)",
     marginBottom: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   btn: {
     fontFamily: "Cinzel Decorative",
