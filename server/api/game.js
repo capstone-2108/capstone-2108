@@ -5,6 +5,7 @@ router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
 const { TemplateCharacter, SpriteSheet, Location, PlayerCharacter, Scene, Npc } = require("../db");
 const { transformToPayload } = require("../db/models/PlayerCharacter");
+const chalk = require('chalk');
 
 //This fetches all template characters
 router.get("/templates", async (req, res, next) => {
@@ -22,7 +23,8 @@ router.get("/templates", async (req, res, next) => {
 
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   try {
-    const playerCharacter = PlayerCharacter.getCharacter(req.params.id);
+    console.log(chalk.red('req.params.id', req.params.id));
+    const playerCharacter = await PlayerCharacter.getCharacter(req.params.id);
     res.json(transformToPayload(playerCharacter));
   } catch (err) {
     next(err);

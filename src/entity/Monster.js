@@ -82,14 +82,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       });
 
     this.stateMachine.setState("idle");
-    this.clickMonster();
   }
 
-  clickMonster() {
-    this.on("pointerup", (evt) => {
-      eventEmitter.emit("requestMonsterInfo", this.id);
-    });
-  }
+
 
   update(time, delta) {
     this.checkAggroZone(); //check if a player is in my aggro zone

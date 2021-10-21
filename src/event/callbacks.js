@@ -97,7 +97,11 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   //the player character has finished moving
   const remotePlayer = this.remotePlayers[stateSnapshots.characterId];
   if (remotePlayer) {
+    console.log('found remote player to update position');
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
+  }
+  else {
+    console.log('remotePlayerPosition - player not found');
   }
 }
 
@@ -116,7 +120,7 @@ export function remotePlayerChangedSceneCallback(remotePlayer) {
 
 export function remotePlayerLoadCallback(data) {
   if (data.characterId !== this.player.id && !this.remotePlayers[data.characterId]) {
-    this.remotePlayers[data.id] = new RemotePlayer(
+    this.remotePlayers[data.characterId] = new RemotePlayer(
       this,
       data.xPos,
       data.yPos,

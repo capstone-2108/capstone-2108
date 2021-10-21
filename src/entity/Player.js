@@ -14,6 +14,7 @@ import {
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
 import { BlockRounded } from "@material-ui/icons";
+import { eventEmitter } from "../event/EventEmitter";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -104,7 +105,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
       target.stateMachine.setState("hit");
     });
-
   }
 
   idleStateUpdate() {
@@ -165,7 +165,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
 
     this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.templateName}-melee-` + convertedDir,
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+        `${this.templateName}-melee-` +
+        convertedDir,
       () => {
         this.meleeHitbox.body.enable = false;
         this.scene.physics.world.remove(this.meleeHitbox.body);

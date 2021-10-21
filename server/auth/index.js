@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { User, TemplateCharacter, SpriteSheet} = require("../db");
+const { User, TemplateCharacter, SpriteSheet } = require("../db");
 const { requireTokenMiddleware } = require("../auth-middleware");
 const cookieParser = require("cookie-parser");
 const { userSignupSchema } = require("../api/validationSchemas");
@@ -84,7 +84,7 @@ router.post("/login", async (req, res, next) => {
     res.json({
       loggedIn: true,
       firstName: user.firstName,
-      isAdmin: user.isAdmin,
+      isAdmin: user.isAdmin
     });
   } catch (err) {
     console.log(err);

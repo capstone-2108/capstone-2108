@@ -11,6 +11,8 @@ import {
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
 } from "../event/callbacks";
+import { RemotePlayer } from "../entity/RemotePlayer";
+import { Monster } from "../entity/Monster";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -82,6 +84,18 @@ export default class MMOScene extends Phaser.Scene {
       eventEmitter.subscribe("remotePlayerLogout", remotePlayerLogoutCallback.bind(this))
     );
 
+    this.input.on("gameobjectdown", (pointer, gameObject) => {
+      if (gameObject instanceof RemotePlayer) {
+        console.log('remote player', gameObject);
+        gameObject.nameTag.setColor("#FFFFFF");
+        eventEmitter.emit("requestPlayerInfo", gameObject.id);
+      } else if (gameObject instanceof Monster) {
+        eventEmitter.emit("requestMonsterInfo", gameObject.id);
+      }
+      else {
+        console.log('error!!!');
+      }
+    });
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
   }

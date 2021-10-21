@@ -21,6 +21,11 @@ app.use(express.json());
 app.use("/auth", require("./auth"));
 app.use("/api/game", require("./api/game"));
 
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser(process.env.cookieSecret));
+
+
 //GET / - sends our index file which loads the game
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public/index.html"))
