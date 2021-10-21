@@ -17,13 +17,15 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    height: 450,
-    top: "50%",
+    // height: 450,
+    // top: "50%",
     width: 350,
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: "flex",
+    flex: 2,
+    margin: "auto",
+    // top: "50%",
+    // left: "50%",
+    // transform: "translate(-50%, -50%)",
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     fontFamily: "Cinzel Decorative",
     padding: 20,
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Cinzel Decorative"
   },
   textfield: {
-    background: "rgb(150,192,213)",
+    // background: "rgb(150,192,213)",
     background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)",
     // backgroundColor: "#adbe39",
     marginBottom: 20,
@@ -52,15 +54,14 @@ const useStyles = makeStyles((theme) => ({
   signup: {
     color: "#d8eaec",
     paddingTop: 20,
-
     "&:hover": {
       textDecoration: "underline"
     }
   },
   titleGridItem: {
-    height: "200px",
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    flex: .6
   }
 }));
 
