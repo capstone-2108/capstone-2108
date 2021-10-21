@@ -38,8 +38,7 @@ const useStyles = makeStyles((theme) => ({
     background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)",
     // backgroundColor: "#adbe39",
     marginBottom: 20,
-    color: "primary",
-    textShadow: "3px 3px #888"
+    color: "primary"
   },
   btn: {
     fontFamily: "Cinzel Decorative",
@@ -47,12 +46,16 @@ const useStyles = makeStyles((theme) => ({
     color: "#f5f3e6",
     marginTop: 20,
     "&:hover": {
-      backgroundColor: "#344a95"
+      backgroundColor: "#77963f"
     }
   },
   signup: {
-    color: "#f5f3e6",
-    paddingTop: 20
+    color: "#d8eaec",
+    paddingTop: 20,
+
+    "&:hover": {
+      textDecoration: "underline"
+    }
   },
   titleGridItem: {
     height: "200px",
@@ -207,7 +210,7 @@ const AuthForm = (props) => {
               {name === "login" && (
                 <Link to="signup" style={{ textDecoration: "none" }}>
                   <Grid align="center" className={classes.signup}>
-                    <p>New player? Sign Up Here</p>
+                    <p>New player? Sign Up!</p>
                   </Grid>
                 </Link>
               )}

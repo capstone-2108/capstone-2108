@@ -35,21 +35,21 @@ const useStyles = makeStyles(() => ({
 const selectCharacter = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState(false)
+  const [selected, setSelected] = useState(false);
 
   const history = useHistory();
 
   const routeChange = (character) => {
-    dispatch(setChosenCharacter(character))
+    dispatch(setChosenCharacter(character));
     let path = `/select/${character.id}`;
     history.push(path);
   };
 
   useEffect(() => {
-    dispatch(fetchTemplateCharacters())
-  }, [])
+    dispatch(fetchTemplateCharacters());
+  }, []);
 
-  const templates = useSelector(state => state.templateCharacters)
+  const templates = useSelector((state) => state.templateCharacters);
 
   return (
     <div className="selectContainer">

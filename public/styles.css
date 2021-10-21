@@ -23,13 +23,27 @@ body {
   padding: 0;
 }
 
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 .title {
   font-family: "cinzel-decorative";
   font-weight: 700;
   font-size: 72px;
-  color: #ffffff;
+  color: #d8eaec;
+  animation-name: fadeInOut;
+  opacity: 0;
+  animation-delay: 1s;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  text-shadow: 2px 2px rgb(131, 130, 130);
 }
-
 .ui {
   display: flex;
   width: 300px;
@@ -203,7 +217,7 @@ body {
 
 .barRatioMp {
   font-size: 9px;
-  text-shadow: 0.5px 0.5px #888;
+  text-shadow: 3px 3px #888;
   word-wrap: normal;
   display: flex;
   position: absolute;
@@ -304,7 +318,7 @@ img {
 
 .selectContainer {
   height: 100vh;
-  background-image: url("/images/croppedColorfulTreeLandscape.jpeg");
+  background-image: url("/images/croppedWallpaper.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
