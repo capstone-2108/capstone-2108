@@ -115,7 +115,7 @@ export function remotePlayerChangedSceneCallback(remotePlayer) {
 }
 
 export function remotePlayerLoadCallback(data) {
-  if (data.id !== this.player.id && !this.remotePlayers[data.id]) {
+  if (data.characterId !== this.player.id && !this.remotePlayers[data.characterId]) {
     this.remotePlayers[data.id] = new RemotePlayer(
       this,
       data.xPos,

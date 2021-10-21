@@ -38,6 +38,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     // listens for other players loading in
     newSocket.on("remotePlayerLoad", (data) => {
+      console.log('react received remotePlayerload', data);
       eventEmitter.emit("remotePlayerLoad", data);
     });
 
