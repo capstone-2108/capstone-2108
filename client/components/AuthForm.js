@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "8%"
   },
   text: {
-    color: "#f5f3e6",
+    color: "ooo",
     fontFamily: "Cinzel Decorative"
   },
   textfield: {
