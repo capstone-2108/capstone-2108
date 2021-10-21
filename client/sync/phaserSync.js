@@ -38,7 +38,6 @@ export const InitSubscriptionsToPhaser = () => {
 
     // listens for other players loading in
     newSocket.on("remotePlayerLoad", (data) => {
-      console.log('react received remotePlayerload', data);
       eventEmitter.emit("remotePlayerLoad", data);
     });
 
@@ -68,6 +67,12 @@ export const InitSubscriptionsToPhaser = () => {
 
     newSocket.on("heartbeatCheck", async (data) => {
       dispatch(heartbeat(newSocket));
+    });
+
+    //server is letting us know that a monster can aggro a player
+    newSocket.on("monsterCanAggroPlayer", async (monsterId) => {
+      console.log('monster can aggro player', monsterId);
+      eventEmitter.emit("monsterCanAggroPlayer", monsterId);
     });
 
     /****************
@@ -137,7 +142,7 @@ export const InitSubscriptionsToPhaser = () => {
       })
     );
 
-    //phaser lets us know that a monster aggroed a player
+    //phaser lets us know that a monster wants to aggro a player
     unsubscribes.push(
       eventEmitter.subscribe("monsterAggroedPlayer", ({ monsterId, playerCharacterId }) => {
         newSocket.emit("monsterAggroedPlayer", { monsterId, playerCharacterId });
@@ -146,7 +151,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     //phaser is letting us know that a monster's aggro has reset
     unsubscribes.push(
-      eventEmitter.subscribe("monsterResetAggro", ( monsterId ) => {
+      eventEmitter.subscribe("monsterResetAggro", (monsterId) => {
         //let the server know so it can update the database
         newSocket.emit("monsterResetAggro", monsterId);
       })

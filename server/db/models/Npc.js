@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const { TemplateCharacter } = require("./TemplateCharacter");
 const { SpriteSheet } = require("./SpriteSheet");
 const { Location } = require("./Location");
+const chalk = require("chalk");
 
 const Npc = db.define("npc", {
   name: {
@@ -57,12 +58,16 @@ Npc.getNearbyMonsters = async function (sceneId) {
 
 Npc.setAggroOn = async (npcId, playerCharacterId) => {
   const monster = await Npc.findByPk(npcId);
-  return monster.update({aggroedOn: playerCharacterId});
+  if (!monster.aggroedOn) {
+    monster.update({ aggroedOn: playerCharacterId });
+    return true;
+  }
+  return false;
 };
 
 Npc.resetAggro = async (npcId) => {
   const monster = await Npc.findByPk(npcId);
-  return monster.update({aggroedOn: null});
+  return monster.update({ aggroedOn: null });
 };
 
 module.exports = { Npc };

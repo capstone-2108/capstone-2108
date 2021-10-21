@@ -2,6 +2,7 @@ import {
   DIRECTION_CONVERSION,
   EAST,
   NORTH,
+  SNAPSHOT_REPORT_INTERVAL,
   SOUTH,
   WEST
 } from "../constants/constants";
@@ -51,7 +52,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.previousWaypoint = undefined;
 
     this.vdx = 0; //modifies X velocity (negative: west, positive: east, 0: not moving)
-    this.vdy = 0;  //modifies Y velocity (negative: north, positive: south, 0: not moving)
+    this.vdy = 0; //modifies Y velocity (negative: north, positive: south, 0: not moving)
     this.dx = 0;
     this.dy = 0;
 
@@ -81,16 +82,99 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         onEnter: this.attackEnter
       });
 
+    /*************************
+     * Multiplayer Variables *
+     *************************/
+    /**this array stores snapshots of the monsters movements so that we can let everyone else know about the later on**/
+    this.oneRing = false; //one ring to bind them to my control (the monsters that is)
+    this.localStateSnapshots = []; //this is where we hold snapshots of state before they are transmitted to the server
+    this.snapShotsLen = 0;
+    this.lastReportTime = 0;
+    //the next 4 variables are used to determine if anything about a players movements have changed
+    //we compare the last value against the current value to determine this
+    this.lastVdx = 0;
+    this.lastVdy = 0;
+    this.lastDirection = this.direction;
+    this.lastMode = this.mode;
+
     this.stateMachine.setState("idle");
   }
 
-
+  //saves snapshots of the local players state, which will be transmitted to the server later on
+  saveStateSnapshots(time, delta) {
+    const lastSnapshot = this.localStateSnapshots[this.localStateSnapshots.length - 1];
+    let moveData = this.detectKeyInput();
+    let newVdx = moveData.vdx;
+    let newVdy = moveData.vdy;
+    let newDirection = moveData.direction;
+    let newState = this.stateMachine.currentStateName;
+    //if something about this characters movement has changed then we should start a new snapshot
+    if (
+      newVdx !== this.lastVdx ||
+      newVdy !== this.lastVdy ||
+      newDirection !== this.lastDirection ||
+      (this.localStateSnapshots.length === 0 && newState !== "idle" && !this.instant)
+    ) {
+      if (newState === "melee") {
+        this.instant = true;
+      }
+      if (lastSnapshot && !lastSnapshot.duration) {
+        lastSnapshot.duration = time - lastSnapshot.timeStarted;
+        delete lastSnapshot.timeStarted;
+        lastSnapshot.endX = Math.floor(this.x);
+        lastSnapshot.endY = Math.floor(this.y);
+      }
+      if (newState !== "idle") {
+        this.localStateSnapshots[this.snapShotsLen++] = {
+          endX: undefined,
+          endY: undefined,
+          vdx: newVdx,
+          vdy: newVdy,
+          timeStarted: time,
+          state: newState === "" ? "idle" : newState,
+          duration: undefined
+        };
+      }
+      this.lastVdx = newVdx;
+      this.lastVdy = newVdy;
+      this.lastDirection = newDirection;
+      this.lasState = newState;
+    } else if (
+      time - this.lastReportTime > SNAPSHOT_REPORT_INTERVAL &&
+      this.localStateSnapshots.length > 0
+    ) {
+      //we send all the snapshots we've taken every given interval, providing there are any
+      if (lastSnapshot && !lastSnapshot.duration) {
+        lastSnapshot.duration = time - lastSnapshot.timeStarted;
+        delete lastSnapshot.timeStarted;
+        lastSnapshot.endX = Math.floor(this.x);
+        lastSnapshot.endY = Math.floor(this.y);
+      }
+      eventEmitter.emit("phaserUpdate", {
+        action: "playerPositionChanged",
+        data: {
+          characterId: this.id,
+          stateSnapshots: this.localStateSnapshots
+        }
+      });
+      this.localStateSnapshots = [];
+      this.snapShotsLen = 0;
+      this.lastReportTime = time;
+      this.lastVdx = newVdx;
+      this.lastVdy = newVdy;
+      this.lastDirection = newDirection;
+      this.lastState = newState;
+    }
+  }
 
   update(time, delta) {
     this.checkAggroZone(); //check if a player is in my aggro zone
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
 
-    if(this.stateMachine.currentStateName !== "hit" && this.stateMachine.currentStateName !== "attack") {
+    if (
+      this.stateMachine.currentStateName !== "hit" &&
+      this.stateMachine.currentStateName !== "attack"
+    ) {
       if (this.waypoints.length) {
         if (this.waypointIdx === 0) {
           this.stateMachine.setState("walk");
@@ -173,7 +257,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-
   hitEnter() {
     this.animationPlayer("hit");
 
@@ -206,7 +289,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-
   attackEnter() {
     this.animationPlayer("attack");
     let convertedDir = DIRECTION_CONVERSION[this.direction];
@@ -228,7 +310,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   //plays the correct animation based on the state
   animationPlayer(state) {
-    if(!this.anims) { return }
+    if (!this.anims) {
+      return;
+    }
     const currentAnimationPlaying = this.anims.getName();
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.name}-${state}-${convertedDir}`;
@@ -236,7 +320,10 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       //if a different animation is playing, then lets change
       this.anims.play(animationToPlay);
     }
-    if(this.stateMachine.currentStateName === "melee" || this.stateMachine.currentStateName === "hit") {
+    if (
+      this.stateMachine.currentStateName === "melee" ||
+      this.stateMachine.currentStateName === "hit"
+    ) {
       this.vdx = 0;
       this.vdy = 0;
     }
@@ -255,7 +342,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           });
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
-          this.stateMachine.setState('attack');
+          this.stateMachine.setState("attack");
         }
       } else {
         this.clearPath();

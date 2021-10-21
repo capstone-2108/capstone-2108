@@ -2,7 +2,7 @@ import "phaser";
 import { eventEmitter } from "../event/EventEmitter";
 
 import {
-  localPlayerLogoutCallback,
+  localPlayerLogoutCallback, monsterCanAggroPlayerCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
   remotePlayerChangedSceneCallback,
@@ -10,7 +10,7 @@ import {
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
-} from "../event/callbacks";
+} from '../event/callbacks';
 import { RemotePlayer } from "../entity/RemotePlayer";
 import { Monster } from "../entity/Monster";
 
@@ -75,6 +75,10 @@ export default class MMOScene extends Phaser.Scene {
       )
     );
 
+    this.unsubscribes.push(
+      eventEmitter.subscribe("monsterCanAggroPlayer", monsterCanAggroPlayerCallback.bind(this))
+    );
+
     //cleans up any unsubscribes
     this.unsubscribes.push(
       eventEmitter.subscribe("localPlayerLogout", localPlayerLogoutCallback.bind(this))
@@ -86,14 +90,13 @@ export default class MMOScene extends Phaser.Scene {
 
     this.input.on("gameobjectdown", (pointer, gameObject) => {
       if (gameObject instanceof RemotePlayer) {
-        console.log('remote player', gameObject);
+        console.log("remote player", gameObject);
         gameObject.nameTag.setColor("#FFFFFF");
         eventEmitter.emit("requestPlayerInfo", gameObject.id);
       } else if (gameObject instanceof Monster) {
         eventEmitter.emit("requestMonsterInfo", gameObject.id);
-      }
-      else {
-        console.log('error!!!');
+      } else {
+        console.log("error!!!");
       }
     });
     //this has to go last because we need all our events setup before react starts dispatching events
@@ -114,7 +117,7 @@ export default class MMOScene extends Phaser.Scene {
       if (!this.monsterGroup.contains(monster)) {
         this.monsterGroup.add(monster);
         this.physics.add.overlap(monster.aggroZone, this.player, (aggroZone, player) => {
-          aggroZone.setAggroTarget(this.player);
+          aggroZone.requestAggroOnTarget(this.player);
         });
       }
       monster.update(time, delta);

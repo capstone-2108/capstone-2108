@@ -1,5 +1,5 @@
 import { screenToMap } from "../util/conversion";
-import {eventEmitter} from '../event/EventEmitter';
+import { eventEmitter } from "../event/EventEmitter";
 
 export class AggroZone extends Phaser.GameObjects.Zone {
   constructor(scene, x, y, width, height, owner) {
@@ -13,6 +13,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.scene.physics.add.existing(this);
     this.targetLastKnownX = undefined;
     this.targetLastKnownY = undefined;
+    this.requestingAggro = false;
   }
 
   expandAggroZone() {
@@ -22,14 +23,21 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.body.height = 300;
   }
 
-  setAggroTarget(target) {
-    if(this.target !== target) {
-      this.expandAggroZone();
-      this.target = target;
-      eventEmitter.emit('monsterAggroedPlayer', {
+  requestAggroOnTarget(target) {
+    if (!this.requestingAggro) {
+      //send a message to react to notify the server that this monster is requesting aggro on this player
+      eventEmitter.emit("monsterAggroedPlayer", {
         monsterId: this.owner.id,
         playerCharacterId: target.id
       });
+      this.requestingAggro = true;
+    }
+  }
+
+  setAggroTarget(target) {
+    if (this.target !== target) {
+      this.expandAggroZone();
+      this.target = target;
     }
   }
 
@@ -58,7 +66,9 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.targetLastKnownX = undefined;
     this.targetLastKnownY = undefined;
     this.target = undefined;
-    eventEmitter.emit('monsterResetAggro', this.owner.id);
+    this.requestingAggro = false;
+    this.owner.oneRing = false;
+    eventEmitter.emit("monsterResetAggro", this.owner.id);
   }
 
   hasTarget() {
@@ -71,7 +81,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
       isNextToTarget: false,
       targetHasMoved: false,
       targetX: false,
-      targetY: false,
+      targetY: false
     };
     if (this.target) {
       const isTargetWithinZone = this.scene.physics.overlap(this, this.target, () => {});

@@ -49,7 +49,7 @@ function initGameSync() {
     //them know that this player has moved
     socket.on("playerPositionChanged", (data) => {
       //let other clients know this this player has moved
-      console.log('playerPositionChanged', data);
+      // console.log("playerPositionChanged", data);
       socket.broadcast.emit("remotePlayerPositionChanged", data);
     });
 
@@ -81,16 +81,26 @@ function initGameSync() {
       };
     });
 
+    //a client is letting us know that a monster is requesting to aggro a player
     socket.on("monsterAggroedPlayer", async ({ monsterId, playerCharacterId }) => {
-      console.log(chalk.red(`Monster ${monsterId} aggroed player ${playerCharacterId}`));
+      let msg = chalk.red(`Monster ${monsterId} requesting to aggro player ${playerCharacterId} -- `);
       try {
-        await Npc.setAggroOn(monsterId, playerCharacterId);
+        const canAggro = await Npc.setAggroOn(monsterId, playerCharacterId);
+        if(canAggro) {
+          //send a message to the requester that the monster can aggro them
+          msg += chalk.redBright('AGGRO TIME!');
+          socket.emit('monsterCanAggroPlayer', monsterId);
+        }
+        else {
+          msg += chalk.cyan('Nope');
+        }
+        console.log(msg);
       } catch (err) {
         console.log(err);
       }
     });
 
-    socket.on("monsterResetAggro", async ( monsterId) => {
+    socket.on("monsterResetAggro", async (monsterId) => {
       console.log(chalk.yellow(`Monster ${monsterId} aggro reset`));
       try {
         await Npc.resetAggro(monsterId);

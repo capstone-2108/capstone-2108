@@ -80,7 +80,7 @@ export function nearbyMonsterLoadCallback(monsters) {
   let len = monsters.length;
   for (; i < len; i++) {
     const monster = monsters[i];
-    this.monsters[monster.characterId] = new Monster(
+    this.monsters[monster.monsterId] = new Monster(
       this,
       monster.xPos,
       monster.yPos,
@@ -97,7 +97,6 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   //the player character has finished moving
   const remotePlayer = this.remotePlayers[stateSnapshots.characterId];
   if (remotePlayer) {
-    console.log('found remote player to update position');
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
   }
   else {
@@ -130,6 +129,12 @@ export function remotePlayerLoadCallback(data) {
       data.characterId
     );
   }
+}
+
+export function monsterCanAggroPlayerCallback(monsterId) {
+  console.log(monsterId, this.monsters);
+  this.monsters[monsterId].aggroZone.setAggroTarget(this.player);
+  this.monsters[monsterId].oneRing = true;
 }
 
 export function localPlayerLogoutCallback() {
