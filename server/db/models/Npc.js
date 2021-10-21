@@ -18,11 +18,13 @@ const Npc = db.define("npc", {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  hostile: { //only monsters which are hostile should have an aggro zone created around them
+  hostile: {
+    //only monsters which are hostile should have an aggro zone created around them
     type: Sequelize.BOOLEAN,
     default: true
   },
-  aggroedOn: { //this is the player the monster is currently aggroed on
+  aggroedOn: {
+    //this is the player the monster is currently aggroed on
     type: Sequelize.INTEGER
   }
 });
@@ -54,7 +56,13 @@ Npc.getNearbyMonsters = async function (sceneId) {
 };
 
 Npc.setAggroOn = async (npcId, playerCharacterId) => {
+  const monster = await Npc.findByPk(npcId);
+  return monster.update({aggroedOn: playerCharacterId});
+};
 
-}
+Npc.resetAggro = async (npcId) => {
+  const monster = await Npc.findByPk(npcId);
+  return monster.update({aggroedOn: null});
+};
 
 module.exports = { Npc };

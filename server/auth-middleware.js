@@ -15,6 +15,19 @@ const requireTokenMiddleware = async (req, res, next) => {
   }
 };
 
+const isLoggedIn = async (req) => {
+  try {
+    if (req.signedCookies && req.signedCookies.token) {
+      const user = await User.findByToken(req.signedCookies.token);
+      return user;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    return false;
+  }
+};
+
 //check if the user is an admin, proceed if true, throw error otherwise
 const isAdminMiddleware = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
@@ -26,5 +39,6 @@ const isAdminMiddleware = (req, res, next) => {
 
 module.exports = {
   requireTokenMiddleware,
-  isAdminMiddleware
+  isAdminMiddleware,
+  isLoggedIn
 };

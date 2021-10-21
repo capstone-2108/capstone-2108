@@ -2,9 +2,9 @@ const { Server } = require("socket.io");
 const server = require("../app");
 const { requireSocketToken } = require("./socket-middleware");
 const io = new Server(server);
-const { PlayerCharacter, Location } = require("../db");
+const { PlayerCharacter, Location, Npc } = require("../db");
 const { transformToPayload } = require("../db/models/PlayerCharacter");
-const chalk = require('chalk');
+const chalk = require("chalk");
 
 const worldChat = io.of("/worldChat");
 const gameSync = io.of("/gameSync");
@@ -81,7 +81,21 @@ function initGameSync() {
     });
 
     socket.on("monsterAggroedPlayer", async ({ monsterId, playerCharacterId }) => {
-      chalk.red(`Monster ${monsterId} aggroed player ${playerCharacterId}`);
+      console.log(chalk.red(`Monster ${monsterId} aggroed player ${playerCharacterId}`));
+      try {
+        await Npc.setAggroOn(monsterId, playerCharacterId);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    socket.on("monsterResetAggro", async ( monsterId) => {
+      console.log(chalk.yellow(`Monster ${monsterId} aggro reset`));
+      try {
+        await Npc.resetAggro(monsterId);
+      } catch (err) {
+        console.log(err);
+      }
     });
   });
 }
@@ -90,9 +104,9 @@ function initHeartbeat() {
   setInterval(() => {
     try {
       for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
-        const {characterName, lastSeen, userId} = heartBeatInfo;
+        const { characterName, lastSeen, userId } = heartBeatInfo;
         if (Date.now() - lastSeen > 60000) {
-          PlayerCharacter.logout(userId, characterId)
+          PlayerCharacter.logout(userId, characterId);
           console.log(`Logging out ${characterName} due to inactivity`);
           worldChat.emit("newMessage", {
             channel: "world",
@@ -101,14 +115,13 @@ function initHeartbeat() {
               message: characterName + " has been logged out by the server!"
             }
           });
-          gameSync.emit('remotePlayerLogout', characterId);
+          gameSync.emit("remotePlayerLogout", characterId);
           delete heartBeats[characterId];
         }
       }
       console.log("Sending out heart beat check");
       gameSync.emit("heartbeatCheck");
-    }
-    catch(err) {
+    } catch (err) {
       console.log(err);
     }
   }, 20000);

@@ -114,34 +114,45 @@ export const InitSubscriptionsToPhaser = () => {
       })
     );
 
-    //phaser will send us updates via the "phaserUpdate" event
+    //this is used for generic updates from phaser which just need to be passed on to the server
+    //and which react doesn't need to do anything beyond that
     unsubscribes.push(
       eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
-        //send a message using socket.io to let the server know that the player changed position
         newSocket.emit(action, data);
       })
     );
 
+    //phaser is making a request to fetch some player data
     unsubscribes.push(
       eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
         dispatch(fetchRemoteCharacterData(characterId));
       })
     );
 
+    //phaser is making a request to fetch some monster data
     unsubscribes.push(
       eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
         dispatch(fetchSeletedMonster(monsterId));
       })
     );
 
+    //phaser lets us know that a monster aggroed a player
     unsubscribes.push(
       eventEmitter.subscribe("monsterAggroedPlayer", ({ monsterId, playerCharacterId }) => {
         newSocket.emit("monsterAggroedPlayer", { monsterId, playerCharacterId });
       })
     );
 
+    //phaser is letting us know that a monster's aggro has reset
+    unsubscribes.push(
+      eventEmitter.subscribe("monsterResetAggro", ( monsterId ) => {
+        //let the server know so it can update the database
+        newSocket.emit("monsterResetAggro", monsterId);
+      })
+    );
+
     return () => {
-      unsubscribes.forEach((unsubscribe) => unsubscribe());
+      unsubscribes.forEach((unsubscribe) => unsubscribe()); //clear all subscriptions
       newSocket.close();
     };
   }, []);

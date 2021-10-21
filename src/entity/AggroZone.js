@@ -27,7 +27,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
       this.expandAggroZone();
       this.target = target;
       eventEmitter.emit('monsterAggroedPlayer', {
-        monsterId: this.id,
+        monsterId: this.owner.id,
         playerCharacterId: target.id
       });
     }
@@ -58,6 +58,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.targetLastKnownX = undefined;
     this.targetLastKnownY = undefined;
     this.target = undefined;
+    eventEmitter.emit('monsterResetAggro', this.owner.id);
   }
 
   hasTarget() {

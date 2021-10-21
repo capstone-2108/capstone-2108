@@ -25,19 +25,19 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "#211510",
-    fontFamily: "Cinzel Decorative",
+    fontFamily: "cinzel-decorative",
     padding: 20
   },
   text: {
     color: "#f5f3e6",
-    fontFamily: "Cinzel Decorative"
+    fontFamily: "cinzel-decorative"
   },
   textfield: {
     backgroundColor: "#872441",
     marginBottom: 20
   },
   btn: {
-    fontFamily: "Cinzel Decorative",
+    fontFamily: "cinzel-decorative",
     backgroundColor: "#872441",
     color: "#f5f3e6",
     marginTop: 20,
@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 20
   },
   titleGridItem: {
-    height:"200px",
-    display:"flex",
-    alignItems:"center"
+    height: "200px",
+    display: "flex",
+    alignItems: "center"
   }
 }));
 
@@ -202,7 +202,7 @@ const AuthForm = (props) => {
               {name === "login" && (
                 <Link to="signup" style={{ textDecoration: "none" }}>
                   <Grid align="center" className={classes.signup}>
-                    <p>New player? Sign Up Here</p>
+                    <span className="sign-up-emphasize">Sign Up</span>
                   </Grid>
                 </Link>
               )}
