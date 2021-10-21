@@ -13,23 +13,24 @@ const useStyles = makeStyles(() => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#211510",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     fontFamily: "Cinzel Decorative",
     padding: 20,
-    color: "#e8e5d3"
+    color: "#e8e5d3",
+    borderRadius: "8%"
   },
   textfield: {
-    backgroundColor: "#872441",
+    backgroundColor: "rgb(150,192,213)",
     marginBottom: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   btn: {
     fontFamily: "Cinzel Decorative",
-    backgroundColor: "#872441",
+    backgroundColor: "#5194b6",
     color: "#f5f3e6",
     marginTop: 10,
     "&:hover": {
-      backgroundColor: "#344a95"
+      backgroundColor: "#77963f"
     }
   },
 }))

@@ -24,30 +24,38 @@ const useStyles = makeStyles((theme) => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "#211510",
-    fontFamily: "cinzel-decorative",
-    padding: 20
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    fontFamily: "Cinzel Decorative",
+    padding: 20,
+    borderRadius: "8%"
   },
   text: {
-    color: "#f5f3e6",
-    fontFamily: "cinzel-decorative"
+    color: "D8EAEC",
+    fontFamily: "Cinzel Decorative"
   },
   textfield: {
-    backgroundColor: "#872441",
-    marginBottom: 20
+    background: "rgb(150,192,213)",
+    background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)",
+    // backgroundColor: "#adbe39",
+    marginBottom: 20,
+    color: "primary"
   },
   btn: {
-    fontFamily: "cinzel-decorative",
-    backgroundColor: "#872441",
+    fontFamily: "Cinzel Decorative",
+    backgroundColor: "#5194b6",
     color: "#f5f3e6",
     marginTop: 20,
     "&:hover": {
-      backgroundColor: "#344a95"
+      backgroundColor: "#77963f"
     }
   },
   signup: {
-    color: "#f5f3e6",
-    paddingTop: 20
+    color: "#d8eaec",
+    paddingTop: 20,
+
+    "&:hover": {
+      textDecoration: "underline"
+    }
   },
   titleGridItem: {
     height: "200px",
@@ -139,7 +147,7 @@ const AuthForm = (props) => {
         <Grid item>
           <Card elevation={15} className={classes.form}>
             <Grid align="center" className={classes.text}>
-              <Avatar style={{ backgroundColor: "#344a95" }}>
+              <Avatar style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}>
                 <LockedOutlinedIcon />
               </Avatar>
               <h2>{displayName}</h2>
@@ -202,7 +210,7 @@ const AuthForm = (props) => {
               {name === "login" && (
                 <Link to="signup" style={{ textDecoration: "none" }}>
                   <Grid align="center" className={classes.signup}>
-                    <span className="sign-up-emphasize">Sign Up</span>
+                    <p>New player? <span className="sign-up-emphasize">Sign Up!</span></p>
                   </Grid>
                 </Link>
               )}
