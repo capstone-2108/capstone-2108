@@ -17,15 +17,10 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    // height: 450,
-    // top: "50%",
     width: 350,
     position: "flex",
     flex: 2,
     margin: "auto",
-    // top: "50%",
-    // left: "50%",
-    // transform: "translate(-50%, -50%)",
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     fontFamily: "Cinzel Decorative",
     padding: 20,
@@ -36,11 +31,24 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "Cinzel Decorative"
   },
   textfield: {
-    // background: "rgb(150,192,213)",
-    background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)",
-    // backgroundColor: "#adbe39",
+    "& .MuiInputBase-root": {
+      background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)"
+    },
     marginBottom: 20,
-    color: "primary"
+    "& label.Mui-focused": {
+      color: "#d8eaec"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#d8eaec"
+    },
+    "& .MuiOutlinedInput-root": {
+      "&:hover fieldset": {
+        borderColor: "#d8eaec"
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#d8eaec"
+      }
+    }
   },
   btn: {
     fontFamily: "Cinzel Decorative",
@@ -61,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   titleGridItem: {
     display: "flex",
     alignItems: "center",
-    flex: .6
+    flex: 0.6
   }
 }));
 
@@ -156,6 +164,7 @@ const AuthForm = (props) => {
             <Box component="form" onSubmit={handleSubmit} name={name}>
               <TextField
                 required
+                color="success"
                 fullWidth
                 label="Email Address"
                 value={email}
