@@ -61,7 +61,7 @@ export function nearbyPlayerLoadCallback(players) {
   let len = players.length;
   for (; i < len; i++) {
     const player = players[i];
-    if (player.characterId !== this.player.characterId && !this.remotePlayers[player.characterId]) {
+    if (player.characterId !== this.player.id && !this.remotePlayers[player.id]) {
       this.remotePlayers[player.characterId] = new RemotePlayer(
         this,
         player.xPos,
@@ -120,10 +120,10 @@ export function remotePlayerLoadCallback(data) {
       this,
       data.xPos,
       data.yPos,
-      `${data.name}-${data.id}`,
+      `${data.name}-${data.characterId}`,
       data.templateName,
       data.name,
-      data.id
+      data.characterId
     );
   }
 }
