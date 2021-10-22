@@ -59,8 +59,10 @@ const PlayerInfo = () => {
                 width: "200px",
                 height: "20px"
               }}>
-              <div style={healthStyle}></div>
-              {/* <div className="barRatioMp">{`${player.health}/${player.totalHealth}`}</div> */}
+              <div style={healthStyle}>
+                {" "}
+                <div className="barRatioMp">{`${player.health}/${player.totalHealth}`}</div>
+              </div>
             </div>
           </div>
 
@@ -82,7 +84,7 @@ const PlayerInfo = () => {
                   width: `${expWidth}px`,
                   height: "20px"
                 }}>
-                {/* <div className="barRatioEx">{`${player.experience}/${player.totalExp}`}</div> */}
+                <div className="barRatioEx">{`${player.experience}/${player.totalExp}`}</div>
               </div>
             </div>
           </div>

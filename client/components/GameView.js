@@ -8,7 +8,7 @@ import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "center"
   }
 }));
 
@@ -30,12 +30,6 @@ export const GameView = () => {
       <div className="ui">
         <div>
           <Ui />
-        </div>
-
-        <div className="buttonDiv">
-          {/* <Link to="/select">
-            <button id="characterButton">CHARACTERS</button>
-          </Link> */}
         </div>
       </div>
     </div>
