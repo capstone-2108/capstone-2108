@@ -30,6 +30,8 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   create() {
+    this.scene.run("minimapBorder");
+
     this.unsubscribes.push(
       eventEmitter.subscribe("disabledEvents", () => {
         console.log("disabledEvents", this);
