@@ -7,6 +7,8 @@ const PlayerInfo = () => {
   const healthWidth = 200 * ratio;
   const expWidth = (player.experience / player.totalExp) * 200;
 
+  console.log("PLAYERINFO", player);
+
   let healthStyle = "";
 
   if (healthWidth <= 40) {
@@ -41,14 +43,10 @@ const PlayerInfo = () => {
         <h3 id="playerName">{player.name}</h3>
       </div>
       <div className="playerDetails">
-        <div className="playerImg">
+        <div className="playerImg" style={{ width: "80px", height: "80px" }}>
           <img src="goldRing.png" width="78px" height="78px" />
           <img src={player.portrait} className="portrait" />
         </div>
-        <div className="levelRing">
-          <img src="goldRing.png" width="35px" height="35px" />
-        </div>
-        <h3 className="level">{player.level}</h3>
         <div className="bars">
           <div className="bar">
             <div className="hp">
@@ -62,7 +60,7 @@ const PlayerInfo = () => {
                 height: "20px"
               }}>
               <div style={healthStyle}></div>
-              <div className="barRatioMp">{`${player.health}/${player.totalHealth}`}</div>
+              {/* <div className="barRatioMp">{`${player.health}/${player.totalHealth}`}</div> */}
             </div>
           </div>
 
@@ -70,7 +68,6 @@ const PlayerInfo = () => {
             <div className="exp">
               <h4 className="whiteText">EXP</h4>
             </div>
-
             <div
               style={{
                 backgroundColor: "black",
@@ -84,11 +81,17 @@ const PlayerInfo = () => {
                     "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,220,1) 100%)",
                   width: `${expWidth}px`,
                   height: "20px"
-                }}></div>
-              <div className="barRatioEx">{`${player.experience}/${player.totalExp}`}</div>
+                }}>
+                {/* <div className="barRatioEx">{`${player.experience}/${player.totalExp}`}</div> */}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* <div className="levelRing">
+          <img src="goldRing.png" width="35px" height="35px" />
+        </div> */}
+        {/* <h3 className="level">{player.level}</h3> */}
       </div>
     </div>
   );
