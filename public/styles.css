@@ -130,6 +130,8 @@ body {
 
 .playerDetails {
   display: flex;
+  align-items: flex-start;
+  flex-direction: row;
 }
 
 .portrait {
@@ -144,10 +146,11 @@ body {
 }
 
 .playerImg {
-  position: relative;
-  margin: 0px;
-  margin-left: -40px;
-  margin-top: -15px;
+  flex-grow: 1;
+  /* position: relative; */
+  /* margin: 0px; */
+  /* margin-left: -40px;
+  margin-top: -15px; */
 }
 
 .playerImg > img {
@@ -168,6 +171,11 @@ body {
 
   margin: 0px 130px;
 } */
+
+.bars {
+  flex-grow: 3;
+}
+
 .levelRing {
   position: absolute;
   z-index: 2;
@@ -204,25 +212,20 @@ body {
   font-size: 10px;
 }
 .exp {
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
-  /* margin-left: auto;
-  margin-right: auto;
-  left: 500;
-  right: 200;
-  text-align: center; */
-  top: 85px;
-  left: 1125px;
+  /* top: 85px;
+  left: 1125px; */
 }
 .bar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-left: 60px;
+  /* margin-left: 60px;
   margin-top: 15px;
   padding: 5px;
   font-size: 12px;
-  height: 5%;
+  height: 5%; */
 }
 
 .barRatioMp {
