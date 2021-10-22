@@ -8,29 +8,19 @@ import { fetchTemplateCharacters } from "../store/templateCharacters";
 import { setChosenCharacter } from "../store/chosenCharacter";
 
 const useStyles = makeStyles(() => ({
-  cardArea: {
-    marginTop: "5%"
-  },
   root: {
     maxWidth: "100%",
     margin: "auto",
     fontFamily: "Cinzel Decorative",
-    backgroundColor: "#75735f",
-    color: "#f5f3e6"
+    // backgroundColor: "#75735f",
+    backgroundColor: "#bed4e6",
+    color: "#312731"
   },
   media: {
     height: 250,
     width: "100%",
     paddingTop: 0
   },
-
-  heading: {
-    paddingTop: 75,
-    marginTop: 0,
-    fontFamily: "Cinzel Decorative",
-    textAlign: "center",
-    color: "#dbd9cc"
-  }
 }));
 
 const selectCharacter = () => {
@@ -61,13 +51,15 @@ const selectCharacter = () => {
           fontSize: "60px",
           marginTop: "0px",
           textAlign: "center",
-          paddingTop: "100px"
+          paddingTop: "50px",
+          animationDelay: ".5s",
+          animationDuration: "2s"
         }}>
         Select Your Character
       </h1>
       <Grid container justifyContent="space-evenly">
         {templates.map((character) => (
-          <Grid item key={character.id} xs={12} md={4} lg={2} className={classes.cardArea}>
+          <Grid item key={character.id} xs={12} md={4} lg={2} >
             <Card>
               <CardActionArea className={classes.root} onClick={() => routeChange(character)}>
                 <CardMedia
