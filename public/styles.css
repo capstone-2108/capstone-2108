@@ -249,9 +249,11 @@ img {
 }
 
 .itemList {
-  width: 253px;
-  margin: 25px;
+  width: inherit;
+  /* margin: 25px; */
+  justify-content: center;
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 3px;
 }
@@ -261,6 +263,13 @@ img {
   width: 61px;
   height: 61px;
   border-radius: 5px;
+  flex-basis: 20%;
+}
+
+.quit {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #logoutButton {
@@ -268,7 +277,7 @@ img {
   color: black;
   border-radius: 5px;
   width: 253px;
-  margin: 10px;
+  /* margin: 10px; */
   padding-left: 10px;
   background-color: #6153da;
 }
@@ -287,8 +296,17 @@ img {
   background-color: rgb(223, 119, 149);
 }
 
+.chatbox {
+  background-color: lawngreen;
+}
+
+.real-chatbox {
+  min-width: 350px;
+  max-width: 350px;
+}
+
 #chat_history {
-  height: 180px;
+  height: 260px;
   /* display: flex; */
   /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;

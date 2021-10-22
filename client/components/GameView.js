@@ -8,7 +8,7 @@ import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
   }
 }));
 

@@ -33,11 +33,13 @@ const Ui = () => {
         })}
       </div>
       <div className="currentScene">{currentScene}</div>
-      <Link to="/">
-        <button onClick={doLogout} id="logoutButton">
-          QUIT
-        </button>
-      </Link>
+      <div className="quit">
+        <Link to="/">
+          <button onClick={doLogout} id="logoutButton">
+            QUIT
+          </button>
+        </Link>
+      </div>
       <div className="worldChat">
         <Chat />
       </div>
