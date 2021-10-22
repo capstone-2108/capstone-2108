@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
   textfield: {
     "& .MuiInputBase-root": {
-      background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)"
+      // background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)"
+      background: "#5194b6"
     },
     marginBottom: 20,
     "& label.Mui-focused": {

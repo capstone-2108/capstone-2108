@@ -20,7 +20,25 @@ const useStyles = makeStyles(() => ({
     borderRadius: "8%"
   },
   textfield: {
-    backgroundColor: "rgb(150,192,213)",
+    "& .MuiInputBase-root": {
+      // background: "linear-gradient(180deg, rgba(150,192,213,1) 0%, rgba(109,152,194,1) 100%)"
+      background: "#5194b6"
+    },
+    marginBottom: 20,
+    "& label.Mui-focused": {
+      color: "#d8eaec"
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#d8eaec"
+    },
+    "& .MuiOutlinedInput-root": {
+      "&:hover fieldset": {
+        borderColor: "#d8eaec"
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#d8eaec"
+      }
+    },
     marginBottom: 20,
     marginTop: 10,
   },
