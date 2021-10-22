@@ -155,6 +155,11 @@ const sceneData = [
     id: 4,
     name: "MiddleTown",
     mapId: 1
+  },
+  {
+    id: 5,
+    name: "Dungeon",
+    mapId: 1
   }
 ];
 

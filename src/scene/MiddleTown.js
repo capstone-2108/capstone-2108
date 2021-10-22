@@ -14,9 +14,6 @@ export default class MiddleTown extends MMOScene {
   }
 
   create() {
-    this.monster = new Monster(this, 200, 400, "orc", "orc", 1);
-    this.monsterGroup = this.physics.add.group();
-    this.monsterGroup.add(this.monster);
 
     const map = this.make.tilemap({ key: "middle-town" });
     const townTiles = map.addTilesetImage("town", "town");
@@ -42,6 +39,17 @@ export default class MiddleTown extends MMOScene {
       transitionPoint: this.transitionToForestPathFromMiddleTown
     });
 
+    this.transitionToDungeonFromMiddleTown = this.add.rectangle(1000, 1000, 100, 100, 0xffffff, 0.5);
+    this.physics.add.existing(this.transitionToDungeonFromMiddleTown);
+    this.transitionToDungeonFromMiddleTown.body.enable = true;
+    this.physics.world.add(this.transitionToDungeonFromMiddleTown.body);
+    this.transitionZones.push({
+      sceneName: "Dungeon",
+      sceneId: 5,
+      xPos: 425,
+      yPos: 125,
+      transitionPoint: this.transitionToDungeonFromMiddleTown
+    });
 
     super.create();
   }

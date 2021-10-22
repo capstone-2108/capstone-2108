@@ -35,7 +35,7 @@ body {
 .title {
   font-family: "Cinzel Decorative";
   font-weight: 700;
-  font-size: 72px;
+  font-size: 65px;
   color: #d8eaec;
   animation-name: fadeInOut;
   opacity: 0;
@@ -313,6 +313,7 @@ img {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  display: flex;
 }
 
 .selectContainer {
