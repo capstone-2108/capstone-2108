@@ -165,7 +165,6 @@ const AuthForm = (props) => {
             <Box component="form" onSubmit={handleSubmit} name={name}>
               <TextField
                 required
-                color="success"
                 fullWidth
                 label="Email Address"
                 value={email}

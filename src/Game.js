@@ -3,13 +3,9 @@ import MMOScene from "./scene/MMOScene";
 import Preloader from "./scene/Preloader";
 import StarterTown from "./scene/StarterTown";
 import ForestPath from "./scene/ForestPath";
-<<<<<<< HEAD
-import MiddleTown from './scene/MiddleTown';
 import Dungeon from './scene/Dungeon';
-=======
 import MiddleTown from "./scene/MiddleTown";
 import MinimapBorder from "./scene/MinimapBorder";
->>>>>>> main
 
 const config = {
   type: Phaser.AUTO,
