@@ -46,7 +46,7 @@ body {
 }
 .ui {
   display: flex;
-  width: 300px;
+  width: 450px;
   color: white;
   /* text-align: center; */
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
@@ -217,7 +217,6 @@ body {
 
 .barRatioMp {
   font-size: 9px;
-  text-shadow: 3px 3px #888;
   word-wrap: normal;
   display: flex;
   position: absolute;
@@ -287,8 +286,8 @@ img {
 
 #chat_history {
   height: 180px;
-  display: flex;
-  flex-flow: column-reverse nowrap;
+  /* display: flex; */
+  /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: #211510;
@@ -304,7 +303,7 @@ img {
 }
 
 .new-chat-message {
-  width: 1015px;
+  width: 100%;
   border: 1px solid #504137;
 }
 
