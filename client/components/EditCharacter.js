@@ -39,7 +39,7 @@ const useStyles = makeStyles(() => ({
         borderColor: "#d8eaec"
       }
     },
-    marginBottom: 20,
+    marginBottom: 30,
     marginTop: 10,
   },
   btn: {

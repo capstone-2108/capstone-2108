@@ -41,8 +41,9 @@ export default class Preloader extends Phaser.Scene {
     //How to load a map, this is a .json file which tells phaser how to layout a map, you can generate this in the Tiled application
     this.load.tilemapTiledJSON("start-scene", "/maps/start-scene.json");
     this.load.tilemapTiledJSON("second-scene", "/maps/second-scene.json");
-    this.load.tilemapTiledJSON("forest-path", "/maps/forest-path.json")
-    this.load.tilemapTiledJSON("middle-town", "/maps/middle-town2.json")
+    this.load.tilemapTiledJSON("forest-path", "/maps/forest-path.json");
+    this.load.tilemapTiledJSON("middle-town", "/maps/middle-town2.json");
+    this.load.tilemapTiledJSON("dungeon", "/maps/dungeon.json");
 
     /**How to load a tile set**/
     this.load.image("town", "tilesets/tileset/RPG tileset (full) v1.5 - 200_.png");
@@ -54,6 +55,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("structure", "tilesets/forest/structure.png");
     this.load.image("wall", "tilesets/forest/wall.png");
     this.input.mouse.disableContextMenu();
+    this.load.image("dungeon", "tilesets/Dungeon.png");
   }
 
   create() {

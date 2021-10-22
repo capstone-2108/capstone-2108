@@ -4,6 +4,7 @@ import Preloader from "./scene/Preloader";
 import StarterTown from "./scene/StarterTown";
 import ForestPath from "./scene/ForestPath";
 import MiddleTown from './scene/MiddleTown';
+import Dungeon from './scene/Dungeon';
 
 const config = {
   type: Phaser.AUTO,
@@ -35,6 +36,7 @@ export class Game extends Phaser.Game {
     // this.scene.add('MMOScene', MMOScene);
     this.scene.add("ForestPath", ForestPath);
     this.scene.add("MiddleTown", MiddleTown);
+    this.scene.add("Dungeon", Dungeon);
 
     //starts the game with the main scene
     this.scene.start("Preloader");
