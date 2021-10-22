@@ -21,8 +21,8 @@ const config = {
   plugins: {},
   scale: {
     parent: "phaser",
-    width: 1024, // Game width in pixels
-    height: 768, // Game height in pixels
+    width: 1080, // Game width in pixels
+    height: 700, // Game height in pixels
     mode: Phaser.Scale.FIT
   }
 };
