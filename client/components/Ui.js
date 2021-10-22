@@ -10,15 +10,8 @@ import { Link } from "react-router-dom";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
-<<<<<<< HEAD
   const currentScene = player.sceneName;
   const items = 8;
-=======
-  const currentScene = player.scene;
-  const items = 8;
-
-  console.log(player.scene)
->>>>>>> d0efe87266bf260f0d03a19faf4eec65b2f5905a
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
@@ -28,15 +21,7 @@ const Ui = () => {
     <div>
       <PlayerInfo />
       {/* <Gold /> */}
-<<<<<<< HEAD
-      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }} />}
-=======
-      {player.selectedPlayer.id ? (
-        <SelectedPlayerInfo />
-      ) : (
-          <div style={{ height: "59px" }}></div>
-      )}
->>>>>>> d0efe87266bf260f0d03a19faf4eec65b2f5905a
+      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }}></div>}
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {
