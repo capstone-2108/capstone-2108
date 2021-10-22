@@ -3,11 +3,20 @@ import { useSelector } from "react-redux";
 import PlayerInfo from "./PlayerInfo";
 import Gold from "./Gold";
 import SelectedPlayerInfo from "./SelectedPlayerInfo";
+import Chat from "./Chat";
+import { logout } from "../store";
+import { logoutCharacters } from "../store/player";
+import { Link } from "react-router-dom";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
   const currentScene = player.scene;
   const items = 16;
+  const doLogout = () => {
+    dispatch(logoutCharacters(player.characterId));
+    dispatch(logout());
+    eventEmitter.emit("localPlayerLogout");
+  };
   return (
     <div>
       <PlayerInfo />
@@ -24,6 +33,14 @@ const Ui = () => {
         })}
       </div>
       <div className="currentScene">{currentScene}</div>
+      <Link to="/">
+        <button onClick={doLogout} id="logoutButton">
+          QUIT
+        </button>
+      </Link>
+      <div className="worldChat">
+        <Chat />
+      </div>
     </div>
   );
 };
