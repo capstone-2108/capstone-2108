@@ -55,7 +55,7 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
-  console.log('nearbyPlayer this', this);
+  console.log("nearbyPlayer this", this);
   // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
@@ -98,9 +98,8 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   const remotePlayer = this.remotePlayers[stateSnapshots.characterId];
   if (remotePlayer) {
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
-  }
-  else {
-    console.log('remotePlayerPosition - player not found');
+  } else {
+    console.log("remotePlayerPosition - player not found");
   }
 }
 
@@ -132,9 +131,12 @@ export function remotePlayerLoadCallback(data) {
 }
 
 export function monsterCanAggroPlayerCallback(monsterId) {
-  console.log(monsterId, this.monsters);
   this.monsters[monsterId].aggroZone.setAggroTarget(this.player);
   this.monsters[monsterId].oneRing = true;
+}
+
+export function monsterAggroFollowPathCallback({ monsterId, waypoints }) {
+  this.monsters[monsterId].waypoints = waypoints;
 }
 
 export function localPlayerLogoutCallback() {

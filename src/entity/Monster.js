@@ -180,6 +180,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           this.stateMachine.setState("walk");
           this.waypointIdx = 0;
           this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+          //only controlling monsters can transmit data
+          if (this.oneRing) {
+            eventEmitter.emit("monsterAggroPath", {
+              monsterId: this.id,
+              waypoints: this.waypoints
+            });
+          }
         }
         this.updatePathMovement();
       }

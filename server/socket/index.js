@@ -83,16 +83,17 @@ function initGameSync() {
 
     //a client is letting us know that a monster is requesting to aggro a player
     socket.on("monsterAggroedPlayer", async ({ monsterId, playerCharacterId }) => {
-      let msg = chalk.red(`Monster ${monsterId} requesting to aggro player ${playerCharacterId} -- `);
+      let msg = chalk.red(
+        `Monster ${monsterId} requesting to aggro player ${playerCharacterId} -- `
+      );
       try {
         const canAggro = await Npc.setAggroOn(monsterId, playerCharacterId);
-        if(canAggro) {
+        if (canAggro) {
           //send a message to the requester that the monster can aggro them
-          msg += chalk.redBright('AGGRO TIME!');
-          socket.emit('monsterCanAggroPlayer', monsterId);
-        }
-        else {
-          msg += chalk.cyan('Nope');
+          msg += chalk.redBright("AGGRO TIME!");
+          socket.emit("monsterCanAggroPlayer", monsterId);
+        } else {
+          msg += chalk.cyan("Nope");
         }
         console.log(msg);
       } catch (err) {
@@ -100,10 +101,18 @@ function initGameSync() {
       }
     });
 
+    //a controlling monster wants to broadcast movement data
+    socket.on("monsterAggroPath", async (data) => {
+      console.log(chalk.cyan(`Monster ${data.monsterId} is pathing`), data);
+      //send out a message to make all other versions of this monster follow this path
+      socket.broadcast.emit("monsterAggroFollowPath", data);
+    });
+
     socket.on("monsterResetAggro", async (monsterId) => {
       console.log(chalk.yellow(`Monster ${monsterId} aggro reset`));
       try {
         await Npc.resetAggro(monsterId);
+        socket.broadcast.emit("monsterResetAggroReturnToSpawn", monsterId);
       } catch (err) {
         console.log(err);
       }

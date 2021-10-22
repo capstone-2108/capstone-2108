@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
     top: "50%",
     width: 350,
     position: "absolute",
-    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "rgba(0, 0, 0, 0.6)",

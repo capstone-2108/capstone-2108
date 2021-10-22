@@ -71,8 +71,20 @@ export const InitSubscriptionsToPhaser = () => {
 
     //server is letting us know that a monster can aggro a player
     newSocket.on("monsterCanAggroPlayer", async (monsterId) => {
-      console.log('monster can aggro player', monsterId);
+      console.log("monster can aggro player", monsterId);
       eventEmitter.emit("monsterCanAggroPlayer", monsterId);
+    });
+
+    //server is letting us know that a monster need to start following this path
+    newSocket.on("monsterAggroFollowPath", (data) => {
+      // console.log('received monster aggro path', data);
+      eventEmitter.emit("monsterAggroFollowPath", data);
+    });
+
+    //controlling monster has reset
+    newSocket.on("monsterResetAggroReturnToSpawn", (data) => {
+      // console.log('received monster aggro path', data);
+      eventEmitter.emit("monsterAggroFollowPath", data);
     });
 
     /****************
@@ -88,8 +100,6 @@ export const InitSubscriptionsToPhaser = () => {
         dispatch(heartbeat(newSocket));
       })
     );
-
-    unsubscribes.push();
 
     unsubscribes.push(
       eventEmitter.subscribe("sceneLoad", async (data) => {
@@ -154,6 +164,13 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.subscribe("monsterResetAggro", (monsterId) => {
         //let the server know so it can update the database
         newSocket.emit("monsterResetAggro", monsterId);
+      })
+    );
+
+    //phaser lets us know that controlling monster wants to transmit movement data
+    unsubscribes.push(
+      eventEmitter.subscribe("monsterAggroPath", (data) => {
+        newSocket.emit("monsterAggroPath", data);
       })
     );
 

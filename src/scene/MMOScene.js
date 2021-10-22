@@ -2,7 +2,8 @@ import "phaser";
 import { eventEmitter } from "../event/EventEmitter";
 
 import {
-  localPlayerLogoutCallback, monsterCanAggroPlayerCallback,
+  localPlayerLogoutCallback, monsterAggroFollowPathCallback,
+  monsterCanAggroPlayerCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
   remotePlayerChangedSceneCallback,
@@ -77,6 +78,10 @@ export default class MMOScene extends Phaser.Scene {
 
     this.unsubscribes.push(
       eventEmitter.subscribe("monsterCanAggroPlayer", monsterCanAggroPlayerCallback.bind(this))
+    );
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("monsterAggroFollowPath", monsterAggroFollowPathCallback.bind(this))
     );
 
     //cleans up any unsubscribes
