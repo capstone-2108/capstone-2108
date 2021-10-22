@@ -250,7 +250,7 @@ img {
 
 .itemList {
   width: inherit;
-  /* margin: 25px; */
+  margin: 25px;
   justify-content: center;
   display: flex;
   align-items: center;
@@ -263,7 +263,7 @@ img {
   width: 61px;
   height: 61px;
   border-radius: 5px;
-  flex-basis: 20%;
+  /* flex-basis: 20%; */
 }
 
 .quit {
