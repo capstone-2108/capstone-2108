@@ -103,16 +103,18 @@ const SelectedPlayerInfo = () => {
           <div className="player">
             <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
           </div>
-          <div className="monsterHp">
-            <h4 className="whiteText">HP</h4>
-          </div>
+
           <div
             style={{
               backgroundColor: "black",
               width: "150px",
               height: "12px"
             }}>
-            <div style={healthStyle}></div>
+            <div style={healthStyle}>
+              <div className="monsterHp">
+                <h4 className="whiteText">HP</h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>
