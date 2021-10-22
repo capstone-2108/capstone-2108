@@ -80,8 +80,8 @@ body {
 }
 #otherPlayerName {
   font-size: 12px;
-  padding-top: 10px;
-  margin-bottom: 10px;
+  /* padding-top: 10px; */
+  /* margin-bottom: 10px; */
 }
 #anonymous {
   margin: 0px;
@@ -118,7 +118,8 @@ body {
 .otherBar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+  flex-direction: column;
   margin-left: 50px;
   margin-top: 5px;
   padding: 5px;
@@ -195,15 +196,20 @@ body {
   left: 1125px;
 }
 .monsterHp {
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
-  top: 182px;
-  left: 1110px;
+  /* top: 182px;
+  left: 1110px; */
   font-size: 10px;
 }
 .exp {
   position: absolute;
   z-index: 2;
+  /* margin-left: auto;
+  margin-right: auto;
+  left: 500;
+  right: 200;
+  text-align: center; */
   top: 85px;
   left: 1125px;
 }
@@ -306,7 +312,7 @@ img {
 }
 
 #chat_history {
-  height: 260px;
+  height: 270px;
   /* display: flex; */
   /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;

@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
-  const currentScene = player.scene;
-  const items = 16;
+  const currentScene = player.sceneName;
+  const items = 8;
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
@@ -21,7 +21,7 @@ const Ui = () => {
     <div>
       <PlayerInfo />
       {/* <Gold /> */}
-      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div />}
+      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }} />}
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {
