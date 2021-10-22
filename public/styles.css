@@ -50,6 +50,7 @@ body {
 .ui {
   display: flex;
   width: 350px;
+  height: 700px;
   color: white;
   /* text-align: center; */
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
@@ -297,16 +298,17 @@ img {
 }
 
 .chatbox {
-  background-color: lawngreen;
+  position: relative;
 }
 
 .real-chatbox {
+  padding-top: 20px;
   min-width: 350px;
   max-width: 350px;
 }
 
 #chat_history {
-  height: 260px;
+  height: 200px;
   /* display: flex; */
   /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;
