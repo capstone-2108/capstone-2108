@@ -190,10 +190,10 @@ body {
   left: 1100px;
 }
 .hp {
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
-  top: 55px;
-  left: 1125px;
+  /* top: 55px;
+  left: 1125px; */
 }
 .monsterHp {
   /* position: absolute; */
