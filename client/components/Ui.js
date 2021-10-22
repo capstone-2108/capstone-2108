@@ -10,10 +10,8 @@ import { Link } from "react-router-dom";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
-  const currentScene = player.scene;
+  const currentScene = player.sceneName;
   const items = 8;
-
-  console.log(player.scene)
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());

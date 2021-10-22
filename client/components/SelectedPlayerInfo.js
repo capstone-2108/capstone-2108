@@ -5,7 +5,7 @@ const SelectedPlayerInfo = () => {
   const selectedPlayer = useSelector((state) => state.player.selectedPlayer);
   const ratio = selectedPlayer.health / selectedPlayer.totalHealth;
   const healthWidth = 150 * ratio;
-  const expWidth = (selectedPlayer.experience / 100) * 150;
+  // const expWidth = (selectedPlayer.experience / 100) * 150;
 
   let healthStyle = "";
 
@@ -70,26 +70,6 @@ const SelectedPlayerInfo = () => {
                   height: "12px"
                 }}>
                 <div style={healthStyle}></div>
-              </div>
-            </div>
-            <div className="otherBar">
-              <div className="exp">
-                <h4 className="whiteText">EXP</h4>
-              </div>
-              <div
-                style={{
-                  backgroundColor: "black",
-                  width: "150px",
-                  height: "12px"
-                }}>
-                <div
-                  style={{
-                    background: "rgb(0,0,96)",
-                    background:
-                      "linear-gradient(0deg, rgba(0,0,96,1) 0%, rgba(93,93,255,1) 48%, rgba(0,0,250,1) 100%)",
-                    width: `${expWidth}px`,
-                    height: "12px"
-                  }}></div>
               </div>
             </div>
           </div>
