@@ -27,7 +27,7 @@ export const createPathFinder = (map, layers) => {
         if (proposedTile.index !== -1) {
           finalTile = proposedTile;
           const tileIndex = finalTile.index;
-          if (tilesetProperties[tileIndex - 1].collides) {
+          if (tilesetProperties[tileIndex - 1] && tilesetProperties[tileIndex - 1].collides) {
             collisionTile = finalTile;
           } else {
             acceptableTiles.add(finalTile.index);
@@ -37,7 +37,6 @@ export const createPathFinder = (map, layers) => {
       grid[col][row] = collisionTile ? collisionTile.index : finalTile.index;
     }
   }
-
   pathFinder.setGrid(grid);
   pathFinder.setAcceptableTiles(Array.from(acceptableTiles));
   return pathFinder;

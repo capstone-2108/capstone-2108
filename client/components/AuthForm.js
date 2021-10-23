@@ -105,7 +105,10 @@ const AuthForm = (props) => {
       history.push(path);
     } else {
       let path = "/game";
-      history.push(path);
+      history.push({
+        pathname: path,
+        state: { newUser: false }
+      });
     }
   };
 
@@ -187,8 +190,6 @@ const AuthForm = (props) => {
                   setPassword(evt.target.value);
                 }}
                 name="password"
-                // styling goes to hell if I add this
-                // so currently, the password is not hidden when typing
                 type="password"
                 className={classes.textfield}
                 InputLabelProps={{

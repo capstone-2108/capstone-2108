@@ -90,7 +90,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
         zoneStatus.isNextToTarget = this.scene.physics.overlap(this.owner, this.target); //is the owner of this zone next to the target?
         //if the player and monster aren't next to each other
         if (!zoneStatus.isNextToTarget) {
-          const endNode = screenToMap(this.target.x, this.target.y); //the tile the player is standing on
+          const endNode = screenToMap(this.target.x, this.target.y, this.scene.tileSize); //the tile the player is standing on
           zoneStatus.targetX = endNode.x;
           zoneStatus.targetY = endNode.y;
           //check if the player has moved, if so then follow them otherwise no pathing is necessary

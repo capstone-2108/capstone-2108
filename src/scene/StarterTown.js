@@ -21,6 +21,8 @@ export default class StarterTown extends MMOScene {
 
     this.layers = [this.groundLayer, this.worldLayer, this.belowCharLayer];
 
+    this.tileSize = 16;
+
     // collision
     this.groundLayer.setCollisionByProperty({ collides: true });
     this.worldLayer.setCollisionByProperty({ collides: true });
@@ -28,8 +30,11 @@ export default class StarterTown extends MMOScene {
 
     this.pathfinder = createPathFinder(this.map, this.layers);
 
-    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 0.5).setDepth(1);
+    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 0);
+
+    // use this for developmet (close to monster)
     // this.transitionToForestSceneFromStarterTown = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5).setDepth(1);
+
     this.physics.add.existing(this.transitionToForestSceneFromStarterTown);
     this.transitionToForestSceneFromStarterTown.body.enable = true;
     this.physics.world.add(this.transitionToForestSceneFromStarterTown.body);

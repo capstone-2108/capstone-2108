@@ -188,6 +188,62 @@ const npcData = [
       sceneId: 1
     },
     templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orc2",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 810,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 4
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orc3",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 425,
+      yPos: 300,
+      facingDirection: "w",
+      sceneId: 3
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orc4",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 600,
+      yPos: 600,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orc5",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 600,
+      yPos: 600,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
   }
 ];
 

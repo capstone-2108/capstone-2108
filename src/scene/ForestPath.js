@@ -1,8 +1,5 @@
 import MMOScene from "./MMOScene";
 import { createPathFinder } from "../pathfinding/pathfinding";
-import { eventEmitter } from "../../src/event/EventEmitter";
-import { Player } from "../entity/Player";
-import { Monster } from "../entity/Monster";
 
 export default class ForestPath extends MMOScene {
   constructor() {
@@ -23,11 +20,13 @@ export default class ForestPath extends MMOScene {
 
     this.layers = [this.groundLayer, this.collisionLayer];
 
-    // this.pathfinder = createPathFinder(map, this.layers);
+    this.tileSize = 32;
+
+    this.pathfinder = createPathFinder(map, this.layers);
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
 
-    this.transitionToForestSceneFromForestPath = this.add.rectangle(400, 1600, 100, 100, 0xffffff, 0.5);
+    this.transitionToForestSceneFromForestPath = this.add.rectangle(400, 1600, 100, 100, 0xffffff, 0);
     this.physics.add.existing(this.transitionToForestSceneFromForestPath);
     this.transitionToForestSceneFromForestPath.body.enable = true;
     this.physics.world.add(this.transitionToForestSceneFromForestPath.body);
@@ -39,7 +38,7 @@ export default class ForestPath extends MMOScene {
       transitionPoint: this.transitionToForestSceneFromForestPath
     });
 
-    this.transitionToMiddleTownFromForestPath = this.add.rectangle(400, 0, 100, 100, 0xffffff, 0.5);
+    this.transitionToMiddleTownFromForestPath = this.add.rectangle(400, 0, 100, 100, 0xffffff, 0);
     this.physics.add.existing(this.transitionToMiddleTownFromForestPath);
     this.transitionToMiddleTownFromForestPath.body.enable = true;
     this.physics.world.add(this.transitionToMiddleTownFromForestPath.body);

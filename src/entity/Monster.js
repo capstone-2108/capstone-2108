@@ -44,7 +44,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.id = id; //the characterId of this player
 
     //the original position of the monster
-    this.spawnPoint = screenToMap(this.x, this.y);
+    this.spawnPoint = screenToMap(this.x, this.y, this.scene.tileSize);
 
     //Pathfinding
     this.pathId = undefined; //an integer identifier for the last path generated
@@ -324,10 +324,11 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   getPathTo(x, y) {
     return new Promise((resolve, reject) => {
-      const startNode = screenToMap(this.x, this.y);
+      const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
       this.scene.pathfinder.cancelPath(this.pathId);
       // console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
       this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
+        // console.log("PATH", path);
         resolve(path);
       });
       this.scene.pathfinder.calculate();
