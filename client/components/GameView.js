@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { eventEmitter } from "../../src/event/EventEmitter";
 import Ui from "./Ui";
 import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
+import HowToPlay from "./HowToPlay";
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -12,15 +14,28 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export const GameView = () => {
+export const GameView = (props) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const muiClasses = useStyles(); //this is used to override material ui styles
   const player = useSelector((state) => state.player);
+  const [popUp, setPopUp] = useState(false);
+
+  //if a new player, set popUp to true
+  useEffect(() => {
+    if (location.state.newUser) {
+      setPopUp(true);
+    };
+  }, []);
+
+  const handleClose = () => {
+    setPopUp(false)
+  }
+
 
   const enableKeys = () => {
     eventEmitter.emit("enableKeyEvents");
   };
-
   return (
     <div className="layout">
       <InitSubscriptionsToPhaser />
@@ -31,12 +46,12 @@ export const GameView = () => {
         <div>
           <Ui />
         </div>
-
-        <div className="buttonDiv">
-          {/* <Link to="/select">
+      {popUp && <HowToPlay handleClose={handleClose}/>}
+        {/* <div className="buttonDiv">
+          <Link to="/select">
             <button id="characterButton">CHARACTERS</button>
-          </Link> */}
-        </div>
+          </Link>
+        </div> */}
       </div>
     </div>
   );

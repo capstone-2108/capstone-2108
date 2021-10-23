@@ -43,7 +43,7 @@ export default class ForestScene extends MMOScene {
     this.treesLayer.setCollisionByProperty({ collides: true });
     this.trees2Layer.setCollisionByProperty({ collides: true });
 
-    this.transitionToStarterTownFromForestScene = this.add.rectangle(0, 650, 100, 100, 0xffffff, 0.5);
+    this.transitionToStarterTownFromForestScene = this.add.rectangle(0, 650, 100, 100, 0xffffff, 0);
     this.physics.add.existing(this.transitionToStarterTownFromForestScene);
     this.transitionToStarterTownFromForestScene.body.enable = true;
     this.physics.world.add(this.transitionToStarterTownFromForestScene.body);
@@ -55,7 +55,7 @@ export default class ForestScene extends MMOScene {
       transitionPoint: this.transitionToStarterTownFromForestScene
     });
 
-    this.transitionToForestPathFromForestScene = this.add.rectangle(1340, 0, 100, 100, 0xffffff, 0.5);
+    this.transitionToForestPathFromForestScene = this.add.rectangle(1340, 0, 100, 100, 0xffffff, 0);
     this.physics.add.existing(this.transitionToForestPathFromForestScene);
     this.transitionToForestPathFromForestScene.body.enable = true;
     this.physics.world.add(this.transitionToForestPathFromForestScene.body);

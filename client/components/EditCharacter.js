@@ -63,9 +63,6 @@ const editCharacter = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     dispatch(createPlayerCharacter(characterName, character, history))
-    // Re-route to game
-    // let path = "/game"
-    // history.push(path)
   }
 
   return (

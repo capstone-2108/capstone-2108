@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PlayerInfo from "./PlayerInfo";
 import Gold from "./Gold";
 import SelectedPlayerInfo from "./SelectedPlayerInfo";
@@ -7,8 +7,10 @@ import Chat from "./Chat";
 import { logout } from "../store";
 import { logoutCharacters } from "../store/player";
 import { Link } from "react-router-dom";
+import { eventEmitter } from "../../src/event/EventEmitter";
 
 const Ui = () => {
+  const dispatch = useDispatch();
   const player = useSelector((state) => state.player);
   const currentScene = player.scene;
   const items = 16;

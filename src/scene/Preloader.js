@@ -47,7 +47,6 @@ export default class Preloader extends Phaser.Scene {
 
     /**How to load a tile set**/
     this.load.image("town", "tilesets/tileset/RPG tileset (full) v1.5 - 200_.png");
-    // this.load.image("town2", "tilesets/tileset/RPG tileset (full) v1.5.png");
     this.load.image("grass", "tilesets/forest/grass.png");
     this.load.image("plant", "tilesets/forest/plant.png");
     this.load.image("props", "tilesets/forest/props.png");
@@ -55,8 +54,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("structure", "tilesets/forest/structure.png");
     this.load.image("wall", "tilesets/forest/wall.png");
     this.load.image("minimapBorder", "blackRing.png");
+    this.load.image("dungeon", "tilesets/tileset/Dungeon.png");
     this.input.mouse.disableContextMenu();
-    this.load.image("dungeon", "tilesets/Dungeon.png");
   }
 
   create() {

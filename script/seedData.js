@@ -183,6 +183,34 @@ const npcData = [
       sceneId: 1
     },
     templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orc2",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 810,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 4
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orc3",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 425,
+      yPos: 300,
+      facingDirection: "w",
+      sceneId: 3
+    },
+    templateCharacter: "orc"
   }
 ];
 
