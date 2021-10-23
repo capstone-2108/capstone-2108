@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 import { eventEmitter } from "../../src/event/EventEmitter";
 
 const Ui = () => {
-  const player = useSelector((state) => state.player);
   const dispatch = useDispatch();
+  const player = useSelector((state) => state.player);
   const currentScene = player.sceneName;
   const items = 8;
   const doLogout = () => {

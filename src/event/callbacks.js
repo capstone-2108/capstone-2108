@@ -55,7 +55,6 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
-  console.log('nearbyPlayer this', this);
   // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;

@@ -141,7 +141,10 @@ export const createPlayerCharacter = (name, character, history) => {
     try {
       const response = await axios.post("/api/game/character", { name, character });
       dispatch(setPlayerCharacter(response.data));
-      history.push("/game");
+      history.push({
+        pathname: "/game",
+        state: { newUser: true }
+      });
     } catch (err) {
       console.log(err);
     }
