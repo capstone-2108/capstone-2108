@@ -7,8 +7,7 @@ import {
   fetchRemoteCharacterData,
   fetchSeletedMonster,
   heartbeat,
-  remotePlayerChangedScenes,
-  remotePlayerChangesScenes
+  remotePlayerChangedScenes
 } from "../store/player";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -70,21 +69,29 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     //server is letting us know that a monster can aggro a player
-    newSocket.on("monsterCanAggroPlayer", async (monsterId) => {
-      console.log("monster can aggro player", monsterId);
-      eventEmitter.emit("monsterCanAggroPlayer", monsterId);
+    newSocket.on("monsterCanAggroPlayer", async (data) => {
+      console.log("monster can aggro player", data);
+      eventEmitter.emit("monsterCanAggroPlayer", data);
     });
 
     //server is letting us know that a monster need to start following this path
-    newSocket.on("monsterAggroFollowPath", (data) => {
-      // console.log('received monster aggro path', data);
-      eventEmitter.emit("monsterAggroFollowPath", data);
-    });
+    // newSocket.on("monsterAggroFollowPath", (data) => {
+    //   // console.log('received monster aggro path', data);
+    //   eventEmitter.emit("monsterAggroFollowPath", data);
+    // });
 
     //controlling monster has reset
-    newSocket.on("monsterResetAggroReturnToSpawn", (data) => {
-      // console.log('received monster aggro path', data);
-      eventEmitter.emit("monsterAggroFollowPath", data);
+    newSocket.on("monsterControlResetAggro", (monsterId) => {
+      eventEmitter.emit("monsterControlResetAggro", monsterId);
+    });
+
+    newSocket.on("monsterControl", (data) => {
+      eventEmitter.emit("monsterControl", data);
+    });
+
+    //received a message to register a hit on a monster from another player
+    newSocket.on("registerMonsterHit", (monsterId) => {
+      eventEmitter.emit("registerMonsterHit", monsterId);
     });
 
     /****************
@@ -161,9 +168,16 @@ export const InitSubscriptionsToPhaser = () => {
 
     //phaser is letting us know that a monster's aggro has reset
     unsubscribes.push(
-      eventEmitter.subscribe("monsterResetAggro", (monsterId) => {
+      eventEmitter.subscribe("monsterRequestResetAggro", (monsterId) => {
         //let the server know so it can update the database
-        newSocket.emit("monsterResetAggro", monsterId);
+        newSocket.emit("monsterRequestResetAggro", monsterId);
+      })
+    );
+
+    //phaser is letting us know that it's a local player hit a monster
+    unsubscribes.push(
+      eventEmitter.subscribe("playerHitMonster", (data) => {
+        newSocket.emit("playerHitMonster", data);
       })
     );
 

@@ -2,10 +2,13 @@ import "phaser";
 import { eventEmitter } from "../event/EventEmitter";
 
 import {
-  localPlayerLogoutCallback, monsterAggroFollowPathCallback,
-  monsterCanAggroPlayerCallback,
+  localPlayerLogoutCallback,
+  monsterAggroFollowPathCallback,
+  monsterCanAggroPlayerCallback, monsterControlCallback,
+  monsterControlResetAggroCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
+  registerMonsterHitCallback,
   remotePlayerChangedSceneCallback,
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
@@ -78,12 +81,32 @@ export default class MMOScene extends Phaser.Scene {
       )
     );
 
+    //server is letting us know that the monsters aggro request was approved, so we should initiate the aggro
     this.unsubscribes.push(
       eventEmitter.subscribe("monsterCanAggroPlayer", monsterCanAggroPlayerCallback.bind(this))
     );
 
+    // //receiving an event to let us know that this monster needs to follow this path
+    // this.unsubscribes.push(
+    //   eventEmitter.subscribe("monsterAggroFollowPath", monsterAggroFollowPathCallback.bind(this))
+    // );
+
+    //receiving an event to let us know that this monster needs to follow this path
     this.unsubscribes.push(
-      eventEmitter.subscribe("monsterAggroFollowPath", monsterAggroFollowPathCallback.bind(this))
+      eventEmitter.subscribe("monsterControl", monsterControlCallback.bind(this))
+    );
+
+    //receiving an event to let us know that a monster needs to reset it's aggro
+    this.unsubscribes.push(
+      eventEmitter.subscribe(
+        "monsterControlResetAggro",
+        monsterControlResetAggroCallback.bind(this)
+      )
+    );
+
+    //received a message to register a hit on a monster from another player
+    this.unsubscribes.push(
+      eventEmitter.subscribe("registerMonsterHit", registerMonsterHitCallback.bind(this))
     );
 
     //cleans up any unsubscribes
@@ -94,18 +117,18 @@ export default class MMOScene extends Phaser.Scene {
     this.unsubscribes.push(
       eventEmitter.subscribe("remotePlayerLogout", remotePlayerLogoutCallback.bind(this))
     );
-
-    this.input.on("gameobjectdown", (pointer, gameObject) => {
-      if (gameObject instanceof RemotePlayer) {
-        console.log("remote player", gameObject);
-        gameObject.nameTag.setColor("#FFFFFF");
-        eventEmitter.emit("requestPlayerInfo", gameObject.id);
-      } else if (gameObject instanceof Monster) {
-        eventEmitter.emit("requestMonsterInfo", gameObject.id);
-      } else {
-        console.log("error!!!");
-      }
-    });
+    //
+    // this.input.on("gameobjectdown", (pointer, gameObject) => {
+    //   if (gameObject instanceof RemotePlayer) {
+    //     console.log("remote player", gameObject);
+    //     gameObject.nameTag.setColor("#FFFFFF");
+    //     eventEmitter.emit("requestPlayerInfo", gameObject.id);
+    //   } else if (gameObject instanceof Monster) {
+    //     eventEmitter.emit("requestMonsterInfo", gameObject.id);
+    //   } else {
+    //     console.log("error!!!");
+    //   }
+    // });
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
   }

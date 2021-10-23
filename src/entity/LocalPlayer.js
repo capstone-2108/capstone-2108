@@ -1,3 +1,5 @@
+import { DIRECTION_CONVERSION } from "../constants/constants";
+
 const { Player } = require("./Player");
 const {
   SNAPSHOT_REPORT_INTERVAL,
@@ -30,6 +32,14 @@ export class LocalPlayer extends Player {
     this.lastVdy = 0;
     this.lastDirection = this.direction;
     this.lastMode = this.mode;
+
+    this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
+      if (this instanceof LocalPlayer) {
+        target.stateMachine.setState("hit");
+      } else {
+        //hitRemote
+      }
+    });
 
     this.createHotKeys();
   }

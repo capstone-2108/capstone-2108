@@ -130,13 +130,45 @@ export function remotePlayerLoadCallback(data) {
   }
 }
 
-export function monsterCanAggroPlayerCallback(monsterId) {
-  this.monsters[monsterId].aggroZone.setAggroTarget(this.player);
-  this.monsters[monsterId].oneRing = true;
+//runs when the server approves an aggro reqeust this monster has made
+export function monsterCanAggroPlayerCallback(data) {
+  if (this.monsters[data.monsterId] && data.canAggro) {
+    this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
+    this.monsters[data.monsterId].oneRing = true;
+  }
+  if(!data.canAggro) {
+    this.monsters[data.monsterId].oneRing = false;
+  }
 }
 
-export function monsterAggroFollowPathCallback({ monsterId, waypoints }) {
-  this.monsters[monsterId].waypoints = waypoints;
+export function monsterControlCallback(stateSnapshots) {
+  const monster = this.monsters[stateSnapshots.monsterId];
+  if (monster) {
+    console.log(Date.now(), stateSnapshots);
+    monster.remoteSnapshots.push(...stateSnapshots.stateSnapshots);
+  } else {
+    console.log("monsterControl - monster not found");
+  }
+}
+//runs when we receiving pathing data for a monster
+// export function monsterAggroFollowPathCallback({ monsterId, waypoints }) {
+//   if (this.monsters[monsterId]) {
+//     this.monsters[monsterId].waypoints = waypoints;
+//   }
+// }
+
+//runs when the server says a monster should reset it's aggro
+export function monsterControlResetAggroCallback(monsterId) {
+  if (this.monsters[monsterId]) {
+    this.monsters[monsterId].receivedAggroResetRequest = true;
+  }
+}
+
+//runs when the server lets us know that another player hit a monster
+export function registerMonsterHitCallback(monsterId) {
+  if (this.monsters[monsterId]) {
+    this.monsters[monsterId].stateMachine.setState('hitRemote');
+  }
 }
 
 export function localPlayerLogoutCallback() {

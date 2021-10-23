@@ -62,46 +62,51 @@ const userData = [
 const templateCharacterData = [
   {
     name: "fox",
-    baseStrength: 55,
+    baseStrength: 11,
+    baseIntelligence: 8,
+    constitution: 11,
+    baseHealth: 70,
     isPlayable: true,
-    baseHealth: 100,
-    baseIntelligence: 70,
     portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png",
     description: "Increased health and melee damage. No ranged attacks"
   },
   {
     name: "sorcerer",
-    baseStrength: 75,
+    baseStrength: 5,
+    baseIntelligence: 11,
+    constitution: 4,
+    baseHealth: 30,
     isPlayable: true,
-    baseHealth: 100,
-    baseIntelligence: 100,
     portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png",
     description: "High damage, low health and movement speed"
   },
   {
     name: "beastmaster",
-    baseStrength: 100,
+    baseStrength: 9,
+    baseIntelligence: 7,
+    constitution: 9,
+    baseHealth: 60,
     isPlayable: true,
-    baseHealth: 100,
-    baseIntelligence: 50,
     portrait: "/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png",
     description: "High strength, but not the brightest"
   },
   {
     name: "swashbuckler",
-    baseStrength: 80,
+    baseStrength: 10,
+    baseIntelligence: 6,
+    constitution: 9,
+    baseHealth: 60,
     isPlayable: true,
-    baseHealth: 100,
-    baseIntelligence: 70,
     portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
     description: "Average strength and intelligence"
   },
   {
     name: "orc",
-    baseStrength: 100,
+    baseStrength: 12,
+    baseIntelligence: 2,
+    constitution: 10,
+    baseHealth: 65,
     isPlayable: false,
-    baseHealth: 500,
-    baseIntelligence: 20,
     portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
     description: "Strong, but slow and not adept at magic"
   }

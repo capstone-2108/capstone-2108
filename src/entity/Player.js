@@ -13,8 +13,6 @@ import {
 
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
-import { BlockRounded } from "@material-ui/icons";
-import { eventEmitter } from "../event/EventEmitter";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -101,10 +99,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.stateMachine.setState("idle");
-
-    this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
-      target.stateMachine.setState("hit");
-    });
   }
 
   idleStateUpdate() {

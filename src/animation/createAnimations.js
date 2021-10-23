@@ -172,13 +172,13 @@ export const createMonsterAnimations = (monster) => {
       let frameNames = [];
       for (let i = 0; i < frameConfigs.length; i++) {
         frameNames.push({
-          key: monster.name,
-          frame: monster.name + frameConfigs[i].frame + ".png",
+          key: monster.templateName,
+          frame: monster.templateName + frameConfigs[i].frame + ".png",
           delay: frameConfigs[i].delay,
           duration: frameConfigs[i].duration
         });
       }
-      const animationName = `${monster.name}-${stateName}-${direction}`; //what to call the animation so we can refer to it later
+      const animationName = `${monster.templateName}-${stateName}-${direction}`; //what to call the animation so we can refer to it later
       monster.anims.create({
         key: animationName,
         frameRate: 10,

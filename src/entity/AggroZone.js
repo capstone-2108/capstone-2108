@@ -67,8 +67,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.targetLastKnownY = undefined;
     this.target = undefined;
     this.requestingAggro = false;
-    this.owner.oneRing = false;
-    eventEmitter.emit("monsterResetAggro", this.owner.id);
+    eventEmitter.emit("monsterRequestResetAggro", this.owner.id);
   }
 
   hasTarget() {
@@ -85,12 +84,10 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     };
     if (this.target) {
       const isTargetWithinZone = this.scene.physics.overlap(this, this.target, () => {});
-
       //if the player is within the monsters aggro zone
       if (isTargetWithinZone) {
         zoneStatus.isTargetInZone = true; //is the player in the zone?
         zoneStatus.isNextToTarget = this.scene.physics.overlap(this.owner, this.target); //is the owner of this zone next to the target?
-
         //if the player and monster aren't next to each other
         if (!zoneStatus.isNextToTarget) {
           const endNode = screenToMap(this.target.x, this.target.y); //the tile the player is standing on

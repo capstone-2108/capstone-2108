@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PlayerInfo from "./PlayerInfo";
 import Gold from "./Gold";
 import SelectedPlayerInfo from "./SelectedPlayerInfo";
@@ -7,11 +7,13 @@ import Chat from "./Chat";
 import { logout } from "../store";
 import { logoutCharacters } from "../store/player";
 import { Link } from "react-router-dom";
+import { eventEmitter } from "../../src/event/EventEmitter";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
   const currentScene = player.scene;
   const items = 16;
+  const dispatch = useDispatch();
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());

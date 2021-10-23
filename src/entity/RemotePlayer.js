@@ -49,7 +49,7 @@ export class RemotePlayer extends Player {
         this.stateSnapshotStartTime = null;
       }
     }
-    this.setState(state);
+    this.stateMachine.setState(state);
   }
 
   //for remote players, will set the next state stateSnapshot for movement / attacking

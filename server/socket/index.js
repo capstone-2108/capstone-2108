@@ -91,8 +91,9 @@ function initGameSync() {
         if (canAggro) {
           //send a message to the requester that the monster can aggro them
           msg += chalk.redBright("AGGRO TIME!");
-          socket.emit("monsterCanAggroPlayer", monsterId);
+          socket.emit("monsterCanAggroPlayer", { monsterId, canAggro: true });
         } else {
+          socket.emit("monsterCanAggroPlayer", { monsterId, canAggro: false });
           msg += chalk.cyan("Nope");
         }
         console.log(msg);
@@ -102,17 +103,37 @@ function initGameSync() {
     });
 
     //a controlling monster wants to broadcast movement data
-    socket.on("monsterAggroPath", async (data) => {
-      console.log(chalk.cyan(`Monster ${data.monsterId} is pathing`), data);
-      //send out a message to make all other versions of this monster follow this path
-      socket.broadcast.emit("monsterAggroFollowPath", data);
+    // socket.on("monsterAggroPath", async (data) => {
+    //   console.log(chalk.cyan(`Monster ${data.monsterId} is pathing`), data);
+    //   //send out a message to make all other versions of this monster follow this path
+    //   socket.broadcast.emit("monsterAggroFollowPath", data);
+    // });
+
+    //when players move we receive this event, we should emit an event to all clients to let
+    //them know that this player has moved
+    socket.on("monsterControllerChangedState", (data) => {
+      //let other clients know this this monster has moved
+      // console.log("playerPositionChanged", data);
+      console.log(data);
+      socket.broadcast.emit("monsterControl", data);
     });
 
-    socket.on("monsterResetAggro", async (monsterId) => {
+    //a controlling monster is requesting us to broadcast a message to controlled monsters to reset aggro
+    socket.on("monsterRequestResetAggro", async (monsterId) => {
       console.log(chalk.yellow(`Monster ${monsterId} aggro reset`));
       try {
         await Npc.resetAggro(monsterId);
-        socket.broadcast.emit("monsterResetAggroReturnToSpawn", monsterId);
+        socket.broadcast.emit("monsterControlResetAggro", monsterId);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    //broadcast that a player hit a monster
+    socket.on("playerHitMonster", async (monsterId) => {
+      console.log(chalk.red(`Monster ${monsterId} has been hit`));
+      try {
+        socket.broadcast.emit("registerMonsterHit", monsterId);
       } catch (err) {
         console.log(err);
       }
