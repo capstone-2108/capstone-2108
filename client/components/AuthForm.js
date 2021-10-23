@@ -164,7 +164,7 @@ const AuthForm = (props) => {
         onClose={handleWarningClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}>
         <Alert onClose={handleWarningClose} severity="warning" sx={{ width: "100%" }}>
-          Incorrect Email/Password
+          Incorrect Email/Password OR Already Logged In
         </Alert>
       </Snackbar>
       <Grid container alignContent="center" direction="column">

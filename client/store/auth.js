@@ -1,5 +1,5 @@
 import axios from "axios";
-import {clearPlayerState, logoutCharacters} from './player';
+import { clearPlayerState, logoutCharacters } from "./player";
 /***********************
  * STATES        *
  ***********************/
@@ -54,13 +54,14 @@ export const authenticate = (method, credentials) => {
 export const logout = () => {
   return async (dispatch, getState) => {
     try {
+      const loggedInToFalse = await axios.put("/auth/logout");
+
       const response = await axios.get("/auth/logout");
       if (!response.data.loggedIn) {
         window.location.href = window.location.protocol + "//" + window.location.host;
         dispatch(setLoggedOut());
         dispatch(loginSuccess(false));
         dispatch(clearPlayerState());
-
       } else {
         console.log("Failed to logout");
         //@todo failed to logout
