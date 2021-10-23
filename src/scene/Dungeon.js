@@ -1,4 +1,5 @@
 import MMOScene from "./MMOScene";
+import { createPathFinder } from "../pathfinding/pathfinding";
 
 export default class Dungeon extends MMOScene {
   constructor() {
@@ -20,11 +21,11 @@ export default class Dungeon extends MMOScene {
 
     this.layers = [this.groundLayer, this.collisionLayer, this.propsLayer];
 
-    // this.pathfinder = createPathFinder(map, this.layers);
+    this.tileSize = 16;
+
+    this.pathfinder = createPathFinder(map, this.layers);
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
-
-    this.tileSize = 16;
 
     this.transitionToMiddleTownFromDungeon = this.add.rectangle(615, 170, 25, 25, 0xffffff, 0);
     this.physics.add.existing(this.transitionToMiddleTownFromDungeon);

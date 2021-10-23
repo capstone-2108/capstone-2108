@@ -1,8 +1,5 @@
 import MMOScene from "./MMOScene";
 import { createPathFinder } from "../pathfinding/pathfinding";
-import { eventEmitter } from "../../src/event/EventEmitter";
-import { Player } from "../entity/Player";
-import { Monster } from "../entity/Monster";
 
 export default class ForestScene extends MMOScene {
   constructor() {
