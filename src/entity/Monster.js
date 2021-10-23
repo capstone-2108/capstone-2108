@@ -10,6 +10,7 @@ import { mapToScreen, screenToMap } from "../util/conversion";
 import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
+// import { Vertex } from "../pathfinding/"
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -40,7 +41,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.id = id; //the characterId of this player
 
     //the original position of the monster
-    this.spawnPoint = screenToMap(this.x, this.y);
+    this.spawnPoint = screenToMap(this.x, this.y, this.scene.tileSize);
 
     //Pathfinding
     this.pathIntervalId = undefined; //for testing purposes, an intervalId for the interval which is moving the monster through path nodes
@@ -110,7 +111,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   updatePathMovement() {
     if (this.nextWaypoint) {
-      const nextMapVertex = mapToScreen(this.nextWaypoint.x, this.nextWaypoint.y);
+      const nextMapVertex = mapToScreen(this.nextWaypoint.x, this.nextWaypoint.y, this.scene.tileSize);
       this.dx = Math.floor(nextMapVertex.x - this.x);
       this.dy = Math.floor(nextMapVertex.y - this.y);
 
@@ -346,11 +347,11 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   getPathTo(x, y) {
     return new Promise((resolve, reject) => {
-      const startNode = screenToMap(this.x, this.y);
+      const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
       this.scene.pathfinder.cancelPath(this.pathId);
       // console.log(`Pathing from ${startNode.x},${startNode.y} to ${x},${y}`);
       this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
-        // console.log(path);
+        // console.log("PATH", path);
         resolve(path);
       });
       this.scene.pathfinder.calculate();
@@ -381,7 +382,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         }
       }, 300);
     };
-    const startNode = screenToMap(this.x, this.y);
+    const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
     const boundCallback = chaseAlongPath.bind(this);
     this.scene.pathfinder.cancelPath(this.pathId);
     window.clearInterval(this.pathIntervalId);

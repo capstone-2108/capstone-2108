@@ -13,10 +13,6 @@ export const createPathFinder = (map, layers) => {
 
   const tileset = map.tilesets[0];
   const tilesetProperties = tileset.tileProperties;
-  // console.log('layers', layers)
-  console.log('tilesets', map.tilesets)
-  // console.log('TILESET', tileset)
-  // console.log('tileset properties', tilesetProperties)
 
   const grid = [];
   const acceptableTiles = new Set();
@@ -27,13 +23,11 @@ export const createPathFinder = (map, layers) => {
       let collisionTile;
       for (let i = 0; i < layers.length; i++) {
         const proposedTile = map.getTileAt(row, col, true, layers[i]);
-        // console.log('proposed tile', proposedTile)
         if (proposedTile.index !== -1) {
           finalTile = proposedTile;
           const tileIndex = finalTile.index;
-          // console.log('tile index!!!', tileIndex)
-            if (tilesetProperties[tileIndex - 1] && tilesetProperties[tileIndex - 1].collides) {
-              collisionTile = finalTile;
+          if (tilesetProperties[tileIndex - 1] && tilesetProperties[tileIndex - 1].collides) {
+            collisionTile = finalTile;
           } else {
             acceptableTiles.add(finalTile.index);
           }
@@ -42,7 +36,6 @@ export const createPathFinder = (map, layers) => {
       grid[col][row] = collisionTile ? collisionTile.index : finalTile.index;
     }
   }
-
   pathFinder.setGrid(grid);
   pathFinder.setAcceptableTiles(Array.from(acceptableTiles));
   return pathFinder;

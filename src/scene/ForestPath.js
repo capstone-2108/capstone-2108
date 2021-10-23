@@ -23,7 +23,9 @@ export default class ForestPath extends MMOScene {
 
     this.layers = [this.groundLayer, this.collisionLayer];
 
-    // this.pathfinder = createPathFinder(map, this.layers);
+    this.tileSize = 32;
+
+    this.pathfinder = createPathFinder(map, this.layers);
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
 

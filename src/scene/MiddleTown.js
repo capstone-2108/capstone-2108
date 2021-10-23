@@ -21,6 +21,7 @@ export default class MiddleTown extends MMOScene {
 
     this.layers = [this.groundLayer, this.collisionLayer, this.openDoor];
 
+    this.tileSize = 16;
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
 
