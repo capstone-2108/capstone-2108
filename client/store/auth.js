@@ -54,9 +54,7 @@ export const authenticate = (method, credentials) => {
 export const logout = () => {
   return async (dispatch, getState) => {
     try {
-      const loggedInToFalse = await axios.put("/auth/logout");
-
-      const response = await axios.get("/auth/logout");
+      const response = await axios.put("/auth/logout");
       if (!response.data.loggedIn) {
         window.location.href = window.location.protocol + "//" + window.location.host;
         dispatch(setLoggedOut());
