@@ -184,6 +184,7 @@ const AuthForm = (props) => {
               <TextField
                 required
                 fullWidth
+
                 label="Password"
                 value={password}
                 onChange={(evt) => {
@@ -192,7 +193,7 @@ const AuthForm = (props) => {
                 name="password"
                 // styling goes to hell if I add this
                 // so currently, the password is not hidden when typing
-                // type="password"
+                type="password"
                 className={classes.textfield}
                 InputLabelProps={{
                   className: classes.text
