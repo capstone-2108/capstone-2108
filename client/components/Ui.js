@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PlayerInfo from "./PlayerInfo";
 import Gold from "./Gold";
 import SelectedPlayerInfo from "./SelectedPlayerInfo";
@@ -11,9 +11,9 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 
 const Ui = () => {
   const player = useSelector((state) => state.player);
-  const currentScene = player.scene;
-  const items = 16;
   const dispatch = useDispatch();
+  const currentScene = player.sceneName;
+  const items = 8;
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
@@ -23,7 +23,7 @@ const Ui = () => {
     <div>
       <PlayerInfo />
       {/* <Gold /> */}
-      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div />}
+      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }}></div>}
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {
@@ -35,11 +35,13 @@ const Ui = () => {
         })}
       </div>
       <div className="currentScene">{currentScene}</div>
-      <Link to="/">
-        <button onClick={doLogout} id="logoutButton">
-          QUIT
-        </button>
-      </Link>
+      <div className="quit">
+        <Link to="/">
+          <button onClick={doLogout} id="logoutButton">
+            QUIT
+          </button>
+        </Link>
+      </div>
       <div className="worldChat">
         <Chat />
       </div>

@@ -24,8 +24,8 @@ const Chat = (props) => {
   return (
     <div className="App">
       {socket ? (
-        <Grid container>
-          <Grid item>
+        <Grid container className="chatbox">
+          <Grid item className="real-chatbox">
             <ChatHistory />
             <NewChatEntry socket={socket} />
           </Grid>

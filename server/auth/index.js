@@ -74,18 +74,35 @@ router.put("/update", requireTokenMiddleware, async (req, res, next) => {
 //log the user in, generate a token and set it as a cookie
 router.post("/login", async (req, res, next) => {
   try {
-    const { user, token } = await User.authenticate(req.body);
-
-    res.cookie("token", token, {
-      sameSite: "strict",
-      httpOnly: true,
-      signed: true
+    const isLoggedIn = await User.findOne({
+      where: {
+        email: req.body.email
+      }
     });
-    res.json({
-      loggedIn: true,
-      firstName: user.firstName,
-      isAdmin: user.isAdmin
-    });
+    if (isLoggedIn.loggedIn) {
+      //throw some type of error and stop
+      res.status(401).send("already loggedIn!!");
+    } else {
+      const { user, token } = await User.authenticate(req.body);
+      await User.update(
+        { loggedIn: true },
+        {
+          where: {
+            id: user.id
+          }
+        }
+      );
+      res.cookie("token", token, {
+        sameSite: "strict",
+        httpOnly: true,
+        signed: true
+      });
+      res.json({
+        loggedIn: true,
+        firstName: user.firstName,
+        isAdmin: user.isAdmin
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(401).send("Failed to authenticate");
@@ -106,8 +123,16 @@ router.post("/change", requireTokenMiddleware, async (req, res, next) => {
   }
 });
 
-router.get("/logout", (req, res, next) => {
+router.put("/logout", requireTokenMiddleware, async (req, res, next) => {
   try {
+    await User.update(
+      { loggedIn: false },
+      {
+        where: {
+          id: req.user.id
+        }
+      }
+    );
     res.clearCookie("token", {
       sameSite: "strict",
       httpOnly: true,

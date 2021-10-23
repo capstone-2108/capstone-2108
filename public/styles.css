@@ -6,10 +6,13 @@
 body {
   margin: 0;
   padding: 0;
+  background: #000;
 }
 .layout {
+  margin: auto;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .left {
@@ -46,7 +49,8 @@ body {
 }
 .ui {
   display: flex;
-  width: 450px;
+  width: 350px;
+  height: 686px;
   color: white;
   /* text-align: center; */
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
@@ -73,12 +77,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: -25px;
 }
 #otherPlayerName {
   font-size: 12px;
-  padding-top: 10px;
-  margin-bottom: 10px;
+  text-align: center;
+  /* padding-top: 10px;
+  margin-bottom: 10px; */
 }
 #anonymous {
   margin: 0px;
@@ -115,7 +119,8 @@ body {
 .otherBar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+  flex-direction: column;
   margin-left: 50px;
   margin-top: 5px;
   padding: 5px;
@@ -125,6 +130,8 @@ body {
 
 .playerDetails {
   display: flex;
+  align-items: flex-start;
+  flex-direction: row;
 }
 
 .portrait {
@@ -139,10 +146,11 @@ body {
 }
 
 .playerImg {
-  position: relative;
-  margin: 0px;
-  margin-left: -40px;
-  margin-top: -15px;
+  flex-grow: 1;
+  /* position: relative; */
+  /* margin: 0px; */
+  /* margin-left: -40px;
+  margin-top: -15px; */
 }
 
 .playerImg > img {
@@ -163,6 +171,12 @@ body {
 
   margin: 0px 130px;
 } */
+
+.bars {
+  flex-grow: 3;
+  margin-top: 25px;
+}
+
 .levelRing {
   position: absolute;
   z-index: 2;
@@ -186,59 +200,58 @@ body {
   left: 1100px;
 }
 .hp {
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
-  top: 55px;
-  left: 1125px;
+  /* top: 55px;
+  left: 1125px; */
 }
 .monsterHp {
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
-  top: 182px;
-  left: 1110px;
+  /* top: 182px;
+  left: 1110px; */
   font-size: 10px;
 }
 .exp {
-  position: absolute;
+  /* position: absolute; */
   z-index: 2;
-  top: 85px;
-  left: 1125px;
+  /* top: 85px;
+  left: 1125px; */
 }
 .bar {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-left: 60px;
+  padding-bottom: 0px;
+  margin-top: 0px;
+  /* margin-left: 60px;
   margin-top: 15px;
   padding: 5px;
   font-size: 12px;
-  height: 5%;
+  height: 5%; */
+}
+.whiteText {
+  padding: 0px;
+  margin-top: 1px;
+  margin-bottom: 5px;
 }
 
 .barRatioMp {
   font-size: 9px;
-  word-wrap: normal;
-  display: flex;
-  position: absolute;
-  z-index: 2;
-  top: 75px;
-  left: 1190px;
+  padding-left: 70px;
+  padding-top: 5px;
 }
 .barRatioEx {
   font-size: 9px;
-  text-shadow: 0.5px 0.5px #888;
-  word-wrap: normal;
-  display: flex;
-  position: absolute;
-  z-index: 2;
-  top: 102px;
-  left: 1190px;
+  padding-left: 70px;
+  padding-top: 5px;
 }
 
 .monster {
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 33px;
 }
 
 img {
@@ -246,9 +259,11 @@ img {
 }
 
 .itemList {
-  width: 253px;
+  width: inherit;
   margin: 25px;
+  justify-content: center;
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 3px;
 }
@@ -258,6 +273,13 @@ img {
   width: 61px;
   height: 61px;
   border-radius: 5px;
+  /* flex-basis: 20%; */
+}
+
+.quit {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 #logoutButton {
@@ -265,15 +287,15 @@ img {
   color: black;
   border-radius: 5px;
   width: 253px;
-  margin: 10px;
+  /* margin: 10px; */
   padding-left: 10px;
   background-color: #6153da;
 }
-.buttonDiv {
+/* .buttonDiv {
   display: flex;
   align-items: center;
   flex-direction: column;
-}
+} */
 
 #characterButton {
   padding: 10px;
@@ -284,8 +306,18 @@ img {
   background-color: rgb(223, 119, 149);
 }
 
+.chatbox {
+  position: relative;
+}
+
+.real-chatbox {
+  padding-top: 20px;
+  min-width: 350px;
+  max-width: 350px;
+}
+
 #chat_history {
-  height: 180px;
+  height: 193px;
   /* display: flex; */
   /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;
@@ -293,7 +325,7 @@ img {
   background-color: #211510;
   border: 1px solid #504137;
   color: gold;
-  width: 100%;
+  width: 99.5%;
 }
 
 .chat-message {
@@ -303,8 +335,10 @@ img {
 }
 
 .new-chat-message {
-  width: 100%;
+  width: 99%;
   border: 1px solid #504137;
+  display: flex;
+  padding-right: 0px;
 }
 
 .authForm {
@@ -326,6 +360,8 @@ img {
 
 .currentScene {
   padding: 20px;
+  padding-top: 10px;
+  text-align: center;
 }
 
 .sign-up-emphasize {
