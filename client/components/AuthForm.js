@@ -75,23 +75,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AuthForm = (props) => {
-  //to hide password
-  const [values, setValues] = React.useState({
-    password: ""
-  });
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handlePasswordChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
   const classes = useStyles();
 
   const { name, displayName, error } = props;
@@ -200,14 +183,13 @@ const AuthForm = (props) => {
                 fullWidth
                 label="Password"
                 value={password}
-                type={values.showPassword ? "text" : "password"}
                 onChange={(evt) => {
                   setPassword(evt.target.value);
                 }}
                 name="password"
                 // styling goes to hell if I add this
                 // so currently, the password is not hidden when typing
-                // type="password"
+                type="password"
                 className={classes.textfield}
                 InputLabelProps={{
                   className: classes.text
