@@ -150,7 +150,7 @@ const AuthForm = (props) => {
         onClose={handleWarningClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}>
         <Alert onClose={handleWarningClose} severity="warning" sx={{ width: "100%" }}>
-          Incorrect Email/Password
+          Incorrect Email/Password OR Already Logged In
         </Alert>
       </Snackbar>
       <Grid container alignContent="center" direction="column">
@@ -184,15 +184,12 @@ const AuthForm = (props) => {
               <TextField
                 required
                 fullWidth
-
                 label="Password"
                 value={password}
                 onChange={(evt) => {
                   setPassword(evt.target.value);
                 }}
                 name="password"
-                // styling goes to hell if I add this
-                // so currently, the password is not hidden when typing
                 type="password"
                 className={classes.textfield}
                 InputLabelProps={{

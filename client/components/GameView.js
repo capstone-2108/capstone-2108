@@ -47,11 +47,6 @@ export const GameView = (props) => {
           <Ui />
         </div>
       {popUp && <HowToPlay handleClose={handleClose}/>}
-        {/* <div className="buttonDiv">
-          <Link to="/select">
-            <button id="characterButton">CHARACTERS</button>
-          </Link>
-        </div> */}
       </div>
     </div>
   );
