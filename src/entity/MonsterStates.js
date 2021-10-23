@@ -1,17 +1,16 @@
 import { DIRECTION_CONVERSION } from "../constants/constants";
 
-export const MONSTER_STATES = {
+export const MONSTER_CONTROL_STATES = {
   NEUTRAL: "NEUTRAL",
   CONTROLLING: "CONTROLLING",
   CONTROLLED: "CONTROLLED",
-  CONTROLLING_WALK: "CONTROLLING_WALK",
-  CONTROLLING_ATTACK: "CONTROLLING_ATTACK",
-  CONTROLLING_IDLE: "CONTROLLING_IDLE",
-  CONTROLLING_HIT: "CONTROLLING_HIT",
-  CONTROLLED_WALK: "CONTROLLED_WALK",
-  CONTROLLED_ATTACK: "CONTROLLED_ATTACK",
-  CONTROLLED_IDLE: "CONTROLLED_IDLE",
-  CONTROLLED_HIT: "CONTROLLED_HIT"
+}
+
+export const MONSTER_STATES = {
+  WALK: "WALK",
+  ATTACK: "ATTACK",
+  IDLE: "IDLE",
+  HIT: "HIT",
 };
 
 export class MonsterStates {
@@ -21,10 +20,11 @@ export class MonsterStates {
    * @this Monster
    */
   hitEnter() {
-    this.animationPlayer("hit");
-    let convertedDir = DIRECTION_CONVERSION[this.direction];
-    const flash = (animation, frame) => {
-      if (frame.index === 3) {
+    console.log('hit start');
+    // this.animationPlayer("hit");
+    // let convertedDir = DIRECTION_CONVERSION[this.direction];
+    // const flash = (animation, frame) => {
+      // if (frame.index === 3) {
         this.scene.tweens.addCounter({
           from: 0,
           to: 100,
@@ -38,94 +38,55 @@ export class MonsterStates {
             }
           }
         });
-      }
-    };
-    this.on(Phaser.Animations.Events.ANIMATION_UPDATE, flash);
-    this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.templateName}-hit-` + convertedDir,
-      () => {
-        this.clearTint();
-        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, flash);
-        console.log(this.aggroZone.hasTarget());
-        this.stateMachine.setState(this.stateMachine.previousStateName);
-      }
-    );
+      // }
+    // };
+    // flash();
+    // this.on(Phaser.Animations.Events.ANIMATION_UPDATE, flash);
+    // this.once(
+    //   Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.templateName}-hit-` + convertedDir,
+    //   () => {
+    //     this.clearTint();
+    //     this.off(Phaser.Animations.Events.ANIMATION_UPDATE, flash);
+    //     console.log(this.aggroZone.hasTarget());
+    //     if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
+    //       console.log('hit end');
+    //       this.animationComplete = true;
+    //     }
+    //     this.stateMachine.setState(this.stateMachine.previousStateName);
+    //   }
+    // );
   }
+
 
   /**
    * @this Monster
    */
   attackEnter() {
-    // this.animationPlayer("attack"");
-    // let convertedDir = DIRECTION_CONVERSION[this.direction];
-    // this.once(
-    //   Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.name}-attack-` + convertedDir,
-    //   () => {
-    //     // this.stateMachine.setState("idle");
-    //   }
-    // );
-  }
-
-  /**
-   * @this Monster
-   */
-  neutralUpdate() {
-    this.animationPlayer("idle");
-  }
-
-  /**
-   * @this Monster
-   */
-  controlledAttackUpdate() {
+    let convertedDir = DIRECTION_CONVERSION[this.direction];
+    this.once(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+      `${this.templateName}-attack-` + convertedDir,
+      () => {
+        this.stateMachine.setState(MONSTER_STATES.IDLE);
+        this.instant = false;
+      }
+    );
     this.animationPlayer("attack");
   }
 
   /**
    * @this Monster
    */
-  controlledWalkUpdate() {
+  walkUpdate() {
     this.animationPlayer("walk");
   }
 
   /**
    * @this Monster
    */
-  controlledHitEnter() {
-    this.animationPlayer("hit");
-  }
-
-  /**
-   * @this Monster
-   */
-  controlledIdleUpdate() {
+  idleUpdate() {
     this.animationPlayer("idle");
   }
 
-  /**
-   * @this Monster
-   */
-  controllingAttackUpdate() {
-    this.animationPlayer("attack");
-  }
 
-  /**
-   * @this Monster
-   */
-  controllingWalkUpdate() {
-    this.animationPlayer("walk");
-  }
-
-  /**
-   * @this Monster
-   */
-  controllingIdleUpdate() {
-    this.animationPlayer("idle");
-  }
-
-  /**
-   * @this Monster
-   */
-  controllingHitEnter() {
-    this.animationPlayer("hit");
-  }
 }

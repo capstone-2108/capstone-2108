@@ -1,4 +1,5 @@
 import { DIRECTION_CONVERSION } from "../constants/constants";
+import {MONSTER_STATES} from './MonsterStates';
 
 const { Player } = require("./Player");
 const {
@@ -35,7 +36,7 @@ export class LocalPlayer extends Player {
 
     this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
       if (this instanceof LocalPlayer) {
-        target.stateMachine.setState("hit");
+        target.stateMachine.setState(MONSTER_STATES.HIT);
       } else {
         //hitRemote
       }

@@ -85,8 +85,8 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("monsterControlResetAggro", monsterId);
     });
 
-    newSocket.on("monsterControl", (data) => {
-      eventEmitter.emit("monsterControl", data);
+    newSocket.on("monsterFollowDirections", (data) => {
+      eventEmitter.emit("monsterFollowDirections", data);
     });
 
     //received a message to register a hit on a monster from another player
@@ -183,8 +183,8 @@ export const InitSubscriptionsToPhaser = () => {
 
     //a controlling monster wants to broadcast data
     unsubscribes.push(
-      eventEmitter.subscribe("monsterControlBroadcastDirections", (data) => {
-        newSocket.emit("monsterControlBroadcastDirections", data);
+      eventEmitter.subscribe("monsterControlDirections", (data) => {
+        newSocket.emit("monsterControlDirections", data);
       })
     );
 

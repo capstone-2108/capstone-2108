@@ -22,7 +22,7 @@ const userData = [
     },
     location: {
       xPos: 300,
-      yPos: 500,
+      yPos: 700,
       facingDirection: "w",
       sceneId: 1
     },

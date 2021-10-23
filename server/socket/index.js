@@ -87,7 +87,8 @@ function initGameSync() {
         `Monster ${monsterId} requesting to aggro player ${playerCharacterId} -- `
       );
       try {
-        const canAggro = await Npc.setAggroOn(monsterId, playerCharacterId);
+        // const canAggro = await Npc.setAggroOn(monsterId, playerCharacterId);
+        const canAggro =true;
         if (canAggro) {
           //send a message to the requester that the monster can aggro them
           msg += chalk.redBright("AGGRO TIME!");
@@ -103,9 +104,9 @@ function initGameSync() {
     });
 
 
-    socket.on("monsterControlBroadcastDirections", (data) => {
+    socket.on("monsterControlDirections", (data) => {
       console.log(data);
-      socket.broadcast.emit("monsterControlDirections", data);
+      socket.broadcast.emit("monsterFollowDirections", data);
     });
 
     //a controlling monster is requesting us to broadcast a message to controlled monsters to reset aggro

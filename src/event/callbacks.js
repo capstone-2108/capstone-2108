@@ -2,7 +2,7 @@ import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
 import { Monster } from "../entity/Monster";
 import { eventEmitter } from "../event/EventEmitter";
-import {MONSTER_STATES} from '../entity/MonsterStates';
+import {MONSTER_CONTROL_STATES, MONSTER_STATES} from '../entity/MonsterStates';
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -133,30 +133,33 @@ export function remotePlayerLoadCallback(data) {
 
 //runs when the server approves an aggro reqeust this monster has made
 export function monsterCanAggroPlayerCallback(data) {
+  /**
+   * @param {Monster[]} monsters
+   */
   if (this.monsters[data.monsterId] && data.canAggro) {
     this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
-    this.monsters[data.monsterId].stateMachine.setState(MONSTER_STATES.CONTROLLING);
+    this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLING);
   }
   if(!data.canAggro) {
     // this.monsters[data.monsterId].oneRing = false;
   }
 }
 
-export function monsterControlCallback(stateSnapshots) {
+
+export function monsterControlFollowDirectionsCallback(stateSnapshots) {
+  /**
+   * @param {Monster|undefined} monster
+   */
   const monster = this.monsters[stateSnapshots.monsterId];
   if (monster) {
-    console.log(Date.now(), stateSnapshots);
+    monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLED);
+    console.log('snapshots', stateSnapshots.stateSnapshots);
     monster.remoteSnapshots.push(...stateSnapshots.stateSnapshots);
   } else {
     console.log("monsterControl - monster not found");
   }
 }
-//runs when we receiving pathing data for a monster
-// export function monsterAggroFollowPathCallback({ monsterId, waypoints }) {
-//   if (this.monsters[monsterId]) {
-//     this.monsters[monsterId].waypoints = waypoints;
-//   }
-// }
+
 
 //runs when the server says a monster should reset it's aggro
 export function monsterControlResetAggroCallback(monsterId) {

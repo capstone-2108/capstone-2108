@@ -3,8 +3,7 @@ import { eventEmitter } from "../event/EventEmitter";
 
 import {
   localPlayerLogoutCallback,
-  monsterAggroFollowPathCallback,
-  monsterCanAggroPlayerCallback, monsterControlCallback,
+  monsterCanAggroPlayerCallback, monsterControlFollowDirectionsCallback,
   monsterControlResetAggroCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
@@ -15,8 +14,6 @@ import {
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
 } from '../event/callbacks';
-import { RemotePlayer } from "../entity/RemotePlayer";
-import { Monster } from "../entity/Monster";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -91,9 +88,9 @@ export default class MMOScene extends Phaser.Scene {
     //   eventEmitter.subscribe("monsterAggroFollowPath", monsterAggroFollowPathCallback.bind(this))
     // );
 
-    //receiving an event to let us know that this monster needs to follow this path
+
     this.unsubscribes.push(
-      eventEmitter.subscribe("monsterControl", monsterControlCallback.bind(this))
+      eventEmitter.subscribe("monsterFollowDirections", monsterControlFollowDirectionsCallback.bind(this))
     );
 
     //receiving an event to let us know that a monster needs to reset it's aggro

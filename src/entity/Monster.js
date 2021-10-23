@@ -14,7 +14,7 @@ import { mapToScreen, screenToMap } from "../util/conversion";
 import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
-import { MONSTER_STATES, MonsterStates } from "./MonsterStates";
+import {MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates} from './MonsterStates';
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -36,7 +36,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 80,
+      walk: 120,
       run: 150
     };
     this.direction = SOUTH; //the direction the character is facing or moving towards
@@ -72,22 +72,25 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     //State
     this.monsterStates = new MonsterStates(this.scene, this);
+    this.controlStateMachine = new StateMachine('monsterControlStateMachine', true)
+      .addState(MONSTER_CONTROL_STATES.NEUTRAL, {})
+      .addState(MONSTER_CONTROL_STATES.CONTROLLING, {})
+      .addState(MONSTER_CONTROL_STATES.CONTROLLED, {})
+
     this.stateMachine = new StateMachine(this, "monsterStateMachine", true)
-      .addState(MONSTER_STATES.NEUTRAL, {
-        onUpdate: this.monsterStates.neutralUpdate
+      .addState(MONSTER_STATES.WALK, {
+        onUpdate: this.monsterStates.walkUpdate
       })
-      .addState(MONSTER_STATES.CONTROLLING, {})
-      .addState(MONSTER_STATES.CONTROLLED, {})
-      .addState(MONSTER_STATES.CONTROLLING_WALK, {
-        onUpdate: this.monsterStates.controlledWalkUpdate
+      .addState(MONSTER_STATES.ATTACK, {
+        onEnter: this.monsterStates.attackEnter
       })
-      .addState(MONSTER_STATES.CONTROLLING_ATTACK, {})
-      .addState(MONSTER_STATES.CONTROLLING_IDLE, {})
-      .addState(MONSTER_STATES.CONTROLLING_HIT, {})
-      .addState(MONSTER_STATES.CONTROLLED_WALK, {})
-      .addState(MONSTER_STATES.CONTROLLED_ATTACK, {})
-      .addState(MONSTER_STATES.CONTROLLED_IDLE, {})
-      .addState(MONSTER_STATES.CONTROLLED_HIT, {});
+      .addState(MONSTER_STATES.IDLE, {
+        onUpdate: this.monsterStates.idleUpdate
+      })
+      .addState(MONSTER_STATES.HIT, {
+        onEnter: this.monsterStates.hitEnter
+      })
+
 
     /*************************
      * Multiplayer Variables *
@@ -96,6 +99,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.remoteSnapshots = []; //where we store state snapshots sent from the server to control this character
     this.nextRemoteSnapshot = null; //the next snapshot to play
     this.remoteSnapshotStartTime = null; //the start time of the currently playing snapshot
+    this.animationPlaying = false;
 
     /**this array stores snapshots of the monsters movements so that we can let everyone else know about the later on**/
     this.localStateSnapshots = []; //this is where we hold snapshots of state before they are transmitted to the server
@@ -108,46 +112,33 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.lastDirection = this.direction;
     this.lastMode = this.mode;
     this.receivedAggroResetRequest = false;
-    this.stateMachine.setState(MONSTER_STATES.NEUTRAL);
+    this.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+    this.stateMachine.setState(MONSTER_STATES.IDLE);
+
+    this.body.offset.x = 13;
+    this.body.offset.y = 13;
   }
 
   update(time, delta) {
+    if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
+    }
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
-    if (
-      this.stateMachine.isCurrentState(MONSTER_STATES.NEUTRAL) ||
-      this.stateMachine.stateStartsWidth(MONSTER_STATES.CONTROLLING)
-    ) {
+    if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) ||
+      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
       this.checkAggroZone(); //check if a player is in my aggro zone
       if (this.waypoints.length) {
         if (this.waypointIdx === 0) {
-          this.stateMachine.setState(MONSTER_STATES.CONTROLLING_WALK);
-          console.log('new path');
+          this.stateMachine.setState(MONSTER_STATES.WALK);
           this.waypointIdx = 0;
           this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
-          // only controlling monsters can transmit data
-          // if (this.controlState) {
-          //   eventEmitter.emit("monsterAggroPath", {
-          //     monsterId: this.id,
-          //     waypoints: this.waypoints
-          //   });
-          // }
         }
-        // this.updatePathMovement();
       }
       this.updatePathMovement();
-      // if (this.pathHasChanged) {
-      //   //transmit new path
-      //   this.pathHasChanged = false;
-      //   console.log("transmitted");
-      //   eventEmitter.emit("monsterControlBroadcastDirections", {
-      //     action: "controlPathing",
-      //     monsterId: this.id,
-      //     waypoints: this.waypoints
-      //   });
-      // }
-      //we're sending pathing data, and other state change data here
-    } else if (this.stateMachine.currentStateName.startsWith("CONTROLLED")) {
-      //we're receiving and playing back the pathing and state data here
+      if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
+        this.saveStateSnapshots(time, delta);
+      }
+    } else if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
+      this.playRemoteSnapshots(time, delta);
     }
     this.stateMachine.update(time, delta);
   }
@@ -162,7 +153,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     if (Math.abs(dy) < 5) {
       dy = 0;
     }
-    return { dx, dy, hasReachedWaypoint: dx === 0 && dy === 0};
+    return { dx, dy, hasReachedWaypoint: dx === 0 && dy === 0 };
   }
 
   updatePathMovement() {
@@ -185,25 +176,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   setNextWaypoint(node) {
     this.nextWaypoint = node;
   }
-
-
-  // setNextWaypoint() {
-  //   //am i standing on this tile already? if so, go to the following tile
-  //   const currentTile = screenToMap(this.x, this.y);
-  //   const proposedWaypoint = this.waypoints.shift() ;
-  //   if(this.waypoints.length) {
-  //     if (currentTile.x === proposedWaypoint.x && currentTile.y === proposedWaypoint.y) {
-  //       this.nextWaypoint = this.waypoints.shift();
-  //     }
-  //     else {
-  //       this.nextWaypoint = proposedWaypoint;
-  //     }
-  //   }
-  //   else {
-  //     this.nextWaypoint = proposedWaypoint;
-  //   }
-  //
-  // }
 
   getDirectionFromVelocity(vdx, vdy) {
     let direction = this.direction;
@@ -242,15 +214,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       direction = SOUTH;
       vdy = 1;
     }
-    // if (!vdx && !vdy) {
-    //   console.log("reseting vdx and vdy in getMovementDirection");
-    // }
     this.vdx = vdx;
     this.vdy = vdy;
     this.directionChanged = direction !== this.direction;
-    if (this.directionChanged) {
+    // if (this.directionChanged) {
       // console.log(`direction changed from ${direction} to ${this.direction}`);
-    }
+    // }
     this.direction = direction;
   }
 
@@ -258,109 +227,19 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   animationPlayer(state) {
     if (!this.anims) return;
     const currentAnimationPlaying = this.anims.getName();
-    let vdx = 0;
-    let vdy = 0;
-    let direction = this.direction;
-    //get movement data based on the state snapshots
-    if (this.nextRemoteSnapshot) {
-      vdx = this.nextRemoteSnapshot.vdx;
-      vdy = this.nextRemoteSnapshot.vdy;
-      direction = this.getDirectionFromVelocity(vdx, vdy);
-    }
-    this.direction = direction;
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
       this.anims.play(animationToPlay);
     }
-    if (
-      this.stateMachine.currentStateName === "attack" ||
-      this.stateMachine.currentStateName === "hit"
-    ) {
-      // console.log("attacking or getting hit");
+    if (this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
       this.vdx = 0;
       this.vdy = 0;
     }
-    // console.log(this.vdx, this.vdy);
     this.setVelocityX(this.speeds.walk * this.vdx);
     this.setVelocityY(this.speeds.walk * this.vdy);
   }
 
-  pathToCallback(path) {
-    this.clearPath();
-    this.stateMachine.setState(MONSTER_STATES.CONTROLLING_WALK);
-    let mergedPath = [];
-    if (this.waypoints.length) {
-      for (let i = 0; i < this.waypoints.length; i++) {
-        const currentWaypoint = this.waypoints[i];
-        const newWaypoint = path[i];
-        if(this.nextWaypoint) {
-          if (currentWaypoint.x === newWaypoint.x && currentWaypoint.y === newWaypoint.y) {
-            mergedPath.push(currentWaypoint);
-          }
-          else {
-            mergedPath.push(...path.slice(i));
-            break;
-          }
-        }
-        else {
-          break;
-        }
-      }
-    }
-
-
-    if (mergedPath.length) {
-      this.waypoints = mergedPath;
-      // console.log("[MERGED PATH]", mergedPath.slice());
-      this.setNextWaypoint();
-      // console.log('First waypoint', this.nextWaypoint, 'standing at', screenToMap(this.x, this.y));
-    }
-    else {
-      this.waypoints = path.slice(1);
-      // console.log("[NEW PATH]", this.waypoints.slice());
-      if (this.waypoints.length) {
-        // this.setNextWaypoint(this.waypoints.shift());
-        this.setNextWaypoint();
-        // console.log('First waypoint', this.nextWaypoint, 'standing at', screenToMap(this.x, this.y));
-      }
-    }
-
-    this.pathHasChanged = true;
-  }
-
-  // checkAggroZone() {
-  //   if (this.receivedAggroResetRequest) {
-  //     console.log("aggro reset request");
-  //     this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-  //       this.pathToCallback(path);
-  //     });
-  //     this.receivedAggroResetRequest = false;
-  //     this.controlState = MONSTER_STATES.NEUTRAL;
-  //   } else if (this.aggroZone.hasTarget()) {
-  //     const zoneStatus = this.aggroZone.checkZone();
-  //     if (zoneStatus.isTargetInZone) {
-  //       if (zoneStatus.targetHasMoved && !zoneStatus.isNextToTarget) {
-  //         // const startNode = screenToMap(this.x, this.y);
-  //         // console.log(
-  //         //   `PRECALCULATE: ${startNode.x}, ${startNode.y} to ${zoneStatus.targetX}, ${zoneStatus.targetY}`
-  //         // );
-  //         this.clearPath();
-  //         this.getPathTo(zoneStatus.targetX, zoneStatus.targetY).then((path) => {
-  //           this.pathToCallback(path);
-  //         });
-  //       } else if (zoneStatus.isNextToTarget) {
-  //         // this.stateMachine.setState("attack");
-  //         // console.log("attack");
-  //       }
-  //     } else {
-  //       console.log("reset aggro");
-  //       this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-  //         this.pathToCallback(path);
-  //       });
-  //     }
-  //   }
-  // }
 
   checkAggroZone() {
     if (this.receivedAggroResetRequest) {
@@ -370,32 +249,33 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         this.waypoints = path.slice(1);
       });
       this.receivedAggroResetRequest = false;
-      this.controlState = MONSTER_CONTROL_STATE.NEUTRAL;
+      this.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     } else if (this.aggroZone.hasTarget()) {
       const zoneStatus = this.aggroZone.checkZone();
       if (zoneStatus.isTargetInZone) {
         if (zoneStatus.targetHasMoved && !zoneStatus.isNextToTarget) {
           this.clearPath();
           this.getPathTo(zoneStatus.targetX, zoneStatus.targetY).then((path) => {
-            this.stateMachine.setState(MONSTER_STATES.CONTROLLING_WALK);
+            this.stateMachine.setState(MONSTER_STATES.WALK);
             this.waypointIdx = 0;
             this.waypoints = path.slice(1);
             this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
-            // console.log('[PATH] target moved', this,this.waypoints);
           });
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
-          this.stateMachine.setState(MONSTER_STATES.CONTROLLING_ATTACK);
+          // if(!this.stateMachine.isCurrentState(MONSTER_STATES.HIT)) {
+          //   this.stateMachine.setState(MONSTER_STATES.ATTACK);
+          // }
         }
       } else {
         this.clearPath();
-        this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-          this.stateMachine.setState("walk");
-          this.waypointIdx = 0;
-          this.waypoints = path.slice(1);
-          this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
-          // console.log('[PATH] aggro reset', this,this.waypoints);
-        });
+          this.stateMachine.setState(MONSTER_STATES.IDLE);
+        // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
+        //   this.stateMachine.setState(MONSTER_STATES.WALK);
+        //   this.waypointIdx = 0;
+        //   this.waypoints = path.slice(1);
+        //   this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+        // });
       }
     }
   }
@@ -416,7 +296,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     return new Promise((resolve, reject) => {
       const startNode = screenToMap(this.x, this.y);
       this.scene.pathfinder.cancelPath(this.pathId);
-      console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
+      // console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
       this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
         resolve(path);
       });
@@ -429,9 +309,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.y = y;
   }
 
-  setNextRemoteSnapshot(stateSnapshot) {
-    this.nextRemoteSnapshot = stateSnapshot;
-  }
+
 
   playRemoteSnapshots(time, delta) {
     let state = this.stateMachine.currentStateName;
@@ -442,16 +320,35 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     if (this.nextRemoteSnapshot) {
       if (!this.remoteSnapshotStartTime) {
         this.remoteSnapshotStartTime = time;
-        state = this.nextRemoteSnapshot.state;
       }
-      //switch to next stateSnapshot upon completion of this one
-      if (time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
-        this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
-        this.setNextRemoteSnapshot(this.remoteSnapshots.shift());
-        this.remoteSnapshotStartTime = null;
+
+      if(time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+        this.setNextRemoteSnapshot(time);
       }
     }
-    this.stateMachine.setState(state);
+    else {
+
+    }
+    // this.stateMachine.setState(state);
+  }
+
+  setNextRemoteSnapshot(time) {
+    if(this.nextRemoteSnapshot) {
+      this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
+    }
+    const nextSnapshot = this.remoteSnapshots.shift();
+    if(nextSnapshot) {
+      this.vdx = nextSnapshot.vdx;
+      this.vdy = nextSnapshot.vdy;
+      this.stateMachine.setState(nextSnapshot.state);
+      this.direction = nextSnapshot.direction;
+      if(nextSnapshot.duration === -1) {
+        this.animationPlaying = true;
+      }
+      this.remoteSnapshotStartTime = time;
+      this.nextRemoteSnapshot = nextSnapshot;
+    }
+
   }
 
   //saves snapshots of the controlling monsters state, which will be transmitted to the server later on
@@ -462,53 +359,44 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     let newDirection = this.direction;
     let newState = this.stateMachine.currentStateName;
     //if something about this characters movement has changed then we should start a new snapshot
-    if (
-      newVdx !== this.lastVdx ||
-      newVdy !== this.lastVdy ||
-      newDirection !== this.lastDirection ||
-      (this.localStateSnapshots.length === 0 && newState !== "idle" && !this.instant)
-    ) {
-      if (newState === "attack") {
-        this.instant = true;
-      }
+
+    if (newVdx !== this.lastVdx || newVdy !== this.lastVdy || newDirection !== this.lastDirection ||
+      (this.localStateSnapshots.length === 0 && newState !== this.lastState)) {
       if (lastSnapshot && !lastSnapshot.duration) {
         lastSnapshot.duration = time - lastSnapshot.timeStarted;
         delete lastSnapshot.timeStarted;
         lastSnapshot.endX = Math.floor(this.x);
         lastSnapshot.endY = Math.floor(this.y);
       }
-      if (newState !== "idle") {
+      // if (newState !== MONSTER_STATES.IDLE) {
+        console.log('creating snapshots');
         this.localStateSnapshots[this.snapShotsLen++] = {
-          endX: undefined,
-          endY: undefined,
           vdx: newVdx,
           vdy: newVdy,
+          endX: undefined,
+          endY: undefined,
           timeStarted: time,
-          state: newState === "" ? "idle" : newState,
+          state: newState === "" ? MONSTER_STATES.IDLE : newState,
+          direction: this.direction,
           duration: undefined
         };
-      }
+      // }
       this.lastVdx = newVdx;
       this.lastVdy = newVdy;
       this.lastDirection = newDirection;
       this.lasState = newState;
-    } else if (
-      time - this.lastReportTime > SNAPSHOT_REPORT_INTERVAL &&
-      this.localStateSnapshots.length > 0
-    ) {
+    } else if (time - this.lastReportTime > SNAPSHOT_REPORT_INTERVAL && this.localStateSnapshots.length > 0) {
       //we send all the snapshots we've taken every given interval, providing there are any
-      if (lastSnapshot && !lastSnapshot.duration) {
+      if (lastSnapshot && lastSnapshot.duration === undefined) {
         lastSnapshot.duration = time - lastSnapshot.timeStarted;
-        delete lastSnapshot.timeStarted;
-        lastSnapshot.endX = Math.floor(this.x);
-        lastSnapshot.endY = Math.floor(this.y);
       }
-      eventEmitter.emit("phaserUpdate", {
-        action: "monsterControllerChangedState",
-        data: {
-          monsterId: this.id,
-          stateSnapshots: this.localStateSnapshots
-        }
+      delete lastSnapshot.timeStarted;
+      lastSnapshot.endX = Math.floor(this.x);
+      lastSnapshot.endY = Math.floor(this.y);
+      console.log('emitting', this.localStateSnapshots);
+      eventEmitter.emit("monsterControlDirections", {
+        monsterId: this.id,
+        stateSnapshots: this.localStateSnapshots
       });
       this.localStateSnapshots = [];
       this.snapShotsLen = 0;
