@@ -118,6 +118,22 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       this.stateMachine.stateStartsWidth(MONSTER_STATES.CONTROLLING)
     ) {
       this.checkAggroZone(); //check if a player is in my aggro zone
+      if (this.waypoints.length) {
+        if (this.waypointIdx === 0) {
+          this.stateMachine.setState(MONSTER_STATES.CONTROLLING_WALK);
+          console.log('new path');
+          this.waypointIdx = 0;
+          this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+          // only controlling monsters can transmit data
+          // if (this.controlState) {
+          //   eventEmitter.emit("monsterAggroPath", {
+          //     monsterId: this.id,
+          //     waypoints: this.waypoints
+          //   });
+          // }
+        }
+        // this.updatePathMovement();
+      }
       this.updatePathMovement();
       // if (this.pathHasChanged) {
       //   //transmit new path
@@ -146,41 +162,48 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     if (Math.abs(dy) < 5) {
       dy = 0;
     }
-    return { dx, dy, hasReachedWaypoint: !dx && !dy };
+    return { dx, dy, hasReachedWaypoint: dx === 0 && dy === 0};
   }
 
   updatePathMovement() {
     if (this.nextWaypoint) {
       let { dx, dy, hasReachedWaypoint } = this.hasReachedWaypoint(this.nextWaypoint);
       this.getMovementDirection(dx, dy);
+      // reached the waypoint, get the next waypoint
       if (hasReachedWaypoint) {
-        //is there a next waypoint?
-        if (this.waypoints.length >= 1) {
-          //set the next waypoint and recalculate
-          // this.setNextWaypoint(this.waypoints.shift());
-          this.setNextWaypoint();
+        if (this.waypoints.length > 0) {
+          let nextWaypoint = this.waypoints[this.waypointIdx++];
+          if (nextWaypoint) {
+            this.setNextWaypoint(nextWaypoint);
+          } else {
+            this.clearPath();
+          }
         }
       }
     }
   }
-
-  setNextWaypoint() {
-    //am i standing on this tile already? if so, go to the following tile
-    const currentTile = screenToMap(this.x, this.y);
-    const proposedWaypoint = this.waypoints.shift() ;
-    if(this.waypoints.length) {
-      if (currentTile.x === proposedWaypoint.x && currentTile.y === proposedWaypoint.y) {
-        this.nextWaypoint = this.waypoints.shift();
-      }
-      else {
-        this.nextWaypoint = proposedWaypoint;
-      }
-    }
-    else {
-      this.nextWaypoint = proposedWaypoint;
-    }
-
+  setNextWaypoint(node) {
+    this.nextWaypoint = node;
   }
+
+
+  // setNextWaypoint() {
+  //   //am i standing on this tile already? if so, go to the following tile
+  //   const currentTile = screenToMap(this.x, this.y);
+  //   const proposedWaypoint = this.waypoints.shift() ;
+  //   if(this.waypoints.length) {
+  //     if (currentTile.x === proposedWaypoint.x && currentTile.y === proposedWaypoint.y) {
+  //       this.nextWaypoint = this.waypoints.shift();
+  //     }
+  //     else {
+  //       this.nextWaypoint = proposedWaypoint;
+  //     }
+  //   }
+  //   else {
+  //     this.nextWaypoint = proposedWaypoint;
+  //   }
+  //
+  // }
 
   getDirectionFromVelocity(vdx, vdy) {
     let direction = this.direction;
@@ -254,7 +277,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       this.stateMachine.currentStateName === "attack" ||
       this.stateMachine.currentStateName === "hit"
     ) {
-      console.log("attacking or getting hit");
+      // console.log("attacking or getting hit");
       this.vdx = 0;
       this.vdy = 0;
     }
@@ -264,6 +287,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   pathToCallback(path) {
+    this.clearPath();
     this.stateMachine.setState(MONSTER_STATES.CONTROLLING_WALK);
     let mergedPath = [];
     if (this.waypoints.length) {
@@ -288,50 +312,89 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     if (mergedPath.length) {
       this.waypoints = mergedPath;
-      console.log("[MERGED PATH]", mergedPath.slice());
+      // console.log("[MERGED PATH]", mergedPath.slice());
       this.setNextWaypoint();
-      console.log('First waypoint', this.nextWaypoint, 'standing at', screenToMap(this.x, this.y));
+      // console.log('First waypoint', this.nextWaypoint, 'standing at', screenToMap(this.x, this.y));
     }
     else {
       this.waypoints = path.slice(1);
-      console.log("[NEW PATH]", this.waypoints.slice());
+      // console.log("[NEW PATH]", this.waypoints.slice());
       if (this.waypoints.length) {
         // this.setNextWaypoint(this.waypoints.shift());
         this.setNextWaypoint();
-        console.log('First waypoint', this.nextWaypoint, 'standing at', screenToMap(this.x, this.y));
+        // console.log('First waypoint', this.nextWaypoint, 'standing at', screenToMap(this.x, this.y));
       }
     }
 
     this.pathHasChanged = true;
   }
 
+  // checkAggroZone() {
+  //   if (this.receivedAggroResetRequest) {
+  //     console.log("aggro reset request");
+  //     this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
+  //       this.pathToCallback(path);
+  //     });
+  //     this.receivedAggroResetRequest = false;
+  //     this.controlState = MONSTER_STATES.NEUTRAL;
+  //   } else if (this.aggroZone.hasTarget()) {
+  //     const zoneStatus = this.aggroZone.checkZone();
+  //     if (zoneStatus.isTargetInZone) {
+  //       if (zoneStatus.targetHasMoved && !zoneStatus.isNextToTarget) {
+  //         // const startNode = screenToMap(this.x, this.y);
+  //         // console.log(
+  //         //   `PRECALCULATE: ${startNode.x}, ${startNode.y} to ${zoneStatus.targetX}, ${zoneStatus.targetY}`
+  //         // );
+  //         this.clearPath();
+  //         this.getPathTo(zoneStatus.targetX, zoneStatus.targetY).then((path) => {
+  //           this.pathToCallback(path);
+  //         });
+  //       } else if (zoneStatus.isNextToTarget) {
+  //         // this.stateMachine.setState("attack");
+  //         // console.log("attack");
+  //       }
+  //     } else {
+  //       console.log("reset aggro");
+  //       this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
+  //         this.pathToCallback(path);
+  //       });
+  //     }
+  //   }
+  // }
+
   checkAggroZone() {
     if (this.receivedAggroResetRequest) {
-      console.log("aggro reset request");
+      // console.log("aggro reset request");
+      this.clearPath();
       this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-        this.pathToCallback(path);
+        this.waypoints = path.slice(1);
       });
       this.receivedAggroResetRequest = false;
-      this.controlState = MONSTER_STATES.NEUTRAL;
+      this.controlState = MONSTER_CONTROL_STATE.NEUTRAL;
     } else if (this.aggroZone.hasTarget()) {
       const zoneStatus = this.aggroZone.checkZone();
       if (zoneStatus.isTargetInZone) {
         if (zoneStatus.targetHasMoved && !zoneStatus.isNextToTarget) {
-          // const startNode = screenToMap(this.x, this.y);
-          // console.log(
-          //   `PRECALCULATE: ${startNode.x}, ${startNode.y} to ${zoneStatus.targetX}, ${zoneStatus.targetY}`
-          // );
+          this.clearPath();
           this.getPathTo(zoneStatus.targetX, zoneStatus.targetY).then((path) => {
-            this.pathToCallback(path);
+            this.stateMachine.setState(MONSTER_STATES.CONTROLLING_WALK);
+            this.waypointIdx = 0;
+            this.waypoints = path.slice(1);
+            this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+            // console.log('[PATH] target moved', this,this.waypoints);
           });
         } else if (zoneStatus.isNextToTarget) {
-          // this.stateMachine.setState("attack");
-          // console.log("attack");
+          this.clearPath();
+          this.stateMachine.setState(MONSTER_STATES.CONTROLLING_ATTACK);
         }
       } else {
-        console.log("reset aggro");
+        this.clearPath();
         this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-          this.pathToCallback(path);
+          this.stateMachine.setState("walk");
+          this.waypointIdx = 0;
+          this.waypoints = path.slice(1);
+          this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+          // console.log('[PATH] aggro reset', this,this.waypoints);
         });
       }
     }
