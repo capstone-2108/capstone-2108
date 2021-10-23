@@ -102,20 +102,10 @@ function initGameSync() {
       }
     });
 
-    //a controlling monster wants to broadcast movement data
-    // socket.on("monsterAggroPath", async (data) => {
-    //   console.log(chalk.cyan(`Monster ${data.monsterId} is pathing`), data);
-    //   //send out a message to make all other versions of this monster follow this path
-    //   socket.broadcast.emit("monsterAggroFollowPath", data);
-    // });
 
-    //when players move we receive this event, we should emit an event to all clients to let
-    //them know that this player has moved
-    socket.on("monsterControllerChangedState", (data) => {
-      //let other clients know this this monster has moved
-      // console.log("playerPositionChanged", data);
+    socket.on("monsterControlBroadcastDirections", (data) => {
       console.log(data);
-      socket.broadcast.emit("monsterControl", data);
+      socket.broadcast.emit("monsterControlDirections", data);
     });
 
     //a controlling monster is requesting us to broadcast a message to controlled monsters to reset aggro

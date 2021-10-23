@@ -2,6 +2,7 @@ import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
 import { Monster } from "../entity/Monster";
 import { eventEmitter } from "../event/EventEmitter";
+import {MONSTER_STATES} from '../entity/MonsterStates';
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -134,10 +135,10 @@ export function remotePlayerLoadCallback(data) {
 export function monsterCanAggroPlayerCallback(data) {
   if (this.monsters[data.monsterId] && data.canAggro) {
     this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
-    this.monsters[data.monsterId].oneRing = true;
+    this.monsters[data.monsterId].stateMachine.setState(MONSTER_STATES.CONTROLLING);
   }
   if(!data.canAggro) {
-    this.monsters[data.monsterId].oneRing = false;
+    // this.monsters[data.monsterId].oneRing = false;
   }
 }
 

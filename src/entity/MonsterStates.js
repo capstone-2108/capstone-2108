@@ -1,7 +1,9 @@
-import {DIRECTION_CONVERSION} from '../constants/constants';
+import { DIRECTION_CONVERSION } from "../constants/constants";
 
 export const MONSTER_STATES = {
   NEUTRAL: "NEUTRAL",
+  CONTROLLING: "CONTROLLING",
+  CONTROLLED: "CONTROLLED",
   CONTROLLING_WALK: "CONTROLLING_WALK",
   CONTROLLING_ATTACK: "CONTROLLING_ATTACK",
   CONTROLLING_IDLE: "CONTROLLING_IDLE",
@@ -13,11 +15,11 @@ export const MONSTER_STATES = {
 };
 
 export class MonsterStates {
+  constructor() {}
 
-  constructor(scene, monster) {
-    this.monster = monster;
-  }
-
+  /**
+   * @this Monster
+   */
   hitEnter() {
     this.animationPlayer("hit");
     let convertedDir = DIRECTION_CONVERSION[this.direction];
@@ -50,6 +52,9 @@ export class MonsterStates {
     );
   }
 
+  /**
+   * @this Monster
+   */
   attackEnter() {
     // this.animationPlayer("attack"");
     // let convertedDir = DIRECTION_CONVERSION[this.direction];
@@ -61,39 +66,66 @@ export class MonsterStates {
     // );
   }
 
+  /**
+   * @this Monster
+   */
   neutralUpdate() {
-    this.monster.animationPlayer("idle");
+    this.animationPlayer("idle");
   }
 
+  /**
+   * @this Monster
+   */
   controlledAttackUpdate() {
-    this.monster.animationPlayer("attack");
+    this.animationPlayer("attack");
   }
 
+  /**
+   * @this Monster
+   */
   controlledWalkUpdate() {
-    this.monster.animationPlayer("walk");
+    this.animationPlayer("walk");
   }
 
+  /**
+   * @this Monster
+   */
   controlledHitEnter() {
-    this.monster.animationPlayer("hit");
+    this.animationPlayer("hit");
   }
 
+  /**
+   * @this Monster
+   */
   controlledIdleUpdate() {
-    this.monster.animationPlayer("idle");
+    this.animationPlayer("idle");
   }
 
+  /**
+   * @this Monster
+   */
   controllingAttackUpdate() {
-    this.monster.animationPlayer("attack");
+    this.animationPlayer("attack");
   }
 
+  /**
+   * @this Monster
+   */
   controllingWalkUpdate() {
-    this.monster.animationPlayer("walk");
+    this.animationPlayer("walk");
   }
 
+  /**
+   * @this Monster
+   */
   controllingIdleUpdate() {
-    this.monster.animationPlayer("idle");
+    this.animationPlayer("idle");
   }
 
+  /**
+   * @this Monster
+   */
   controllingHitEnter() {
-    this.monster.animationPlayer("hit");
+    this.animationPlayer("hit");
   }
 }

@@ -30,6 +30,10 @@ export default class StateMachine {
     return !this.currentState ? false : this.currentState.name === name;
   }
 
+  stateStartsWidth(partialName) {
+    return this.currentState.name.startsWith(partialName);
+  }
+
   /**
    *
    * @param {string} name //the name of the state
@@ -63,7 +67,7 @@ export default class StateMachine {
       return;
     }
     this.isSwitchingState = true;
-    if(this.debug) {
+    if (this.debug) {
       console.log(
         `State Machine ${this.name} is switching from ${
           this.currentState ? this.currentState.name : "none"

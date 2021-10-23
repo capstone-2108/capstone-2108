@@ -36,7 +36,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 100,
+      walk: 200,
       run: 150
     };
     this.mode = "idle"; //the mode of the player, idle, walking, running, attacking?

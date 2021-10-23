@@ -181,12 +181,13 @@ export const InitSubscriptionsToPhaser = () => {
       })
     );
 
-    //phaser lets us know that controlling monster wants to transmit movement data
+    //a controlling monster wants to broadcast data
     unsubscribes.push(
-      eventEmitter.subscribe("monsterAggroPath", (data) => {
-        newSocket.emit("monsterAggroPath", data);
+      eventEmitter.subscribe("monsterControlBroadcastDirections", (data) => {
+        newSocket.emit("monsterControlBroadcastDirections", data);
       })
     );
+
 
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe()); //clear all subscriptions
