@@ -12,7 +12,6 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 const Ui = () => {
   const dispatch = useDispatch();
   const player = useSelector((state) => state.player);
-  const dispatch = useDispatch();
   const currentScene = player.sceneName;
   const items = 8;
   const doLogout = () => {
