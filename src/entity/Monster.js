@@ -79,16 +79,25 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     this.stateMachine = new StateMachine(this, "monsterStateMachine", true)
       .addState(MONSTER_STATES.WALK, {
-        onUpdate: this.monsterStates.walkUpdate
+        onEnter: this.monsterStates.walkEnter,
+        onUpdate: this.monsterStates.walkUpdate,
+        onExit: this.monsterStates.walkExit
       })
       .addState(MONSTER_STATES.ATTACK, {
-        onEnter: this.monsterStates.attackEnter
+        onEnter: this.monsterStates.attackEnter,
+        onUpdate: this.monsterStates.attackUpdate,
+        onExit: this.monsterStates.attackExit
+
       })
       .addState(MONSTER_STATES.IDLE, {
-        onUpdate: this.monsterStates.idleUpdate
+        onEnter: this.monsterStates.idleEnter,
+        onUpdate: this.monsterStates.idleUpdate,
+        onExit: this.monsterStates.idleExit
       })
       .addState(MONSTER_STATES.HIT, {
-        onEnter: this.monsterStates.hitEnter
+        onEnter: this.monsterStates.hitEnter,
+        onUpdate: this.monsterStates.hitUpdate,
+        onExit: this.monsterStates.hitExit
       })
 
 
@@ -100,6 +109,8 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.nextRemoteSnapshot = null; //the next snapshot to play
     this.remoteSnapshotStartTime = null; //the start time of the currently playing snapshot
     this.animationPlaying = false;
+    this.time;
+    this.openSnapshot = undefined;
 
     /**this array stores snapshots of the monsters movements so that we can let everyone else know about the later on**/
     this.localStateSnapshots = []; //this is where we hold snapshots of state before they are transmitted to the server
@@ -120,6 +131,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
+    this.time = time;
     if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
     }
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
@@ -135,10 +147,28 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       }
       this.updatePathMovement();
       if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
-        this.saveStateSnapshots(time, delta);
+        console.log(this.localStateSnapshots);
+        // this.saveStateSnapshots(time, delta);
       }
     } else if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
-      this.playRemoteSnapshots(time, delta);
+      // this.playRemoteSnapshots(time, delta);
+      // if (!this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
+      //   let vdx = 0;
+      //   let vdy = 0;
+      //   let direction = this.direction;
+      //   if (this.nextRemoteSnapshot) {
+      //     vdx = this.nextRemoteSnapshot.vdx;
+      //     vdy = this.nextRemoteSnapshot.vdy;
+      //     direction = this.getDirectionFromVelocity(vdx, vdy);
+      //   }
+      //   this.direction = direction;
+      //   if (vdx !== 0 || vdy !== 0) {
+      //     this.stateMachine.setState(MONSTER_STATES.WALK); //we can only walk if we're not attacking
+      //   } else {
+      //     this.stateMachine.setState(MONSTER_STATES.IDLE);
+      //   }
+      //   this.stateMachine.setState(this.nextRemoteSnapshot ? this.nextRemoteSnapshot.state : MONSTER_STATES.IDLE);
+      // }
     }
     this.stateMachine.update(time, delta);
   }
@@ -264,7 +294,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
           // if(!this.stateMachine.isCurrentState(MONSTER_STATES.HIT)) {
-          //   this.stateMachine.setState(MONSTER_STATES.ATTACK);
+            this.stateMachine.setState(MONSTER_STATES.ATTACK);
           // }
         }
       } else {
@@ -309,28 +339,51 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.y = y;
   }
 
-
-
   playRemoteSnapshots(time, delta) {
     let state = this.stateMachine.currentStateName;
     if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
-      this.setNextRemoteSnapshot(this.remoteSnapshots.shift());
-      this.remoteSnapshotStartTime = null;
+      this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
     }
     if (this.nextRemoteSnapshot) {
-      if (!this.remoteSnapshotStartTime) {
-        this.remoteSnapshotStartTime = time;
+      if (!this.stateSnapshotStartTime) {
+        this.stateSnapshotStartTime = time;
+        state = this.nextRemoteSnapshot.state;
       }
-
-      if(time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
-        this.setNextRemoteSnapshot(time);
+      //switch to next stateSnapshot upon completion of this one
+      if (time - this.stateSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+        this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
+        this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
+        this.stateSnapshotStartTime = null;
       }
     }
-    else {
-
-    }
-    // this.stateMachine.setState(state);
+    this.stateMachine.setState(state);
   }
+
+  //for remote players, will set the next state stateSnapshot for movement / attacking
+  setOtherPlayerNextStatesSnapshot(stateSnapshot) {
+    this.nextRemoteSnapshot = stateSnapshot;
+  }
+
+  // playRemoteSnapshots(time, delta) {
+  //   let state = this.stateMachine.currentStateName;
+  //   if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
+  //     this.setNextRemoteSnapshot(this.remoteSnapshots.shift());
+  //     this.remoteSnapshotStartTime = null;
+  //   }
+  //   if (this.nextRemoteSnapshot) {
+  //     // if (!this.remoteSnapshotStartTime) {
+  //     //   this.remoteSnapshotStartTime = time;
+  //     // }
+  //
+  //     if(time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+  //       this.setNextRemoteSnapshot(time);
+  //     }
+  //   }
+  //   else {
+  //
+  //   }
+  //   // this.stateMachine.setState(state);
+  // }
 
   setNextRemoteSnapshot(time) {
     if(this.nextRemoteSnapshot) {
@@ -407,4 +460,87 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       this.lastState = newState;
     }
   }
+
+  createNewSnapshot(state) {
+    this.openSnapshot = {
+      vdx: this.vdx,
+      vdy: this.vdy,
+      endX: undefined,
+      endY: undefined,
+      timeStarted: this.time,
+      state,
+      direction: this.direction,
+      duration: undefined
+    }
+  }
+
+  updateSnapshot() {
+    if(!this.localStateSnapshots.length) {
+
+    }
+  }
+
+  closeSnapshot() {
+    this.openSnapshot.endX = Math.floor(this.x);
+    this.openSnapshot.endY = Math.floor(this.y);
+    this.openSnapshot.duration = this.time - this.openSnapshot.timeStarted;
+    this.localStateSnapshots.push(this.openSnapshot);
+    this.openSnapshot = undefined;
+  }
+
+  // saveStateSnapshots(time, delta) {
+  //   const lastSnapshot = this.localStateSnapshots[this.localStateSnapshots.length - 1];
+  //   let newVdx = this.vdx;
+  //   let newVdy = this.vdy;
+  //   let newDirection = this.direction;
+  //   let newState = this.stateMachine.currentStateName;
+  //   //if something about this characters movement has changed then we should start a new snapshot
+  //
+  //   if (newVdx !== this.lastVdx || newVdy !== this.lastVdy || newDirection !== this.lastDirection ||
+  //     (this.localStateSnapshots.length === 0 && newState !== this.lastState)) {
+  //     if (lastSnapshot && !lastSnapshot.duration) {
+  //       lastSnapshot.duration = time - lastSnapshot.timeStarted;
+  //       delete lastSnapshot.timeStarted;
+  //       lastSnapshot.endX = Math.floor(this.x);
+  //       lastSnapshot.endY = Math.floor(this.y);
+  //     }
+  //     // if (newState !== MONSTER_STATES.IDLE) {
+  //     console.log('creating snapshots');
+  //     this.localStateSnapshots[this.snapShotsLen++] = {
+  //       vdx: newVdx,
+  //       vdy: newVdy,
+  //       endX: undefined,
+  //       endY: undefined,
+  //       timeStarted: time,
+  //       state: newState === "" ? MONSTER_STATES.IDLE : newState,
+  //       direction: this.direction,
+  //       duration: undefined
+  //     };
+  //     // }
+  //     this.lastVdx = newVdx;
+  //     this.lastVdy = newVdy;
+  //     this.lastDirection = newDirection;
+  //     this.lasState = newState;
+  //   } else if (time - this.lastReportTime > SNAPSHOT_REPORT_INTERVAL && this.localStateSnapshots.length > 0) {
+  //     //we send all the snapshots we've taken every given interval, providing there are any
+  //     if (lastSnapshot && lastSnapshot.duration === undefined) {
+  //       lastSnapshot.duration = time - lastSnapshot.timeStarted;
+  //     }
+  //     delete lastSnapshot.timeStarted;
+  //     lastSnapshot.endX = Math.floor(this.x);
+  //     lastSnapshot.endY = Math.floor(this.y);
+  //     console.log('emitting', this.localStateSnapshots);
+  //     eventEmitter.emit("monsterControlDirections", {
+  //       monsterId: this.id,
+  //       stateSnapshots: this.localStateSnapshots
+  //     });
+  //     this.localStateSnapshots = [];
+  //     this.snapShotsLen = 0;
+  //     this.lastReportTime = time;
+  //     this.lastVdx = newVdx;
+  //     this.lastVdy = newVdy;
+  //     this.lastDirection = newDirection;
+  //     this.lastState = newState;
+  //   }
+  // }
 }
