@@ -8,9 +8,24 @@ import { logout } from "../store";
 import { logoutCharacters } from "../store/player";
 import { Link } from "react-router-dom";
 import { eventEmitter } from "../../src/event/EventEmitter";
+import { makeStyles, Button } from "@material-ui/core";
+
+const useStyles = makeStyles(() => ({
+  btn: {
+    fontFamily: "Cinzel Decorative",
+    textDecoration: "none",
+    backgroundColor: "#77963f",
+    color: "#f5f3e6",
+    "&:hover": {
+      backgroundColor: "#5555fc"
+    },
+    textTransform: "lowercase",
+  },
+}))
 
 const Ui = () => {
   const dispatch = useDispatch();
+  const classes = useStyles();
   const player = useSelector((state) => state.player);
   const currentScene = player.sceneName;
   const items = 8;
@@ -36,10 +51,10 @@ const Ui = () => {
       </div>
       <div className="currentScene">{currentScene}</div>
       <div className="quit">
-        <Link to="/">
-          <button onClick={doLogout} id="logoutButton" >
+        <Link to="/" style={{textDecoration: "none"}}>
+          <Button onClick={doLogout} className={classes.btn}>
             QUIT
-          </button>
+          </Button>
         </Link>
       </div>
       <div className="worldChat">

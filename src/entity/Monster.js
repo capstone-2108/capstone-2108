@@ -68,7 +68,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     //Create all the animations, running, walking attacking, in all directions of movement
     createMonsterAnimations(this);
 
-    this.stateMachine = new StateMachine(this, "monsterStateMachine")
+    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.spriteKey, true)
       .addState("idle", {
         onUpdate: this.idleUpdate
       })
@@ -95,7 +95,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   update(time, delta) {
     this.checkAggroZone(); //check if a player is in my aggro zone
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
-
+    // console.log('spritekey', this.spriteKey)
     if(this.stateMachine.currentStateName !== "hit" && this.stateMachine.currentStateName !== "attack") {
       if (this.waypoints.length) {
         if (this.waypointIdx === 0) {

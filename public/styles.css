@@ -50,9 +50,8 @@ body {
 .ui {
   display: flex;
   width: 340px;
-  height: 686px;
+  height: 693px;
   color: #f5f3e6;
-  /* text-align: center; */
   /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
     Verdana, sans-serif; */
   font-family: "cinzel-decorative";
@@ -62,11 +61,12 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   /* background-color: #252441; */
-  background-color: #5d615e;
+  /* background-color: #5d615e; */
+  background-image: url("/images/darkBackground.png");
   border-style: solid;
-  border-width: 7px;
+  border-width: 3px;
   /* border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1; */
-  border-color: #5194b6;
+  border-color: rgb(226, 183, 87);
 }
 
 #playerName {
@@ -273,7 +273,7 @@ img {
 }
 
 .item {
-  background-color: rgb(14, 14, 14);
+  background-color: rgb(52, 52, 52);
   width: 61px;
   height: 61px;
   border-radius: 5px;
@@ -332,10 +332,12 @@ img {
   /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #0e0e0e;
+  background-color: rgb(52, 52, 52);
   border: 1px solid #504137;
   color: #f5f3e6;
   width: 99.5%;
+  font-family:Arial, Helvetica, sans-serif;
+  text-transform: none;
 }
 
 .chat-message {
