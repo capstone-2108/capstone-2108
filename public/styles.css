@@ -49,20 +49,24 @@ body {
 }
 .ui {
   display: flex;
-  width: 350px;
+  width: 340px;
   height: 686px;
-  color: white;
+  color: #f5f3e6;
   /* text-align: center; */
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
-    Verdana, sans-serif;
+  /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
+    Verdana, sans-serif; */
+  font-family: "cinzel-decorative";
+  text-transform: lowercase;
   padding: 0;
   justify-content: space-between;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #252441;
+  /* background-color: #252441; */
+  background-color: #5d615e;
   border-style: solid;
   border-width: 7px;
-  border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1;
+  /* border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1; */
+  border-color: #5194b6;
 }
 
 #playerName {
@@ -284,12 +288,18 @@ img {
 
 #logoutButton {
   padding: 10px;
-  color: black;
+  color: #f5f3e6;
   border-radius: 5px;
-  width: 253px;
+  width: 173px;
   /* margin: 10px; */
   padding-left: 10px;
-  background-color: #6153da;
+  background-color: #5194b6;
+  font-family: "cinzel-decorative";
+  text-transform: lowercase;
+}
+
+#logoutButton:hover {
+  background-color: #77963f;
 }
 /* .buttonDiv {
   display: flex;
@@ -312,8 +322,8 @@ img {
 
 .real-chatbox {
   padding-top: 20px;
-  min-width: 350px;
-  max-width: 350px;
+  min-width: 340px;
+  max-width: 340px;
 }
 
 #chat_history {
@@ -322,13 +332,14 @@ img {
   /* flex-flow: column-reverse nowrap; */
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #211510;
+  background-color: #0e0e0e;
   border: 1px solid #504137;
-  color: gold;
+  color: #f5f3e6;
   width: 99.5%;
 }
 
 .chat-message {
+  margin-left: 1%;
   width: inherit;
   word-wrap: break-word;
   margin-top: 0.25rem;

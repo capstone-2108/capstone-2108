@@ -37,7 +37,7 @@ const Ui = () => {
       <div className="currentScene">{currentScene}</div>
       <div className="quit">
         <Link to="/">
-          <button onClick={doLogout} id="logoutButton">
+          <button onClick={doLogout} id="logoutButton" >
             QUIT
           </button>
         </Link>
