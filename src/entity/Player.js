@@ -13,8 +13,6 @@ import {
 
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
-import { eventEmitter } from "../event/EventEmitter";
-import { MONSTER_STATES } from "./MonsterStates";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -88,7 +86,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     /*************************
      * State Machine *
      *************************/
-    this.stateMachine = new StateMachine(this, this.templateName, true);
+    this.stateMachine = new StateMachine(this, this.templateName, false);
     this.stateMachine
       .addState("melee", {
         onEnter: this.meleeAttackEnter,
@@ -127,11 +125,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   idleStateUpdate() {
-    this.animationPlayer(this.stateMachine.currentStateName);
+    this.animationPlayer("idle");
   }
 
   walkStateUpdate() {
-    this.animationPlayer(this.stateMachine.currentStateName);
+    this.animationPlayer("walk");
   }
 
   cleanUp() {
@@ -201,7 +199,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
 
     const animationEnd = () => {
-      console.log('complete');
       this.meleeHitbox.body.enable = false;
       this.scene.physics.world.remove(this.meleeHitbox.body);
       this.stateMachine.setState("idle");
@@ -212,12 +209,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
       `${this.templateName}-melee-` +
       convertedDir, animationEnd);
-
-    // this.once(Phaser.Animations.Events.ANIMATION_STOP, () => {
-    //   console.log('stop');
-    // })
-
-
   }
 
   //plays the correct animation based on the players state
@@ -340,3 +331,4 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.y = y;
   }
 }
+

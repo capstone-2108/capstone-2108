@@ -139,7 +139,9 @@ export default class MMOScene extends Phaser.Scene {
     }
     for (const [id, player] of Object.entries(this.remotePlayers)) {
       player.update(time, delta);
-      this.playerGroup.add(player);
+      if (!this.playerGroup.contains(player)) {
+        this.playerGroup.add(player);
+      }
     }
     for (const [id, monster] of Object.entries(this.monsters)) {
       if (!this.monsterGroup.contains(monster)) {

@@ -145,7 +145,7 @@ export class LocalPlayer extends Player {
         lastSnapshot.endX = Math.floor(this.x);
         lastSnapshot.endY = Math.floor(this.y);
       }
-      console.log('emitting', this.localStateSnapshots);
+
       eventEmitter.emit("phaserUpdate", {
         action: "playerPositionChanged",
         data: {
