@@ -28,7 +28,7 @@ const Ui = () => {
   const classes = useStyles();
   const player = useSelector((state) => state.player);
   const currentScene = player.sceneName;
-  const items = 8;
+  const items = 4;
   const doLogout = () => {
     dispatch(logoutCharacters(player.characterId));
     dispatch(logout());
