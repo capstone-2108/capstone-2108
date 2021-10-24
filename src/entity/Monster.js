@@ -1,6 +1,7 @@
 import {
   DIRECTION_CONVERSION,
   EAST,
+  MONSTER_SNAPSHOT_REPORT_INTERVAL,
   NORTH,
   NORTHWEST,
   SNAPSHOT_REPORT_INTERVAL,
@@ -14,7 +15,8 @@ import { mapToScreen, screenToMap } from "../util/conversion";
 import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
-import {MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates} from './MonsterStates';
+import { MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates } from "./MonsterStates";
+import {LocalPlayer} from './LocalPlayer';
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -36,7 +38,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 120,
+      walk: 135,
       run: 150
     };
     this.direction = SOUTH; //the direction the character is facing or moving towards
@@ -70,12 +72,36 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     //Create all the animations, running, walking attacking, in all directions of movement
     createMonsterAnimations(this);
 
+    /*************************
+     * Attack *
+     *************************/
+    this.meleeHitbox = this.scene.add.rectangle(this.x - 60, this.y - 60, 32, 64, 0xffffff, 0);
+    this.scene.physics.add.existing(this.meleeHitbox);
+    this.meleeHitbox.body.enable = false;
+    this.scene.physics.world.remove(this.meleeHitbox.body);
+    // this.scene.physics.add.overlap(this.meleeHitbox, this.scene.player, (hitbox, player) => {
+    //   if (player instanceof LocalPlayer) {
+    //     player.stateMachine.setState("hit");
+    //
+    //     // if (!player.stateMachine.stateLock) {
+    //     //   eventEmitter.emit("localPlayerHitMonster", {
+    //     //     playerCharacterId: this.id,
+    //     //     monsterId: monster.id,
+    //     //     damage: 10
+    //     //   });
+    //     // }
+    //    // player.stateMachine.stateLock = true;
+    //   } else {
+    //     //hitRemote
+    //   }
+    // });
+
     //State
     this.monsterStates = new MonsterStates(this.scene, this);
-    this.controlStateMachine = new StateMachine('monsterControlStateMachine', true)
+    this.controlStateMachine = new StateMachine("monsterControlStateMachine", true)
       .addState(MONSTER_CONTROL_STATES.NEUTRAL, {})
       .addState(MONSTER_CONTROL_STATES.CONTROLLING, {})
-      .addState(MONSTER_CONTROL_STATES.CONTROLLED, {})
+      .addState(MONSTER_CONTROL_STATES.CONTROLLED, {});
 
     this.stateMachine = new StateMachine(this, "monsterStateMachine", true)
       .addState(MONSTER_STATES.WALK, {
@@ -87,19 +113,18 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         onEnter: this.monsterStates.attackEnter,
         onUpdate: this.monsterStates.attackUpdate,
         onExit: this.monsterStates.attackExit
-
       })
       .addState(MONSTER_STATES.IDLE, {
         onEnter: this.monsterStates.idleEnter,
         onUpdate: this.monsterStates.idleUpdate,
         onExit: this.monsterStates.idleExit
       })
-      .addState(MONSTER_STATES.HIT, {
-        onEnter: this.monsterStates.hitEnter,
-        onUpdate: this.monsterStates.hitUpdate,
-        onExit: this.monsterStates.hitExit
-      })
-
+      // .addState(MONSTER_STATES.HIT, {
+      //   onEnter: this.monsterStates.hitEnter,
+      //   onUpdate: this.monsterStates.hitUpdate,
+      //   onExit: this.monsterStates.hitExit,
+      //   stateLock: true
+      // });
 
     /*************************
      * Multiplayer Variables *
@@ -109,7 +134,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.nextRemoteSnapshot = null; //the next snapshot to play
     this.remoteSnapshotStartTime = null; //the start time of the currently playing snapshot
     this.animationPlaying = false;
-    this.time;
     this.openSnapshot = undefined;
 
     /**this array stores snapshots of the monsters movements so that we can let everyone else know about the later on**/
@@ -124,19 +148,104 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.lastMode = this.mode;
     this.receivedAggroResetRequest = false;
     this.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
-    this.stateMachine.setState(MONSTER_STATES.IDLE);
 
     this.body.offset.x = 13;
     this.body.offset.y = 13;
   }
 
+  dealDamage() {
+    let convertedDir = DIRECTION_CONVERSION[this.direction];
+    // this.stateLock = true;
+    const applyHitBox = (animation, frame) => {
+      if (frame.index < 3) return;
+      //here we're setting up where the attack box should go based on the character direction
+      switch (convertedDir) {
+        case NORTH:
+          this.meleeHitbox.x = this.x - 16;
+          this.meleeHitbox.y = this.y - 16;
+          this.meleeHitbox.width = 64;
+          this.meleeHitbox.height = 32;
+          this.meleeHitbox.body.width = 64;
+          this.meleeHitbox.body.height = 32;
+          break;
+        case SOUTH:
+          this.meleeHitbox.x = this.x - 16;
+          this.meleeHitbox.y = this.y + 54;
+          this.meleeHitbox.width = 64;
+          this.meleeHitbox.height = 40;
+          this.meleeHitbox.body.width = 64;
+          this.meleeHitbox.body.height = 40;
+          break;
+        case EAST:
+          this.meleeHitbox.x = this.x + 40;
+          this.meleeHitbox.y = this.y;
+          this.meleeHitbox.width = 40;
+          this.meleeHitbox.height = 64;
+          this.meleeHitbox.body.width = 40;
+          this.meleeHitbox.body.height = 64;
+          break;
+        case WEST:
+          this.meleeHitbox.x = this.x - 45;
+          this.meleeHitbox.y = this.y;
+          this.meleeHitbox.width = 40;
+          this.meleeHitbox.height = 64;
+          this.meleeHitbox.body.width = 40;
+          this.meleeHitbox.body.height = 64;
+          break;
+      }
+      this.scene.physics.overlap(this.meleeHitbox, this.scene.player, (hitBox, target) => {
+        target.damageFlash();
+      });
+      if(frame.index === 3) {
+        this.meleeHitbox.body.enable = true;
+        this.scene.physics.world.add(this.meleeHitbox.body);
+      }
+      if(frame.index === 4) {
+        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
+      }
+    };
+    this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
+
+    this.once(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+      `${this.templateName}-attack-` +
+      convertedDir,
+      () => {
+        this.meleeHitbox.body.enable = false;
+        this.scene.physics.world.remove(this.meleeHitbox.body);
+      }
+    );
+  }
+
+  damageFlash() {
+    this.scene.tweens.addCounter({
+      from: 0,
+      to: 100,
+      duration: 200,
+      onUpdate: (tween) => {
+        const tweenVal = Math.floor(tween.getValue());
+        if(tweenVal > 90) {
+          this.clearTint();
+        }
+        else if (tweenVal % 2) {
+          this.setTintFill(0xFF0000);
+        } else {
+          this.setTintFill(0xffffff);
+        }
+      }
+    });
+  }
+
+
   update(time, delta) {
-    this.time = time;
-    if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
+    if (!this.stateMachine.currentState) {
+      this.stateMachine.setState(MONSTER_STATES.IDLE);
     }
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
-    if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) ||
-      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
+    if (
+      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) ||
+      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)
+    ) {
       this.checkAggroZone(); //check if a player is in my aggro zone
       if (this.waypoints.length) {
         if (this.waypointIdx === 0) {
@@ -147,28 +256,23 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       }
       this.updatePathMovement();
       if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
-        console.log(this.localStateSnapshots);
-        // this.saveStateSnapshots(time, delta);
+        if (this.scene.time.now - this.lastReportTime > MONSTER_SNAPSHOT_REPORT_INTERVAL) {
+          if (this.localStateSnapshots.length || this.openSnapshot) {
+            if (this.openSnapshot) {
+              this.closeSnapshot();
+              this.createNewSnapshot(this.stateMachine.currentStateName);
+            }
+            eventEmitter.emit("monsterControlDirections", {
+              monsterId: this.id,
+              stateSnapshots: this.localStateSnapshots
+            });
+            this.localStateSnapshots = [];
+            this.lastReportTime = time;
+          }
+        }
       }
     } else if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
-      // this.playRemoteSnapshots(time, delta);
-      // if (!this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
-      //   let vdx = 0;
-      //   let vdy = 0;
-      //   let direction = this.direction;
-      //   if (this.nextRemoteSnapshot) {
-      //     vdx = this.nextRemoteSnapshot.vdx;
-      //     vdy = this.nextRemoteSnapshot.vdy;
-      //     direction = this.getDirectionFromVelocity(vdx, vdy);
-      //   }
-      //   this.direction = direction;
-      //   if (vdx !== 0 || vdy !== 0) {
-      //     this.stateMachine.setState(MONSTER_STATES.WALK); //we can only walk if we're not attacking
-      //   } else {
-      //     this.stateMachine.setState(MONSTER_STATES.IDLE);
-      //   }
-      //   this.stateMachine.setState(this.nextRemoteSnapshot ? this.nextRemoteSnapshot.state : MONSTER_STATES.IDLE);
-      // }
+      this.playRemoteSnapshots(time, delta);
     }
     this.stateMachine.update(time, delta);
   }
@@ -203,6 +307,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       }
     }
   }
+
   setNextWaypoint(node) {
     this.nextWaypoint = node;
   }
@@ -248,7 +353,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.vdy = vdy;
     this.directionChanged = direction !== this.direction;
     // if (this.directionChanged) {
-      // console.log(`direction changed from ${direction} to ${this.direction}`);
+    // console.log(`direction changed from ${direction} to ${this.direction}`);
     // }
     this.direction = direction;
   }
@@ -269,7 +374,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.setVelocityX(this.speeds.walk * this.vdx);
     this.setVelocityY(this.speeds.walk * this.vdy);
   }
-
 
   checkAggroZone() {
     if (this.receivedAggroResetRequest) {
@@ -299,7 +403,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         }
       } else {
         this.clearPath();
-          this.stateMachine.setState(MONSTER_STATES.IDLE);
+        this.stateMachine.setState(MONSTER_STATES.IDLE);
         // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
         //   this.stateMachine.setState(MONSTER_STATES.WALK);
         //   this.waypointIdx = 0;
@@ -311,7 +415,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   clearPath() {
-    console.log("clearPath");
+    // console.log("clearPath");
     this.pathId = undefined;
     this.waypoints = [];
     this.vdx = 0;
@@ -340,69 +444,66 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.y = y;
   }
 
-  playRemoteSnapshots(time, delta) {
-    let state = this.stateMachine.currentStateName;
-    if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
-      this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
-    }
-    if (this.nextRemoteSnapshot) {
-      if (!this.stateSnapshotStartTime) {
-        this.stateSnapshotStartTime = time;
-        state = this.nextRemoteSnapshot.state;
-      }
-      //switch to next stateSnapshot upon completion of this one
-      if (time - this.stateSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
-        this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
-        this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
-        this.stateSnapshotStartTime = null;
-      }
-    }
-    this.stateMachine.setState(state);
-  }
-
-  //for remote players, will set the next state stateSnapshot for movement / attacking
-  setOtherPlayerNextStatesSnapshot(stateSnapshot) {
-    this.nextRemoteSnapshot = stateSnapshot;
-  }
-
   // playRemoteSnapshots(time, delta) {
   //   let state = this.stateMachine.currentStateName;
   //   if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
-  //     this.setNextRemoteSnapshot(this.remoteSnapshots.shift());
-  //     this.remoteSnapshotStartTime = null;
+  //     this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
   //   }
   //   if (this.nextRemoteSnapshot) {
-  //     // if (!this.remoteSnapshotStartTime) {
-  //     //   this.remoteSnapshotStartTime = time;
-  //     // }
-  //
-  //     if(time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
-  //       this.setNextRemoteSnapshot(time);
+  //     if (!this.stateSnapshotStartTime) {
+  //       this.stateSnapshotStartTime = time;
+  //       state = this.nextRemoteSnapshot.state;
+  //     }
+  //     //switch to next stateSnapshot upon completion of this one
+  //     if (time - this.stateSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+  //       this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
+  //       this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
+  //       this.stateSnapshotStartTime = null;
   //     }
   //   }
-  //   else {
-  //
-  //   }
-  //   // this.stateMachine.setState(state);
+  //   this.stateMachine.setState(state);
   // }
 
+  //for remote players, will set the next state stateSnapshot for movement / attacking
+  // setOtherPlayerNextStatesSnapshot(stateSnapshot) {
+  //   this.nextRemoteSnapshot = stateSnapshot;
+  // }
+
+  playRemoteSnapshots(time, delta) {
+    let state = this.stateMachine.currentStateName;
+    if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
+      this.setNextRemoteSnapshot(this.remoteSnapshots.shift());
+      this.remoteSnapshotStartTime = null;
+    }
+    if (this.nextRemoteSnapshot) {
+      // if (!this.remoteSnapshotStartTime) {
+      //   this.remoteSnapshotStartTime = time;
+      // }
+
+      if (time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+        this.setNextRemoteSnapshot(time);
+      }
+    } else {
+    }
+    // this.stateMachine.setState(state);
+  }
+
   setNextRemoteSnapshot(time) {
-    if(this.nextRemoteSnapshot) {
+    if (this.nextRemoteSnapshot) {
       this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
     }
     const nextSnapshot = this.remoteSnapshots.shift();
-    if(nextSnapshot) {
+    if (nextSnapshot) {
       this.vdx = nextSnapshot.vdx;
       this.vdy = nextSnapshot.vdy;
       this.stateMachine.setState(nextSnapshot.state);
       this.direction = nextSnapshot.direction;
-      if(nextSnapshot.duration === -1) {
+      if (nextSnapshot.duration === -1) {
         this.animationPlaying = true;
       }
       this.remoteSnapshotStartTime = time;
       this.nextRemoteSnapshot = nextSnapshot;
     }
-
   }
 
   //saves snapshots of the controlling monsters state, which will be transmitted to the server later on
@@ -414,8 +515,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     let newState = this.stateMachine.currentStateName;
     //if something about this characters movement has changed then we should start a new snapshot
 
-    if (newVdx !== this.lastVdx || newVdy !== this.lastVdy || newDirection !== this.lastDirection ||
-      (this.localStateSnapshots.length === 0 && newState !== this.lastState)) {
+    if (
+      newVdx !== this.lastVdx ||
+      newVdy !== this.lastVdy ||
+      newDirection !== this.lastDirection ||
+      (this.localStateSnapshots.length === 0 && newState !== this.lastState)
+    ) {
       if (lastSnapshot && !lastSnapshot.duration) {
         lastSnapshot.duration = time - lastSnapshot.timeStarted;
         delete lastSnapshot.timeStarted;
@@ -423,23 +528,25 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         lastSnapshot.endY = Math.floor(this.y);
       }
       // if (newState !== MONSTER_STATES.IDLE) {
-        console.log('creating snapshots');
-        this.localStateSnapshots[this.snapShotsLen++] = {
-          vdx: newVdx,
-          vdy: newVdy,
-          endX: undefined,
-          endY: undefined,
-          timeStarted: time,
-          state: newState === "" ? MONSTER_STATES.IDLE : newState,
-          direction: this.direction,
-          duration: undefined
-        };
+      this.localStateSnapshots[this.snapShotsLen++] = {
+        vdx: newVdx,
+        vdy: newVdy,
+        endX: undefined,
+        endY: undefined,
+        timeStarted: time,
+        state: newState === "" ? MONSTER_STATES.IDLE : newState,
+        direction: this.direction,
+        duration: undefined
+      };
       // }
       this.lastVdx = newVdx;
       this.lastVdy = newVdy;
       this.lastDirection = newDirection;
       this.lasState = newState;
-    } else if (time - this.lastReportTime > SNAPSHOT_REPORT_INTERVAL && this.localStateSnapshots.length > 0) {
+    } else if (
+      time - this.lastReportTime > MONSTER_SNAPSHOT_REPORT_INTERVAL &&
+      this.localStateSnapshots.length > 0
+    ) {
       //we send all the snapshots we've taken every given interval, providing there are any
       if (lastSnapshot && lastSnapshot.duration === undefined) {
         lastSnapshot.duration = time - lastSnapshot.timeStarted;
@@ -447,7 +554,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       delete lastSnapshot.timeStarted;
       lastSnapshot.endX = Math.floor(this.x);
       lastSnapshot.endY = Math.floor(this.y);
-      console.log('emitting', this.localStateSnapshots);
       eventEmitter.emit("monsterControlDirections", {
         monsterId: this.id,
         stateSnapshots: this.localStateSnapshots
@@ -468,23 +574,34 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       vdy: this.vdy,
       endX: undefined,
       endY: undefined,
-      timeStarted: this.time,
+      timeStarted: this.scene.time.now,
       state,
       direction: this.direction,
       duration: undefined
-    }
+    };
   }
 
-  updateSnapshot() {
-    if(!this.localStateSnapshots.length) {
-
+  updateSnapshot(time, state) {
+    // if(!this.openSnapshot) {
+    //   this.createNewSnapshot(state);
+    // }
+    if (!this.instant) {
+      if (this.openSnapshot && this.direction !== this.openSnapshot.direction) {
+        this.closeSnapshot();
+        this.createNewSnapshot(state);
+      }
     }
+
+    // if(!this.localStateSnapshots.length) {
+    //   this.createNewSnapshot(state);
+    // }
   }
 
   closeSnapshot() {
     this.openSnapshot.endX = Math.floor(this.x);
     this.openSnapshot.endY = Math.floor(this.y);
-    this.openSnapshot.duration = this.time - this.openSnapshot.timeStarted;
+    this.openSnapshot.duration = this.scene.time.now - this.openSnapshot.timeStarted;
+    delete this.openSnapshot.timeStarted;
     this.localStateSnapshots.push(this.openSnapshot);
     this.openSnapshot = undefined;
   }

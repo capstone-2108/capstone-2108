@@ -12,6 +12,7 @@ export const UPDATE_PLAYER_CHARACTER = 'UPDATE_PLAYER_CHARACTER';
 export const SET_SELECTED_PLAYER = 'SET_SELECTED_PLAYER';
 export const REMOTE_PLAYER_CHANGED_SCENE = 'REMOTE_PLAYER_CHANGED_SCENE';
 export const SET_SELECTED_MONSTER = 'SET_SELECTED_MONSTER';
+export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 
 /*************************
  * Action Creators       *
@@ -76,6 +77,13 @@ export const remotePlayerChangedScenes = (player) => {
 export const clearPlayerState = () => {
   return {
     type: CLEAR_PLAYER_STATE
+  };
+};
+
+export const monsterTookDamage = (data) => {
+  return {
+    type: MONSTER_TOOK_DAMAGE,
+    data
   };
 };
 
@@ -152,17 +160,11 @@ export const createPlayerCharacter = (name, character, history) => {
     try {
       const response = await axios.post('/api/game/character', {name, character});
       dispatch(setPlayerCharacter(response.data));
-<<<<<<< HEAD
-      history.push('/game');
-    }
-    catch (err) {
-=======
       history.push({
         pathname: "/game",
         state: { newUser: true }
       });
     } catch (err) {
->>>>>>> main
       console.log(err);
     }
   };
@@ -179,7 +181,7 @@ export const logoutCharacters = (characterId) => {
   };
 };
 
-export const fetchSeletedMonster = (id) => {
+export const fetchSelectedMonster = (id) => {
   return async (dispatch, getState) => {
     try {
       const response = await axios.get(`/api/game/monster/${id}`);
@@ -267,6 +269,19 @@ export default (state = initialState, action) => {
       return {...state, selectedPlayer: action.character};
     case SET_SELECTED_MONSTER:
       return {...state, selectedPlayer: action.monster};
+    case MONSTER_TOOK_DAMAGE:
+      let selectedMonster = state.selectedMonster;
+      if(selectedMonster.id === action.data.id) {
+        selectedMonster = {...selectedMonster, ...action.data}
+      }
+      let nearbyMonsters = state.nearbyMonsters.map(monster =>
+        (monster.monsterId === action.data.id ? Object.assign(monster, action.data) :  monster));
+      return {
+        ...state,
+        selectedMonster,
+        nearbyMonsters
+      }
+
     case REMOTE_PLAYER_CHANGED_SCENE: {
       const nearbyPlayers = state.nearbyPlayers.filter(
         (nearbyPlayer) => nearbyPlayer.characterId !== action.player.characterId

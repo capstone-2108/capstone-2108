@@ -56,6 +56,29 @@ Npc.getNearbyMonsters = async function (sceneId) {
   });
 };
 
+Npc.getMonster = async function (monsterId) {
+  return this.findByPk(monsterId,{
+    attributes: ["id", "name", "health"],
+    include: [
+      {
+        model: TemplateCharacter,
+        attributes: ["id", "name"],
+        include: {
+          model: SpriteSheet,
+          attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
+        }
+      },
+      {
+        model: Location,
+        where: {
+          sceneId
+        },
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }
+    ]
+  });
+};
+
 Npc.setAggroOn = async (npcId, playerCharacterId) => {
   const monster = await Npc.findByPk(npcId);
   if (!monster.aggroedOn) {
@@ -69,5 +92,11 @@ Npc.resetAggro = async (npcId) => {
   const monster = await Npc.findByPk(npcId);
   return monster.update({ aggroedOn: null });
 };
+
+Npc.applyDamage = async (monsterId, damage) => {
+  return await db.query('UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth"', {
+    bind: {id: monsterId, damage}
+  });
+}
 
 module.exports = { Npc };

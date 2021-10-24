@@ -7,7 +7,7 @@ import {
   monsterControlResetAggroCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
-  registerMonsterHitCallback,
+  remotePlayerHitMonster,
   remotePlayerChangedSceneCallback,
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
@@ -27,6 +27,7 @@ export default class MMOScene extends Phaser.Scene {
   preload() {
     this.monsterGroup = this.physics.add.group();
     this.monsterAggroZones = this.physics.add.group();
+    this.playerGroup = this.physics.add.group();
   }
 
   create() {
@@ -103,7 +104,7 @@ export default class MMOScene extends Phaser.Scene {
 
     //received a message to register a hit on a monster from another player
     this.unsubscribes.push(
-      eventEmitter.subscribe("registerMonsterHit", registerMonsterHitCallback.bind(this))
+      eventEmitter.subscribe("remotePlayerHitMonster", remotePlayerHitMonster.bind(this))
     );
 
     //cleans up any unsubscribes
@@ -139,7 +140,6 @@ export default class MMOScene extends Phaser.Scene {
     for (const [id, player] of Object.entries(this.remotePlayers)) {
       player.update(time, delta);
     }
-
     for (const [id, monster] of Object.entries(this.monsters)) {
       if (!this.monsterGroup.contains(monster)) {
         this.monsterGroup.add(monster);

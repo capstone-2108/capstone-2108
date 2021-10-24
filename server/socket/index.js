@@ -2,7 +2,7 @@ const { Server } = require("socket.io");
 const server = require("../app");
 const { requireSocketToken } = require("./socket-middleware");
 const io = new Server(server);
-const { PlayerCharacter, Location, Npc } = require("../db");
+const { PlayerCharacter, Location, Npc, User} = require("../db");
 const { transformToPayload } = require("../db/models/PlayerCharacter");
 const chalk = require("chalk");
 
@@ -105,7 +105,6 @@ function initGameSync() {
 
 
     socket.on("monsterControlDirections", (data) => {
-      console.log(data);
       socket.broadcast.emit("monsterFollowDirections", data);
     });
 
@@ -121,10 +120,12 @@ function initGameSync() {
     });
 
     //broadcast that a player hit a monster
-    socket.on("playerHitMonster", async (monsterId) => {
-      console.log(chalk.red(`Monster ${monsterId} has been hit`));
+    socket.on("localPlayerHitMonster", async (data) => {
+      console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
+      console.log(data);
       try {
-        socket.broadcast.emit("registerMonsterHit", monsterId);
+        const [updatedCols, metadata] = await Npc.applyDamage(data.monsterId, data.damage);
+        socket.broadcast.emit("remotePlayerHitMonster", updatedCols[0]);
       } catch (err) {
         console.log(err);
       }
@@ -133,12 +134,12 @@ function initGameSync() {
 }
 
 function initHeartbeat() {
-  setInterval(() => {
+  setInterval(async () => {
     try {
       for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
         const { characterName, lastSeen, userId } = heartBeatInfo;
         if (Date.now() - lastSeen > 60000) {
-          PlayerCharacter.logout(userId, characterId);
+          await User.logout(userId);
           console.log(`Logging out ${characterName} due to inactivity`);
           worldChat.emit("newMessage", {
             channel: "world",
@@ -157,6 +158,11 @@ function initHeartbeat() {
       console.log(err);
     }
   }, 20000);
+
+  setInterval( async () => {
+    //log out anyone who is logged in but not registered with a heartbeat
+    //@todo: implement this
+  })
 }
 
 module.exports = {

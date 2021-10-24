@@ -1,4 +1,4 @@
-import { DIRECTION_CONVERSION } from "../constants/constants";
+import {DIRECTION_CONVERSION, EAST, NORTH, SOUTH, WEST} from '../constants/constants';
 
 export const MONSTER_CONTROL_STATES = {
   NEUTRAL: "NEUTRAL",
@@ -33,13 +33,17 @@ export class MonsterStates {
       duration: 200,
       onUpdate: (tween) => {
         const tweenVal = tween.getValue();
-        if (tweenVal % 2) {
-          this.setTintFill(0xffffff);
-        } else {
+        if(tweenVal === 100) {
           this.clearTint();
+        }
+        if (tweenVal % 2) {
+          this.setTintFill(0xFF0000);
+        } else {
+          this.setTintFill(0xffffff);
         }
       }
     });
+    // this.instant = true;
     // }
     // };
     // flash();
@@ -63,11 +67,11 @@ export class MonsterStates {
   /**
    * @this Monster
    */
-  hitUpdate() {
-    if(this.direction !== this.openSnapshot.direction) {
-      this.closeSnapshot();
-      this.createNewSnapshot(MONSTER_STATES.HIT);
-    }
+  hitUpdate(time, delta) {
+    // if(!this.instant) {
+      this.stateMachine.setState(this.stateMachine.previousStateName);
+    // }
+    this.updateSnapshot(time, MONSTER_STATES.HIT);
   }
 
   /**
@@ -75,40 +79,54 @@ export class MonsterStates {
    */
   hitExit() {
     this.closeSnapshot(MONSTER_STATES.HIT);
+    this.instant = false;
   }
+
+
 
   /**
    * @this Monster
    */
   attackEnter() {
-    this.createNewSnapshot(MONSTER_STATES.WALK);
-    let convertedDir = DIRECTION_CONVERSION[this.direction];
-    this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
-        `${this.templateName}-attack-` +
-        convertedDir,
-      () => {
-        this.stateMachine.setState(MONSTER_STATES.IDLE);
-        this.instant = false;
-      }
-    );
+    this.createNewSnapshot(MONSTER_STATES.ATTACK);
+    this.dealDamage();
     this.animationPlayer("attack");
   }
+  // /**
+  //  * @this Monster
+  //  */
+  // attackEnter() {
+  //   this.createNewSnapshot(MONSTER_STATES.WALK);
+  //   let convertedDir = DIRECTION_CONVERSION[this.direction];
+  //   this.once(
+  //     Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+  //       `${this.templateName}-attack-` +
+  //       convertedDir,
+  //     () => {
+  //       // this.stateMachine.setState(MONSTER_STATES.IDLE);
+  //     }
+  //   );
+  //   this.animationPlayer("attack");
+  // }
 
   /**
    * @this Monster
    */
-  attackUpdate() {
-    if(this.direction !== this.openSnapshot.direction) {
-      this.closeSnapshot();
-      this.createNewSnapshot(MONSTER_STATES.ATTACK);
+  attackUpdate(time, delta) {
+    if(!this.anims.isPlaying) {
+      this.animationPlayer("attack");
+      this.dealDamage();
     }
+
+    // this.updateSnapshot(time, MONSTER_STATES.ATTACK);
   }
 
   /**
    * @this Monster
    */
   attackExit() {
+    this.meleeHitbox.body.enable = false;
+    this.scene.physics.world.remove(this.meleeHitbox.body);
     this.closeSnapshot(MONSTER_STATES.ATTACK);
   }
 
@@ -122,11 +140,8 @@ export class MonsterStates {
   /**
    * @this Monster
    */
-  walkUpdate() {
-    if(this.direction !== this.openSnapshot.direction) {
-      this.closeSnapshot();
-      this.createNewSnapshot(MONSTER_STATES.WALK);
-    }
+  walkUpdate(time, delta) {
+    this.updateSnapshot(time, MONSTER_STATES.WALK);
     this.animationPlayer("walk");
   }
 
@@ -142,16 +157,13 @@ export class MonsterStates {
    * @this Monster
    */
   idleEnter() {
-    this.createNewSnapshot(MONSTER_STATES.IDLE);
+    // this.createNewSnapshot(MONSTER_STATES.IDLE);
   }
   /**
    * @this Monster
    */
-  idleUpdate() {
-    if(this.direction !== this.openSnapshot.direction) {
-      this.closeSnapshot();
-      this.createNewSnapshot(MONSTER_STATES.IDLE);
-    }
+  idleUpdate(time, delta) {
+    // this.updateSnapshot(time, MONSTER_STATES.IDLE);
     this.animationPlayer("idle");
   }
 
@@ -159,6 +171,6 @@ export class MonsterStates {
    * @this Monster
    */
   idleExit() {
-    this.closeSnapshot(MONSTER_STATES.IDLE);
+    // this.closeSnapshot(MONSTER_STATES.IDLE);
   }
 }

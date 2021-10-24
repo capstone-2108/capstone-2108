@@ -57,3 +57,4 @@ export class RemotePlayer extends Player {
     this.nextStatesSnapshot = stateSnapshot;
   }
 }
+

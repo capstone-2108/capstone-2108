@@ -56,10 +56,6 @@ export function scenePlayerLoadCallback(data) {
 }
 
 export function nearbyPlayerLoadCallback(players) {
-<<<<<<< HEAD
-  console.log("nearbyPlayer this", this);
-=======
->>>>>>> main
   // console.log('got nearby players and this', this, players)
   let i = 0;
   let len = players.length;
@@ -156,7 +152,6 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
   const monster = this.monsters[stateSnapshots.monsterId];
   if (monster) {
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLED);
-    console.log('snapshots', stateSnapshots.stateSnapshots);
     monster.remoteSnapshots.push(...stateSnapshots.stateSnapshots);
   } else {
     console.log("monsterControl - monster not found");
@@ -172,9 +167,10 @@ export function monsterControlResetAggroCallback(monsterId) {
 }
 
 //runs when the server lets us know that another player hit a monster
-export function registerMonsterHitCallback(monsterId) {
-  if (this.monsters[monsterId]) {
-    this.monsters[monsterId].stateMachine.setState('hitRemote');
+export function remotePlayerHitMonster(data) {
+  console.log(data);
+  if (this.monsters[data.monsterId]) {
+    console.log('monster too damage');
   }
 }
 

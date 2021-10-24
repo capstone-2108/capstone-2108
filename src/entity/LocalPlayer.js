@@ -1,5 +1,6 @@
 import { DIRECTION_CONVERSION } from "../constants/constants";
-import {MONSTER_STATES} from './MonsterStates';
+import { MONSTER_STATES } from "./MonsterStates";
+import { Monster } from "./Monster";
 
 const { Player } = require("./Player");
 const {
@@ -34,13 +35,21 @@ export class LocalPlayer extends Player {
     this.lastDirection = this.direction;
     this.lastMode = this.mode;
 
-    this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
-      if (this instanceof LocalPlayer) {
-        target.stateMachine.setState(MONSTER_STATES.HIT);
-      } else {
-        //hitRemote
-      }
-    });
+    // this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, monster) => {
+    //   if (this instanceof LocalPlayer && monster instanceof Monster) {
+    //     // monster.stateMachine.setState(MONSTER_STATES.HIT);
+    //     if (!monster.stateMachine.stateLock) {
+    //       eventEmitter.emit("localPlayerHitMonster", {
+    //         playerCharacterId: this.id,
+    //         monsterId: monster.id,
+    //         damage: 10
+    //       });
+    //     }
+    //     monster.stateMachine.stateLock = true;
+    //   } else {
+    //     //hitRemote
+    //   }
+    // });
 
     this.createHotKeys();
   }
@@ -70,11 +79,12 @@ export class LocalPlayer extends Player {
       let vdy = moveData.vdy;
       let direction = moveData.direction;
       this.direction = direction;
-      if (vdx !== 0 || vdy !== 0) {
-        this.stateMachine.setState(`walk`); //we can only walk if we're not attacking
-      } else {
-        this.stateMachine.setState("idle");
-      }
+        if (vdx !== 0 || vdy !== 0) {
+          this.stateMachine.setState(`walk`); //we can only walk if we're not attacking
+        }
+        else {
+          this.stateMachine.setState("idle");
+        }
     }
     this.stateMachine.update(time, delta);
     super.update(time, delta);

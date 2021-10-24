@@ -5,10 +5,10 @@ import {
   fetchNearbyMonsters,
   fetchNearbyPlayers,
   fetchRemoteCharacterData,
-  fetchSeletedMonster,
-  heartbeat,
+  fetchSelectedMonster,
+  heartbeat, monsterTookDamage,
   remotePlayerChangedScenes
-} from "../store/player";
+} from '../store/player';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
@@ -90,8 +90,9 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     //received a message to register a hit on a monster from another player
-    newSocket.on("registerMonsterHit", (monsterId) => {
-      eventEmitter.emit("registerMonsterHit", monsterId);
+    newSocket.on("remotePlayerHitMonster", (data) => {
+      dispatch(monsterTookDamage(data));
+      eventEmitter.emit("remotePlayerHitMonster", data);
     });
 
     /****************
@@ -155,7 +156,7 @@ export const InitSubscriptionsToPhaser = () => {
     //phaser is making a request to fetch some monster data
     unsubscribes.push(
       eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
-        dispatch(fetchSeletedMonster(monsterId));
+        dispatch(fetchSelectedMonster(monsterId));
       })
     );
 
@@ -176,8 +177,8 @@ export const InitSubscriptionsToPhaser = () => {
 
     //phaser is letting us know that it's a local player hit a monster
     unsubscribes.push(
-      eventEmitter.subscribe("playerHitMonster", (data) => {
-        newSocket.emit("playerHitMonster", data);
+      eventEmitter.subscribe("localPlayerHitMonster", (data) => {
+        newSocket.emit("localPlayerHitMonster", data);
       })
     );
 
@@ -187,6 +188,7 @@ export const InitSubscriptionsToPhaser = () => {
         newSocket.emit("monsterControlDirections", data);
       })
     );
+
 
 
     return () => {

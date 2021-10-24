@@ -9,6 +9,7 @@ export default class StateMachine {
     this.previousState = null;
     this.currentStateStage = "enter";
     this.debug = debug;
+    this.stateLock = false;
   }
 
   get previousStateName() {
@@ -45,13 +46,14 @@ export default class StateMachine {
       name,
       onEnter: config.onEnter ? config.onEnter.bind(this.context) : undefined,
       onUpdate: config.onUpdate ? config.onUpdate.bind(this.context) : undefined,
-      onExit: config.onExit ? config.onExit.bind(this.context) : undefined
+      onExit: config.onExit ? config.onExit.bind(this.context) : undefined,
     });
     return this;
   }
 
   setState(name, data) {
     //state doesn't exist
+    if(this.stateLock) { return;}
     if (!this.states.has(name)) {
       console.log(`Changing to unknown state: ${name}`);
       return;
@@ -91,13 +93,13 @@ export default class StateMachine {
     this.isSwitchingState = false;
   }
 
-  update(delta) {
+  update(time, delta) {
     if (this.stateQueue.length > 0) {
       this.setState(this.stateQueue.shift());
       return;
     }
     if (this.currentState && this.currentState.onUpdate) {
-      this.currentState.onUpdate(delta);
+      this.currentState.onUpdate(time, delta);
       this.currentStateStage = "update";
     }
   }

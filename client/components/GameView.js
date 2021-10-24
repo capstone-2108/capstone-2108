@@ -23,7 +23,7 @@ export const GameView = (props) => {
 
   //if a new player, set popUp to true
   useEffect(() => {
-    if (location.state.newUser) {
+    if (location.state && location.state.newUser) {
       setPopUp(true);
     };
   }, []);
