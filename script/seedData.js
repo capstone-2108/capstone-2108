@@ -170,8 +170,8 @@ const mapData = [
 ];
 
 const npcData = [
+  // remove this orc after development
   {
-    // remove this orc after development
     npc: {
       name: "Orc",
       health: 900,
@@ -185,6 +185,7 @@ const npcData = [
     },
     templateCharacter: "orc"
   },
+  // FIRST SCENE MONSTERS
   {
     npc: {
       name: "Orcie",
@@ -213,7 +214,7 @@ const npcData = [
     },
     templateCharacter: "orc"
   },
-
+  // START OF SECOND SCENE MONSTERS
   {
     npc: {
       name: "Orcta",
@@ -222,7 +223,7 @@ const npcData = [
     },
     location: {
       xPos: 810,
-      yPos: 810,
+      yPos: 1000,
       facingDirection: "w",
       sceneId: 2
     },
@@ -242,34 +243,317 @@ const npcData = [
     },
     templateCharacter: "orc"
   },
-  // {
-  //   npc: {
-  //     name: "Orcccc",
-  //     health: 900,
-  //     totalHealth: 1000
-  //   },
-  //   location: {
-  //     xPos: 600,
-  //     yPos: 600,
-  //     facingDirection: "w",
-  //     sceneId: 2
-  //   },
-  //   templateCharacter: "orc"
-  // },
-  // {
-  //   npc: {
-  //     name: "Ork",
-  //     health: 900,
-  //     totalHealth: 1000
-  //   },
-  //   location: {
-  //     xPos: 600,
-  //     yPos: 600,
-  //     facingDirection: "w",
-  //     sceneId: 2
-  //   },
-  //   templateCharacter: "orc"
-  // }
+  {
+    npc: {
+      name: "Orcccc",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1200,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Ork",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 200,
+      yPos: 1100,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orkbi",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1800,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orktri",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 2550,
+      yPos: 1450,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orka",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1400,
+      yPos: 700,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orkione",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1340,
+      yPos: 200,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcione",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 2800,
+      yPos: 500,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orciline",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 2300,
+      yPos: 350,
+      facingDirection: "w",
+      sceneId: 2
+    },
+    templateCharacter: "orc"
+  },
+  // START OF THIRD SCENE MONSTERS
+  {
+    npc: {
+      name: "Orktastic",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 400,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 3
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orktada",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 375,
+      yPos: 1000,
+      facingDirection: "w",
+      sceneId: 3
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orkkabo",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 425,
+      yPos: 700,
+      facingDirection: "w",
+      sceneId: 3
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orkalalo",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 400,
+      yPos: 400,
+      facingDirection: "w",
+      sceneId: 3
+    },
+    templateCharacter: "orc"
+  },
+  // START OF FOURTH SCENE MONSTERS
+  {
+    npc: {
+      name: "Orcaby",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 810,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 4
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orclom",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 400,
+      yPos: 650,
+      facingDirection: "w",
+      sceneId: 4
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcpi",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 810,
+      yPos: 400,
+      facingDirection: "w",
+      sceneId: 4
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcpi",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1000,
+      yPos: 600,
+      facingDirection: "w",
+      sceneId: 4
+    },
+    templateCharacter: "orc"
+  },
+  // START OF FIFTH SCENE MONSTERS
+  {
+    npc: {
+      name: "Orcipipi",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 100,
+      yPos: 1300,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orclona",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 900,
+      yPos: 1000,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orctaco",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 950,
+      yPos: 400,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcpizza",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1200,
+      yPos: 1200,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcspaghetti",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1300,
+      yPos: 400,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcramen",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 250,
+      yPos: 200,
+      facingDirection: "w",
+      sceneId: 5
+    },
+    templateCharacter: "orc"
+  },
 ];
 
 module.exports = {
