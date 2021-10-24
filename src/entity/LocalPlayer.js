@@ -69,6 +69,11 @@ export class LocalPlayer extends Player {
         this.stateMachine.setState("melee");
       }
     });
+
+    let oneKey = this.scene.input.keyboard.addKey('One');
+    oneKey.on('down', () => {
+      this.stateMachine.setState("idle");
+    });
   }
 
   update(time, delta) {
@@ -140,6 +145,7 @@ export class LocalPlayer extends Player {
         lastSnapshot.endX = Math.floor(this.x);
         lastSnapshot.endY = Math.floor(this.y);
       }
+      console.log('emitting', this.localStateSnapshots);
       eventEmitter.emit("phaserUpdate", {
         action: "playerPositionChanged",
         data: {

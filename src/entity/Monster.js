@@ -196,6 +196,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       this.scene.physics.overlap(this.meleeHitbox, this.scene.player, (hitBox, target) => {
         target.damageFlash();
       });
+      this.scene.physics.overlap(this.meleeHitbox, this.scene.playerGroup, (hitBox, target) => {
+        target.damageFlash();
+      });
       if(frame.index === 3) {
         this.meleeHitbox.body.enable = true;
         this.scene.physics.world.add(this.meleeHitbox.body);
