@@ -79,7 +79,7 @@ export function nearbyMonsterLoadCallback(monsters) {
   let len = monsters.length;
   for (; i < len; i++) {
     const monster = monsters[i];
-    this.monsters[monster.characterId] = new Monster(
+    this.monsters[monster.monsterId] = new Monster(
       this,
       monster.xPos,
       monster.yPos,

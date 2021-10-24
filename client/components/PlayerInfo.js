@@ -55,7 +55,7 @@ const PlayerInfo = () => {
 
             <div
               style={{
-                backgroundColor: "black",
+                backgroundColor: "rgb(52, 52, 52)",
                 width: "200px",
                 height: "20px"
               }}>
@@ -72,7 +72,7 @@ const PlayerInfo = () => {
             </div>
             <div
               style={{
-                backgroundColor: "black",
+                backgroundColor: "rgb(52, 52, 52)",
                 width: "200px",
                 height: "20px"
               }}>
