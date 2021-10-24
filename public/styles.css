@@ -56,7 +56,7 @@ body {
     Verdana, sans-serif; */
   font-family: "cinzel-decorative";
   text-transform: lowercase;
-  padding: 0;
+  /* padding: 0; */
   justify-content: space-between;
   flex-direction: column;
   justify-content: flex-start;
@@ -64,7 +64,6 @@ body {
   /* background-color: #252441; */
   /* background-color: #5d615e; */
   background-image: url("/images/darkBackground.png");
-
   border-style: solid;
   border-width: 15px;
   /* border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1; */
@@ -162,7 +161,6 @@ body {
 
 .playerImg {
   flex-grow: 1;
-  /* position: relative; */
   /* margin: 0px; */
   /* margin-left: -40px;
   margin-top: -15px; */
@@ -170,8 +168,8 @@ body {
 
 .playerImg > img {
   position: absolute;
-  top: inherit;
-  left: inherit;
+  /* top: inherit;
+  left: inherit; */
 }
 .playerImg > img:first-child {
   z-index: 2;
@@ -328,28 +326,37 @@ img {
 }
 
 .chatbox {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
 
+  position: relative;
+  border-radius: 10px;
 }
 
 .real-chatbox {
   padding-top: 20px;
-  min-width: 340px;
-  max-width: 340px;
+  min-width: 314px;
+  max-width: 314px;
+  border-radius: 10px;
+
 }
 
 #chat_history {
-  height: 193px;
+  height: 190px;
   display: flex;
   flex-flow: column-reverse nowrap;
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: rgb(52, 52, 52);
+  background-color: rgba(133, 124, 124, 0.2);
   border: 1px solid #504137;
   color: #f5f3e6;
   width: 99.5%;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   text-transform: none;
+  border-radius: 10px;
+
 }
 
 .chat-message {
@@ -357,13 +364,15 @@ img {
   width: inherit;
   word-wrap: break-word;
   margin-top: 0.25rem;
+  /* border-radius: 10px 10px 0 0; */
 }
 
 .new-chat-message {
-  width: 99%;
+  width: 98%;
   border: 1px solid #504137;
-  display: flex;
-  padding-right: 0px;
+  padding: 2px;
+  /* padding-right: 0px; */
+  border-radius: 7px;
 }
 
 .authForm {
