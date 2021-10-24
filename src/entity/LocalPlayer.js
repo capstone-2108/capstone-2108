@@ -70,10 +70,10 @@ export class LocalPlayer extends Player {
       }
     });
 
-    let oneKey = this.scene.input.keyboard.addKey('One');
-    oneKey.on('down', () => {
-      this.stateMachine.setState("idle");
-    });
+    // let oneKey = this.scene.input.keyboard.addKey('One');
+    // oneKey.on('down', () => {
+    //   this.stateMachine.setState("idle");
+    // });
   }
 
   update(time, delta) {

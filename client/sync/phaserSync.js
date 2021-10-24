@@ -53,6 +53,7 @@ export const InitSubscriptionsToPhaser = () => {
     //tell phaser to move those characters on the screen
     newSocket.on("remotePlayerPositionChanged", (position) => {
       //this is how we tell phaser that another player has moved
+      console.log(position);
       eventEmitter.emit("remotePlayerPositionChanged", position);
     });
 

@@ -53,7 +53,7 @@ export default class StateMachine {
 
   setState(name, data) {
     //state doesn't exist
-    if(this.stateLock) { return;}
+    // if(this.stateLock) { return;}
     if (!this.states.has(name)) {
       console.log(`Changing to unknown state: ${name}`);
       return;
