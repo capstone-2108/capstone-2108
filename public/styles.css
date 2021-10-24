@@ -60,14 +60,25 @@ body {
   justify-content: space-between;
   flex-direction: column;
   justify-content: flex-start;
+  overflow: hidden;
   /* background-color: #252441; */
   /* background-color: #5d615e; */
   background-image: url("/images/darkBackground.png");
+
   border-style: solid;
-  border-width: 3px;
+  border-width: 15px;
   /* border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1; */
-  border-color: rgb(226, 183, 87);
+  /* border-color: rgb(226, 183, 87); */
+  border-image: url("/images/treetexture.jpeg") 20 30 10 20 repeat !important;
 }
+
+/* .dashboard {
+  border-style: solid;
+  border-width: 15px;
+    border-image: url("/images/stones.jpeg") 20 30 10 20 repeat !important;
+    z-index: 5;
+
+} */
 
 #playerName {
   padding-top: 10px;
@@ -318,6 +329,7 @@ img {
 
 .chatbox {
   position: relative;
+
 }
 
 .real-chatbox {
@@ -328,8 +340,8 @@ img {
 
 #chat_history {
   height: 193px;
-  /* display: flex; */
-  /* flex-flow: column-reverse nowrap; */
+  display: flex;
+  flex-flow: column-reverse nowrap;
   overflow-y: scroll;
   overflow-x: hidden;
   background-color: rgb(52, 52, 52);

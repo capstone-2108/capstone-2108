@@ -35,7 +35,7 @@ const Ui = () => {
     eventEmitter.emit("localPlayerLogout");
   };
   return (
-    <div>
+    <div className="dashboard">
       <PlayerInfo />
       {/* <Gold /> */}
       {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }}></div>}

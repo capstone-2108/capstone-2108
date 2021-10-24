@@ -44,7 +44,7 @@ const PlayerInfo = () => {
       </div>
       <div className="playerDetails">
         <div className="playerImg" style={{ width: "80px", height: "80px" }}>
-          <img src="goldRing.png" width="78px" height="78px" />
+          <img src="goldcircle.png" width="78px" height="78px" />
           <img src={player.portrait} className="portrait" />
         </div>
         <div className="bars">
