@@ -179,7 +179,7 @@ const npcData = [
   {
     npc: {
       name: "Orc",
-      health: 900,
+      health: 10,
       totalHealth: 1000
     },
     location: {

@@ -12,7 +12,7 @@ import {
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
-  scenePlayerLoadCallback
+  scenePlayerLoadCallback, monsterHasDiedCallback
 } from '../event/callbacks';
 import {RemotePlayer} from '../entity/RemotePlayer';
 import {Monster} from '../entity/Monster';
@@ -107,10 +107,10 @@ export default class MMOScene extends Phaser.Scene {
       )
     );
 
-    //received a message to register a hit on a monster from another player
-    // this.unsubscribes.push(
-    //   eventEmitter.subscribe("remotePlayerHitMonster", remotePlayerHitMonster.bind(this))
-    // );
+    this.unsubscribes.push(
+      eventEmitter.subscribe("monsterHasDied", monsterHasDiedCallback.bind(this))
+    );
+
 
     //cleans up any unsubscribes
     this.unsubscribes.push(
