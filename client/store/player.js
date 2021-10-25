@@ -72,7 +72,7 @@ export const clearPlayerState = () => {
 export const monsterTookDamage = (data) => {
   return {
     type: MONSTER_TOOK_DAMAGE,
-    data
+    ...data
   };
 };
 
@@ -278,12 +278,13 @@ export default (state = initialState, action) => {
     }
     case MONSTER_TOOK_DAMAGE: {
       let selectedUnit = state.selectedUnit;
-      console.log(MONSTER_TOOK_DAMAGE, action);
-      if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === action.data.id) {
-        selectedUnit = { ...selectedUnit, ...action.data };
+      const {local, monster} = action
+      if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === monster.id) {
+        console.log('updated selectedUnit');
+        selectedUnit = { ...selectedUnit, ...monster };
       }
-      let nearbyMonsters = state.nearbyMonsters.map((monster) =>
-        monster.monsterId === action.data.id ? Object.assign(monster, action.data) : monster
+      let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
+        nearbyMonster.monsterId === monster.id ? Object.assign(nearbyMonster, monster) : nearbyMonster
       );
       return {
         ...state,

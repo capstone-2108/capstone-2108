@@ -120,19 +120,25 @@ function initGameSync() {
 
     //broadcast that a player hit a monster
     socket.on("monsterTookDamage", async (data) => {
-      console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
+      // console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
       console.log(data);
       try {
-        const [updatedCols, metadata] = await Npc.applyDamage(data.monsterId, data.damage);
-        socket.broadcast.emit("monsterTookDamage", updatedCols[0]);
-        socket.emit("monsterTookDamage", {...updatedCols[0], local:true});
+        const monster = await Npc.applyDamage(data.monsterId, data.damage);
+        socket.broadcast.emit("monsterTookDamage", {
+          monster,
+          local: false,
+        });
+        socket.emit("monsterTookDamage", {
+          monster,
+          local: true
+        });
       } catch (err) {
         console.log(err);
       }
     });
 
     socket.on("playerTookDamage", async (data) => {
-      console.log(chalk.red(`Player ${data.characterId} has been hit`));
+      // console.log(chalk.red(`Player ${data.characterId} has been hit`));
       console.log(data);
       try {
         const [updatedCols, metadata] = await PlayerCharacter.applyDamage(data.characterId, data.damage);
@@ -160,13 +166,15 @@ function initHeartbeat() {
               message: characterName + " has been logged out by the server!"
             }
           });
-          //@todo if a monster is aggroed on a person who's been logged out, we should cancel that aggro
-          console.log('characterId', characterId);
-          const aggroedMonsters = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
-          console.log('aggroedMonsters', aggroedMonsters);
-          aggroedMonsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
-          gameSync.emit("remotePlayerLogout", characterId);
           delete heartBeats[characterId];
+          //@todo if a monster is aggroed on a person who's been logged out, we should cancel that aggro
+          const[rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
+          monsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
+          gameSync.emit("remotePlayerLogout", characterId);
+        }
+        else {
+          // const playerCharacter = await PlayerCharacter.getCharacter(characterId);
+
         }
       }
       console.log("Sending out heart beat check");

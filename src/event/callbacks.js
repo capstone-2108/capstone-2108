@@ -137,11 +137,12 @@ export function monsterCanAggroPlayerCallback(data) {
    * @param {Monster[]} monsters
    */
   if (this.monsters[data.monsterId] && data.canAggro) {
+    console.log('setting aggro target');
     this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
     this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLING);
   }
   if(!data.canAggro) {
-    // this.monsters[data.monsterId].oneRing = false;
+    // this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES. NEUTRAL);
   }
 }
 
@@ -163,19 +164,23 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
 //runs when the server says a monster should reset it's aggro
 export function monsterControlResetAggroCallback(monsterId) {
   if (this.monsters[monsterId]) {
+    console.log('control reset aggro callback');
     this.monsters[monsterId].receivedAggroResetRequest = true;
     this.monsters[monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     this.monsters[monsterId].stateMachine.setState(MONSTER_STATES.IDLE);
   }
 }
 
-//runs when the server lets us know that another player hit a monster
-// export function remotePlayerHitMonster(data) {
-//   console.log(data);
-//   if (this.monsters[data.monsterId]) {
-//     console.log('monster too damage');
-//   }
-// }
+export function monsterHasDiedCallback(monsterId) {
+  console.log('monsterHasDied', monsterId);
+  if (this.monsters[monsterId]) {
+    const monster = this.monsters[monsterId];
+    monster.stateMachine.setState(MONSTER_STATES.DEAD);
+    monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+    monster.aggroZone.resetAggro(true);
+    console.log(monster.stateMachine.currentState);
+  }
+}
 
 export function localPlayerLogoutCallback() {
   this.cleanup();
