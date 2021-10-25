@@ -211,12 +211,13 @@ function initLazarusPit() {
       const deadMonsters = await Npc.reviveDeadMonsters();
       if (deadMonsters.length) {
         console.log(chalk.bgBlue('Reviving Monsters'));
-        const payload = deadMonsters.map(monster => ({
+        const revivedMonsters = deadMonsters.map(monster => ({
           id: monster.id,
           health: monster.health,
           totalHealth: monster.totalHealth
         }));
-        gameSync.emit('reviveMonsters', payload);
+        console.log(revivedMonsters);
+        gameSync.emit('reviveMonsters', revivedMonsters);
       }
     }
     catch (err) {

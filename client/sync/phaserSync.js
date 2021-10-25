@@ -136,9 +136,9 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     //received a message from the server that we should revive monsters
-    newSocket.on("reviveMonsters", (data) => {
-      dispatch(reviveMonsters(data));
-        eventEmitter.emit('reviveMonsters', data);
+    newSocket.on("reviveMonsters", (monsters) => {
+      dispatch(reviveMonsters(monsters));
+        eventEmitter.emit('reviveMonsters', monsters);
     });
 
     /****************

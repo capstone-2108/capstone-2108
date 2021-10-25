@@ -93,10 +93,10 @@ export const setSelectedUnit = (unitType, id) => {
   };
 };
 
-export const reviveMonsters = (payload) => {
+export const reviveMonsters = (monsters) => {
   return {
     type: REVIVE_MONSTERS,
-    ...payload
+    monsters
   }
 }
 
@@ -338,12 +338,21 @@ export default (state = initialState, action) => {
     }
     case REVIVE_MONSTERS: {
       let selectedUnit = state.selectedUnit;
-      const {local, monster} = action
-      if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === monster.id) {
-        selectedUnit = { ...selectedUnit, ...monster };
+      const {monsters} = action;
+      console.log(action, typeof monsters);
+      if (selectedUnit.unitType === "monster") {
+        for(let i = 0; i < monsters.length; i++) {
+          if(selectedUnit.monsterId === monsters[i].id) {
+            selectedUnit = { ...selectedUnit, ...monsters[i] };
+          }
+        }
+      }
+      let monsterMap = new Map();
+      for(let i = 0; i < monsters.length; i++) {
+        monsterMap.set(monsters[i].id, monsters[i]);
       }
       let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
-        nearbyMonster.monsterId === monster.id ? Object.assign(nearbyMonster, monster) : nearbyMonster
+        monsterMap.has(nearbyMonster.monsterId) ? Object.assign(nearbyMonster, monsterMap.get(nearbyMonster.monsterId)) : nearbyMonster
       );
       return {
         ...state,

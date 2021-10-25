@@ -107,7 +107,7 @@ Npc.reviveDeadMonsters = async function () {
       }
     },
   });
-  return Promise.all(deadMonsters.map(monster => monster.update({health: monster.totalHealth})));
+  return Promise.all(deadMonsters.map(monster => monster.update({health: monster.totalHealth, aggroedOn: null})));
 
 }
 

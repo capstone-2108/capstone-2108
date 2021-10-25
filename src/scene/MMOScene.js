@@ -11,7 +11,7 @@ import {
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
-  scenePlayerLoadCallback, monsterHasDiedCallback, playerHasDiedCallback
+  scenePlayerLoadCallback, monsterHasDiedCallback, playerHasDiedCallback, reviveMonstersCallback
 } from '../event/callbacks';
 import {Monster} from '../entity/Monster';
 import {Player} from '../entity/Player';
