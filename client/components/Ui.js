@@ -18,9 +18,9 @@ const useStyles = makeStyles(() => ({
     "&:hover": {
       backgroundColor: "#5555fc"
     },
-    textTransform: "lowercase",
-  },
-}))
+    textTransform: "lowercase"
+  }
+}));
 
 const Ui = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const Ui = () => {
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {
           return (
-            <div className="item">
+            <div className="item" key={i}>
               {i === 0 ? <img src="minecraft_sword.png" width="50px" height="50px" /> : ""}
             </div>
           );
@@ -50,7 +50,7 @@ const Ui = () => {
       </div>
       <div className="currentScene">{currentScene}</div>
       <div className="quit">
-        <Link to="/" style={{textDecoration: "none"}}>
+        <Link to="/" style={{ textDecoration: "none" }}>
           <Button onClick={doLogout} className={classes.btn}>
             QUIT
           </Button>

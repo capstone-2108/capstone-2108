@@ -15,7 +15,6 @@ export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
 export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 
-
 /*************************
  * Action Creators       *
  ************************/
@@ -55,7 +54,6 @@ export const updateHealth = (health) => {
   };
 };
 
-
 export const remotePlayerChangedScenes = (player) => {
   return {
     type: REMOTE_PLAYER_CHANGED_SCENE,
@@ -82,7 +80,6 @@ export const playerTookDamage = (data) => {
     data
   };
 };
-
 
 export const setSelectedUnit = (unitType, id) => {
   return {
@@ -181,7 +178,6 @@ export const logoutCharacters = (characterId) => {
   };
 };
 
-
 export const heartbeat = (socket) => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -255,6 +251,7 @@ export default (state = initialState, action) => {
       let unit;
       if (action.unitType === "monster") {
         unit = state.nearbyMonsters.filter((monster) => monster.monsterId === action.id);
+        console.log("state.nearbyMonsters", state.nearbyMonsters);
         console.log("monster", unit);
         if (unit.length) {
           unit[0].unitType = "monster";
@@ -292,17 +289,19 @@ export default (state = initialState, action) => {
       };
     }
     case PLAYER_TOOK_DAMAGE: {
-      console.log(action)
-      const {local, health, totalHealth} = action.data;
-      if(local) {
-        return {...state, health, totalHealth}
+      console.log(action);
+      const { local, health, totalHealth } = action.data;
+      if (local) {
+        return { ...state, health, totalHealth };
       }
       let selectedUnit = state.selectedUnit;
       if (selectedUnit.unitType === "player" && selectedUnit.characterId === action.data.id) {
         selectedUnit = { ...selectedUnit, health, totalHealth };
       }
       let nearbyPlayers = state.nearbyPlayers.map((player) =>
-        player.characterId === action.data.id ? Object.assign(player, {health, totalHealth}) : player
+        player.characterId === action.data.id
+          ? Object.assign(player, { health, totalHealth })
+          : player
       );
       return {
         ...state,

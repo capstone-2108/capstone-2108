@@ -254,6 +254,11 @@ body {
   padding-left: 70px;
   padding-top: 5px;
 }
+.otherBarRatioMp {
+  font-size: 9px;
+  padding-left: 55px;
+  padding-top: 0px;
+}
 .barRatioEx {
   font-size: 9px;
   padding-left: 70px;
@@ -361,7 +366,6 @@ img {
   font-family: Arial, Helvetica, sans-serif;
   text-transform: none;
   border-radius: 10px;
-
 }
 
 .chat-message {
@@ -405,7 +409,7 @@ img {
 }
 
 .sign-up-emphasize {
-  color: #344a95;
+  color: #5194b6;
 }
 
 .sign-up-emphasize:hover {

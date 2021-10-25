@@ -5,7 +5,7 @@ router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
 const { TemplateCharacter, SpriteSheet, Location, PlayerCharacter, Scene, Npc } = require("../db");
 const { transformToPayload } = require("../db/models/PlayerCharacter");
-const chalk = require('chalk');
+const chalk = require("chalk");
 
 //This fetches all template characters
 router.get("/templates", async (req, res, next) => {
@@ -23,7 +23,7 @@ router.get("/templates", async (req, res, next) => {
 
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   try {
-    console.log(chalk.red('req.params.id', req.params.id));
+    console.log(chalk.red("req.params.id", req.params.id));
     const playerCharacter = await PlayerCharacter.getCharacter(req.params.id);
     res.json(transformToPayload(playerCharacter));
   } catch (err) {
@@ -34,7 +34,7 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
 //gets called if user is LOGGING IN (pulling their playerCharacter info)
 router.get("/character", requireTokenMiddleware, async (req, res, next) => {
   try {
-    const playerCharacter = await PlayerCharacter.getMainCharacterFromUser(req.user.id)
+    const playerCharacter = await PlayerCharacter.getMainCharacterFromUser(req.user.id);
     await playerCharacter.update({ active: true });
     const payload = transformToPayload(playerCharacter);
     payload.userId = req.user.id;
@@ -120,6 +120,7 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
         characterId: playerCharacter.id,
         name: playerCharacter.name,
         health: playerCharacter.health,
+        totalHealth: playerCharacter.totalHealth,
         templateName: playerCharacter.templateCharacter.name,
         spriteSheetImageUrl:
           playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
@@ -148,6 +149,7 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
         monsterId: monster.id,
         name: monster.name,
         health: monster.health,
+        totalHealth: monster.totalHealth,
         templateName: monster.templateCharacter.name,
         spriteSheetImageUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
         spriteSheetJsonUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,

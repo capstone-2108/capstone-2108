@@ -35,7 +35,7 @@ const Npc = db.define("npc", {
  ***********************/
 Npc.getNearbyMonsters = async function (sceneId) {
   return this.findAll({
-    attributes: ["id", "name", "health"],
+    attributes: ["id", "name", "health", "totalHealth"],
     include: [
       {
         model: TemplateCharacter,
@@ -57,7 +57,7 @@ Npc.getNearbyMonsters = async function (sceneId) {
 };
 
 Npc.getMonster = async function (monsterId) {
-  return this.findByPk(monsterId,{
+  return this.findByPk(monsterId, {
     attributes: ["id", "name", "health"],
     include: [
       {
@@ -94,13 +94,16 @@ Npc.resetAggro = async (npcId) => {
 };
 
 Npc.applyDamage = async (monsterId, damage) => {
-  return await db.query('UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth"', {
-    bind: {id: monsterId, damage}
-  });
-}
+  return await db.query(
+    'UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth"',
+    {
+      bind: { id: monsterId, damage }
+    }
+  );
+};
 
-Npc.clearAllAggro = function() {
+Npc.clearAllAggro = function () {
   db.query('UPDATE npcs SET "aggroedOn" = NULL');
-}
+};
 
 module.exports = { Npc };
