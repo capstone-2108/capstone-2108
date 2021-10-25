@@ -38,28 +38,28 @@ const SelectedPlayerInfo = () => {
   // if (selectedUnit.gold) {
     return (
       <div className="OtherCharacterInfo">
-        <div className="player">
+        <div className="selectedPlayerName">
           <h3 id="otherPlayerName">{selectedUnit.name}</h3>
         </div>
-        <div className="playerDetails">
-          <div className="playerImg">
-            <img src="goldRing.png" width="50px" height="50px" />
-            {selectedUnit.portrait ? (
+        <div className="selected-details">
+          {selectedUnit.portrait ? (
+            <div className="playerImg">
+              <img src="goldcircle.png" width="50px" height="50px" />
               <img src={selectedUnit.portrait} className="otherPortrait" />
-            ) : (
-              <img src="question.png" className="otherPortrait" />
-            )}
-          </div>
-          <div className="otherLevelRing">
+            </div>
+          ) : ( <div/>
+            // <img src="question.png" className="otherPortrait" />
+          )}
+          {/* <div className="otherLevelRing">
             <img src="goldRing.png" width="35px" height="35px" />
-          </div>
-          {selectedUnit.level ? (
+          </div> */}
+          {/* {selectedUnit.level ? (
             <h3 className="otherLevel">{selectedUnit.level}</h3>
           ) : (
             <h3 className="otherLevel">0</h3>
-          )}
+          )} */}
 
-          <div className="bars">
+          <div className="selectedBar">
             <div className="otherBar">
               <div className="hp">
                 <h4 className="whiteText">HP</h4>

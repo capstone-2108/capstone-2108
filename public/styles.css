@@ -105,8 +105,9 @@ body {
 .OtherCharacterInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-right: -25px;
+  justify-content: flex-start;
+  /* align-items: center; */
+  /* margin-right: -25px; */
 }
 .otherLevelRing {
   position: absolute;
@@ -130,22 +131,30 @@ body {
         left:0; */
   border-radius: 50%;
 }
-.otherBar {
-  display: flex;
+/* .otherBar {
+  /* display: flex;
   align-items: center;
-  /* justify-content: flex-end; */
-  flex-direction: column;
-  margin-left: 50px;
+  justify-content: flex-end;
+  padding-bottom: 0px;
+  margin-top: 0px; */
+  /* flex-direction: column; */
+  /* margin-left: 50px;
   margin-top: 5px;
   padding: 5px;
   font-size: 12px;
-  height: 5%;
-}
+  height: 5%; */
 
 .playerDetails {
   display: flex;
   align-items: flex-start;
   flex-direction: row;
+}
+
+.selected-details {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .portrait {
@@ -161,6 +170,7 @@ body {
 
 .playerImg {
   flex-grow: 1;
+  align-self: flex-start;
   /* margin: 0px; */
   /* margin-left: -40px;
   margin-top: -15px; */
@@ -188,6 +198,11 @@ body {
 .bars {
   flex-grow: 3;
   margin-top: 25px;
+}
+
+.selectedBar {
+  flex-grow: 3;
+  /* align-self: flex-end; */
 }
 
 .levelRing {

@@ -68,7 +68,7 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
       include: [
         {
           model: TemplateCharacter,
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "portrait"],
           include: {
             model: SpriteSheet,
             attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
