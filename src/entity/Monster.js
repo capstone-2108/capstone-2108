@@ -376,6 +376,10 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
+      console.log('monster animation', animationToPlay)
+      if (animationToPlay.includes("attack")) {
+        this.scene.orcSE.play();
+      }
       this.anims.play(animationToPlay);
     }
     if (this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
