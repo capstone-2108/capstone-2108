@@ -51,11 +51,8 @@ export default class StateMachine {
   }
 
   setState(name, data) {
-    // if (this.debug) {
-    //   console.log(this.name, 'state request made', name);
-    // }
-    //state doesn't exist
     // if(this.stateLock) { return;}
+    //state doesn't exist
     if (!this.states.has(name)) {
       console.log(`Changing to unknown state: ${name}`);
       return;
@@ -66,18 +63,18 @@ export default class StateMachine {
     }
 
     // state is in the process of switching, so queue up this state to play after
-    // if (this.isSwitchingState) {
-    //   this.stateQueue.push(name);
-    //   return;
-    // }
+    if (this.isSwitchingState) {
+      this.stateQueue.push(name);
+      return;
+    }
     this.isSwitchingState = true;
-    // if (this.debug) {
+    if (this.debug) {
       console.log(
         `State Machine ${this.name} is switching from ${
           this.currentState ? this.currentState.name : "none"
         } to ${name}`
       );
-    // }
+    }
     //if we have a current state, and it has an onExit, then lets call that before moving on to the new state
     if (this.currentState && this.currentState.onExit) {
       this.currentState.onExit();
@@ -94,13 +91,10 @@ export default class StateMachine {
   }
 
   update(time, delta) {
-    // if (this.stateQueue.length > 0) {
-    //   if(this.stateQueue.length) {
-    //     console.log('**********states queued');
-    //   }
-    //   this.setState(this.stateQueue.shift());
-    //   return;
-    // }
+    if (this.stateQueue.length > 0) {
+      this.setState(this.stateQueue.shift());
+      return;
+    }
     if (this.currentState && this.currentState.onUpdate) {
       this.currentState.onUpdate(time, delta);
     }

@@ -1,4 +1,5 @@
 import {DIRECTION_CONVERSION, EAST, NORTH, SOUTH, WEST} from '../constants/constants';
+import {deathFadeout} from '../animation/tweens';
 
 export const MONSTER_CONTROL_STATES = {
   NEUTRAL: "NEUTRAL",
@@ -95,7 +96,8 @@ export class MonsterStates {
    */
   deadEnter() {
     // this.closeSnapshot(MONSTER_STATES.IDLE);
-    this.visible = false;
+    deathFadeout(this.scene, this);
+    // this.visible = false;
   }
   deadUpdate() {
 

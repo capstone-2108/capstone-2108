@@ -3,7 +3,7 @@ const { db } = require("./db");
 const seed = require("../script/seed");
 const PORT = process.env.PORT || 1337;
 const server = require("./app");
-const { initSocketServer, initHeartbeat} = require("./socket");
+const { initSocketServer, initHeartbeat, initLazarusPit} = require("./socket");
 const {Npc} = require('./db/models/Npc');
 const {User} = require('./db/models/User');
 
@@ -19,6 +19,7 @@ const init = async () => {
     initSocketServer();
     server.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`));
     initHeartbeat();
+    initLazarusPit();
     Npc.clearAllAggro()
     User.clearAllLogins();
   } catch (ex) {

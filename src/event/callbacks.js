@@ -3,6 +3,7 @@ import { LocalPlayer } from "../entity/LocalPlayer";
 import { Monster } from "../entity/Monster";
 import { eventEmitter } from "../event/EventEmitter";
 import {MONSTER_CONTROL_STATES, MONSTER_STATES} from '../entity/MonsterStates';
+import {deathFadeout} from '../animation/tweens';
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -177,7 +178,25 @@ export function monsterHasDiedCallback(monsterId) {
     monster.stateMachine.setState(MONSTER_STATES.DEAD);
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     monster.aggroZone.resetAggro(true);
-    console.log(monster.stateMachine.currentState);
+  }
+}
+
+export function reviveMonstersCallback(monsterId) {
+  console.log('monstersRevived', monsterId);
+  if (this.monsters[monsterId]) {
+    const monster = this.monsters[monsterId];
+    monster.stateMachine.setState(MONSTER_STATES.IDLE);
+    monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+  }
+}
+
+export function playerHasDiedCallback(data) {
+  console.log('localPlayer has died');
+  if(data.local) {
+    deathFadeout(this, this.player);
+  }
+  else {
+    console.log('remote player has died');
   }
 }
 

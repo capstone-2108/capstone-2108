@@ -7,14 +7,12 @@ import {
   monsterControlResetAggroCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
-  remotePlayerHitMonster,
   remotePlayerChangedSceneCallback,
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
-  scenePlayerLoadCallback, monsterHasDiedCallback
+  scenePlayerLoadCallback, monsterHasDiedCallback, playerHasDiedCallback
 } from '../event/callbacks';
-import {RemotePlayer} from '../entity/RemotePlayer';
 import {Monster} from '../entity/Monster';
 import {Player} from '../entity/Player';
 
@@ -109,8 +107,16 @@ export default class MMOScene extends Phaser.Scene {
 
     this.unsubscribes.push(
       eventEmitter.subscribe("monsterHasDied", monsterHasDiedCallback.bind(this))
+    )
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("reviveMonsters", reviveMonstersCallback.bind(this))
     );
 
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("playerHasDied", playerHasDiedCallback.bind(this))
+    );
 
     //cleans up any unsubscribes
     this.unsubscribes.push(

@@ -11,7 +11,7 @@ import {
   monsterTookDamage,
   playerTookDamage,
   remotePlayerChangedScenes,
-  remotePlayerTookDamage,
+  remotePlayerTookDamage, reviveMonsters,
   setSelectedUnit
 } from '../store/player';
 
@@ -130,7 +130,15 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a player
     newSocket.on("playerTookDamage", (data) => {
       dispatch(playerTookDamage(data));
-      // eventEmitter.emit("remoteMonsterHitPlayer", data);
+      if(!data.playerCharacter.isAlive && data.local) {
+        eventEmitter.emit('playerHasDied', data);
+      }
+    });
+
+    //received a message from the server that we should revive monsters
+    newSocket.on("reviveMonsters", (data) => {
+      dispatch(reviveMonsters(data));
+        eventEmitter.emit('reviveMonsters', data);
     });
 
     /****************

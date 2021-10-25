@@ -47,6 +47,12 @@ const PlayerCharacter = db.define("playerCharacter", {
     allowNull: false,
     defaultValue: 1
   },
+  isAlive: {
+    type: Sequelize.VIRTUAL,
+    get: function() {
+      return this.health > 0;
+    }
+  },
 });
 
 /************************
@@ -151,11 +157,19 @@ PlayerCharacter.logout = async function (userId, characterId) {
   return playerCharacter;
 };
 
+// PlayerCharacter.applyDamage = async function (characterId, damage) {
+//   return await db.query('UPDATE "playerCharacters" SET health = health - $damage WHERE id = $id returning id, health, "totalHealth"', {
+//     bind: {id: characterId, damage},
+//     logging: true
+//   });
+// }
+
 PlayerCharacter.applyDamage = async function (characterId, damage) {
-  return await db.query('UPDATE "playerCharacters" SET health = health - $damage WHERE id = $id returning id, health, "totalHealth"', {
-    bind: {id: characterId, damage},
-    logging: true
+  const character = await this.findByPk(characterId, {
+    attributes: ["id", "health", "totalHealth", "isAlive"]
   });
+  await character.update({health: character.health - damage});
+  return character.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 
 PlayerCharacter.resetAggroOnPlayerCharacter = async function(characterId) {

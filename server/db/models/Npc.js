@@ -99,6 +99,18 @@ Npc.resetAggro = async (npcId) => {
   return monster.update({ aggroedOn: null });
 };
 
+Npc.reviveDeadMonsters = async function () {
+  const deadMonsters = await this.findAll({
+    where: {
+      health: {
+        [Op.lte]: 0
+      }
+    },
+  });
+  return Promise.all(deadMonsters.map(monster => monster.update({health: monster.totalHealth})));
+
+}
+
 Npc.applyDamage = async function (monsterId, damage) {
   // return await db.query('UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth", "isAlive"', {
   //   bind: {id: monsterId, damage},
@@ -108,7 +120,7 @@ Npc.applyDamage = async function (monsterId, damage) {
     attributes: ["id", "health", "totalHealth", "isAlive"]
   });
   await monster.update({health: monster.health - damage});
-  return monster.reload();
+  return monster.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 
 Npc.clearAllAggro = function() {

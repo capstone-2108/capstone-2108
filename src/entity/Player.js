@@ -14,6 +14,7 @@ import {
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
 import {eventEmitter} from '../event/EventEmitter';
+import {damageFlash} from '../animation/tweens';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -106,25 +107,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.stateMachine.setState("idle");
   }
 
-  damageFlash() {
-    console.log("hitEnter");
-    this.scene.tweens.addCounter({
-      from: 0,
-      to: 100,
-      duration: 200,
-      onUpdate: (tween) => {
-        const tweenVal = Math.floor(tween.getValue());
-        if (tweenVal > 90) {
-          this.clearTint();
-        } else if (tweenVal % 2) {
-          this.setTintFill(0xff0000);
-        } else {
-          this.setTintFill(0xffffff);
-        }
-      }
-    });
-  }
-
   idleStateUpdate() {
     this.animationPlayer("idle");
   }
@@ -187,7 +169,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
           break;
       }
       this.scene.physics.overlap(this.meleeHitbox, this.scene.monsterGroup, (hitBox, target) => {
-        target.damageFlash();
+        damageFlash(this.scene, target);
         if(this.localPlayer) {
           eventEmitter.emit("monsterTookDamage", {
             playerCharacterId: this.id,
