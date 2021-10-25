@@ -49,21 +49,35 @@ body {
 }
 .ui {
   display: flex;
-  width: 350px;
-  height: 686px;
-  color: white;
-  /* text-align: center; */
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
-    Verdana, sans-serif;
-  padding: 0;
+  width: 340px;
+  height: 693px;
+  color: #f5f3e6;
+  /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
+    Verdana, sans-serif; */
+  font-family: "cinzel-decorative";
+  text-transform: lowercase;
+  /* padding: 0; */
   justify-content: space-between;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #252441;
+  overflow: hidden;
+  /* background-color: #252441; */
+  /* background-color: #5d615e; */
+  background-image: url("/images/darkBackground.png");
   border-style: solid;
-  border-width: 7px;
-  border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1;
+  border-width: 15px;
+  /* border-image: linear-gradient(rgb(192, 115, 137), rgb(140, 27, 61)) 1; */
+  /* border-color: rgb(226, 183, 87); */
+  border-image: url("/images/treetexture.jpeg") 20 30 10 20 repeat !important;
 }
+
+/* .dashboard {
+  border-style: solid;
+  border-width: 15px;
+    border-image: url("/images/stones.jpeg") 20 30 10 20 repeat !important;
+    z-index: 5;
+
+} */
 
 #playerName {
   padding-top: 10px;
@@ -147,7 +161,6 @@ body {
 
 .playerImg {
   flex-grow: 1;
-  /* position: relative; */
   /* margin: 0px; */
   /* margin-left: -40px;
   margin-top: -15px; */
@@ -155,8 +168,8 @@ body {
 
 .playerImg > img {
   position: absolute;
-  top: inherit;
-  left: inherit;
+  /* top: inherit;
+  left: inherit; */
 }
 .playerImg > img:first-child {
   z-index: 2;
@@ -269,7 +282,7 @@ img {
 }
 
 .item {
-  background-color: rgb(14, 14, 14);
+  background-color: rgb(52, 52, 52);
   width: 61px;
   height: 61px;
   border-radius: 5px;
@@ -284,12 +297,18 @@ img {
 
 #logoutButton {
   padding: 10px;
-  color: black;
+  color: #f5f3e6;
   border-radius: 5px;
-  width: 253px;
+  width: 173px;
   /* margin: 10px; */
   padding-left: 10px;
-  background-color: #6153da;
+  background-color: #5194b6;
+  font-family: "cinzel-decorative";
+  text-transform: lowercase;
+}
+
+#logoutButton:hover {
+  background-color: #77963f;
 }
 /* .buttonDiv {
   display: flex;
@@ -306,39 +325,60 @@ img {
   background-color: rgb(223, 119, 149);
 }
 
+.chat-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .chatbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
   position: relative;
+  border-radius: 10px;
+  flex-grow: 1;
 }
 
 .real-chatbox {
   padding-top: 20px;
-  min-width: 350px;
-  max-width: 350px;
+  min-width: 314px;
+  max-width: 314px;
+  border-radius: 10px;
 }
 
 #chat_history {
-  height: 193px;
-  /* display: flex; */
-  /* flex-flow: column-reverse nowrap; */
+  height: 190px;
+  display: flex;
+  flex-flow: column-reverse nowrap;
   overflow-y: scroll;
   overflow-x: hidden;
-  background-color: #211510;
+  background-color: rgba(133, 124, 124, 0.2);
   border: 1px solid #504137;
-  color: gold;
+  color: #f5f3e6;
   width: 99.5%;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: none;
+  border-radius: 10px;
+
 }
 
 .chat-message {
+  margin-left: 1%;
   width: inherit;
   word-wrap: break-word;
   margin-top: 0.25rem;
+  /* border-radius: 10px 10px 0 0; */
 }
 
 .new-chat-message {
-  width: 99%;
+  width: 98%;
   border: 1px solid #504137;
-  display: flex;
-  padding-right: 0px;
+  padding: 2px;
+  /* padding-right: 0px; */
+  border-radius: 7px;
+  margin-top: 5px;
 }
 
 .authForm {

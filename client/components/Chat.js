@@ -22,7 +22,7 @@ const Chat = (props) => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="chat-container">
       {socket ? (
         <Grid container className="chatbox">
           <Grid item className="real-chatbox">
