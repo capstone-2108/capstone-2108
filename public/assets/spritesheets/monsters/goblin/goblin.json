@@ -1,0 +1,755 @@
+{
+	"textures": [
+		{
+			"image": "goblin.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 64,
+				"h": 248
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "goblin_attack-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 27,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 27,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 16,
+						"w": 27,
+						"h": 17
+					},
+					"frame": {
+						"x": 30,
+						"y": 1,
+						"w": 27,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 16,
+						"w": 27,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 20,
+						"w": 27,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 27,
+						"h": 17
+					},
+					"frame": {
+						"x": 30,
+						"y": 20,
+						"w": 27,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 22,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 39,
+						"w": 22,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 16,
+						"w": 22,
+						"h": 17
+					},
+					"frame": {
+						"x": 25,
+						"y": 39,
+						"w": 22,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 17,
+						"w": 14,
+						"h": 16
+					},
+					"frame": {
+						"x": 49,
+						"y": 39,
+						"w": 14,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_attack-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 17,
+						"w": 14,
+						"h": 16
+					},
+					"frame": {
+						"x": 49,
+						"y": 57,
+						"w": 14,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_attack-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 16,
+						"w": 21,
+						"h": 27
+					},
+					"frame": {
+						"x": 1,
+						"y": 58,
+						"w": 21,
+						"h": 27
+					}
+				},
+				{
+					"filename": "goblin_attack-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 21,
+						"h": 26
+					},
+					"frame": {
+						"x": 24,
+						"y": 58,
+						"w": 21,
+						"h": 26
+					}
+				},
+				{
+					"filename": "goblin_walk-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 15,
+						"w": 16,
+						"h": 19
+					},
+					"frame": {
+						"x": 47,
+						"y": 75,
+						"w": 16,
+						"h": 19
+					}
+				},
+				{
+					"filename": "goblin_attack-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 6,
+						"w": 20,
+						"h": 27
+					},
+					"frame": {
+						"x": 24,
+						"y": 86,
+						"w": 20,
+						"h": 27
+					}
+				},
+				{
+					"filename": "goblin_walk-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 15,
+						"w": 17,
+						"h": 18
+					},
+					"frame": {
+						"x": 46,
+						"y": 96,
+						"w": 17,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_attack-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 20,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 87,
+						"w": 20,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 6,
+						"w": 19,
+						"h": 27
+					},
+					"frame": {
+						"x": 1,
+						"y": 106,
+						"w": 19,
+						"h": 27
+					}
+				},
+				{
+					"filename": "goblin_walk-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 17,
+						"w": 19,
+						"h": 16
+					},
+					"frame": {
+						"x": 22,
+						"y": 115,
+						"w": 19,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 15,
+						"w": 18,
+						"h": 18
+					},
+					"frame": {
+						"x": 43,
+						"y": 116,
+						"w": 18,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_walk-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 15,
+						"w": 18,
+						"h": 18
+					},
+					"frame": {
+						"x": 22,
+						"y": 133,
+						"w": 18,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_walk-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 15,
+						"w": 18,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 135,
+						"w": 18,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_attack-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 16,
+						"w": 18,
+						"h": 17
+					},
+					"frame": {
+						"x": 42,
+						"y": 136,
+						"w": 18,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_idle-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 18,
+						"h": 17
+					},
+					"frame": {
+						"x": 21,
+						"y": 153,
+						"w": 18,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_idle-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 16,
+						"w": 18,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 155,
+						"w": 18,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_attack-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 17,
+						"w": 18,
+						"h": 16
+					},
+					"frame": {
+						"x": 41,
+						"y": 155,
+						"w": 18,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_idle-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 17,
+						"w": 18,
+						"h": 16
+					},
+					"frame": {
+						"x": 21,
+						"y": 172,
+						"w": 18,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 17,
+						"w": 18,
+						"h": 16
+					},
+					"frame": {
+						"x": 1,
+						"y": 174,
+						"w": 18,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 15,
+						"w": 17,
+						"h": 18
+					},
+					"frame": {
+						"x": 41,
+						"y": 173,
+						"w": 17,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_walk-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 17,
+						"w": 17,
+						"h": 17
+					},
+					"frame": {
+						"x": 21,
+						"y": 190,
+						"w": 17,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_walk-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 17,
+						"w": 17,
+						"h": 17
+					},
+					"frame": {
+						"x": 1,
+						"y": 192,
+						"w": 17,
+						"h": 17
+					}
+				},
+				{
+					"filename": "goblin_walk-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 17,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 40,
+						"y": 193,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 17,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 20,
+						"y": 209,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 17,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 1,
+						"y": 211,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 17,
+						"w": 17,
+						"h": 16
+					},
+					"frame": {
+						"x": 39,
+						"y": 211,
+						"w": 17,
+						"h": 16
+					}
+				},
+				{
+					"filename": "goblin_walk-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 15,
+						"w": 16,
+						"h": 18
+					},
+					"frame": {
+						"x": 20,
+						"y": 227,
+						"w": 16,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_walk-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 15,
+						"w": 16,
+						"h": 18
+					},
+					"frame": {
+						"x": 1,
+						"y": 229,
+						"w": 16,
+						"h": 18
+					}
+				},
+				{
+					"filename": "goblin_attack-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 17,
+						"w": 15,
+						"h": 16
+					},
+					"frame": {
+						"x": 38,
+						"y": 229,
+						"w": 15,
+						"h": 16
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:879c1b20e3935da9c74d8fb3893a1cee:b1fc88787ea3cce631a7cb37c1296706:56fcc8a03b90e324aea6762dac4dd6a8$"
+	}
+}

@@ -49,6 +49,18 @@ export default class Preloader extends Phaser.Scene {
       "spritesheets/monsters/orc/orc.json"
     );
 
+    this.load.atlas(
+      "troll",
+      "spritesheets/monsters/troll/troll.png",
+      "spritesheets/monsters/troll/troll.json"
+    );
+
+    this.load.atlas(
+      "goblin",
+      "spritesheets/monsters/goblin/goblin.png",
+      "spritesheets/monsters/goblin/goblin.json"
+    );
+
     //How to load a map, this is a .json file which tells phaser how to layout a map, you can generate this in the Tiled application
     this.load.tilemapTiledJSON("start-scene", "/maps/start-scene.json");
     this.load.tilemapTiledJSON("second-scene", "/maps/second-scene.json");
@@ -66,7 +78,6 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("wall", "tilesets/forest/wall.png");
     this.load.image("minimapBorder", "gold.png");
     this.load.image("dungeon", "tilesets/tileset/Dungeon.png");
-    this.load.image("mute", "mute.png")
 
 
     this.input.mouse.disableContextMenu();
