@@ -11,6 +11,8 @@ export default class MiddleTown extends MMOScene {
   }
 
   create() {
+    const music = this.sound.add("scene4Audio");
+    // music.play();
 
     this.map = this.make.tilemap({ key: "middle-town" });
     const townTiles = this.map.addTilesetImage("town", "town");
