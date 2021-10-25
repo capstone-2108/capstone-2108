@@ -58,7 +58,6 @@ const PlayerInfo = () => {
                 height: "20px"
               }}>
               <div style={healthStyle}>
-                {" "}
                 <div className="barRatioMp">{`${player.health}/${player.totalHealth}`}</div>
               </div>
             </div>

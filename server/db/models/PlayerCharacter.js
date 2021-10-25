@@ -64,11 +64,11 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
         },
         active: true
       },
-      attributes: ["id", "name", "health"],
+      attributes: ["id", "name", "health", "totalHealth"],
       include: [
         {
           model: TemplateCharacter,
-          attributes: ["id", "name"],
+          attributes: ["id", "name", "portrait"],
           include: {
             model: SpriteSheet,
             attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]

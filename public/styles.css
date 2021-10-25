@@ -50,7 +50,7 @@ body {
 .ui {
   display: flex;
   width: 340px;
-  height: 693px;
+  height: 670px;
   color: #f5f3e6;
   /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
     Verdana, sans-serif; */
@@ -95,8 +95,8 @@ body {
 #otherPlayerName {
   font-size: 12px;
   text-align: center;
-  /* padding-top: 10px;
-  margin-bottom: 10px; */
+  margin-top: 15px;
+  margin-bottom: 0px;
 }
 #anonymous {
   margin: 0px;
@@ -105,8 +105,12 @@ body {
 .OtherCharacterInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-right: -25px;
+  justify-content: flex-start;
+  justify-content: center;
+  margin-top: 5px;
+  padding-bottom: 15px;
+  /* align-items: center; */
+  /* margin-right: -25px; */
 }
 .otherLevelRing {
   position: absolute;
@@ -133,19 +137,37 @@ body {
 .otherBar {
   display: flex;
   align-items: center;
-  /* justify-content: flex-end; */
-  flex-direction: column;
-  margin-left: 50px;
+  margin-left: 60px;
+  margin-top: 20px;
+    padding-bottom: 0px;
+
+}
+/* .otherBar {
+  /* display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 0px;
+  margin-top: 0px; */
+/* flex-direction: column; */
+/* margin-left: 50px;
   margin-top: 5px;
   padding: 5px;
   font-size: 12px;
-  height: 5%;
-}
+  height: 5%; */
 
 .playerDetails {
   display: flex;
   align-items: flex-start;
   flex-direction: row;
+}
+
+.selected-details {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+
+  margin-left: 55px;
 }
 
 .portrait {
@@ -161,6 +183,7 @@ body {
 
 .playerImg {
   flex-grow: 1;
+  align-self: flex-start;
   /* margin: 0px; */
   /* margin-left: -40px;
   margin-top: -15px; */
@@ -184,10 +207,43 @@ body {
 
   margin: 0px 130px;
 } */
+.otherPlayerImg {
+  flex-grow: 1;
+  align-self: flex-start;
+  margin-right: 10px;
+  /* margin-left: -40px;
+  margin-top: -15px; */
+}
+
+.otherPlayerImg > img {
+  position: absolute;
+  /* top: inherit;
+  left: inherit; */
+}
+.otherPlayerImg > img:first-child {
+  z-index: 2;
+}
+
+.otherPlayerImg > img:nth-child(2) {
+  margin: 12px;
+}
+/* .player {
+  display: flex;
+  align-items: center;
+
+  margin: 0px 130px;
+} */
 
 .bars {
   flex-grow: 3;
   margin-top: 25px;
+}
+
+.selectedBar {
+  flex-grow: 3;
+  align-items: center;
+  /* margin-left: 200px; */
+  /* align-self: flex-end; */
 }
 
 .levelRing {
@@ -246,13 +302,18 @@ body {
 .whiteText {
   padding: 0px;
   margin-top: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
 }
 
 .barRatioMp {
   font-size: 9px;
   padding-left: 70px;
   padding-top: 5px;
+}
+.otherRatio {
+  font-size: 9px;
+  padding-left: 55px;
+  padding-top: 0px;
 }
 .barRatioEx {
   font-size: 9px;
@@ -361,7 +422,6 @@ img {
   font-family: Arial, Helvetica, sans-serif;
   text-transform: none;
   border-radius: 10px;
-
 }
 
 .chat-message {
@@ -405,7 +465,7 @@ img {
 }
 
 .sign-up-emphasize {
-  color: #344a95;
+  color: #5194b6;
 }
 
 .sign-up-emphasize:hover {
