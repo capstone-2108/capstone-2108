@@ -12,7 +12,7 @@ export default class ForestPath extends MMOScene {
 
   create() {
     const music = this.sound.add("scene3Audio");
-    music.play();
+    // music.play();
 
     const map = this.make.tilemap({ key: "forest-path" });
     const grassTiles = map.addTilesetImage("grass", "grass");
