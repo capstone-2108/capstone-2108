@@ -11,7 +11,7 @@ export default class MinimapBorder extends Phaser.Scene {
       key: "minimapBorder",
 
       setXY: {
-        x: 909,
+        x: 910,
         y: 115,
         stepX: 16
       },
