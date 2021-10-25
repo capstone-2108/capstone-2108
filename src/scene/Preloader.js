@@ -7,6 +7,14 @@ export default class Preloader extends Phaser.Scene {
   }
 
   preload() {
+    // These need to go before this.load.path because they don't share the same path
+    this.load.audio("scene1Audio", "/audio/1SceneAudio.wav");
+    this.load.audio("scene2Audio", "/audio/2SceneAudio.wav");
+    this.load.audio("scene3Audio", "/audio/3SceneAudio.wav");
+    this.load.audio("scene4Audio", "/audio/4SceneAudio.wav");
+    this.load.audio("scene5Audio", "/audio/5SceneAudio.wav");
+
+
     this.load.path = "/assets/";
     /**How to load an atlas (basically a sprite sheet with a .json file that tells phaser how to find certain animations**/
     this.load.atlas("fox", "spritesheets/heroes/fox/fox.png", "spritesheets/heroes/fox/fox.json");
@@ -55,6 +63,8 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("wall", "tilesets/forest/wall.png");
     this.load.image("minimapBorder", "gold.png");
     this.load.image("dungeon", "tilesets/tileset/Dungeon.png");
+
+
     this.input.mouse.disableContextMenu();
   }
 

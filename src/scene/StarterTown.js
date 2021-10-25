@@ -10,6 +10,9 @@ export default class StarterTown extends MMOScene {
   }
 
   create() {
+    const music = this.sound.add("scene1Audio");
+    // music.play();
+
     this.map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
 
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
