@@ -160,13 +160,12 @@ function initHeartbeat() {
               message: characterName + " has been logged out by the server!"
             }
           });
+          delete heartBeats[characterId];
           //@todo if a monster is aggroed on a person who's been logged out, we should cancel that aggro
           console.log('characterId', characterId);
-          const aggroedMonsters = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
-          console.log('aggroedMonsters', aggroedMonsters);
-          aggroedMonsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
+          const[rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
+          monsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
           gameSync.emit("remotePlayerLogout", characterId);
-          delete heartBeats[characterId];
         }
       }
       console.log("Sending out heart beat check");
