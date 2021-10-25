@@ -121,6 +121,9 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a monster from another player
     newSocket.on("monsterTookDamage", (data) => {
       dispatch(monsterTookDamage(data));
+      if(!data.monster.isAlive) {
+        eventEmitter.emit('monsterHasDied', data.monster.id);
+      }
       // eventEmitter.emit("remotePlayerHitMonster", data);
     });
 
