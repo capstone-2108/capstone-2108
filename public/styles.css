@@ -95,7 +95,7 @@ body {
 #otherPlayerName {
   font-size: 12px;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 15px;
   margin-bottom: 0px;
 }
 #anonymous {
@@ -107,7 +107,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 10px;
   padding-bottom: 15px;
   /* align-items: center; */
   /* margin-right: -25px; */
