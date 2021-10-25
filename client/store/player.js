@@ -14,6 +14,7 @@ export const REMOTE_PLAYER_CHANGED_SCENE = "REMOTE_PLAYER_CHANGED_SCENE";
 export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
 export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
+export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
 
 /*************************
  * Action Creators       *
@@ -77,7 +78,7 @@ export const monsterTookDamage = (data) => {
 export const playerTookDamage = (data) => {
   return {
     type: PLAYER_TOOK_DAMAGE,
-    data
+    ...data
   };
 };
 
@@ -88,6 +89,13 @@ export const setSelectedUnit = (unitType, id) => {
     id
   };
 };
+
+export const reviveMonsters = (monsters) => {
+  return {
+    type: REVIVE_MONSTERS,
+    monsters
+  }
+}
 
 //--Thunks--
 export const fetchCharacterData = () => {
@@ -277,7 +285,6 @@ export default (state = initialState, action) => {
       let selectedUnit = state.selectedUnit;
       const {local, monster} = action
       if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === monster.id) {
-        console.log('updated selectedUnit');
         selectedUnit = { ...selectedUnit, ...monster };
       }
       let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
@@ -290,19 +297,16 @@ export default (state = initialState, action) => {
       };
     }
     case PLAYER_TOOK_DAMAGE: {
-      console.log(action);
-      const { local, health, totalHealth } = action.data;
-      if (local) {
-        return { ...state, health, totalHealth };
+      const {local, playerCharacter} = action
+      if(local) {
+        return {...state, ...playerCharacter}
       }
       let selectedUnit = state.selectedUnit;
       if (selectedUnit.unitType === "player" && selectedUnit.characterId === action.data.id) {
-        selectedUnit = { ...selectedUnit, health, totalHealth };
+        selectedUnit = { ...selectedUnit, ...playerCharacter };
       }
       let nearbyPlayers = state.nearbyPlayers.map((player) =>
-        player.characterId === action.data.id
-          ? Object.assign(player, { health, totalHealth })
-          : player
+        player.characterId === action.data.id ? Object.assign(player, playerCharacter) : player
       );
       return {
         ...state,
@@ -328,6 +332,30 @@ export default (state = initialState, action) => {
           nearbyPlayers
         };
       }
+    }
+    case REVIVE_MONSTERS: {
+      let selectedUnit = state.selectedUnit;
+      const {monsters} = action;
+      console.log(action, typeof monsters);
+      if (selectedUnit.unitType === "monster") {
+        for(let i = 0; i < monsters.length; i++) {
+          if(selectedUnit.monsterId === monsters[i].id) {
+            selectedUnit = { ...selectedUnit, ...monsters[i] };
+          }
+        }
+      }
+      let monsterMap = new Map();
+      for(let i = 0; i < monsters.length; i++) {
+        monsterMap.set(monsters[i].id, monsters[i]);
+      }
+      let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
+        monsterMap.has(nearbyMonster.monsterId) ? Object.assign(nearbyMonster, monsterMap.get(nearbyMonster.monsterId)) : nearbyMonster
+      );
+      return {
+        ...state,
+        selectedUnit,
+        nearbyMonsters
+      };
     }
     default:
       return state;

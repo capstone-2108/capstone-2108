@@ -16,8 +16,8 @@ import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
 import { MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates } from "./MonsterStates";
+import {damageFlash} from '../animation/tweens';
 
-console.log(MONSTER_STATES);
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
    *
@@ -103,7 +103,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       .addState(MONSTER_CONTROL_STATES.CONTROLLING, {})
       .addState(MONSTER_CONTROL_STATES.CONTROLLED, {});
 
-    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.id, true)
+    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.id )
       .addState(MONSTER_STATES.WALK, {
         onEnter: this.monsterStates.walkEnter,
         onUpdate: this.monsterStates.walkUpdate,
@@ -205,11 +205,11 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           characterId: target.id,
           damage: 10
         });
-        target.damageFlash();
+        damageFlash(this.scene, target);
       });
       this.scene.physics.overlap(this.meleeHitbox, this.scene.playerGroup, (hitBox, target) => {
         //plays animations on remote players
-        target.damageFlash();
+        damageFlash(this.scene, target);
       });
       if (frame.index === 3) {
         this.meleeHitbox.body.enable = true;
@@ -232,23 +232,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-  damageFlash() {
-    this.scene.tweens.addCounter({
-      from: 0,
-      to: 100,
-      duration: 200,
-      onUpdate: (tween) => {
-        const tweenVal = Math.floor(tween.getValue());
-        if (tweenVal > 90) {
-          this.clearTint();
-        } else if (tweenVal % 2) {
-          this.setTintFill(0xff0000);
-        } else {
-          this.setTintFill(0xffffff);
-        }
-      }
-    });
-  }
+
 
   update(time, delta) {
     if (this.stateMachine.isCurrentState(MONSTER_STATES.DEAD)) {return}
@@ -413,7 +397,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
           this.stateMachine.setState(MONSTER_STATES.ATTACK);
-          console.log("next to");
         }
       } else {
         this.clearPath();
