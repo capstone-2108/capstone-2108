@@ -46,7 +46,7 @@ const SelectedPlayerInfo = () => {
         <div className="selectedBar">
           <div className="otherPlayerImg">
             <img src="goldcircle.png" width="50px" height="50px" />
-            <img src={selectedUnit.portrait} className="otherPortrait"/>
+            <img src={selectedUnit.portrait} className="otherPortrait" />
           </div>
           <div className="otherBar">
             <div className="hp">
@@ -58,7 +58,9 @@ const SelectedPlayerInfo = () => {
                 width: "150px",
                 height: "12px"
               }}>
-              <div style={healthStyle}></div>
+              <div style={healthStyle}>
+                <div className="otherRatio">{`${selectedUnit.health}/${selectedUnit.totalHealth}`}</div>
+              </div>
             </div>
           </div>
         </div>

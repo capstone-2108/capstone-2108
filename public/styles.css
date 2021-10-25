@@ -106,6 +106,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  justify-content: center;
   margin-top: 20px;
   /* align-items: center; */
   /* margin-right: -25px; */
@@ -137,6 +138,8 @@ body {
   align-items: center;
   margin-left: 60px;
   margin-top: 20px;
+    padding-bottom: 0px;
+
 }
 /* .otherBar {
   /* display: flex;
@@ -237,6 +240,7 @@ body {
 
 .selectedBar {
   flex-grow: 3;
+  align-items: center;
   /* margin-left: 200px; */
   /* align-self: flex-end; */
 }
@@ -297,7 +301,7 @@ body {
 .whiteText {
   padding: 0px;
   margin-top: 1px;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
 }
 
 .barRatioMp {
@@ -305,7 +309,7 @@ body {
   padding-left: 70px;
   padding-top: 5px;
 }
-.otherBarRatioMp {
+.otherRatio {
   font-size: 9px;
   padding-left: 55px;
   padding-top: 0px;
