@@ -11,8 +11,9 @@ export default class ForestScene extends MMOScene {
   }
 
   create() {
-    const music = this.sound.add("scene2Audio");
-    // music.play();
+    this.music = this.sound.add("scene2Audio");
+    this.music.loop = true;
+    this.music.play();
 
     const map = this.make.tilemap({ key: "second-scene" });
     const grassTiles = map.addTilesetImage("grass", "grass");

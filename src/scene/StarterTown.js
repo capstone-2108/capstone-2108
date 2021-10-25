@@ -10,8 +10,9 @@ export default class StarterTown extends MMOScene {
   }
 
   create() {
-    const music = this.sound.add("scene1Audio");
-    // music.play();
+    this.music = this.sound.add("scene1Audio");
+    this.music.loop = true;
+    this.music.play();
 
     this.map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
 

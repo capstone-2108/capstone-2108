@@ -6,6 +6,7 @@ import ForestPath from "./scene/ForestPath";
 import Dungeon from './scene/Dungeon';
 import MiddleTown from "./scene/MiddleTown";
 import MinimapBorder from "./scene/MinimapBorder";
+import MuteButton from "./scene/MuteButton";
 
 const config = {
   type: Phaser.AUTO,
@@ -40,6 +41,7 @@ export class Game extends Phaser.Game {
     this.scene.add("Dungeon", Dungeon);
 
     this.scene.add("MinimapBorder", MinimapBorder);
+    this.scene.add("MuteButton", MuteButton)
     //starts the game with the main scene
     this.scene.start("Preloader");
   }

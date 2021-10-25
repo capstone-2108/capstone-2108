@@ -51,6 +51,7 @@ export class LocalPlayer extends Player {
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer) => {
       if (pointer.rightButtonDown()) {
         this.stateMachine.setState("melee");
+        this.scene.swordSE.play();
       }
     });
 

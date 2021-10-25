@@ -13,6 +13,9 @@ export default class Preloader extends Phaser.Scene {
     this.load.audio("scene3Audio", "/audio/3SceneAudio.wav");
     this.load.audio("scene4Audio", "/audio/4SceneAudio.wav");
     this.load.audio("scene5Audio", "/audio/5SceneAudio.wav");
+    this.load.audio("orcAttack", "/audio/orcAttack.wav");
+    this.load.audio("swordAttack", "/audio/swordAttack.wav");
+
 
 
     this.load.path = "/assets/";
@@ -63,6 +66,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("wall", "tilesets/forest/wall.png");
     this.load.image("minimapBorder", "gold.png");
     this.load.image("dungeon", "tilesets/tileset/Dungeon.png");
+    this.load.image("mute", "mute.png")
 
 
     this.input.mouse.disableContextMenu();
