@@ -38,41 +38,40 @@ const SelectedPlayerInfo = () => {
   // if (selectedUnit.gold) {
   return (
     <div className="OtherCharacterInfo">
-      <div className="player">
+      <div className="selectedPlayerName">
         <h3 id="otherPlayerName">{selectedUnit.name}</h3>
       </div>
-      <div className="playerDetails">
-        <div className="playerImg">
-          <img src="goldRing.png" width="50px" height="50px" />
-          {selectedUnit.portrait ? (
+      <div className="selected-details">
+        {selectedUnit.portrait ? (
+          <div className="playerImg">
+            <img src="goldcircle.png" width="50px" height="50px" />
             <img src={selectedUnit.portrait} className="otherPortrait" />
-          ) : (
-            <img src="question.png" className="otherPortrait" />
-          )}
-        </div>
-        <div className="otherLevelRing">
-          <img src="goldRing.png" width="35px" height="35px" />
-        </div>
-        {selectedUnit.level ? (
-          <h3 className="otherLevel">{selectedUnit.level}</h3>
+          </div>
         ) : (
-          <h3 className="otherLevel">0</h3>
+          <div />
+          // <img src="question.png" className="otherPortrait" />
         )}
+        {/* <div className="otherLevelRing">
+            <img src="goldRing.png" width="35px" height="35px" />
+          </div> */}
+        {/* {selectedUnit.level ? (
+            <h3 className="otherLevel">{selectedUnit.level}</h3>
+          ) : (
+            <h3 className="otherLevel">0</h3>
+          )} */}
 
-        <div className="bars">
+        <div className="selectedBar">
           <div className="otherBar">
             <div className="hp">
               <h4 className="whiteText">HP</h4>
             </div>
             <div
               style={{
-                backgroundColor: "rgb(52, 52, 52)",
+                backgroundColor: "black",
                 width: "150px",
                 height: "12px"
               }}>
-              <div style={healthStyle}>
-                <div className="otherBarRatioMp">{`${selectedUnit.health}/${selectedUnit.totalHealth}`}</div>
-              </div>
+              <div style={healthStyle}></div>
             </div>
           </div>
         </div>
