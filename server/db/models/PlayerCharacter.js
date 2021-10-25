@@ -64,7 +64,7 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
         },
         active: true
       },
-      attributes: ["id", "name", "health"],
+      attributes: ["id", "name", "health", "totalHealth"],
       include: [
         {
           model: TemplateCharacter,

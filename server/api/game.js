@@ -120,6 +120,7 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
         characterId: playerCharacter.id,
         name: playerCharacter.name,
         health: playerCharacter.health,
+        totalHealth: playerCharacter.totalHealth,
         portrait: playerCharacter.templateCharacter.portrait,
         templateName: playerCharacter.templateCharacter.name,
         spriteSheetImageUrl:
