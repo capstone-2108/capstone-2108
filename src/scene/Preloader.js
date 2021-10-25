@@ -13,6 +13,9 @@ export default class Preloader extends Phaser.Scene {
     this.load.audio("scene3Audio", "/audio/3SceneAudio.wav");
     this.load.audio("scene4Audio", "/audio/4SceneAudio.wav");
     this.load.audio("scene5Audio", "/audio/5SceneAudio.wav");
+    this.load.audio("orcAttack", "/audio/orcAttack.wav");
+    this.load.audio("swordAttack", "/audio/swordAttack.wav");
+
 
 
     this.load.path = "/assets/";
@@ -44,6 +47,18 @@ export default class Preloader extends Phaser.Scene {
       "orc",
       "spritesheets/monsters/orc/orc.png",
       "spritesheets/monsters/orc/orc.json"
+    );
+
+    this.load.atlas(
+      "troll",
+      "spritesheets/monsters/troll/troll.png",
+      "spritesheets/monsters/troll/troll.json"
+    );
+
+    this.load.atlas(
+      "goblin",
+      "spritesheets/monsters/goblin/goblin.png",
+      "spritesheets/monsters/goblin/goblin.json"
     );
 
     //How to load a map, this is a .json file which tells phaser how to layout a map, you can generate this in the Tiled application

@@ -159,12 +159,13 @@ PlayerCharacter.applyDamage = async function (characterId, damage) {
 }
 
 PlayerCharacter.resetAggroOnPlayerCharacter = async function(characterId) {
-  const aggroedMonsters = await Npc.findAll({
+  return Npc.update({aggroedOn: null}, {
     where: {
       aggroedOn: characterId
-    }
+    },
+    returning: true
   });
-  return await Promise.all(aggroedMonsters.map(monster => monster.update({aggroedOn: null}, {returning: true})));
+  // return await Promise.all(aggroedMonsters.map(monster => monster.update({aggroedOn: null}, {returning: true})));
 }
 
 

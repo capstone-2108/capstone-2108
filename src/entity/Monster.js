@@ -16,8 +16,8 @@ import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
 import { MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates } from "./MonsterStates";
-import { LocalPlayer } from "./LocalPlayer";
 
+console.log(MONSTER_STATES);
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
    *
@@ -28,7 +28,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
    * @param {string} templateName
    * @param {number} id the monster id
    */
-  constructor(scene, x, y, spriteKey, templateName, id) {
+  constructor(scene, x, y, spriteKey, templateName, id, isAlive = true) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
@@ -98,12 +98,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     //State
     this.monsterStates = new MonsterStates(this.scene, this);
-    this.controlStateMachine = new StateMachine("monsterControlStateMachine", true)
+    this.controlStateMachine = new StateMachine(this, "monsterControlStateMachine")
       .addState(MONSTER_CONTROL_STATES.NEUTRAL, {})
       .addState(MONSTER_CONTROL_STATES.CONTROLLING, {})
       .addState(MONSTER_CONTROL_STATES.CONTROLLED, {});
 
-    this.stateMachine = new StateMachine(this, "monsterStateMachine", true)
+    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.id, true)
       .addState(MONSTER_STATES.WALK, {
         onEnter: this.monsterStates.walkEnter,
         onUpdate: this.monsterStates.walkUpdate,
@@ -118,13 +118,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         onEnter: this.monsterStates.idleEnter,
         onUpdate: this.monsterStates.idleUpdate,
         onExit: this.monsterStates.idleExit
+      })
+      .addState(MONSTER_STATES.DEAD, {
+        onEnter: this.monsterStates.deadEnter,
+        onUpdate: this.monsterStates.deadUpdate,
+        onExit: this.monsterStates.deadExit
       });
-    // .addState(MONSTER_STATES.HIT, {
-    //   onEnter: this.monsterStates.hitEnter,
-    //   onUpdate: this.monsterStates.hitUpdate,
-    //   onExit: this.monsterStates.hitExit,
-    //   stateLock: true
-    // });
 
     /*************************
      * Multiplayer Variables *
@@ -151,6 +150,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     this.body.offset.x = 13;
     this.body.offset.y = 13;
+
+    if (!isAlive) {
+      this.stateMachine.setState(MONSTER_STATES.DEAD);
+    } else {
+      this.stateMachine.setState(MONSTER_STATES.IDLE);
+    }
   }
 
   dealDamage() {
@@ -246,15 +251,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta) {
-    if (!this.stateMachine.currentState) {
-      this.stateMachine.setState(MONSTER_STATES.IDLE);
-    }
+    if (this.stateMachine.isCurrentState(MONSTER_STATES.DEAD)) {return}
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
     if (
       this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) ||
       this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)
     ) {
-      this.checkAggroZone(); //check if a player is in my aggro zone
+      this.checkAggroZone(); //check if a player is in my aggro zone'
       if (this.waypoints.length) {
         if (this.waypointIdx === 0) {
           this.stateMachine.setState(MONSTER_STATES.WALK);
@@ -373,6 +376,10 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
+      console.log('monster animation', animationToPlay)
+      if (animationToPlay.includes("attack")) {
+        this.scene.orcSE.play();
+      }
       this.anims.play(animationToPlay);
     }
     if (this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
@@ -406,12 +413,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
           this.stateMachine.setState(MONSTER_STATES.ATTACK);
-          console.log('next to');
+          console.log("next to");
         }
       } else {
         this.clearPath();
         this.stateMachine.setState(MONSTER_STATES.IDLE);
-        console.log('aggro reset');
+        console.log("aggro reset");
         // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
         //   this.stateMachine.setState(MONSTER_STATES.WALK);
         //   this.waypointIdx = 0;

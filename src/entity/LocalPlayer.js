@@ -1,7 +1,3 @@
-import { DIRECTION_CONVERSION } from "../constants/constants";
-import { MONSTER_STATES } from "./MonsterStates";
-import { Monster } from "./Monster";
-
 const { Player } = require("./Player");
 const {
   SNAPSHOT_REPORT_INTERVAL,
@@ -51,6 +47,7 @@ export class LocalPlayer extends Player {
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer) => {
       if (pointer.rightButtonDown()) {
         this.stateMachine.setState("melee");
+        this.scene.swordSE.play();
       }
     });
 

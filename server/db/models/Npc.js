@@ -19,6 +19,12 @@ const Npc = db.define("npc", {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  isAlive: {
+    type: Sequelize.VIRTUAL,
+    get: function() {
+      return this.health > 0;
+    }
+  },
   hostile: {
     //only monsters which are hostile should have an aggro zone created around them
     type: Sequelize.BOOLEAN,
@@ -81,7 +87,7 @@ Npc.getMonster = async function (monsterId) {
 
 Npc.setAggroOn = async (npcId, playerCharacterId) => {
   const monster = await Npc.findByPk(npcId);
-  if (!monster.aggroedOn) {
+  if (!monster.aggroedOn && monster.isAlive) {
     monster.update({ aggroedOn: playerCharacterId });
     return true;
   }
@@ -93,14 +99,17 @@ Npc.resetAggro = async (npcId) => {
   return monster.update({ aggroedOn: null });
 };
 
-Npc.applyDamage = async (monsterId, damage) => {
-  return await db.query(
-    'UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth"',
-    {
-      bind: { id: monsterId, damage }
-    }
-  );
-};
+Npc.applyDamage = async function (monsterId, damage) {
+  // return await db.query('UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth", "isAlive"', {
+  //   bind: {id: monsterId, damage},
+  //   raw: true
+  // });
+  const monster = await this.findByPk(monsterId, {
+    attributes: ["id", "health", "totalHealth", "isAlive"]
+  });
+  await monster.update({health: monster.health - damage});
+  return monster.reload();
+}
 
 Npc.clearAllAggro = function () {
   db.query('UPDATE npcs SET "aggroedOn" = NULL');
