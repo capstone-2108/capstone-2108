@@ -109,6 +109,26 @@ const templateCharacterData = [
     isPlayable: false,
     portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
     description: "Strong, but slow and not adept at magic"
+  },
+  {
+    name: "troll",
+    baseStrength: 15,
+    baseIntelligence: 3,
+    constitution: 10,
+    baseHealth: 75,
+    isPlayable: false,
+    portrait: "/assets/spritesheets/monsters/troll/portrait.png",
+    description: "Strong, but slow and not adept at magic"
+  },
+  {
+    name: "goblin",
+    baseStrength: 15,
+    baseIntelligence: 5,
+    constitution: 10,
+    baseHealth: 75,
+    isPlayable: false,
+    portrait: "/assets/spritesheets/monsters/goblin/portrait.png",
+    description: "Strong, but slow and not adept at magic"
   }
 ];
 
@@ -137,6 +157,16 @@ const spriteSheetData = [
     name: "orc",
     spriteSheet_image_url: "../spritesheets/monsters/orc/orc.png",
     spriteSheet_json_url: "../spritesheets/monsters/orc/orc.json"
+  },
+  {
+    name: "troll",
+    spriteSheet_image_url: "../spritesheets/monsters/troll/troll.png",
+    spriteSheet_json_url: "../spritesheets/monsters/troll/troll.json"
+  },
+  {
+    name: "goblin",
+    spriteSheet_image_url: "../spritesheets/monsters/goblin/goblin.png",
+    spriteSheet_json_url: "../spritesheets/monsters/goblin/goblin.json"
   }
 ];
 
@@ -178,9 +208,9 @@ const npcData = [
   // remove this orc after development
   {
     npc: {
-      name: "Orc",
-      health: 10,
-      totalHealth: 10
+      name: "Goblin",
+      health: 100,
+      totalHealth: 1000
     },
     location: {
       xPos: 250,
@@ -188,13 +218,13 @@ const npcData = [
       facingDirection: "w",
       sceneId: 1
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   // FIRST SCENE MONSTERS
   {
     npc: {
       name: "Orcie",
-      health: 900,
+      health: 100,
       totalHealth: 1000
     },
     location: {
@@ -207,8 +237,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orcla",
-      health: 900,
+      name: "Trollie",
+      health: 150,
       totalHealth: 1000
     },
     location: {
@@ -217,13 +247,13 @@ const npcData = [
       facingDirection: "w",
       sceneId: 1
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   // START OF SECOND SCENE MONSTERS
   {
     npc: {
       name: "Orcta",
-      health: 900,
+      health: 200,
       totalHealth: 1000
     },
     location: {
@@ -236,8 +266,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orcme",
-      health: 900,
+      name: "Goblimie",
+      health: 250,
       totalHealth: 1000
     },
     location: {
@@ -246,12 +276,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 2
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   {
     npc: {
-      name: "Orcccc",
-      health: 900,
+      name: "Trolllllll",
+      health: 300,
       totalHealth: 1000
     },
     location: {
@@ -260,16 +290,16 @@ const npcData = [
       facingDirection: "w",
       sceneId: 2
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
       name: "Ork",
-      health: 900,
+      health: 350,
       totalHealth: 1000
     },
     location: {
-      xPos: 200,
+      xPos: 350,
       yPos: 1100,
       facingDirection: "w",
       sceneId: 2
@@ -278,8 +308,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orkbi",
-      health: 900,
+      name: "Trollbi",
+      health: 400,
       totalHealth: 1000
     },
     location: {
@@ -288,12 +318,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 2
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
-      name: "Orktri",
-      health: 900,
+      name: "Goblintri",
+      health: 450,
       totalHealth: 1000
     },
     location: {
@@ -302,12 +332,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 2
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   {
     npc: {
       name: "Orka",
-      health: 900,
+      health: 500,
       totalHealth: 1000
     },
     location: {
@@ -320,8 +350,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orkione",
-      health: 900,
+      name: "Trollione",
+      health: 550,
       totalHealth: 1000
     },
     location: {
@@ -330,12 +360,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 2
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
-      name: "Orcione",
-      health: 900,
+      name: "Goblinon",
+      health: 600,
       totalHealth: 1000
     },
     location: {
@@ -344,12 +374,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 2
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   {
     npc: {
       name: "Orciline",
-      health: 900,
+      health: 650,
       totalHealth: 1000
     },
     location: {
@@ -363,8 +393,8 @@ const npcData = [
   // START OF THIRD SCENE MONSTERS
   {
     npc: {
-      name: "Orktastic",
-      health: 900,
+      name: "Trolltastic",
+      health: 700,
       totalHealth: 1000
     },
     location: {
@@ -373,12 +403,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 3
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
-      name: "Orktada",
-      health: 900,
+      name: "Goblintada",
+      health: 750,
       totalHealth: 1000
     },
     location: {
@@ -387,12 +417,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 3
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   {
     npc: {
       name: "Orkkabo",
-      health: 900,
+      health: 800,
       totalHealth: 1000
     },
     location: {
@@ -405,8 +435,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orkalalo",
-      health: 900,
+      name: "Trollalalo",
+      health: 750,
       totalHealth: 1000
     },
     location: {
@@ -415,13 +445,13 @@ const npcData = [
       facingDirection: "w",
       sceneId: 3
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   // START OF FOURTH SCENE MONSTERS
   {
     npc: {
-      name: "Orcaby",
-      health: 900,
+      name: "Goblinbaby",
+      health: 800,
       totalHealth: 1000
     },
     location: {
@@ -430,12 +460,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 4
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   {
     npc: {
       name: "Orclom",
-      health: 900,
+      health: 850,
       totalHealth: 1000
     },
     location: {
@@ -448,8 +478,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orcpi",
-      health: 900,
+      name: "Trollpi",
+      health: 850,
       totalHealth: 1000
     },
     location: {
@@ -458,11 +488,11 @@ const npcData = [
       facingDirection: "w",
       sceneId: 4
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
-      name: "Orcpi",
+      name: "Goblinpie",
       health: 900,
       totalHealth: 1000
     },
@@ -472,7 +502,7 @@ const npcData = [
       facingDirection: "w",
       sceneId: 4
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   // START OF FIFTH SCENE MONSTERS
   {
@@ -491,8 +521,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orclona",
-      health: 900,
+      name: "Trollona",
+      health: 920,
       totalHealth: 1000
     },
     location: {
@@ -501,12 +531,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 5
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
-      name: "Orctaco",
-      health: 900,
+      name: "Goblintaco",
+      health: 940,
       totalHealth: 1000
     },
     location: {
@@ -515,12 +545,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 5
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
   {
     npc: {
       name: "Orcpizza",
-      health: 900,
+      health: 960,
       totalHealth: 1000
     },
     location: {
@@ -533,8 +563,8 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orcspaghetti",
-      health: 900,
+      name: "Trollspaghetti",
+      health: 980,
       totalHealth: 1000
     },
     location: {
@@ -543,12 +573,12 @@ const npcData = [
       facingDirection: "w",
       sceneId: 5
     },
-    templateCharacter: "orc"
+    templateCharacter: "troll"
   },
   {
     npc: {
-      name: "Orcramen",
-      health: 900,
+      name: "Goblinramen",
+      health: 1000,
       totalHealth: 1000
     },
     location: {
@@ -557,7 +587,7 @@ const npcData = [
       facingDirection: "w",
       sceneId: 5
     },
-    templateCharacter: "orc"
+    templateCharacter: "goblin"
   },
 ];
 

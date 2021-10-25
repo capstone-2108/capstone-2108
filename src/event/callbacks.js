@@ -28,6 +28,7 @@ export function scenePlayerLoadCallback(data) {
         yPos: transitionZone.yPos
       });
       this.cleanUp();
+      this.sound.stopAll();
       this.scene.start(transitionZone.sceneName);
     });
   });

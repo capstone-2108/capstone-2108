@@ -36,6 +36,9 @@ export default class MMOScene extends Phaser.Scene {
 
     this.input.setDefaultCursor('url(images/FantasyCursor.cur), pointer');
 
+    this.swordSE = this.sound.add("swordAttack");
+    this.orcSE = this.sound.add("orcAttack");
+
     this.unsubscribes.push(
       eventEmitter.subscribe("disabledEvents", () => {
         console.log("disabledEvents", this);
