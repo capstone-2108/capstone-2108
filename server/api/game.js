@@ -151,6 +151,7 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
         health: monster.health,
         totalHealth: monster.totalHealth,
         templateName: monster.templateCharacter.name,
+        portrait: monster.templateCharacter.portrait,
         spriteSheetImageUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
         spriteSheetJsonUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
         xPos: monster.location.xPos,

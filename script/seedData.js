@@ -107,7 +107,7 @@ const templateCharacterData = [
     constitution: 10,
     baseHealth: 65,
     isPlayable: false,
-    portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
+    portrait: "/assets/spritesheets/monsters/orc/portrait.png",
     description: "Strong, but slow and not adept at magic"
   }
 ];

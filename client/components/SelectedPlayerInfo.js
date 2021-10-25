@@ -46,7 +46,7 @@ const SelectedPlayerInfo = () => {
         <div className="selectedBar">
           <div className="otherPlayerImg">
             <img src="goldcircle.png" width="50px" height="50px" />
-            <img src={selectedUnit.portrait} className="otherPortrait" />
+            <img src={selectedUnit.portrait} className="otherPortrait"/>
           </div>
           <div className="otherBar">
             <div className="hp">
