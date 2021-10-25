@@ -45,7 +45,7 @@ Npc.getNearbyMonsters = async function (sceneId) {
     include: [
       {
         model: TemplateCharacter,
-        attributes: ["id", "name"],
+        attributes: ["id", "name", "portrait"],
         include: {
           model: SpriteSheet,
           attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
@@ -63,12 +63,12 @@ Npc.getNearbyMonsters = async function (sceneId) {
 };
 
 Npc.getMonster = async function (monsterId) {
-  return this.findByPk(monsterId,{
+  return this.findByPk(monsterId, {
     attributes: ["id", "name", "health"],
     include: [
       {
         model: TemplateCharacter,
-        attributes: ["id", "name"],
+        attributes: ["id", "name", "portrait"],
         include: {
           model: SpriteSheet,
           attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
@@ -123,8 +123,8 @@ Npc.applyDamage = async function (monsterId, damage) {
   return monster.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 
-Npc.clearAllAggro = function() {
+Npc.clearAllAggro = function () {
   db.query('UPDATE npcs SET "aggroedOn" = NULL');
-}
+};
 
 module.exports = { Npc };

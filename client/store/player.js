@@ -16,7 +16,6 @@ export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
 
-
 /*************************
  * Action Creators       *
  ************************/
@@ -56,7 +55,6 @@ export const updateHealth = (health) => {
   };
 };
 
-
 export const remotePlayerChangedScenes = (player) => {
   return {
     type: REMOTE_PLAYER_CHANGED_SCENE,
@@ -83,7 +81,6 @@ export const playerTookDamage = (data) => {
     ...data
   };
 };
-
 
 export const setSelectedUnit = (unitType, id) => {
   return {
@@ -189,7 +186,6 @@ export const logoutCharacters = (characterId) => {
   };
 };
 
-
 export const heartbeat = (socket) => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -263,6 +259,7 @@ export default (state = initialState, action) => {
       let unit;
       if (action.unitType === "monster") {
         unit = state.nearbyMonsters.filter((monster) => monster.monsterId === action.id);
+        console.log("state.nearbyMonsters", state.nearbyMonsters);
         console.log("monster", unit);
         if (unit.length) {
           unit[0].unitType = "monster";
