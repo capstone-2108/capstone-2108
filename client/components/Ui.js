@@ -37,7 +37,7 @@ const Ui = () => {
     <div className="dashboard">
       <PlayerInfo />
       {/* <Gold /> */}
-      {player.selectedUnit.name ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }}></div>}
+      {player.selectedUnit.name ? <SelectedPlayerInfo /> : <div style={{ height: "104px" }}></div>}
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {

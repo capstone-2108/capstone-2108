@@ -95,8 +95,8 @@ body {
 #otherPlayerName {
   font-size: 12px;
   text-align: center;
-  /* padding-top: 10px;
-  margin-bottom: 10px; */
+  margin-top: 20px;
+  margin-bottom: 0px;
 }
 #anonymous {
   margin: 0px;
@@ -106,6 +106,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-top: 20px;
   /* align-items: center; */
   /* margin-right: -25px; */
 }
@@ -131,14 +132,20 @@ body {
         left:0; */
   border-radius: 50%;
 }
+.otherBar {
+  display: flex;
+  align-items: center;
+  margin-left: 60px;
+  margin-top: 20px;
+}
 /* .otherBar {
   /* display: flex;
   align-items: center;
   justify-content: flex-end;
   padding-bottom: 0px;
   margin-top: 0px; */
-  /* flex-direction: column; */
-  /* margin-left: 50px;
+/* flex-direction: column; */
+/* margin-left: 50px;
   margin-top: 5px;
   padding: 5px;
   font-size: 12px;
@@ -155,6 +162,8 @@ body {
   align-items: center;
   flex-direction: row;
   justify-content: center;
+
+  margin-left: 55px;
 }
 
 .portrait {
@@ -194,6 +203,32 @@ body {
 
   margin: 0px 130px;
 } */
+.otherPlayerImg {
+  flex-grow: 1;
+  align-self: flex-start;
+  margin-right: 10px;
+  /* margin-left: -40px;
+  margin-top: -15px; */
+}
+
+.otherPlayerImg > img {
+  position: absolute;
+  /* top: inherit;
+  left: inherit; */
+}
+.otherPlayerImg > img:first-child {
+  z-index: 2;
+}
+
+.otherPlayerImg > img:nth-child(2) {
+  margin: 14px;
+}
+/* .player {
+  display: flex;
+  align-items: center;
+
+  margin: 0px 130px;
+} */
 
 .bars {
   flex-grow: 3;
@@ -202,6 +237,7 @@ body {
 
 .selectedBar {
   flex-grow: 3;
+  /* margin-left: 200px; */
   /* align-self: flex-end; */
 }
 
