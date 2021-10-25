@@ -2,10 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const SelectedPlayerInfo = () => {
-  const selectedPlayer = useSelector((state) => state.player.selectedPlayer);
-  const ratio = selectedPlayer.health / selectedPlayer.totalHealth;
+  const selectedUnit = useSelector((state) => state.player.selectedUnit);
+  console.log('selectedUnit', selectedUnit);
+  const ratio = selectedUnit.health / selectedUnit.totalHealth;
   const healthWidth = 150 * ratio;
-  // const expWidth = (selectedPlayer.experience / 100) * 150;
+  // const expWidth = (selectedUnit.experience / 100) * 150;
 
   let healthStyle = "";
 
@@ -34,17 +35,17 @@ const SelectedPlayerInfo = () => {
       height: "12px"
     };
   }
-  if (selectedPlayer.gold) {
+  // if (selectedUnit.gold) {
     return (
       <div className="OtherCharacterInfo">
         <div className="player">
-          <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
+          <h3 id="otherPlayerName">{selectedUnit.name}</h3>
         </div>
         <div className="playerDetails">
           <div className="playerImg">
             <img src="goldRing.png" width="50px" height="50px" />
-            {selectedPlayer.portrait ? (
-              <img src={selectedPlayer.portrait} className="otherPortrait" />
+            {selectedUnit.portrait ? (
+              <img src={selectedUnit.portrait} className="otherPortrait" />
             ) : (
               <img src="question.png" className="otherPortrait" />
             )}
@@ -52,8 +53,8 @@ const SelectedPlayerInfo = () => {
           <div className="otherLevelRing">
             <img src="goldRing.png" width="35px" height="35px" />
           </div>
-          {selectedPlayer.level ? (
-            <h3 className="otherLevel">{selectedPlayer.level}</h3>
+          {selectedUnit.level ? (
+            <h3 className="otherLevel">{selectedUnit.level}</h3>
           ) : (
             <h3 className="otherLevel">0</h3>
           )}
@@ -76,29 +77,29 @@ const SelectedPlayerInfo = () => {
         </div>
       </div>
     );
-  } else {
-    return (
-      <div className="monster">
-        <div className="monster-info">
-          <div className="player">
-            <h3 id="otherPlayerName">{selectedPlayer.name}</h3>
-          </div>
-
-          <div
-            style={{
-              backgroundColor: "black",
-              width: "150px",
-              height: "12px"
-            }}>
-            <div style={healthStyle}>
-              <div className="monsterHp">
-                <h4 className="whiteText">HP</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // } else {
+  //   return (
+  //     <div className="monster">
+  //       <div className="monster-info">
+  //         <div className="player">
+  //           <h3 id="otherPlayerName">{selectedUnit.name}</h3>
+  //         </div>
+  //
+  //         <div
+  //           style={{
+  //             backgroundColor: "black",
+  //             width: "150px",
+  //             height: "12px"
+  //           }}>
+  //           <div style={healthStyle}>
+  //             <div className="monsterHp">
+  //               <h4 className="whiteText">HP</h4>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 };
 export default SelectedPlayerInfo;

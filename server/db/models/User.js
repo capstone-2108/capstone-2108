@@ -110,6 +110,17 @@ User.findByToken = async (token) => {
   }
 };
 
+User.logout = async function (userId) {
+  return this.update({loggedIn: false}, {
+    where: {
+      id: userId
+    }
+  });
+};
+
+User.clearAllLogins = function() {
+  db.query('UPDATE users SET "loggedIn" = false');
+}
 
 
 /******************

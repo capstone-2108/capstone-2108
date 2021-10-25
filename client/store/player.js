@@ -9,9 +9,12 @@ export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const SET_NEARBY_MONSTERS = "SET_NEARBY_MONSTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
 export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
-export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
+// export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
 export const REMOTE_PLAYER_CHANGED_SCENE = "REMOTE_PLAYER_CHANGED_SCENE";
-export const SET_SELECTED_MONSTER = "SET_SELECTED_MONSTER";
+export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
+export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
+export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
+
 
 /*************************
  * Action Creators       *
@@ -52,24 +55,40 @@ export const updateHealth = (health) => {
   };
 };
 
-export const setSelectedPlayer = (character) => {
-  return {
-    type: SET_SELECTED_PLAYER,
-    character
-  };
-};
-
-export const setSelectedMonster = (monster) => {
-  return {
-    type: SET_SELECTED_MONSTER,
-    monster
-  };
-};
 
 export const remotePlayerChangedScenes = (player) => {
   return {
     type: REMOTE_PLAYER_CHANGED_SCENE,
     player
+  };
+};
+
+export const clearPlayerState = () => {
+  return {
+    type: CLEAR_PLAYER_STATE
+  };
+};
+
+export const monsterTookDamage = (data) => {
+  return {
+    type: MONSTER_TOOK_DAMAGE,
+    data
+  };
+};
+
+export const playerTookDamage = (data) => {
+  return {
+    type: PLAYER_TOOK_DAMAGE,
+    data
+  };
+};
+
+
+export const setSelectedUnit = (unitType, id) => {
+  return {
+    type: SET_SELECTED_UNIT,
+    unitType,
+    id
   };
 };
 
@@ -94,18 +113,19 @@ export const fetchCharacterData = () => {
   };
 };
 
-export const fetchRemoteCharacterData = (id) => {
-  return async (dispatch, getState) => {
-    try {
-      const response = await axios.get(`/api/game/character/${id}`);
-      dispatch(setSelectedPlayer(response.data));
-      const state = getState();
-      return state.player;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-};
+// export const fetchSelectedUnitData = (id) => {
+//   return async (dispatch, getState) => {
+//     try {
+//       const response = await axios.get(`/api/game/character/${id}`);
+//       dispatch(setSelectedPlayer(response.data));
+//       const state = getState();
+//       return state.player;
+//     }
+//     catch (err) {
+//       console.log(err);
+//     }
+//   };
+// };
 
 export const fetchNearbyPlayers = (characterId) => {
   return async (dispatch, getState) => {
@@ -161,22 +181,16 @@ export const logoutCharacters = (characterId) => {
   };
 };
 
-export const clearPlayerState = () => {
-  return {
-    type: CLEAR_PLAYER_STATE
-  };
-};
 
-export const fetchSeletedMonster = (id) => {
+export const heartbeat = (socket) => {
   return async (dispatch, getState) => {
-    try {
-      const response = await axios.get(`/api/game/monster/${id}`);
-      dispatch(setSelectedMonster(response.data));
-      let state = getState();
-      return state.player.selectedMonster;
-    } catch (error) {
-      console.log(err);
-    }
+    const state = getState();
+    socket.emit("heartbeat", {
+      userId: state.player.userId,
+      characterName: state.player.name,
+      characterId: state.player.characterId
+    });
+    return true;
   };
 };
 
@@ -189,8 +203,7 @@ const initialState = {
   name: "",
   nearbyPlayers: [],
   nearbyMonsters: [],
-  selectedPlayer: {},
-  selectedMonster: {},
+  selectedUnit: {},
   xPos: 0,
   yPos: 0,
   health: 100,
@@ -201,7 +214,7 @@ const initialState = {
   sceneId: 1,
   sceneName: "StarterTown",
   level: 1,
-  portrait: '',
+  portrait: ""
 };
 
 const clearState = {
@@ -238,10 +251,65 @@ export default (state = initialState, action) => {
       return clearState;
     case UPDATE_PLAYER_CHARACTER:
       return { ...state, ...action.updates };
-    case SET_SELECTED_PLAYER:
-      return { ...state, selectedPlayer: action.character };
-    case SET_SELECTED_MONSTER:
-      return { ...state, selectedPlayer: action.monster };
+    case SET_SELECTED_UNIT: {
+      let unit;
+      if (action.unitType === "monster") {
+        unit = state.nearbyMonsters.filter((monster) => monster.monsterId === action.id);
+        console.log("monster", unit);
+        if (unit.length) {
+          unit[0].unitType = "monster";
+          return {
+            ...state,
+            selectedUnit: unit[0]
+          };
+        }
+      } else {
+        unit = state.nearbyPlayers.filter((player) => player.characterId === action.id);
+        console.log("player", unit);
+        if (unit.length) {
+          unit[0].unitType = "player";
+          return {
+            ...state,
+            selectedUnit: unit[0]
+          };
+        }
+      }
+      return state;
+    }
+    case MONSTER_TOOK_DAMAGE: {
+      let selectedUnit = state.selectedUnit;
+      console.log(MONSTER_TOOK_DAMAGE, action);
+      if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === action.data.id) {
+        selectedUnit = { ...selectedUnit, ...action.data };
+      }
+      let nearbyMonsters = state.nearbyMonsters.map((monster) =>
+        monster.monsterId === action.data.id ? Object.assign(monster, action.data) : monster
+      );
+      return {
+        ...state,
+        selectedUnit,
+        nearbyMonsters
+      };
+    }
+    case PLAYER_TOOK_DAMAGE: {
+      console.log(action)
+      const {local, health, totalHealth} = action.data;
+      if(local) {
+        return {...state, health, totalHealth}
+      }
+      let selectedUnit = state.selectedUnit;
+      if (selectedUnit.unitType === "player" && selectedUnit.characterId === action.data.id) {
+        selectedUnit = { ...selectedUnit, health, totalHealth };
+      }
+      let nearbyPlayers = state.nearbyPlayers.map((player) =>
+        player.characterId === action.data.id ? Object.assign(player, {health, totalHealth}) : player
+      );
+      return {
+        ...state,
+        selectedUnit,
+        nearbyPlayers
+      };
+    }
     case REMOTE_PLAYER_CHANGED_SCENE: {
       const nearbyPlayers = state.nearbyPlayers.filter(
         (nearbyPlayer) => nearbyPlayer.characterId !== action.player.characterId
@@ -250,13 +318,15 @@ export default (state = initialState, action) => {
       if (action.player.sceneId === state.sceneId) {
         nearbyPlayers.push(action.player);
         return {
-          ...state, nearbyPlayers: nearbyPlayers
-        }
-      } else { //remove this player
+          ...state,
+          nearbyPlayers: nearbyPlayers
+        };
+      } else {
+        //remove this player
         return {
           ...state,
           nearbyPlayers
-        }
+        };
       }
     }
     default:

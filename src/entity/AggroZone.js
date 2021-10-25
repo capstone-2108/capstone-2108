@@ -1,4 +1,6 @@
 import { screenToMap } from "../util/conversion";
+import { eventEmitter } from "../event/EventEmitter";
+import {MONSTER_CONTROL_STATES} from './MonsterStates';
 
 export class AggroZone extends Phaser.GameObjects.Zone {
   constructor(scene, x, y, width, height, owner) {
@@ -12,6 +14,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.scene.physics.add.existing(this);
     this.targetLastKnownX = undefined;
     this.targetLastKnownY = undefined;
+    this.requestingAggro = false;
   }
 
   expandAggroZone() {
@@ -21,9 +24,22 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.body.height = 300;
   }
 
+  requestAggroOnTarget(target) {
+    if (!this.requestingAggro) {
+      //send a message to react to notify the server that this monster is requesting aggro on this player
+      eventEmitter.emit("monsterAggroedPlayer", {
+        monsterId: this.owner.id,
+        playerCharacterId: target.id
+      });
+      this.requestingAggro = true;
+    }
+  }
+
   setAggroTarget(target) {
-    this.expandAggroZone();
-    this.target = target;
+    if (this.target !== target) {
+      this.expandAggroZone();
+      this.target = target;
+    }
   }
 
   shrinkAggroZone() {
@@ -51,6 +67,9 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.targetLastKnownX = undefined;
     this.targetLastKnownY = undefined;
     this.target = undefined;
+    this.requestingAggro = false;
+    eventEmitter.emit("monsterRequestResetAggro", this.owner.id);
+    this.owner.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
   }
 
   hasTarget() {
@@ -63,16 +82,14 @@ export class AggroZone extends Phaser.GameObjects.Zone {
       isNextToTarget: false,
       targetHasMoved: false,
       targetX: false,
-      targetY: false,
+      targetY: false
     };
     if (this.target) {
       const isTargetWithinZone = this.scene.physics.overlap(this, this.target, () => {});
-
       //if the player is within the monsters aggro zone
       if (isTargetWithinZone) {
         zoneStatus.isTargetInZone = true; //is the player in the zone?
         zoneStatus.isNextToTarget = this.scene.physics.overlap(this.owner, this.target); //is the owner of this zone next to the target?
-
         //if the player and monster aren't next to each other
         if (!zoneStatus.isNextToTarget) {
           const endNode = screenToMap(this.target.x, this.target.y, this.scene.tileSize); //the tile the player is standing on

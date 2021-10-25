@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { NewChatEntry } from "./NewChatEntry";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { addNewMessage } from "../store/chat";
 import ChatHistory from "./ChatHistory";
 import Grid from "@material-ui/core/Grid";
@@ -11,7 +11,7 @@ const Chat = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const chatSocket = io(`http://${window.location.hostname}:1337/worldChat`, {
+    const chatSocket = io(`${window.location.protocol}//${window.location.host}/worldChat`, {
       withCredentials: true
     });
     setSocket(chatSocket);

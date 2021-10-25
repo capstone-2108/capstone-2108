@@ -13,7 +13,7 @@ import {
 
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
-import { BlockRounded } from "@material-ui/icons";
+import {eventEmitter} from '../event/EventEmitter';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -37,7 +37,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 100,
+      walk: 125,
       run: 150
     };
     this.mode = "idle"; //the mode of the player, idle, walking, running, attacking?
@@ -87,32 +87,50 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     /*************************
      * State Machine *
      *************************/
-    this.stateMachine = new StateMachine(this, this.templateName);
+    this.stateMachine = new StateMachine(this, this.templateName, false);
     this.stateMachine
       .addState("melee", {
-        onEnter: this.meleeAttackEnter
+        onEnter: this.meleeAttackEnter,
+        onExit: this.meleeAttackExit
       })
       .addState("idle", {
         onUpdate: this.idleStateUpdate
+      })
+      // .addState("hit", {
+      //   onEnter: this.hitEnter
+      // })
+      .addState(`walk`, {
+        onUpdate: this.walkStateUpdate
       });
-    this.stateMachine.addState(`walk`, {
-      onUpdate: this.walkStateUpdate
-    });
 
     this.stateMachine.setState("idle");
+  }
 
-    this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, target) => {
-      target.stateMachine.setState("hit");
+  damageFlash() {
+    console.log("hitEnter");
+    this.scene.tweens.addCounter({
+      from: 0,
+      to: 100,
+      duration: 200,
+      onUpdate: (tween) => {
+        const tweenVal = Math.floor(tween.getValue());
+        if (tweenVal > 90) {
+          this.clearTint();
+        } else if (tweenVal % 2) {
+          this.setTintFill(0xff0000);
+        } else {
+          this.setTintFill(0xffffff);
+        }
+      }
     });
-
   }
 
   idleStateUpdate() {
-    this.animationPlayer(this.stateMachine.currentStateName);
+    this.animationPlayer("idle");
   }
 
   walkStateUpdate() {
-    this.animationPlayer(this.stateMachine.currentStateName);
+    this.animationPlayer("walk");
   }
 
   cleanUp() {
@@ -120,10 +138,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   meleeAttackEnter() {
+    this.dealDamage();
+    this.animationPlayer("melee");
+  }
+
+  meleeAttackExit() {
+    this.instant = false;
+  }
+
+  dealDamage() {
     let convertedDir = DIRECTION_CONVERSION[this.direction];
     const applyHitBox = (animation, frame) => {
       if (frame.index < 2) return;
       //here we're setting up where the attack box should go based on the character direction
+      // this.instant = true;
       switch (convertedDir) {
         case NORTH:
           this.meleeHitbox.x = this.x - 16;
@@ -158,22 +186,37 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
           this.meleeHitbox.body.height = 64;
           break;
       }
-      this.meleeHitbox.body.enable = true;
-      this.scene.physics.world.add(this.meleeHitbox.body);
-      this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
+      this.scene.physics.overlap(this.meleeHitbox, this.scene.monsterGroup, (hitBox, target) => {
+        target.damageFlash();
+        if(this.localPlayer) {
+          eventEmitter.emit("monsterTookDamage", {
+            playerCharacterId: this.id,
+            monsterId: target.id,
+            damage: 10
+          });
+        }
+      });
+      if (frame.index === 3) {
+        this.meleeHitbox.body.enable = true;
+        this.scene.physics.world.add(this.meleeHitbox.body);
+      }
+      if (frame.index === 4) {
+        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
+      }
     };
     this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
 
+    const animationEnd = () => {
+      this.meleeHitbox.body.enable = false;
+      this.scene.physics.world.remove(this.meleeHitbox.body);
+      this.stateMachine.setState("idle");
+      this.instant = false;
+    }
+
     this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.templateName}-melee-` + convertedDir,
-      () => {
-        this.meleeHitbox.body.enable = false;
-        this.scene.physics.world.remove(this.meleeHitbox.body);
-        this.stateMachine.setState("idle");
-        this.instant = false;
-      }
-    );
-    this.animationPlayer("melee");
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+      `${this.templateName}-melee-` +
+      convertedDir, animationEnd);
   }
 
   //plays the correct animation based on the players state
@@ -296,3 +339,4 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.y = y;
   }
 }
+

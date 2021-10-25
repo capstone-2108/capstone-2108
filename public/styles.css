@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "cinzel-decorative";
+  font-family: "Cinzel Decorative";
   src: url("./fonts/cinzel/CinzelDecorative-Black.ttf") format("woff");
 }
 
@@ -36,7 +36,7 @@ body {
   }
 }
 .title {
-  font-family: "cinzel-decorative";
+  font-family: "Cinzel Decorative";
   font-weight: 700;
   font-size: 65px;
   color: #d8eaec;
@@ -402,4 +402,12 @@ img {
   padding: 20px;
   padding-top: 10px;
   text-align: center;
+}
+
+.sign-up-emphasize {
+  color: #344a95;
+}
+
+.sign-up-emphasize:hover {
+  color: white;
 }

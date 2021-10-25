@@ -3,14 +3,20 @@ import { eventEmitter } from "../event/EventEmitter";
 
 import {
   localPlayerLogoutCallback,
+  monsterCanAggroPlayerCallback, monsterControlFollowDirectionsCallback,
+  monsterControlResetAggroCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
+  remotePlayerHitMonster,
   remotePlayerChangedSceneCallback,
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
-} from "../event/callbacks";
+} from '../event/callbacks';
+import {RemotePlayer} from '../entity/RemotePlayer';
+import {Monster} from '../entity/Monster';
+import {Player} from '../entity/Player';
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -24,6 +30,7 @@ export default class MMOScene extends Phaser.Scene {
   preload() {
     this.monsterGroup = this.physics.add.group();
     this.monsterAggroZones = this.physics.add.group();
+    this.playerGroup = this.physics.add.group();
   }
 
   create() {
@@ -77,6 +84,34 @@ export default class MMOScene extends Phaser.Scene {
       )
     );
 
+    //server is letting us know that the monsters aggro request was approved, so we should initiate the aggro
+    this.unsubscribes.push(
+      eventEmitter.subscribe("monsterCanAggroPlayer", monsterCanAggroPlayerCallback.bind(this))
+    );
+
+    // //receiving an event to let us know that this monster needs to follow this path
+    // this.unsubscribes.push(
+    //   eventEmitter.subscribe("monsterAggroFollowPath", monsterAggroFollowPathCallback.bind(this))
+    // );
+
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("monsterFollowDirections", monsterControlFollowDirectionsCallback.bind(this))
+    );
+
+    //receiving an event to let us know that a monster needs to reset it's aggro
+    this.unsubscribes.push(
+      eventEmitter.subscribe(
+        "monsterControlResetAggro",
+        monsterControlResetAggroCallback.bind(this)
+      )
+    );
+
+    //received a message to register a hit on a monster from another player
+    // this.unsubscribes.push(
+    //   eventEmitter.subscribe("remotePlayerHitMonster", remotePlayerHitMonster.bind(this))
+    // );
+
     //cleans up any unsubscribes
     this.unsubscribes.push(
       eventEmitter.subscribe("localPlayerLogout", localPlayerLogoutCallback.bind(this))
@@ -85,7 +120,18 @@ export default class MMOScene extends Phaser.Scene {
     this.unsubscribes.push(
       eventEmitter.subscribe("remotePlayerLogout", remotePlayerLogoutCallback.bind(this))
     );
-
+    //
+    this.input.on("gameobjectdown", (pointer, gameObject) => {
+      if (gameObject instanceof Player) {
+        console.log("remote player", gameObject);
+        gameObject.nameTag.setColor("#FFFFFF");
+        eventEmitter.emit("requestPlayerInfo", gameObject.id);
+      } else if (gameObject instanceof Monster) {
+        eventEmitter.emit("requestMonsterInfo", gameObject.id);
+      } else {
+        console.log("error!!!");
+      }
+    });
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
   }
@@ -98,12 +144,15 @@ export default class MMOScene extends Phaser.Scene {
     }
     for (const [id, player] of Object.entries(this.remotePlayers)) {
       player.update(time, delta);
+      if (!this.playerGroup.contains(player)) {
+        this.playerGroup.add(player);
+      }
     }
     for (const [id, monster] of Object.entries(this.monsters)) {
       if (!this.monsterGroup.contains(monster)) {
         this.monsterGroup.add(monster);
         this.physics.add.overlap(monster.aggroZone, this.player, (aggroZone, player) => {
-          aggroZone.setAggroTarget(this.player);
+          aggroZone.requestAggroOnTarget(this.player);
         });
       }
       monster.update(time, delta);

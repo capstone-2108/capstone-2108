@@ -3,16 +3,9 @@ const router = require("express").Router();
 const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
-const {
-  TemplateCharacter,
-  SpriteSheet,
-  Location,
-  PlayerCharacter,
-  Scene,
-  Npc
-} = require("../db");
-const {transformToPayload} = require('../db/models/PlayerCharacter');
-
+const { TemplateCharacter, SpriteSheet, Location, PlayerCharacter, Scene, Npc } = require("../db");
+const { transformToPayload } = require("../db/models/PlayerCharacter");
+const chalk = require('chalk');
 
 //This fetches all template characters
 router.get("/templates", async (req, res, next) => {
@@ -30,10 +23,10 @@ router.get("/templates", async (req, res, next) => {
 
 router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
   try {
-    const playerCharacter = PlayerCharacter.getCharacter(req.params.id);
+    console.log(chalk.red('req.params.id', req.params.id));
+    const playerCharacter = await PlayerCharacter.getCharacter(req.params.id);
     res.json(transformToPayload(playerCharacter));
-  }
-  catch(err){
+  } catch (err) {
     next(err);
   }
 });
@@ -41,48 +34,10 @@ router.get("/character/:id", requireTokenMiddleware, async (req, res, next) => {
 //gets called if user is LOGGING IN (pulling their playerCharacter info)
 router.get("/character", requireTokenMiddleware, async (req, res, next) => {
   try {
-    const playerCharacter = await PlayerCharacter.findOne({
-      where: {
-        userId: req.user.id
-      },
-      include: [
-        {
-          model: TemplateCharacter,
-          attributes: ["id", "name", "portrait"],
-          include: {
-            model: SpriteSheet,
-            attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
-          }
-        },
-        {
-          model: Location,
-          attributes: {exclude: ["createdAt", "updatedAt"]},
-          include: {
-            model: Scene,
-            attributes: ["id", "name"]
-          }
-        }
-      ]
-    });
-    await playerCharacter.update({active: true});
-    const payload = {
-      userId: req.user.id,
-      characterId: playerCharacter.id,
-      id: playerCharacter.id,
-      name: playerCharacter.name,
-      health: playerCharacter.health,
-      experience: playerCharacter.experience,
-      level: playerCharacter.level,
-      templateName: playerCharacter.templateCharacter.name,
-      spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
-      spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
-      xPos: playerCharacter.location.xPos,
-      yPos: playerCharacter.location.yPos,
-      gold: playerCharacter.gold,
-      sceneId: playerCharacter.location.scene.id,
-      sceneName: playerCharacter.location.scene.name,
-      portrait: playerCharacter.templateCharacter.portrait,
-    };
+    const playerCharacter = await PlayerCharacter.getMainCharacterFromUser(req.user.id)
+    await playerCharacter.update({ active: true });
+    const payload = transformToPayload(playerCharacter);
+    payload.userId = req.user.id;
     res.json(payload);
 
     // Tell the world this player has joined!
@@ -95,9 +50,7 @@ router.get("/character", requireTokenMiddleware, async (req, res, next) => {
     });
 
     gameSync.emit("remotePlayerLoad", payload);
-
-  }
-  catch(err) {
+  } catch (err) {
     next(err);
   }
 });
@@ -121,7 +74,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       health: req.body.character.baseHealth,
       strength: req.body.character.baseStrength,
       intelligence: req.body.character.baseIntelligence,
-      locationId: location.id
+      locationId: location.id,
+      active: true
     });
 
     await newPlayer.setUser(req.user);
@@ -146,6 +100,7 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       scene: scene.name
     };
     res.json(payload);
+    gameSync.emit("remotePlayerLoad", payload);
   } catch (err) {
     next(err);
   }
@@ -210,7 +165,7 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
 router.put("/character/:characterId/logout", requireTokenMiddleware, async (req, res, next) => {
   try {
     const playerCharacter = await PlayerCharacter.logout(req.user.id, req.params.characterId);
-    if(playerCharacter) {
+    if (playerCharacter) {
       worldChat.emit("newMessage", {
         channel: "world",
         message: {
@@ -218,11 +173,10 @@ router.put("/character/:characterId/logout", requireTokenMiddleware, async (req,
           message: playerCharacter.name + " has logged out!"
         }
       });
-      gameSync.emit('remotePlayerLogout', playerCharacter.id);
+      gameSync.emit("remotePlayerLogout", playerCharacter.id);
       res.sendStatus(200);
-    }
-    else {
-     res.sendStatus(404);
+    } else {
+      res.sendStatus(404);
     }
   } catch (err) {
     next(err);

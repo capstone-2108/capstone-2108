@@ -1,27 +1,15 @@
 import { Player } from "./Player";
 import { eventEmitter } from "../event/EventEmitter";
 
-
 export class RemotePlayer extends Player {
   constructor(scene, x, y, spriteKey, templateName, characterName, id) {
     super(scene, x, y, spriteKey, templateName, characterName, id, false);
     this.stateSnapshots = []; //where we store state snapshots sent from the server to control this character
     this.nextStatesSnapshot = null; //the next snapshot to play
     this.stateSnapshotStartTime = null; //the start time of the currently playing snapshot
-
-    this.clickPlayer();
-  }
-
-  clickPlayer() {
-    this.on("pointerup", (evt) => {
-      this.nameTag.setColor("#FFFFFF");
-      // this.nameTag.setShadow(1, 1, "(rgba(255,0,0,0.5)", 10);
-      eventEmitter.emit("requestPlayerInfo", this.id);
-    });
   }
 
   update(time, delta) {
-
     this.playRemotePlayerSnapshots(time, delta);
     if (this.stateMachine.currentStateName !== "melee") {
       let vdx = 0;
@@ -61,7 +49,7 @@ export class RemotePlayer extends Player {
         this.stateSnapshotStartTime = null;
       }
     }
-    this.setState(state);
+    this.stateMachine.setState(state);
   }
 
   //for remote players, will set the next state stateSnapshot for movement / attacking
@@ -69,3 +57,4 @@ export class RemotePlayer extends Player {
     this.nextStatesSnapshot = stateSnapshot;
   }
 }
+

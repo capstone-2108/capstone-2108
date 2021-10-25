@@ -10,6 +10,7 @@ export const createPathFinder = (map, layers) => {
   // pathFinder.enableDiagonals();
   pathFinder.disableDiagonals();
   pathFinder.disableCornerCutting();
+  // pathFinder.disableSync();
 
   const tileset = map.tilesets[0];
   const tilesetProperties = tileset.tileProperties;

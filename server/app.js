@@ -2,6 +2,8 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const http = require("http");
+const {requireTokenMiddleware, isLoggedIn} = require('./auth-middleware');
+const chalk = require('chalk');
 const app = express();
 const server = http.createServer(app);
 module.exports = server;
@@ -19,7 +21,26 @@ app.use(express.json());
 app.use("/auth", require("./auth"));
 app.use("/api/game", require("./api/game"));
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "..", "public/index.html")));
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser(process.env.cookieSecret));
+
+
+//GET / - sends our index file which loads the game
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "public/index.html"))
+});
+
+app.get("/game", async (req, res, next) => {
+  const user = await isLoggedIn(req);
+  if(user) {
+    res.sendFile(path.join(__dirname, "..", "public/index.html"))
+  }
+  else {
+    console.log(chalk.red('Unlogged in user trying to access game - redirecting to login'));
+    res.redirect('/');
+  }
+});
 
 // any remaining requests with an extension (.js, .css, etc.) send 404
 app.use((req, res, next) => {

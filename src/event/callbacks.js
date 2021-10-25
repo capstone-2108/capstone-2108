@@ -2,6 +2,7 @@ import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
 import { Monster } from "../entity/Monster";
 import { eventEmitter } from "../event/EventEmitter";
+import {MONSTER_CONTROL_STATES, MONSTER_STATES} from '../entity/MonsterStates';
 
 export function scenePlayerLoadCallback(data) {
   this.player = new LocalPlayer(
@@ -60,7 +61,7 @@ export function nearbyPlayerLoadCallback(players) {
   let len = players.length;
   for (; i < len; i++) {
     const player = players[i];
-    if (player.characterId !== this.player.characterId && !this.remotePlayers[player.characterId]) {
+    if (player.characterId !== this.player.id && !this.remotePlayers[player.id]) {
       this.remotePlayers[player.characterId] = new RemotePlayer(
         this,
         player.xPos,
@@ -97,6 +98,8 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   const remotePlayer = this.remotePlayers[stateSnapshots.characterId];
   if (remotePlayer) {
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
+  } else {
+    console.log("remotePlayerPosition - player not found");
   }
 }
 
@@ -114,18 +117,64 @@ export function remotePlayerChangedSceneCallback(remotePlayer) {
 }
 
 export function remotePlayerLoadCallback(data) {
-  if (data.id !== this.player.id && !this.remotePlayers[data.id]) {
-    this.remotePlayers[data.id] = new RemotePlayer(
+  if (data.characterId !== this.player.id && !this.remotePlayers[data.characterId]) {
+    this.remotePlayers[data.characterId] = new RemotePlayer(
       this,
       data.xPos,
       data.yPos,
-      `${data.name}-${data.id}`,
+      `${data.name}-${data.characterId}`,
       data.templateName,
       data.name,
-      data.id
+      data.characterId
     );
   }
 }
+
+//runs when the server approves an aggro reqeust this monster has made
+export function monsterCanAggroPlayerCallback(data) {
+  /**
+   * @param {Monster[]} monsters
+   */
+  if (this.monsters[data.monsterId] && data.canAggro) {
+    this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
+    this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLING);
+  }
+  if(!data.canAggro) {
+    // this.monsters[data.monsterId].oneRing = false;
+  }
+}
+
+
+export function monsterControlFollowDirectionsCallback(stateSnapshots) {
+  /**
+   * @param {Monster|undefined} monster
+   */
+  const monster = this.monsters[stateSnapshots.monsterId];
+  if (monster) {
+    monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLED);
+    monster.remoteSnapshots.push(...stateSnapshots.stateSnapshots);
+  } else {
+    console.log("monsterControl - monster not found");
+  }
+}
+
+
+//runs when the server says a monster should reset it's aggro
+export function monsterControlResetAggroCallback(monsterId) {
+  if (this.monsters[monsterId]) {
+    this.monsters[monsterId].receivedAggroResetRequest = true;
+    this.monsters[monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+    this.monsters[monsterId].stateMachine.setState(MONSTER_STATES.IDLE);
+  }
+}
+
+//runs when the server lets us know that another player hit a monster
+// export function remotePlayerHitMonster(data) {
+//   console.log(data);
+//   if (this.monsters[data.monsterId]) {
+//     console.log('monster too damage');
+//   }
+// }
 
 export function localPlayerLogoutCallback() {
   this.cleanup();

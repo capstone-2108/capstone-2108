@@ -3,7 +3,9 @@ const { db } = require("./db");
 const seed = require("../script/seed");
 const PORT = process.env.PORT || 1337;
 const server = require("./app");
-const { initSocketServer } = require("./socket");
+const { initSocketServer, initHeartbeat} = require("./socket");
+const {Npc} = require('./db/models/Npc');
+const {User} = require('./db/models/User');
 
 const init = async () => {
   try {
@@ -16,6 +18,9 @@ const init = async () => {
     // app.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`));
     initSocketServer();
     server.listen(PORT, () => console.log(`Super Awesome MMO running on ${PORT}`));
+    initHeartbeat();
+    Npc.clearAllAggro()
+    User.clearAllLogins();
   } catch (ex) {
     console.log(ex);
   }

@@ -1,3 +1,7 @@
+import { DIRECTION_CONVERSION } from "../constants/constants";
+import { MONSTER_STATES } from "./MonsterStates";
+import { Monster } from "./Monster";
+
 const { Player } = require("./Player");
 const {
   SNAPSHOT_REPORT_INTERVAL,
@@ -49,6 +53,11 @@ export class LocalPlayer extends Player {
         this.stateMachine.setState("melee");
       }
     });
+
+    let oneKey = this.scene.input.keyboard.addKey('One');
+    oneKey.on('down', () => {
+      this.stateMachine.setState("idle");
+    });
   }
 
   update(time, delta) {
@@ -59,11 +68,12 @@ export class LocalPlayer extends Player {
       let vdy = moveData.vdy;
       let direction = moveData.direction;
       this.direction = direction;
-      if (vdx !== 0 || vdy !== 0) {
-        this.stateMachine.setState(`walk`); //we can only walk if we're not attacking
-      } else {
-        this.stateMachine.setState("idle");
-      }
+        if (vdx !== 0 || vdy !== 0) {
+          this.stateMachine.setState(`walk`); //we can only walk if we're not attacking
+        }
+        else {
+          this.stateMachine.setState("idle");
+        }
     }
     this.stateMachine.update(time, delta);
     super.update(time, delta);
@@ -119,6 +129,7 @@ export class LocalPlayer extends Player {
         lastSnapshot.endX = Math.floor(this.x);
         lastSnapshot.endY = Math.floor(this.y);
       }
+
       eventEmitter.emit("phaserUpdate", {
         action: "playerPositionChanged",
         data: {

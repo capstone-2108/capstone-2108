@@ -11,7 +11,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 import LockedOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useHistory } from "react-router-dom";
 
@@ -221,7 +221,7 @@ const AuthForm = (props) => {
               {name === "login" && (
                 <Link to="signup" style={{ textDecoration: "none" }}>
                   <Grid align="center" className={classes.signup}>
-                    <p>New player? Sign Up!</p>
+                    <p>New player? <span className="sign-up-emphasize">Sign Up!</span></p>
                   </Grid>
                 </Link>
               )}

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { CardMedia, makeStyles, CardContent, CardActionArea } from "@material-ui/core";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActionArea from "@material-ui/core/CardActionArea";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { fetchTemplateCharacters } from "../store/templateCharacters";
 import { setChosenCharacter } from "../store/chosenCharacter";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const useStyles = makeStyles(() => ({
   root: {

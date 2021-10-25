@@ -1,5 +1,5 @@
 export default class StateMachine {
-  constructor(context, name = "default") {
+  constructor(context, name = "default", debug = false) {
     this.context = context;
     this.name = name; //the name of this state machine
     this.currentState = null;
@@ -7,6 +7,9 @@ export default class StateMachine {
     this.isSwitchingState = false;
     this.stateQueue = [];
     this.previousState = null;
+    this.currentStateStage = "enter";
+    this.debug = debug;
+    this.stateLock = false;
   }
 
   get previousStateName() {
@@ -18,7 +21,7 @@ export default class StateMachine {
   }
 
   get currentStateName() {
-    if(!this.currentState) {
+    if (!this.currentState) {
       return "";
     }
     return this.currentState.name;
@@ -26,6 +29,10 @@ export default class StateMachine {
 
   isCurrentState(name) {
     return !this.currentState ? false : this.currentState.name === name;
+  }
+
+  stateStartsWidth(partialName) {
+    return this.currentState.name.startsWith(partialName);
   }
 
   /**
@@ -39,13 +46,14 @@ export default class StateMachine {
       name,
       onEnter: config.onEnter ? config.onEnter.bind(this.context) : undefined,
       onUpdate: config.onUpdate ? config.onUpdate.bind(this.context) : undefined,
-      onExit: config.onExit ? config.onExit.bind(this.context) : undefined
+      onExit: config.onExit ? config.onExit.bind(this.context) : undefined,
     });
     return this;
   }
 
   setState(name, data) {
     //state doesn't exist
+    // if(this.stateLock) { return;}
     if (!this.states.has(name)) {
       console.log(`Changing to unknown state: ${name}`);
       return;
@@ -61,15 +69,17 @@ export default class StateMachine {
       return;
     }
     this.isSwitchingState = true;
-
-    console.log(
-      `State Machine ${this.name} is switching from ${
-        this.currentState ? this.currentState.name : "none"
-      } to ${name}`
-    );
+    if (this.debug) {
+      console.log(
+        `State Machine ${this.name} is switching from ${
+          this.currentState ? this.currentState.name : "none"
+        } to ${name}`
+      );
+    }
     //if we have a current state, and it has an onExit, then lets call that before moving on to the new state
     if (this.currentState && this.currentState.onExit) {
       this.currentState.onExit();
+      this.currentStateStage = "exit";
     }
 
     this.previousState = this.currentState; //save the previous state in case we need it for something
@@ -78,17 +88,19 @@ export default class StateMachine {
     //call the onEnter of the newState if it exists
     if (this.currentState.onEnter) {
       this.currentState.onEnter();
+      this.currentStateStage = "enter";
     }
     this.isSwitchingState = false;
   }
 
-  update(delta) {
+  update(time, delta) {
     if (this.stateQueue.length > 0) {
       this.setState(this.stateQueue.shift());
       return;
     }
     if (this.currentState && this.currentState.onUpdate) {
-      this.currentState.onUpdate(delta);
+      this.currentState.onUpdate(time, delta);
+      this.currentStateStage = "update";
     }
   }
 }

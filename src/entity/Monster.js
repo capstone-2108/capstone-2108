@@ -1,8 +1,13 @@
 import {
   DIRECTION_CONVERSION,
   EAST,
+  MONSTER_SNAPSHOT_REPORT_INTERVAL,
   NORTH,
+  NORTHWEST,
+  SNAPSHOT_REPORT_INTERVAL,
   SOUTH,
+  SOUTHEAST,
+  SOUTHWEST,
   WEST
 } from "../constants/constants";
 import StateMachine from "../StateMachine";
@@ -10,7 +15,8 @@ import { mapToScreen, screenToMap } from "../util/conversion";
 import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
-// import { Vertex } from "../pathfinding/"
+import { MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates } from "./MonsterStates";
+import { LocalPlayer } from "./LocalPlayer";
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -19,23 +25,22 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
    * @param {number} x
    * @param {number} y
    * @param {string} spriteKey
-   * @param {string} name
+   * @param {string} templateName
    * @param {number} id the monster id
    */
-  constructor(scene, x, y, spriteKey, name, id) {
+  constructor(scene, x, y, spriteKey, templateName, id) {
     super(scene, x, y, spriteKey);
     this.x = x;
     this.y = y;
     this.spriteKey = spriteKey;
     this.scene = scene;
-    this.name = name; //the name of this character
+    this.templateName = templateName; //the name of this character
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 80,
+      walk: 135,
       run: 150
     };
-    this.mode = "idle"; //the mode of the player, idle, walking, running, attacking?
     this.direction = SOUTH; //the direction the character is facing or moving towards
     this.movementMode = "walk"; //the current movement mode, walk or run
     this.id = id; //the characterId of this player
@@ -44,15 +49,14 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.spawnPoint = screenToMap(this.x, this.y, this.scene.tileSize);
 
     //Pathfinding
-    this.pathIntervalId = undefined; //for testing purposes, an intervalId for the interval which is moving the monster through path nodes
     this.pathId = undefined; //an integer identifier for the last path generated
     this.waypoints = []; //waypoints of the current path
     this.waypointIdx = 0; //index of the current path node
     this.nextWaypoint = undefined; //the next waypoint to travel to
-    this.previousWaypoint = undefined;
+    this.pathHasChanged = false;
 
     this.vdx = 0; //modifies X velocity (negative: west, positive: east, 0: not moving)
-    this.vdy = 0;  //modifies Y velocity (negative: north, positive: south, 0: not moving)
+    this.vdy = 0; //modifies Y velocity (negative: north, positive: south, 0: not moving)
     this.dx = 0;
     this.dy = 0;
 
@@ -68,75 +72,244 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     //Create all the animations, running, walking attacking, in all directions of movement
     createMonsterAnimations(this);
 
-    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.spriteKey, true)
-      .addState("idle", {
-        onUpdate: this.idleUpdate
-      })
-      .addState("hit", {
-        onEnter: this.hitEnter
-      })
-      .addState("walk", {
-        onUpdate: this.walkUpdate
-      })
-      .addState("attack", {
-        onEnter: this.attackEnter
-      });
+    /*************************
+     * Attack *
+     *************************/
+    this.meleeHitbox = this.scene.add.rectangle(this.x - 60, this.y - 60, 32, 64, 0xffffff, 0);
+    this.scene.physics.add.existing(this.meleeHitbox);
+    this.meleeHitbox.body.enable = false;
+    this.scene.physics.world.remove(this.meleeHitbox.body);
+    // this.scene.physics.add.overlap(this.meleeHitbox, this.scene.player, (hitbox, player) => {
+    //   if (player instanceof LocalPlayer) {
+    //     player.stateMachine.setState("hit");
+    //
+    //     // if (!player.stateMachine.stateLock) {
+    //     //   eventEmitter.emit("localPlayerHitMonster", {
+    //     //     playerCharacterId: this.id,
+    //     //     monsterId: monster.id,
+    //     //     damage: 10
+    //     //   });
+    //     // }
+    //    // player.stateMachine.stateLock = true;
+    //   } else {
+    //     //hitRemote
+    //   }
+    // });
 
-    this.stateMachine.setState("idle");
-    this.clickMonster();
+    //State
+    this.monsterStates = new MonsterStates(this.scene, this);
+    this.controlStateMachine = new StateMachine("monsterControlStateMachine", true)
+      .addState(MONSTER_CONTROL_STATES.NEUTRAL, {})
+      .addState(MONSTER_CONTROL_STATES.CONTROLLING, {})
+      .addState(MONSTER_CONTROL_STATES.CONTROLLED, {});
+
+    this.stateMachine = new StateMachine(this, "monsterStateMachine", true)
+      .addState(MONSTER_STATES.WALK, {
+        onEnter: this.monsterStates.walkEnter,
+        onUpdate: this.monsterStates.walkUpdate,
+        onExit: this.monsterStates.walkExit
+      })
+      .addState(MONSTER_STATES.ATTACK, {
+        onEnter: this.monsterStates.attackEnter,
+        onUpdate: this.monsterStates.attackUpdate,
+        onExit: this.monsterStates.attackExit
+      })
+      .addState(MONSTER_STATES.IDLE, {
+        onEnter: this.monsterStates.idleEnter,
+        onUpdate: this.monsterStates.idleUpdate,
+        onExit: this.monsterStates.idleExit
+      });
+    // .addState(MONSTER_STATES.HIT, {
+    //   onEnter: this.monsterStates.hitEnter,
+    //   onUpdate: this.monsterStates.hitUpdate,
+    //   onExit: this.monsterStates.hitExit,
+    //   stateLock: true
+    // });
+
+    /*************************
+     * Multiplayer Variables *
+     *************************/
+    //When being controlled
+    this.remoteSnapshots = []; //where we store state snapshots sent from the server to control this character
+    this.nextRemoteSnapshot = null; //the next snapshot to play
+    this.remoteSnapshotStartTime = null; //the start time of the currently playing snapshot
+    this.animationPlaying = false;
+    this.openSnapshot = undefined;
+
+    /**this array stores snapshots of the monsters movements so that we can let everyone else know about the later on**/
+    this.localStateSnapshots = []; //this is where we hold snapshots of state before they are transmitted to the server
+    this.snapShotsLen = 0;
+    this.lastReportTime = 0;
+    //the next 4 variables are used to determine if anything about a players movements have changed
+    //we compare the last value against the current value to determine this
+    this.lastVdx = 0;
+    this.lastVdy = 0;
+    this.lastDirection = this.direction;
+    this.lastMode = this.mode;
+    this.receivedAggroResetRequest = false;
+    this.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+
+    this.body.offset.x = 13;
+    this.body.offset.y = 13;
   }
 
-  clickMonster() {
-    this.on("pointerup", (evt) => {
-      eventEmitter.emit("requestMonsterInfo", this.id);
+  dealDamage() {
+    let convertedDir = DIRECTION_CONVERSION[this.direction];
+    // this.stateLock = true;
+    const applyHitBox = (animation, frame) => {
+      if (frame.index < 3) return;
+      //here we're setting up where the attack box should go based on the character direction
+      switch (convertedDir) {
+        case NORTH:
+          this.meleeHitbox.x = this.x - 16;
+          this.meleeHitbox.y = this.y - 16;
+          this.meleeHitbox.width = 64;
+          this.meleeHitbox.height = 32;
+          this.meleeHitbox.body.width = 64;
+          this.meleeHitbox.body.height = 32;
+          break;
+        case SOUTH:
+          this.meleeHitbox.x = this.x - 16;
+          this.meleeHitbox.y = this.y + 54;
+          this.meleeHitbox.width = 64;
+          this.meleeHitbox.height = 40;
+          this.meleeHitbox.body.width = 64;
+          this.meleeHitbox.body.height = 40;
+          break;
+        case EAST:
+          this.meleeHitbox.x = this.x + 40;
+          this.meleeHitbox.y = this.y;
+          this.meleeHitbox.width = 40;
+          this.meleeHitbox.height = 64;
+          this.meleeHitbox.body.width = 40;
+          this.meleeHitbox.body.height = 64;
+          break;
+        case WEST:
+          this.meleeHitbox.x = this.x - 45;
+          this.meleeHitbox.y = this.y;
+          this.meleeHitbox.width = 40;
+          this.meleeHitbox.height = 64;
+          this.meleeHitbox.body.width = 40;
+          this.meleeHitbox.body.height = 64;
+          break;
+      }
+      this.scene.physics.overlap(this.meleeHitbox, this.scene.player, (hitBox, target) => {
+        //plays damage animations on local player
+        eventEmitter.emit("playerTookDamage", {
+          monsterId: this.id,
+          characterId: target.id,
+          damage: 10
+        });
+        target.damageFlash();
+      });
+      this.scene.physics.overlap(this.meleeHitbox, this.scene.playerGroup, (hitBox, target) => {
+        //plays animations on remote players
+        target.damageFlash();
+      });
+      if (frame.index === 3) {
+        this.meleeHitbox.body.enable = true;
+        this.scene.physics.world.add(this.meleeHitbox.body);
+      }
+      if (frame.index === 4) {
+        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
+      }
+    };
+    this.on(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
+
+    this.once(
+      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+        `${this.templateName}-attack-` +
+        convertedDir,
+      () => {
+        this.meleeHitbox.body.enable = false;
+        this.scene.physics.world.remove(this.meleeHitbox.body);
+      }
+    );
+  }
+
+  damageFlash() {
+    this.scene.tweens.addCounter({
+      from: 0,
+      to: 100,
+      duration: 200,
+      onUpdate: (tween) => {
+        const tweenVal = Math.floor(tween.getValue());
+        if (tweenVal > 90) {
+          this.clearTint();
+        } else if (tweenVal % 2) {
+          this.setTintFill(0xff0000);
+        } else {
+          this.setTintFill(0xffffff);
+        }
+      }
     });
   }
 
   update(time, delta) {
-    this.checkAggroZone(); //check if a player is in my aggro zone
+    if (!this.stateMachine.currentState) {
+      this.stateMachine.setState(MONSTER_STATES.IDLE);
+    }
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
-    // console.log('spritekey', this.spriteKey)
-    if(this.stateMachine.currentStateName !== "hit" && this.stateMachine.currentStateName !== "attack") {
+    if (
+      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) ||
+      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)
+    ) {
+      this.checkAggroZone(); //check if a player is in my aggro zone
       if (this.waypoints.length) {
         if (this.waypointIdx === 0) {
-          this.stateMachine.setState("walk");
+          this.stateMachine.setState(MONSTER_STATES.WALK);
           this.waypointIdx = 0;
           this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
         }
-        this.updatePathMovement();
       }
+      this.updatePathMovement();
+      if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
+        if (this.scene.time.now - this.lastReportTime > MONSTER_SNAPSHOT_REPORT_INTERVAL) {
+          if (this.localStateSnapshots.length || this.openSnapshot) {
+            if (this.openSnapshot) {
+              this.closeSnapshot();
+              this.createNewSnapshot(this.stateMachine.currentStateName);
+            }
+            eventEmitter.emit("monsterControlDirections", {
+              monsterId: this.id,
+              stateSnapshots: this.localStateSnapshots
+            });
+            this.localStateSnapshots = [];
+            this.lastReportTime = time;
+          }
+        }
+      }
+    } else if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
+      this.playRemoteSnapshots(time, delta);
     }
     this.stateMachine.update(time, delta);
   }
 
+  hasReachedWaypoint(waypoint) {
+    const nextMapVertex = mapToScreen(waypoint.x, waypoint.y);
+    let dx = Math.floor(nextMapVertex.x - this.x);
+    let dy = Math.floor(nextMapVertex.y - this.y);
+    if (Math.abs(dx) < 5) {
+      dx = 0;
+    }
+    if (Math.abs(dy) < 5) {
+      dy = 0;
+    }
+    return { dx, dy, hasReachedWaypoint: dx === 0 && dy === 0 };
+  }
+
   updatePathMovement() {
     if (this.nextWaypoint) {
-      const nextMapVertex = mapToScreen(this.nextWaypoint.x, this.nextWaypoint.y, this.scene.tileSize);
-      this.dx = Math.floor(nextMapVertex.x - this.x);
-      this.dy = Math.floor(nextMapVertex.y - this.y);
-
-      if (Math.abs(this.dx) < 5) {
-        this.dx = 0;
-      }
-      if (Math.abs(this.dy) < 5) {
-        this.dy = 0;
-      }
-      // console.log(`dx: ${this.dx}, dy ${this.dy} -- ${this.x}, ${this.y} to ${nextMapVertex.x}, ${nextMapVertex.y} `);
-      this.getMovementDirection(this.dx, this.dy);
-      //reached the waypoint, get the next waypoint
-      if (this.dx === 0 && this.dy === 0) {
+      let { dx, dy, hasReachedWaypoint } = this.hasReachedWaypoint(this.nextWaypoint);
+      this.getMovementDirection(dx, dy);
+      // reached the waypoint, get the next waypoint
+      if (hasReachedWaypoint) {
         if (this.waypoints.length > 0) {
-          this.previousWaypoint = this.nextWaypoint;
-          let nextWaypoint = this.waypoints[this.waypointIdx];
-          // console.log("next waypoint", nextWaypoint);
+          let nextWaypoint = this.waypoints[this.waypointIdx++];
           if (nextWaypoint) {
-            this.waypointIdx++;
             this.setNextWaypoint(nextWaypoint);
           } else {
-            this.vdx = 0;
-            this.vdy = 0;
             this.clearPath();
-            this.nextWaypoint = undefined;
           }
         }
       }
@@ -145,6 +318,21 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   setNextWaypoint(node) {
     this.nextWaypoint = node;
+  }
+
+  getDirectionFromVelocity(vdx, vdy) {
+    let direction = this.direction;
+
+    if (vdx === -1) {
+      direction = WEST;
+    } else if (vdx === 1) {
+      direction = EAST;
+    } else if (vdy === -1) {
+      direction = NORTH;
+    } else if (vdx === 1) {
+      direction = SOUTH;
+    }
+    return direction;
   }
 
   getMovementDirection(dx, dy) {
@@ -169,138 +357,25 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       direction = SOUTH;
       vdy = 1;
     }
-
-    // if (north) {
-    //   vdy = -1;
-    // } else if (south) {
-    //   vdy = 1;
-    // } else {
-    //   vdy = 0;
-    // }
-    // if (east) {
-    //   vdx = 1;
-    //   if (vdy === 0) {
-    //     direction = EAST;
-    //   } else if (vdy === 1) {
-    //     direction = SOUTHEAST;
-    //     vdx = 1;
-    //     vdy = 1;
-    //   } else {
-    //     direction = NORTHEAST;
-    //     vdx = 1;
-    //     vdy = -1;
-    //   }
-    // } else if (west) {
-    //   vdx = -1;
-    //   if (vdy === 0) {
-    //     direction = WEST;
-    //   } else if (vdy === 1) {
-    //     direction = SOUTHWEST;
-    //     vdy = 1;
-    //     vdx = -1;
-    //   } else {
-    //     direction = NORTHWEST;
-    //     vdx = -1;
-    //     vdy = -1;
-    //   }
-    // } else {
-    //   vdx = 0;
-    //   if (vdy === 0) {
-    //   } else if (vdy === 1) {
-    //     direction = SOUTH;
-    //   } else {
-    //     direction = NORTH;
-    //   }
-    // }
     this.vdx = vdx;
     this.vdy = vdy;
     this.directionChanged = direction !== this.direction;
+    // if (this.directionChanged) {
+    // console.log(`direction changed from ${direction} to ${this.direction}`);
+    // }
     this.direction = direction;
-    if (this.directionChanged) {
-      console.log(`direction changed from ${direction} to ${this.direction}`);
-    }
-  }
-  flash(animation, frame) {
-    if (frame.index === 3) {
-      this.scene.tweens.addCounter({
-        from: 0,
-        to: 100,
-        duration: 200,
-        onUpdate: (tween) => {
-          const tweenVal = tween.getValue();
-          if (tweenVal % 2) {
-            this.setTintFill(0xffffff);
-          } else {
-            this.clearTint();
-          }
-        }
-      });
-    }
-  }
-
-  hitEnter() {
-    this.animationPlayer("hit");
-
-    let convertedDir = DIRECTION_CONVERSION[this.direction];
-    const flash = (animation, frame) => {
-      if (frame.index === 3) {
-        this.scene.tweens.addCounter({
-          from: 0,
-          to: 100,
-          duration: 200,
-          onUpdate: (tween) => {
-            const tweenVal = tween.getValue();
-            if (tweenVal % 2) {
-              this.setTintFill(0xffffff);
-            } else {
-              this.clearTint();
-            }
-          }
-        });
-      }
-    };
-    this.on(Phaser.Animations.Events.ANIMATION_UPDATE, flash);
-    this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.name}-hit-` + convertedDir,
-      () => {
-        this.clearTint();
-        this.off(Phaser.Animations.Events.ANIMATION_UPDATE, flash);
-        this.stateMachine.setState(this.stateMachine.previousStateName);
-      }
-    );
-  }
-
-
-  attackEnter() {
-    this.animationPlayer("attack");
-    let convertedDir = DIRECTION_CONVERSION[this.direction];
-    this.once(
-      Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + `${this.name}-attack-` + convertedDir,
-      () => {
-        this.stateMachine.setState("idle");
-      }
-    );
-  }
-
-  walkUpdate() {
-    this.animationPlayer("walk");
-  }
-
-  idleUpdate() {
-    this.animationPlayer("idle");
   }
 
   //plays the correct animation based on the state
   animationPlayer(state) {
-    if(!this.anims) { return }
+    if (!this.anims) return;
     const currentAnimationPlaying = this.anims.getName();
     const convertedDir = DIRECTION_CONVERSION[this.direction];
-    const animationToPlay = `${this.name}-${state}-${convertedDir}`;
+    const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
-      //if a different animation is playing, then lets change
       this.anims.play(animationToPlay);
     }
-    if(this.stateMachine.currentStateName === "melee" || this.stateMachine.currentStateName === "hit") {
+    if (this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
       this.vdx = 0;
       this.vdy = 0;
     }
@@ -309,39 +384,53 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   checkAggroZone() {
-    if (this.aggroZone.hasTarget()) {
+    if (this.receivedAggroResetRequest) {
+      // console.log("aggro reset request");
+      this.clearPath();
+      this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
+        this.waypoints = path.slice(1);
+      });
+      this.receivedAggroResetRequest = false;
+      this.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+    } else if (this.aggroZone.hasTarget()) {
       const zoneStatus = this.aggroZone.checkZone();
       if (zoneStatus.isTargetInZone) {
-        if (zoneStatus.targetHasMoved) {
+        if (zoneStatus.targetHasMoved && !zoneStatus.isNextToTarget) {
           this.clearPath();
           this.getPathTo(zoneStatus.targetX, zoneStatus.targetY).then((path) => {
+            this.stateMachine.setState(MONSTER_STATES.WALK);
+            this.waypointIdx = 0;
             this.waypoints = path.slice(1);
+            this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
           });
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
-          this.stateMachine.setState('attack');
+          this.stateMachine.setState(MONSTER_STATES.ATTACK);
+          console.log('next to');
         }
       } else {
         this.clearPath();
-        this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-          this.waypoints = path.slice(1);
-        });
+        this.stateMachine.setState(MONSTER_STATES.IDLE);
+        console.log('aggro reset');
+        // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
+        //   this.stateMachine.setState(MONSTER_STATES.WALK);
+        //   this.waypointIdx = 0;
+        //   this.waypoints = path.slice(1);
+        //   this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+        // });
       }
     }
   }
 
   clearPath() {
-    window.clearInterval(this.pathIntervalId);
-    this.pathIntervalId = undefined;
+    // console.log("clearPath");
     this.pathId = undefined;
     this.waypoints = [];
-    this.waypointIdx = 0;
     this.vdx = 0;
     this.vdy = 0;
     this.dx = 0;
     this.dy = 0;
     this.nextWaypoint = undefined;
-    this.previousWaypoint = undefined;
     // this.stateMachine.setState('idle');
   }
 
@@ -349,7 +438,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     return new Promise((resolve, reject) => {
       const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
       this.scene.pathfinder.cancelPath(this.pathId);
-      // console.log(`Pathing from ${startNode.x},${startNode.y} to ${x},${y}`);
+      // console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
       this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
         // console.log("PATH", path);
         resolve(path);
@@ -358,35 +447,226 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
-  teleportTo(x, y) {
+  moveToCoordinate(x, y) {
     this.x = x;
     this.y = y;
   }
 
-  moveTo(x, y) {
-    const chaseAlongPath = (path) => {
-      if (path === null) {
-        this.clearPath();
-        return;
+  // playRemoteSnapshots(time, delta) {
+  //   let state = this.stateMachine.currentStateName;
+  //   if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
+  //     this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
+  //   }
+  //   if (this.nextRemoteSnapshot) {
+  //     if (!this.stateSnapshotStartTime) {
+  //       this.stateSnapshotStartTime = time;
+  //       state = this.nextRemoteSnapshot.state;
+  //     }
+  //     //switch to next stateSnapshot upon completion of this one
+  //     if (time - this.stateSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+  //       this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
+  //       this.setOtherPlayerNextStatesSnapshot(this.remoteSnapshots.shift());
+  //       this.stateSnapshotStartTime = null;
+  //     }
+  //   }
+  //   this.stateMachine.setState(state);
+  // }
+
+  //for remote players, will set the next state stateSnapshot for movement / attacking
+  // setOtherPlayerNextStatesSnapshot(stateSnapshot) {
+  //   this.nextRemoteSnapshot = stateSnapshot;
+  // }
+
+  playRemoteSnapshots(time, delta) {
+    let state = this.stateMachine.currentStateName;
+    if (this.remoteSnapshots.length && !this.nextRemoteSnapshot) {
+      this.setNextRemoteSnapshot(this.remoteSnapshots.shift());
+      this.remoteSnapshotStartTime = null;
+    }
+    if (this.nextRemoteSnapshot) {
+      // if (!this.remoteSnapshotStartTime) {
+      //   this.remoteSnapshotStartTime = time;
+      // }
+
+      if (time - this.remoteSnapshotStartTime >= this.nextRemoteSnapshot.duration) {
+        this.setNextRemoteSnapshot(time);
       }
-      path = path.slice(1, path.length - 1);
-      // this.waypoints = path;
-      let pathIndex = 0;
-      this.pathIntervalId = window.setInterval(() => {
-        if (path[pathIndex]) {
-          this.x = path[pathIndex].x * 16;
-          this.y = path[pathIndex].y * 16;
-          pathIndex++;
-        } else {
-          this.clearPath();
-        }
-      }, 300);
-    };
-    const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
-    const boundCallback = chaseAlongPath.bind(this);
-    this.scene.pathfinder.cancelPath(this.pathId);
-    window.clearInterval(this.pathIntervalId);
-    this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, boundCallback);
-    this.scene.pathfinder.calculate();
+    } else {
+    }
+    // this.stateMachine.setState(state);
   }
+
+  setNextRemoteSnapshot(time) {
+    if (this.nextRemoteSnapshot) {
+      this.moveToCoordinate(this.nextRemoteSnapshot.endX, this.nextRemoteSnapshot.endY);
+    }
+    const nextSnapshot = this.remoteSnapshots.shift();
+    if (nextSnapshot) {
+      this.vdx = nextSnapshot.vdx;
+      this.vdy = nextSnapshot.vdy;
+      this.stateMachine.setState(nextSnapshot.state);
+      this.direction = nextSnapshot.direction;
+      if (nextSnapshot.duration === -1) {
+        this.animationPlaying = true;
+      }
+      this.remoteSnapshotStartTime = time;
+      this.nextRemoteSnapshot = nextSnapshot;
+    }
+  }
+
+  //saves snapshots of the controlling monsters state, which will be transmitted to the server later on
+  saveStateSnapshots(time, delta) {
+    const lastSnapshot = this.localStateSnapshots[this.localStateSnapshots.length - 1];
+    let newVdx = this.vdx;
+    let newVdy = this.vdy;
+    let newDirection = this.direction;
+    let newState = this.stateMachine.currentStateName;
+    //if something about this characters movement has changed then we should start a new snapshot
+
+    if (
+      newVdx !== this.lastVdx ||
+      newVdy !== this.lastVdy ||
+      newDirection !== this.lastDirection ||
+      (this.localStateSnapshots.length === 0 && newState !== this.lastState)
+    ) {
+      if (lastSnapshot && !lastSnapshot.duration) {
+        lastSnapshot.duration = time - lastSnapshot.timeStarted;
+        delete lastSnapshot.timeStarted;
+        lastSnapshot.endX = Math.floor(this.x);
+        lastSnapshot.endY = Math.floor(this.y);
+      }
+      // if (newState !== MONSTER_STATES.IDLE) {
+      this.localStateSnapshots[this.snapShotsLen++] = {
+        vdx: newVdx,
+        vdy: newVdy,
+        endX: undefined,
+        endY: undefined,
+        timeStarted: time,
+        state: newState === "" ? MONSTER_STATES.IDLE : newState,
+        direction: this.direction,
+        duration: undefined
+      };
+      // }
+      this.lastVdx = newVdx;
+      this.lastVdy = newVdy;
+      this.lastDirection = newDirection;
+      this.lasState = newState;
+    } else if (
+      time - this.lastReportTime > MONSTER_SNAPSHOT_REPORT_INTERVAL &&
+      this.localStateSnapshots.length > 0
+    ) {
+      //we send all the snapshots we've taken every given interval, providing there are any
+      if (lastSnapshot && lastSnapshot.duration === undefined) {
+        lastSnapshot.duration = time - lastSnapshot.timeStarted;
+      }
+      delete lastSnapshot.timeStarted;
+      lastSnapshot.endX = Math.floor(this.x);
+      lastSnapshot.endY = Math.floor(this.y);
+      eventEmitter.emit("monsterControlDirections", {
+        monsterId: this.id,
+        stateSnapshots: this.localStateSnapshots
+      });
+      this.localStateSnapshots = [];
+      this.snapShotsLen = 0;
+      this.lastReportTime = time;
+      this.lastVdx = newVdx;
+      this.lastVdy = newVdy;
+      this.lastDirection = newDirection;
+      this.lastState = newState;
+    }
+  }
+
+  createNewSnapshot(state) {
+    this.openSnapshot = {
+      vdx: this.vdx,
+      vdy: this.vdy,
+      endX: undefined,
+      endY: undefined,
+      timeStarted: this.scene.time.now,
+      state,
+      direction: this.direction,
+      duration: undefined
+    };
+  }
+
+  updateSnapshot(time, state) {
+    // if(!this.openSnapshot) {
+    //   this.createNewSnapshot(state);
+    // }
+    if (!this.instant) {
+      if (this.openSnapshot && this.direction !== this.openSnapshot.direction) {
+        this.closeSnapshot();
+        this.createNewSnapshot(state);
+      }
+    }
+
+    // if(!this.localStateSnapshots.length) {
+    //   this.createNewSnapshot(state);
+    // }
+  }
+
+  closeSnapshot() {
+    this.openSnapshot.endX = Math.floor(this.x);
+    this.openSnapshot.endY = Math.floor(this.y);
+    this.openSnapshot.duration = this.scene.time.now - this.openSnapshot.timeStarted;
+    delete this.openSnapshot.timeStarted;
+    this.localStateSnapshots.push(this.openSnapshot);
+    this.openSnapshot = undefined;
+  }
+
+  // saveStateSnapshots(time, delta) {
+  //   const lastSnapshot = this.localStateSnapshots[this.localStateSnapshots.length - 1];
+  //   let newVdx = this.vdx;
+  //   let newVdy = this.vdy;
+  //   let newDirection = this.direction;
+  //   let newState = this.stateMachine.currentStateName;
+  //   //if something about this characters movement has changed then we should start a new snapshot
+  //
+  //   if (newVdx !== this.lastVdx || newVdy !== this.lastVdy || newDirection !== this.lastDirection ||
+  //     (this.localStateSnapshots.length === 0 && newState !== this.lastState)) {
+  //     if (lastSnapshot && !lastSnapshot.duration) {
+  //       lastSnapshot.duration = time - lastSnapshot.timeStarted;
+  //       delete lastSnapshot.timeStarted;
+  //       lastSnapshot.endX = Math.floor(this.x);
+  //       lastSnapshot.endY = Math.floor(this.y);
+  //     }
+  //     // if (newState !== MONSTER_STATES.IDLE) {
+  //     console.log('creating snapshots');
+  //     this.localStateSnapshots[this.snapShotsLen++] = {
+  //       vdx: newVdx,
+  //       vdy: newVdy,
+  //       endX: undefined,
+  //       endY: undefined,
+  //       timeStarted: time,
+  //       state: newState === "" ? MONSTER_STATES.IDLE : newState,
+  //       direction: this.direction,
+  //       duration: undefined
+  //     };
+  //     // }
+  //     this.lastVdx = newVdx;
+  //     this.lastVdy = newVdy;
+  //     this.lastDirection = newDirection;
+  //     this.lasState = newState;
+  //   } else if (time - this.lastReportTime > SNAPSHOT_REPORT_INTERVAL && this.localStateSnapshots.length > 0) {
+  //     //we send all the snapshots we've taken every given interval, providing there are any
+  //     if (lastSnapshot && lastSnapshot.duration === undefined) {
+  //       lastSnapshot.duration = time - lastSnapshot.timeStarted;
+  //     }
+  //     delete lastSnapshot.timeStarted;
+  //     lastSnapshot.endX = Math.floor(this.x);
+  //     lastSnapshot.endY = Math.floor(this.y);
+  //     console.log('emitting', this.localStateSnapshots);
+  //     eventEmitter.emit("monsterControlDirections", {
+  //       monsterId: this.id,
+  //       stateSnapshots: this.localStateSnapshots
+  //     });
+  //     this.localStateSnapshots = [];
+  //     this.snapShotsLen = 0;
+  //     this.lastReportTime = time;
+  //     this.lastVdx = newVdx;
+  //     this.lastVdy = newVdy;
+  //     this.lastDirection = newDirection;
+  //     this.lastState = newState;
+  //   }
+  // }
 }
