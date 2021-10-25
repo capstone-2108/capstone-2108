@@ -54,7 +54,7 @@ body {
   color: #f5f3e6;
   /* font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
     Verdana, sans-serif; */
-  font-family: "cinzel-decorative";
+  font-family: "Cinzel Decorative";
   text-transform: lowercase;
   /* padding: 0; */
   justify-content: space-between;
@@ -303,7 +303,7 @@ img {
   /* margin: 10px; */
   padding-left: 10px;
   background-color: #5194b6;
-  font-family: "cinzel-decorative";
+  font-family: "Cinzel Decorative";
   text-transform: lowercase;
 }
 
