@@ -87,8 +87,7 @@ function initGameSync() {
         `Monster ${monsterId} requesting to aggro player ${playerCharacterId} -- `
       );
       try {
-        // const canAggro = await Npc.setAggroOn(monsterId, playerCharacterId);
-        const canAggro =true;
+        const canAggro = await Npc.setAggroOn(monsterId, playerCharacterId);
         if (canAggro) {
           //send a message to the requester that the monster can aggro them
           msg += chalk.redBright("AGGRO TIME!");
@@ -120,12 +119,25 @@ function initGameSync() {
     });
 
     //broadcast that a player hit a monster
-    socket.on("localPlayerHitMonster", async (data) => {
+    socket.on("monsterTookDamage", async (data) => {
       console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
       console.log(data);
       try {
         const [updatedCols, metadata] = await Npc.applyDamage(data.monsterId, data.damage);
-        socket.broadcast.emit("remotePlayerHitMonster", updatedCols[0]);
+        socket.broadcast.emit("monsterTookDamage", updatedCols[0]);
+        socket.emit("monsterTookDamage", {...updatedCols[0], local:true});
+      } catch (err) {
+        console.log(err);
+      }
+    });
+
+    socket.on("playerTookDamage", async (data) => {
+      console.log(chalk.red(`Player ${data.characterId} has been hit`));
+      console.log(data);
+      try {
+        const [updatedCols, metadata] = await PlayerCharacter.applyDamage(data.characterId, data.damage);
+        socket.broadcast.emit("playerTookDamage", updatedCols[0]);
+        socket.emit("playerTookDamage", {...updatedCols[0], local: true});
       } catch (err) {
         console.log(err);
       }
@@ -138,7 +150,7 @@ function initHeartbeat() {
     try {
       for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
         const { characterName, lastSeen, userId } = heartBeatInfo;
-        if (Date.now() - lastSeen > 60000) {
+        if (Date.now() - lastSeen > 12000) {
           await User.logout(userId);
           console.log(`Logging out ${characterName} due to inactivity`);
           worldChat.emit("newMessage", {
@@ -148,6 +160,11 @@ function initHeartbeat() {
               message: characterName + " has been logged out by the server!"
             }
           });
+          //@todo if a monster is aggroed on a person who's been logged out, we should cancel that aggro
+          console.log('characterId', characterId);
+          const aggroedMonsters = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
+          console.log('aggroedMonsters', aggroedMonsters);
+          aggroedMonsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
           gameSync.emit("remotePlayerLogout", characterId);
           delete heartBeats[characterId];
         }
@@ -157,7 +174,7 @@ function initHeartbeat() {
     } catch (err) {
       console.log(err);
     }
-  }, 20000);
+  }, 5000);
 
   setInterval( async () => {
     //log out anyone who is logged in but not registered with a heartbeat

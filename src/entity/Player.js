@@ -13,6 +13,7 @@ import {
 
 import StateMachine from "../StateMachine";
 import { createPlayerAnimation } from "../animation/createAnimations";
+import {eventEmitter} from '../event/EventEmitter';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -187,6 +188,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       }
       this.scene.physics.overlap(this.meleeHitbox, this.scene.monsterGroup, (hitBox, target) => {
         target.damageFlash();
+        if(this.localPlayer) {
+          eventEmitter.emit("monsterTookDamage", {
+            playerCharacterId: this.id,
+            monsterId: target.id,
+            damage: 10
+          });
+        }
       });
       if (frame.index === 3) {
         this.meleeHitbox.body.enable = true;

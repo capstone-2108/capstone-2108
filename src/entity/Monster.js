@@ -16,7 +16,7 @@ import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
 import { MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates } from "./MonsterStates";
-import {LocalPlayer} from './LocalPlayer';
+import { LocalPlayer } from "./LocalPlayer";
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -118,13 +118,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         onEnter: this.monsterStates.idleEnter,
         onUpdate: this.monsterStates.idleUpdate,
         onExit: this.monsterStates.idleExit
-      })
-      // .addState(MONSTER_STATES.HIT, {
-      //   onEnter: this.monsterStates.hitEnter,
-      //   onUpdate: this.monsterStates.hitUpdate,
-      //   onExit: this.monsterStates.hitExit,
-      //   stateLock: true
-      // });
+      });
+    // .addState(MONSTER_STATES.HIT, {
+    //   onEnter: this.monsterStates.hitEnter,
+    //   onUpdate: this.monsterStates.hitUpdate,
+    //   onExit: this.monsterStates.hitExit,
+    //   stateLock: true
+    // });
 
     /*************************
      * Multiplayer Variables *
@@ -194,16 +194,23 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           break;
       }
       this.scene.physics.overlap(this.meleeHitbox, this.scene.player, (hitBox, target) => {
+        //plays damage animations on local player
+        eventEmitter.emit("playerTookDamage", {
+          monsterId: this.id,
+          characterId: target.id,
+          damage: 10
+        });
         target.damageFlash();
       });
       this.scene.physics.overlap(this.meleeHitbox, this.scene.playerGroup, (hitBox, target) => {
+        //plays animations on remote players
         target.damageFlash();
       });
-      if(frame.index === 3) {
+      if (frame.index === 3) {
         this.meleeHitbox.body.enable = true;
         this.scene.physics.world.add(this.meleeHitbox.body);
       }
-      if(frame.index === 4) {
+      if (frame.index === 4) {
         this.off(Phaser.Animations.Events.ANIMATION_UPDATE, applyHitBox);
       }
     };
@@ -211,8 +218,8 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
     this.once(
       Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
-      `${this.templateName}-attack-` +
-      convertedDir,
+        `${this.templateName}-attack-` +
+        convertedDir,
       () => {
         this.meleeHitbox.body.enable = false;
         this.scene.physics.world.remove(this.meleeHitbox.body);
@@ -227,18 +234,16 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       duration: 200,
       onUpdate: (tween) => {
         const tweenVal = Math.floor(tween.getValue());
-        if(tweenVal > 90) {
+        if (tweenVal > 90) {
           this.clearTint();
-        }
-        else if (tweenVal % 2) {
-          this.setTintFill(0xFF0000);
+        } else if (tweenVal % 2) {
+          this.setTintFill(0xff0000);
         } else {
           this.setTintFill(0xffffff);
         }
       }
     });
   }
-
 
   update(time, delta) {
     if (!this.stateMachine.currentState) {
@@ -400,13 +405,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
           });
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
-          // if(!this.stateMachine.isCurrentState(MONSTER_STATES.HIT)) {
-            this.stateMachine.setState(MONSTER_STATES.ATTACK);
-          // }
+          this.stateMachine.setState(MONSTER_STATES.ATTACK);
+          console.log('next to');
         }
       } else {
         this.clearPath();
         this.stateMachine.setState(MONSTER_STATES.IDLE);
+        console.log('aggro reset');
         // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
         //   this.stateMachine.setState(MONSTER_STATES.WALK);
         //   this.waypointIdx = 0;

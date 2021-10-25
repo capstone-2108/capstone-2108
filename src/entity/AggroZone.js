@@ -1,5 +1,6 @@
 import { screenToMap } from "../util/conversion";
 import { eventEmitter } from "../event/EventEmitter";
+import {MONSTER_CONTROL_STATES} from './MonsterStates';
 
 export class AggroZone extends Phaser.GameObjects.Zone {
   constructor(scene, x, y, width, height, owner) {
@@ -68,6 +69,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.target = undefined;
     this.requestingAggro = false;
     eventEmitter.emit("monsterRequestResetAggro", this.owner.id);
+    this.owner.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
   }
 
   hasTarget() {

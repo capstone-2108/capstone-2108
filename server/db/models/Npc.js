@@ -99,4 +99,8 @@ Npc.applyDamage = async (monsterId, damage) => {
   });
 }
 
+Npc.clearAllAggro = function() {
+  db.query('UPDATE npcs SET "aggroedOn" = NULL');
+}
+
 module.exports = { Npc };

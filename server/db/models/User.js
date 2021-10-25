@@ -118,6 +118,10 @@ User.logout = async function (userId) {
   });
 };
 
+User.clearAllLogins = function() {
+  db.query('UPDATE users SET "loggedIn" = false');
+}
+
 
 /******************
  * Custom Error   *

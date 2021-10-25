@@ -6,21 +6,49 @@ import {
   fetchNearbyPlayers,
   fetchRemoteCharacterData,
   fetchSelectedMonster,
-  heartbeat, monsterTookDamage,
-  remotePlayerChangedScenes
+  heartbeat,
+  localPlayerTookDamage, logoutCharacters,
+  monsterTookDamage,
+  playerTookDamage,
+  remotePlayerChangedScenes,
+  remotePlayerTookDamage,
+  setSelectedUnit
 } from '../store/player';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
+import {logout} from '../store';
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
+
+
+
 export const InitSubscriptionsToPhaser = () => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
   const playerState = useSelector((state) => state.player);
+
+  // const logoutOnClose = (evt) => {
+  //   console.log('characterId', playerState.characterId);
+  //   if (playerState.characterId) {
+  //     console.log('init unload listener');
+  //     dispatch(logoutCharacters(playerState.characterId));
+  //     dispatch(logout());
+  //   }
+  // };
+  //
+  // useEffect(() => {
+  //   console.log('add unload listener', playerState);
+  //   addEventListener("beforeunload", logoutOnClose);
+  //   return () => {
+  //     console.log('remove unload listener');
+  //     removeEventListener('beforeunload', logoutOnClose);
+  //   }
+  //
+  // }, [playerState.characterId]);
 
   useEffect(() => {
     //loads the game
@@ -82,6 +110,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     //controlling monster has reset
     newSocket.on("monsterControlResetAggro", (monsterId) => {
+      console.log('reset aggro', monsterId);
       eventEmitter.emit("monsterControlResetAggro", monsterId);
     });
 
@@ -90,9 +119,15 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     //received a message to register a hit on a monster from another player
-    newSocket.on("remotePlayerHitMonster", (data) => {
+    newSocket.on("monsterTookDamage", (data) => {
       dispatch(monsterTookDamage(data));
-      eventEmitter.emit("remotePlayerHitMonster", data);
+      // eventEmitter.emit("remotePlayerHitMonster", data);
+    });
+
+    //received a message to register a hit on a player
+    newSocket.on("playerTookDamage", (data) => {
+      dispatch(playerTookDamage(data));
+      // eventEmitter.emit("remoteMonsterHitPlayer", data);
     });
 
     /****************
@@ -149,14 +184,14 @@ export const InitSubscriptionsToPhaser = () => {
     //phaser is making a request to fetch some player data
     unsubscribes.push(
       eventEmitter.subscribe("requestPlayerInfo", (characterId) => {
-        dispatch(fetchRemoteCharacterData(characterId));
+        dispatch(setSelectedUnit("player", characterId));
       })
     );
 
     //phaser is making a request to fetch some monster data
     unsubscribes.push(
       eventEmitter.subscribe("requestMonsterInfo", (monsterId) => {
-        dispatch(fetchSelectedMonster(monsterId));
+        dispatch(setSelectedUnit("monster", monsterId));
       })
     );
 
@@ -177,8 +212,16 @@ export const InitSubscriptionsToPhaser = () => {
 
     //phaser is letting us know that it's a local player hit a monster
     unsubscribes.push(
-      eventEmitter.subscribe("localPlayerHitMonster", (data) => {
-        newSocket.emit("localPlayerHitMonster", data);
+      eventEmitter.subscribe("monsterTookDamage", (data) => {
+        newSocket.emit("monsterTookDamage", data);
+      })
+    );
+
+    //phaser is letting us know that it's a monster hit the local player
+    unsubscribes.push(
+      eventEmitter.subscribe("playerTookDamage", (data) => {
+        // dispatch(localPlayerTookDamage(data.damage));
+        newSocket.emit("playerTookDamage", data);
       })
     );
 
@@ -188,8 +231,6 @@ export const InitSubscriptionsToPhaser = () => {
         newSocket.emit("monsterControlDirections", data);
       })
     );
-
-
 
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe()); //clear all subscriptions

@@ -163,16 +163,18 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
 export function monsterControlResetAggroCallback(monsterId) {
   if (this.monsters[monsterId]) {
     this.monsters[monsterId].receivedAggroResetRequest = true;
+    this.monsters[monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+    this.monsters[monsterId].stateMachine.setState(MONSTER_STATES.IDLE);
   }
 }
 
 //runs when the server lets us know that another player hit a monster
-export function remotePlayerHitMonster(data) {
-  console.log(data);
-  if (this.monsters[data.monsterId]) {
-    console.log('monster too damage');
-  }
-}
+// export function remotePlayerHitMonster(data) {
+//   console.log(data);
+//   if (this.monsters[data.monsterId]) {
+//     console.log('monster too damage');
+//   }
+// }
 
 export function localPlayerLogoutCallback() {
   this.cleanup();

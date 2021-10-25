@@ -14,6 +14,9 @@ import {
   remotePlayerPositionChangedCallback,
   scenePlayerLoadCallback
 } from '../event/callbacks';
+import {RemotePlayer} from '../entity/RemotePlayer';
+import {Monster} from '../entity/Monster';
+import {Player} from '../entity/Player';
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -103,9 +106,9 @@ export default class MMOScene extends Phaser.Scene {
     );
 
     //received a message to register a hit on a monster from another player
-    this.unsubscribes.push(
-      eventEmitter.subscribe("remotePlayerHitMonster", remotePlayerHitMonster.bind(this))
-    );
+    // this.unsubscribes.push(
+    //   eventEmitter.subscribe("remotePlayerHitMonster", remotePlayerHitMonster.bind(this))
+    // );
 
     //cleans up any unsubscribes
     this.unsubscribes.push(
@@ -116,17 +119,17 @@ export default class MMOScene extends Phaser.Scene {
       eventEmitter.subscribe("remotePlayerLogout", remotePlayerLogoutCallback.bind(this))
     );
     //
-    // this.input.on("gameobjectdown", (pointer, gameObject) => {
-    //   if (gameObject instanceof RemotePlayer) {
-    //     console.log("remote player", gameObject);
-    //     gameObject.nameTag.setColor("#FFFFFF");
-    //     eventEmitter.emit("requestPlayerInfo", gameObject.id);
-    //   } else if (gameObject instanceof Monster) {
-    //     eventEmitter.emit("requestMonsterInfo", gameObject.id);
-    //   } else {
-    //     console.log("error!!!");
-    //   }
-    // });
+    this.input.on("gameobjectdown", (pointer, gameObject) => {
+      if (gameObject instanceof Player) {
+        console.log("remote player", gameObject);
+        gameObject.nameTag.setColor("#FFFFFF");
+        eventEmitter.emit("requestPlayerInfo", gameObject.id);
+      } else if (gameObject instanceof Monster) {
+        eventEmitter.emit("requestMonsterInfo", gameObject.id);
+      } else {
+        console.log("error!!!");
+      }
+    });
     //this has to go last because we need all our events setup before react starts dispatching events
     eventEmitter.emit("sceneLoad");
   }

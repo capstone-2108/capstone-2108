@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import PlayerInfo from "./PlayerInfo";
-import Gold from "./Gold";
 import SelectedPlayerInfo from "./SelectedPlayerInfo";
 import Chat from "./Chat";
 import { logout } from "../store";
@@ -23,7 +22,7 @@ const Ui = () => {
     <div>
       <PlayerInfo />
       {/* <Gold /> */}
-      {player.selectedPlayer.id ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }}></div>}
+      {player.selectedUnit.name ? <SelectedPlayerInfo /> : <div style={{ height: "59px" }}></div>}
 
       <div className="itemList">
         {Array.from(Array(items), (e, i) => {

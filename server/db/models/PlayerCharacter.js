@@ -5,6 +5,7 @@ const { TemplateCharacter } = require("./TemplateCharacter");
 const { SpriteSheet } = require("./SpriteSheet");
 const { Location } = require("./Location");
 const {Scene} = require('./Scene');
+const {Npc} = require('./Npc');
 
 const PlayerCharacter = db.define("playerCharacter", {
   name: {
@@ -86,12 +87,35 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
   return nearbyPlayers;
 };
 
-PlayerCharacter.getCharacter = function (characterId) {
-  //@todo: if the user id is included, then include it in the return payload
+PlayerCharacter.getMainCharacterFromUser = function (userId) {
   return this.findOne({
     where: {
-      id: characterId
+      userId: userId
     },
+    include: [
+      {
+        model: TemplateCharacter,
+        attributes: ["id", "name", "portrait"],
+        include: {
+          model: SpriteSheet,
+          attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
+        }
+      },
+      {
+        model: Location,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: {
+          model: Scene,
+          attributes: ["id", "name"]
+        }
+      }
+    ]
+  });
+}
+
+PlayerCharacter.getCharacter = function (characterId) {
+  //@todo: if the user id is included, then include it in the return payload
+  return this.findByPk(characterId, {
     include: [
       {
         model: TemplateCharacter,
@@ -113,8 +137,6 @@ PlayerCharacter.getCharacter = function (characterId) {
   });
 }
 
-
-
 PlayerCharacter.logout = async function (userId, characterId) {
   let playerCharacter = await PlayerCharacter.findAll({
     where: {
@@ -129,6 +151,22 @@ PlayerCharacter.logout = async function (userId, characterId) {
   return playerCharacter;
 };
 
+PlayerCharacter.applyDamage = async function (characterId, damage) {
+  return await db.query('UPDATE "playerCharacters" SET health = health - $damage WHERE id = $id returning id, health, "totalHealth"', {
+    bind: {id: characterId, damage},
+    logging: true
+  });
+}
+
+PlayerCharacter.resetAggroOnPlayerCharacter = async function(characterId) {
+  const aggroedMonsters = await Npc.findAll({
+    where: {
+      aggroedOn: characterId
+    }
+  });
+  return await Promise.all(aggroedMonsters.map(monster => monster.update({aggroedOn: null}, {returning: true})));
+}
+
 
 /************************
  Helper Functions       *
@@ -136,9 +174,9 @@ PlayerCharacter.logout = async function (userId, characterId) {
 const transformToPayload = (playerCharacter) => {
   return {
     characterId: playerCharacter.id,
-    id: playerCharacter.id,
     name: playerCharacter.name,
     health: playerCharacter.health,
+    totalHealth: playerCharacter.totalHealth,
     experience: playerCharacter.experience,
     level: playerCharacter.level,
     templateName: playerCharacter.templateCharacter.name,

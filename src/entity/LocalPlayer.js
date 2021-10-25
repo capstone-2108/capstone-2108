@@ -35,22 +35,6 @@ export class LocalPlayer extends Player {
     this.lastDirection = this.direction;
     this.lastMode = this.mode;
 
-    // this.scene.physics.add.overlap(this.meleeHitbox, this.scene.monsterGroup, (player, monster) => {
-    //   if (this instanceof LocalPlayer && monster instanceof Monster) {
-    //     // monster.stateMachine.setState(MONSTER_STATES.HIT);
-    //     if (!monster.stateMachine.stateLock) {
-    //       eventEmitter.emit("localPlayerHitMonster", {
-    //         playerCharacterId: this.id,
-    //         monsterId: monster.id,
-    //         damage: 10
-    //       });
-    //     }
-    //     monster.stateMachine.stateLock = true;
-    //   } else {
-    //     //hitRemote
-    //   }
-    // });
-
     this.createHotKeys();
   }
 
@@ -70,10 +54,10 @@ export class LocalPlayer extends Player {
       }
     });
 
-    // let oneKey = this.scene.input.keyboard.addKey('One');
-    // oneKey.on('down', () => {
-    //   this.stateMachine.setState("idle");
-    // });
+    let oneKey = this.scene.input.keyboard.addKey('One');
+    oneKey.on('down', () => {
+      this.stateMachine.setState("idle");
+    });
   }
 
   update(time, delta) {
