@@ -171,6 +171,7 @@ const mapData = [
 
 const npcData = [
   {
+    // remove this orc after development
     npc: {
       name: "Orc",
       health: 900,
@@ -186,41 +187,42 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orc2",
+      name: "Orcie",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 1716,
+      yPos: 800,
+      facingDirection: "w",
+      sceneId: 1
+    },
+    templateCharacter: "orc"
+  },
+  {
+    npc: {
+      name: "Orcla",
+      health: 900,
+      totalHealth: 1000
+    },
+    location: {
+      xPos: 2900,
+      yPos: 625,
+      facingDirection: "w",
+      sceneId: 1
+    },
+    templateCharacter: "orc"
+  },
+
+  {
+    npc: {
+      name: "Orcta",
       health: 900,
       totalHealth: 1000
     },
     location: {
       xPos: 810,
-      yPos: 1300,
-      facingDirection: "w",
-      sceneId: 4
-    },
-    templateCharacter: "orc"
-  },
-  {
-    npc: {
-      name: "Orc3",
-      health: 900,
-      totalHealth: 1000
-    },
-    location: {
-      xPos: 425,
-      yPos: 300,
-      facingDirection: "w",
-      sceneId: 3
-    },
-    templateCharacter: "orc"
-  },
-  {
-    npc: {
-      name: "Orc4",
-      health: 900,
-      totalHealth: 1000
-    },
-    location: {
-      xPos: 600,
-      yPos: 600,
+      yPos: 810,
       facingDirection: "w",
       sceneId: 2
     },
@@ -228,18 +230,46 @@ const npcData = [
   },
   {
     npc: {
-      name: "Orc5",
+      name: "Orcme",
       health: 900,
       totalHealth: 1000
     },
     location: {
-      xPos: 600,
-      yPos: 600,
+      xPos: 625,
+      yPos: 300,
       facingDirection: "w",
-      sceneId: 5
+      sceneId: 2
     },
     templateCharacter: "orc"
-  }
+  },
+  // {
+  //   npc: {
+  //     name: "Orcccc",
+  //     health: 900,
+  //     totalHealth: 1000
+  //   },
+  //   location: {
+  //     xPos: 600,
+  //     yPos: 600,
+  //     facingDirection: "w",
+  //     sceneId: 2
+  //   },
+  //   templateCharacter: "orc"
+  // },
+  // {
+  //   npc: {
+  //     name: "Ork",
+  //     health: 900,
+  //     totalHealth: 1000
+  //   },
+  //   location: {
+  //     xPos: 600,
+  //     yPos: 600,
+  //     facingDirection: "w",
+  //     sceneId: 2
+  //   },
+  //   templateCharacter: "orc"
+  // }
 ];
 
 module.exports = {
