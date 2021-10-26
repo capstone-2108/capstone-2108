@@ -8,13 +8,13 @@ export default class Preloader extends Phaser.Scene {
 
   preload() {
     // These need to go before this.load.path because they don't share the same path
-    this.load.audio("scene1Audio", "/audio/1SceneAudio.wav");
-    this.load.audio("scene2Audio", "/audio/2SceneAudio.wav");
-    this.load.audio("scene3Audio", "/audio/3SceneAudio.wav");
-    this.load.audio("scene4Audio", "/audio/4SceneAudio.wav");
-    this.load.audio("scene5Audio", "/audio/5SceneAudio.wav");
-    this.load.audio("orcAttack", "/audio/orcAttack.wav");
-    this.load.audio("swordAttack", "/audio/swordAttack.wav");
+    this.load.audio("scene1Audio", "/audio/1SceneAudio.mp3");
+    this.load.audio("scene2Audio", "/audio/2SceneAudio.mp3");
+    this.load.audio("scene3Audio", "/audio/3SceneAudio.mp3");
+    this.load.audio("scene4Audio", "/audio/4SceneAudio.mp3");
+    this.load.audio("scene5Audio", "/audio/5SceneAudio.mp3");
+    this.load.audio("orcAttack", "/audio/orcAttack.mp3");
+    this.load.audio("swordAttack", "/audio/swordAttack.mp3");
 
 
 

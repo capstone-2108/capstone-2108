@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const SelectedPlayerInfo = () => {
   const selectedUnit = useSelector((state) => state.player.selectedUnit);
-  console.log("selectedUnit", selectedUnit);
+  // console.log("selectedUnit", selectedUnit);
   const ratio = selectedUnit.health / selectedUnit.totalHealth;
   const healthWidth = 150 * ratio;
   // const expWidth = (selectedUnit.experience / 100) * 150;

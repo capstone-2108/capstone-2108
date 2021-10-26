@@ -47,6 +47,11 @@ const PlayerCharacter = db.define("playerCharacter", {
     allowNull: false,
     defaultValue: 1
   },
+  expToNextLevel: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 1000
+  },
   isAlive: {
     type: Sequelize.VIRTUAL,
     get: function() {
@@ -193,6 +198,7 @@ const transformToPayload = (playerCharacter) => {
     health: playerCharacter.health,
     totalHealth: playerCharacter.totalHealth,
     experience: playerCharacter.experience,
+    expToNextLevel: playerCharacter.expToNextLevel,
     level: playerCharacter.level,
     templateName: playerCharacter.templateCharacter.name,
     spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
