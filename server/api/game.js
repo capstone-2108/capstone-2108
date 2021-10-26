@@ -62,6 +62,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
     const location = await Location.create({
       xPos: 300,
       yPos: 500,
+      spawnX: 300,
+      spawnY: 500,
       facingDirection: "e",
       sceneId: 1
     });
@@ -99,7 +101,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       spawnX: location.spawnX,
       spawnY: location.spawnY,
       facingDirection: location.facingDirection,
-      scene: scene.name
+      scene: scene.name,
+      portrait: templateCharacterInfo.portrait
     };
     res.json(payload);
     gameSync.emit("remotePlayerLoad", payload);

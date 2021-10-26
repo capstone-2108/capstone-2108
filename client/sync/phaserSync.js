@@ -26,6 +26,7 @@ import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
 import { logout } from "../store";
 
+
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
 

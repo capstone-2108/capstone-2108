@@ -16,7 +16,8 @@ export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
 export const UPDATE_LOCAL_PLAYER_POSITION = "UPDATE_LOCAL_PLAYER_POSITION";
 export const REVIVE_PLAYER = "REVIVE_PLAYER";
-export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE"
+export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE";
+export const SET_NEW_PLAYER_FLAG = "SET_NEW_PLAYER_FLAG";
 
 /*************************
  * Action Creators       *
@@ -120,6 +121,13 @@ export const playerExpIncrease = (experience) => {
   };
 }
 
+export const setNewPlayerFlag = (flag) => {
+  return {
+    type: SET_NEW_PLAYER_FLAG,
+    flag
+  };
+}
+
 //--Thunks--
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
@@ -175,10 +183,8 @@ export const createPlayerCharacter = (name, character, history) => {
     try {
       const response = await axios.post("/api/game/character", { name, character });
       dispatch(setPlayerCharacter(response.data));
-      history.push({
-        pathname: "/game",
-        state: { newUser: true }
-      });
+      dispatch(setNewPlayerFlag(true));
+      history.push("/game");
     } catch (err) {
       console.log(err);
     }
@@ -212,6 +218,7 @@ export const heartbeat = (socket) => {
  * Reducer       *
  ************************/
 const initialState = {
+  newUser: false,
   userId: null,
   characterId: null,
   name: "",
@@ -232,6 +239,7 @@ const initialState = {
 };
 
 const clearState = {
+  newUser: false,
   userId: null,
   characterId: null,
   name: "",
@@ -254,7 +262,7 @@ const clearState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYER_CHARACTER:
-      return { ...state, ...action.character };
+      return { ...state, ...action.character};
     case SET_NEARBY_PLAYER_CHARACTERS:
       return { ...state, nearbyPlayers: action.characters };
     case SET_NEARBY_MONSTERS:
@@ -379,6 +387,10 @@ export default (state = initialState, action) => {
     case PLAYER_EXP_INCREASE: {
       return {...state, experience: action.experience}
       }
+    case SET_NEW_PLAYER_FLAG: {
+      console.log('set new player flag', action);
+      return {...state, newUser: action.flag}
+    }
     default:
       return state;
   }
