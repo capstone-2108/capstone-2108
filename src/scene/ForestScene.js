@@ -15,22 +15,22 @@ export default class ForestScene extends MMOScene {
     // this.music.loop = true;
     // this.music.play();
 
-    const map = this.make.tilemap({ key: "second-scene" });
-    const grassTiles = map.addTilesetImage("grass", "grass");
-    const plantTiles = map.addTilesetImage("plant", "plant");
-    const propsTiles = map.addTilesetImage("props", "props");
-    const stoneTiles = map.addTilesetImage("stone", "stone");
-    const structureTiles = map.addTilesetImage("structure", "structure");
-    const wallTiles = map.addTilesetImage("wall", "wall");
+    this.map = this.make.tilemap({ key: "second-scene" });
+    const grassTiles = this.map.addTilesetImage("grass", "grass");
+    const plantTiles = this.map.addTilesetImage("plant", "plant");
+    const propsTiles = this.map.addTilesetImage("props", "props");
+    const stoneTiles = this.map.addTilesetImage("stone", "stone");
+    const structureTiles = this.map.addTilesetImage("structure", "structure");
+    const wallTiles = this.map.addTilesetImage("wall", "wall");
 
-    this.groundLayer = map.createLayer("ground", grassTiles, 0, 0);
-    this.treesLayer = map.createLayer(
+    this.groundLayer = this.map.createLayer("ground", grassTiles, 0, 0);
+    this.treesLayer = this.map.createLayer(
       "trees",
       [grassTiles, propsTiles, wallTiles, plantTiles, stoneTiles],
       0,
       0
     );
-    this.trees2Layer = map.createLayer(
+    this.trees2Layer = this.map.createLayer(
       "trees2",
       [grassTiles, plantTiles, propsTiles, structureTiles, wallTiles],
       0,
@@ -41,7 +41,7 @@ export default class ForestScene extends MMOScene {
 
     this.tileSize = 32;
 
-    this.pathfinder = createPathFinder(map, this.layers);
+    this.pathfinder = createPathFinder(this.map, this.layers);
 
     this.treesLayer.setCollisionByProperty({ collides: true });
     this.trees2Layer.setCollisionByProperty({ collides: true });

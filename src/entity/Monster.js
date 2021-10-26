@@ -38,7 +38,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.scene.add.existing(this); //adds this sprite to the scene
     this.setInteractive();
     this.speeds = {
-      walk: 135,
+      walk: 80,
       run: 150
     };
     this.direction = SOUTH; //the direction the character is facing or moving towards
@@ -273,7 +273,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   }
 
   hasReachedWaypoint(waypoint) {
-    const nextMapVertex = mapToScreen(waypoint.x, waypoint.y);
+    const nextMapVertex = mapToScreen(waypoint.x, waypoint.y, this.scene.tileSize);
     let dx = Math.floor(nextMapVertex.x - this.x);
     let dy = Math.floor(nextMapVertex.y - this.y);
     if (Math.abs(dx) < 5) {
@@ -426,11 +426,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   getPathTo(x, y) {
     return new Promise((resolve, reject) => {
+      console.log('tileSize', this.scene.tileSize);
       const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
       this.scene.pathfinder.cancelPath(this.pathId);
-      // console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
+      console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
       this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
-        // console.log("PATH", path);
+        console.log("PATH", path);
         resolve(path);
       });
       this.scene.pathfinder.calculate();
