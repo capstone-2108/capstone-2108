@@ -39,7 +39,7 @@ const userData = [
     },
     playerCharacter: {
       name: "Arcana",
-      health: 10,
+      health: 800,
       totalHealth: 1000,
       strength: 75,
       intelligence: 100,
@@ -210,7 +210,7 @@ const npcData = [
     npc: {
       name: "Goblin",
       health: 100,
-      totalHealth: 1000
+      totalHealth: 100
     },
     location: {
       xPos: 250,

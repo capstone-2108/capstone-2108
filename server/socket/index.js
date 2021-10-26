@@ -129,6 +129,12 @@ function initGameSync() {
       console.log(data);
       try {
         const monster = await Npc.applyDamage(data.monsterId, data.damage);
+        if (!monster.isAlive) {
+          const player = await PlayerCharacter.findByPk(data.playerCharacterId)
+          await player.update({experience: player.experience += 10})
+          socket.emit("playerExpIncrease", player.experience)
+        }
+
         socket.broadcast.emit('monsterTookDamage', {
           monster,
           local: false,
@@ -169,7 +175,7 @@ function initHeartbeat() {
     try {
       for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
         const {characterName, lastSeen, userId} = heartBeatInfo;
-        if (Date.now() - lastSeen > 12000) {
+        if (Date.now() - lastSeen > 120000) {
           await User.logout(userId);
           console.log(`Logging out ${characterName} due to inactivity`);
           worldChat.emit('newMessage', {
@@ -196,7 +202,7 @@ function initHeartbeat() {
     catch (err) {
       console.log(err);
     }
-  }, 5000);
+  }, 60000);
 
   setInterval(async () => {
     //log out anyone who is logged in but not registered with a heartbeat
