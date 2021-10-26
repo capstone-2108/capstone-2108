@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import {
+import player, {
   fetchCharacterData,
   fetchNearbyMonsters,
   fetchNearbyPlayers,
   fetchRemoteCharacterData,
   fetchSelectedMonster,
   heartbeat,
-  localPlayerTookDamage, logoutCharacters,
+  localPlayerTookDamage,
+  logoutCharacters,
   monsterTookDamage,
   playerTookDamage,
   remotePlayerChangedScenes,
-  remotePlayerTookDamage, reviveMonsters,
+  remotePlayerTookDamage,
+  reviveMonsters,
   setSelectedUnit,
-  playerExpIncrease
-} from '../store/player';
+  playerExpIncrease,
+  updateHealth
+} from "../store/player";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
-import {logout} from '../store';
+import { logout } from "../store";
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
-
-
 
 export const InitSubscriptionsToPhaser = () => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
   const playerState = useSelector((state) => state.player);
-
+  let healthIntervalId;
   // const logoutOnClose = (evt) => {
   //   console.log('characterId', playerState.characterId);
   //   if (playerState.characterId) {
@@ -50,6 +51,17 @@ export const InitSubscriptionsToPhaser = () => {
   //   }
   //
   // }, [playerState.characterId]);
+  useEffect(() => {
+    /****************
+     * Intervals *
+     ***************/
+    if (playerState.characterId && socket) {
+      healthIntervalId = window.setInterval(() => {
+        socket.emit("healthIntervalIncrease", playerState.characterId);
+      }, 2000);
+    }
+    return () => window.clearInterval(healthIntervalId);
+  }, [playerState.characterId, socket]);
 
   useEffect(() => {
     //loads the game
@@ -111,7 +123,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     //controlling monster has reset
     newSocket.on("monsterControlResetAggro", (monsterId) => {
-      console.log('reset aggro', monsterId);
+      console.log("reset aggro", monsterId);
       eventEmitter.emit("monsterControlResetAggro", monsterId);
     });
 
@@ -122,8 +134,8 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a monster from another player
     newSocket.on("monsterTookDamage", (data) => {
       dispatch(monsterTookDamage(data));
-      if(!data.monster.isAlive) {
-        eventEmitter.emit('monsterHasDied', data.monster.id);
+      if (!data.monster.isAlive) {
+        eventEmitter.emit("monsterHasDied", data.monster.id);
       }
       // eventEmitter.emit("remotePlayerHitMonster", data);
     });
@@ -131,19 +143,23 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a player
     newSocket.on("playerTookDamage", (data) => {
       dispatch(playerTookDamage(data));
-      if(!data.playerCharacter.isAlive && data.local) {
-        eventEmitter.emit('playerHasDied', data);
+      if (!data.playerCharacter.isAlive && data.local) {
+        eventEmitter.emit("playerHasDied", data);
       }
     });
 
     //received a message from the server that we should revive monsters
     newSocket.on("reviveMonsters", (monsters) => {
       dispatch(reviveMonsters(monsters));
-        eventEmitter.emit('reviveMonsters', monsters);
+      eventEmitter.emit("reviveMonsters", monsters);
     });
 
     newSocket.on("playerExpIncrease", (experience) => {
-      dispatch(playerExpIncrease(experience))
+      dispatch(playerExpIncrease(experience));
+    });
+
+    newSocket.on("healthIntervalIncrease", (health) => {
+      dispatch(updateHealth(health));
     });
 
     /****************

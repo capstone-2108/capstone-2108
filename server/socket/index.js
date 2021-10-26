@@ -167,8 +167,19 @@ function initGameSync() {
         console.log(err);
       }
     });
+
+    socket.on('healthIntervalIncrease', async (characterId) => {
+      try {
+        const player = await PlayerCharacter.findByPk(characterId)
+        await player.update({ health: player.health += 10 })
+        socket.emit("healthIntervalIncrease", player.health)
+      } catch (error) {
+        console.log(error)
+      }
+    })
   });
 }
+
 
 function initHeartbeat() {
   setInterval(async () => {
@@ -238,5 +249,5 @@ module.exports = {
   gameSync,
   worldChat,
   initHeartbeat,
-  initLazarusPit
+  initLazarusPit,
 };
