@@ -16,6 +16,7 @@ export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
 export const UPDATE_LOCAL_PLAYER_POSITION = "UPDATE_LOCAL_PLAYER_POSITION";
 export const REVIVE_PLAYER = "REVIVE_PLAYER";
+export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE"
 
 /*************************
  * Action Creators       *
@@ -111,6 +112,13 @@ export const reviveMonsters = (monsters) => {
     monsters
   };
 };
+
+export const playerExpIncrease = (experience) => {
+  return {
+    type: PLAYER_EXP_INCREASE,
+    experience
+  };
+}
 
 //--Thunks--
 export const fetchCharacterData = () => {
@@ -215,7 +223,7 @@ const initialState = {
   health: 100,
   totalHealth: 500,
   experience: 40,
-  totalExp: 120,
+  expToNextLevel: 1000,
   gold: 0,
   sceneId: 1,
   sceneName: "StarterTown",
@@ -368,6 +376,9 @@ export default (state = initialState, action) => {
         ...state,
         health: action.health
       };
+    case PLAYER_EXP_INCREASE: {
+      return {...state, experience: action.experience}
+      }
     default:
       return state;
   }

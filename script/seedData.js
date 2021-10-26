@@ -41,7 +41,7 @@ const userData = [
     },
     playerCharacter: {
       name: "Arcana",
-      health: 10,
+      health: 800,
       totalHealth: 1000,
       strength: 75,
       intelligence: 100,

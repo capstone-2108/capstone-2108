@@ -16,7 +16,8 @@ import {
   reviveMonsters, revivePlayer,
   setSelectedUnit,
   updateLocalPlayerPosition,
-  updatePlayerPosition
+  updatePlayerPosition,
+  playerExpIncrease
 } from '../store/player';
 
 import { useDispatch, useSelector } from "react-redux";
@@ -138,6 +139,10 @@ export const InitSubscriptionsToPhaser = () => {
     newSocket.on("reviveMonsters", (monsters) => {
       dispatch(reviveMonsters(monsters));
       eventEmitter.emit("reviveMonsters", monsters);
+    });
+
+    newSocket.on("playerExpIncrease", (experience) => {
+      dispatch(playerExpIncrease(experience))
     });
 
     /****************

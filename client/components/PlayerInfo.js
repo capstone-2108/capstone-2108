@@ -5,7 +5,7 @@ const PlayerInfo = () => {
   const player = useSelector((state) => state.player);
   const ratio = player.health / player.totalHealth;
   const healthWidth = 200 * ratio;
-  const expWidth = (player.experience / player.totalExp) * 200;
+  const expWidth = (player.experience / player.expToNextLevel) * 200;
 
   let healthStyle = "";
 
@@ -81,7 +81,7 @@ const PlayerInfo = () => {
                   width: `${expWidth}px`,
                   height: "20px"
                 }}>
-                <div className="barRatioEx">{`${player.experience}/${player.totalExp}`}</div>
+                <div className="barRatioEx">{`${player.experience}/${player.expToNextLevel}`}</div>
               </div>
             </div>
           </div>
