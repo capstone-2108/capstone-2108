@@ -11,9 +11,9 @@ export default class Dungeon extends MMOScene {
   }
 
   create() {
-    this.music = this.sound.add("scene5Audio");
-    this.music.loop = true;
-    this.music.play();
+    // this.music = this.sound.add("scene5Audio");
+    // this.music.loop = true;
+    // this.music.play();
 
     const map = this.make.tilemap({ key: "dungeon" });
     const dungeonTiles = map.addTilesetImage("Dungeon", "dungeon");

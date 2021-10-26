@@ -14,7 +14,10 @@ const PlayerCharacter = db.define("playerCharacter", {
   },
   health: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   totalHealth: {
     type: Sequelize.INTEGER,
@@ -168,7 +171,17 @@ PlayerCharacter.applyDamage = async function (characterId, damage) {
   const character = await this.findByPk(characterId, {
     attributes: ["id", "health", "totalHealth", "isAlive"]
   });
-  await character.update({health: character.health - damage});
+  try {
+    if ((character.health - damage) < 0) {
+      await character.update({health: 0});
+    }
+    else {
+      await character.update({health: character.health - damage});
+    }
+  }
+  catch(err) {
+    await character.update({health: 0});
+  }
   return character.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 

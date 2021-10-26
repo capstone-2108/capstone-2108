@@ -13,7 +13,10 @@ const Npc = db.define("npc", {
   },
   health: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   totalHealth: {
     type: Sequelize.INTEGER,
@@ -106,6 +109,12 @@ Npc.reviveDeadMonsters = async function () {
         [Op.lte]: 0
       }
     },
+    include: [
+      {
+        model: Location,
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }
+    ]
   });
   return Promise.all(deadMonsters.map(monster => monster.update({health: monster.totalHealth, aggroedOn: null})));
 
@@ -119,7 +128,18 @@ Npc.applyDamage = async function (monsterId, damage) {
   const monster = await this.findByPk(monsterId, {
     attributes: ["id", "health", "totalHealth", "isAlive"]
   });
-  await monster.update({health: monster.health - damage});
+  try {
+    if ((monster.health - damage) < 0 ) {
+      await monster.update({health: 0});
+    }
+    else {
+      await monster.update({health: monster.health - damage});
+    }
+  }
+  catch(err) {
+    await monster.update({health: 0});
+  }
+
   return monster.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 

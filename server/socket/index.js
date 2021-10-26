@@ -60,7 +60,9 @@ function initGameSync() {
         await playerCharacter.location.update({
           sceneId: data.sceneId,
           xPos: data.xPos,
-          yPos: data.yPos
+          yPos: data.yPos,
+          spawnX: data.xPos,
+          spawnY: data.yPos,
         });
         await playerCharacter.reload();
         const characterPayload = transformToPayload(playerCharacter);
@@ -129,6 +131,11 @@ function initGameSync() {
       console.log(data);
       try {
         const monster = await Npc.applyDamage(data.monsterId, data.damage);
+        if(!monster.isAlive) {
+          //get the player,
+          //increase their current experience
+          //emit an event to let react know to update the redux store
+        }
         socket.broadcast.emit('monsterTookDamage', {
           monster,
           local: false,
@@ -224,7 +231,7 @@ function initLazarusPit() {
       console.log(chalk.bgRed('ERROR REVIVING MONSTERS'));
       console.log(err);
     }
-  }, 10000);
+  }, 60000);
 }
 
 module.exports = {

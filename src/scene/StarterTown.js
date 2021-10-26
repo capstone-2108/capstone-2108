@@ -10,9 +10,9 @@ export default class StarterTown extends MMOScene {
   }
 
   create() {
-    this.music = this.sound.add("scene1Audio");
-    this.music.loop = true;
-    this.music.play();
+    // this.music = this.sound.add("scene1Audio");
+    // this.music.loop = true;
+    // this.music.play();
 
     this.map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
 
@@ -45,8 +45,10 @@ export default class StarterTown extends MMOScene {
     this.transitionZones.push({
       sceneName: 'ForestScene',
       sceneId: 2,
-      xPos: 140,
-      yPos: 675,
+      xPos: 500,
+      yPos: 500,
+      // xPos: 140,
+      // yPos: 675,
       transitionPoint: this.transitionToForestSceneFromStarterTown
     });
 

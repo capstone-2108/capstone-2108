@@ -72,11 +72,6 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.emit("remotePlayerLogout", characterId);
     });
 
-    // newSocket.on("playerChangedScenes", (scene) => {
-    //   console.log("CLIENT SIDE PHASERSYNC")
-    //   eventEmitter.emit("playerChangedScenes", (scene))
-    // })
-
     //this is where the server lets us know that others players have moved, once we receive this signal we
     //tell phaser to move those characters on the screen
     newSocket.on("remotePlayerPositionChanged", (position) => {
