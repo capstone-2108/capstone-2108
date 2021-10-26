@@ -15,6 +15,7 @@ export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
 export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
+export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE"
 
 /*************************
  * Action Creators       *
@@ -95,6 +96,13 @@ export const reviveMonsters = (monsters) => {
     type: REVIVE_MONSTERS,
     monsters
   }
+}
+
+export const playerExpIncrease = (experience) => {
+  return {
+    type: PLAYER_EXP_INCREASE,
+    experience
+  };
 }
 
 //--Thunks--
@@ -213,7 +221,7 @@ const initialState = {
   health: 100,
   totalHealth: 500,
   experience: 40,
-  totalExp: 120,
+  expToNextLevel: 1000,
   gold: 0,
   sceneId: 1,
   sceneName: "StarterTown",
@@ -357,6 +365,9 @@ export default (state = initialState, action) => {
         nearbyMonsters
       };
     }
+    case PLAYER_EXP_INCREASE: {
+      return {...state, experience: action.experience}
+      }
     default:
       return state;
   }
