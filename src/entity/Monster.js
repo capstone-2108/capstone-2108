@@ -376,12 +376,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
   checkAggroZone() {
     if (this.receivedAggroResetRequest) {
       // console.log("aggro reset request");
-      this.clearPath();
-      this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
-        this.waypoints = path.slice(1);
-      });
+      // this.clearPath();
+      // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
+      //   this.waypoints = path.slice(1);
+      // });
       this.receivedAggroResetRequest = false;
       this.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+      this.stateMachine.setState(MONSTER_STATES.IDLE);
     } else if (this.aggroZone.hasTarget()) {
       const zoneStatus = this.aggroZone.checkZone();
       if (zoneStatus.isTargetInZone) {

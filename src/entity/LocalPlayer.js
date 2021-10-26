@@ -127,12 +127,9 @@ export class LocalPlayer extends Player {
         lastSnapshot.endY = Math.floor(this.y);
       }
 
-      eventEmitter.emit("phaserUpdate", {
-        action: "playerPositionChanged",
-        data: {
-          characterId: this.id,
-          stateSnapshots: this.localStateSnapshots
-        }
+      eventEmitter.emit("localPlayerPositionChanged", {
+        characterId: this.id,
+        stateSnapshots: this.localStateSnapshots
       });
       this.localStateSnapshots = [];
       this.snapShotsLen = 0;

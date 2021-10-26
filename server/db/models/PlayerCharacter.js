@@ -169,20 +169,43 @@ PlayerCharacter.logout = async function (userId, characterId) {
 
 PlayerCharacter.applyDamage = async function (characterId, damage) {
   const character = await this.findByPk(characterId, {
-    attributes: ["id", "health", "totalHealth", "isAlive"]
+    attributes: ["id", "health", "totalHealth", "isAlive"],
+    include: [
+      {
+        model: Location,
+        attributes: ["spawnX", "spawnY"],
+      }
+    ]
   });
+
   try {
     if ((character.health - damage) < 0) {
+      console.log('less than 0');
       await character.update({health: 0});
     }
     else {
+      console.log('not less than 0');
       await character.update({health: character.health - damage});
     }
   }
   catch(err) {
+    console.log(err);
     await character.update({health: 0});
   }
-  return character.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
+  const payload = {
+    id: character.id,
+    health: character.health,
+    totalHealth: character.totalHealth,
+    isAlive: character.isAlive,
+    spawnX: character.location.spawnX,
+    spawnY: character.location.spawnY
+  }
+  console.log(payload);
+  if(!character.isAlive) {
+    payload.reviveHealth = Math.floor(character.totalHealth * .3)
+    await character.update({health: payload.reviveHealth});
+  }
+  return payload;
 }
 
 PlayerCharacter.resetAggroOnPlayerCharacter = async function(characterId) {
@@ -212,6 +235,8 @@ const transformToPayload = (playerCharacter) => {
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
+    spawnX: playerCharacter.location.spawnX,
+    spawnY: playerCharacter.location.spawnY,
     gold: playerCharacter.gold,
     sceneId: playerCharacter.location.scene.id,
     sceneName: playerCharacter.location.scene.name,

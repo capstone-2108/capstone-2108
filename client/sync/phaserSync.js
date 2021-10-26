@@ -7,29 +7,32 @@ import {
   fetchRemoteCharacterData,
   fetchSelectedMonster,
   heartbeat,
-  localPlayerTookDamage, logoutCharacters,
+  localPlayerTookDamage,
+  logoutCharacters,
   monsterTookDamage,
   playerTookDamage,
   remotePlayerChangedScenes,
-  remotePlayerTookDamage, reviveMonsters,
-  setSelectedUnit
+  remotePlayerTookDamage,
+  reviveMonsters, revivePlayer,
+  setSelectedUnit,
+  updateLocalPlayerPosition,
+  updatePlayerPosition
 } from '../store/player';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
-import {logout} from '../store';
+import { logout } from "../store";
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
-
-
 
 export const InitSubscriptionsToPhaser = () => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
   const playerState = useSelector((state) => state.player);
+  let lastPlayerPositionUpdate = Date.now();
 
   // const logoutOnClose = (evt) => {
   //   console.log('characterId', playerState.characterId);
@@ -76,6 +79,7 @@ export const InitSubscriptionsToPhaser = () => {
     //tell phaser to move those characters on the screen
     newSocket.on("remotePlayerPositionChanged", (position) => {
       //this is how we tell phaser that another player has moved
+      console.log("position", position);
       eventEmitter.emit("remotePlayerPositionChanged", position);
     });
 
@@ -105,7 +109,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     //controlling monster has reset
     newSocket.on("monsterControlResetAggro", (monsterId) => {
-      console.log('reset aggro', monsterId);
+      console.log("reset aggro", monsterId);
       eventEmitter.emit("monsterControlResetAggro", monsterId);
     });
 
@@ -116,8 +120,8 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a monster from another player
     newSocket.on("monsterTookDamage", (data) => {
       dispatch(monsterTookDamage(data));
-      if(!data.monster.isAlive) {
-        eventEmitter.emit('monsterHasDied', data.monster.id);
+      if (!data.monster.isAlive) {
+        eventEmitter.emit("monsterHasDied", data.monster.id);
       }
       // eventEmitter.emit("remotePlayerHitMonster", data);
     });
@@ -125,15 +129,15 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a player
     newSocket.on("playerTookDamage", (data) => {
       dispatch(playerTookDamage(data));
-      if(!data.playerCharacter.isAlive && data.local) {
-        eventEmitter.emit('playerHasDied', data);
+      if (!data.playerCharacter.isAlive) {
+        eventEmitter.emit("playerHasDied", data);
       }
     });
 
     //received a message from the server that we should revive monsters
     newSocket.on("reviveMonsters", (monsters) => {
       dispatch(reviveMonsters(monsters));
-        eventEmitter.emit('reviveMonsters', monsters);
+      eventEmitter.emit("reviveMonsters", monsters);
     });
 
     /****************
@@ -182,8 +186,12 @@ export const InitSubscriptionsToPhaser = () => {
     //this is used for generic updates from phaser which just need to be passed on to the server
     //and which react doesn't need to do anything beyond that
     unsubscribes.push(
-      eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
-        newSocket.emit(action, data);
+      eventEmitter.subscribe("localPlayerPositionChanged", (data) => {
+        if (Date.now() - lastPlayerPositionUpdate > 2000) {
+          dispatch(updateLocalPlayerPosition(data.stateSnapshots[data.stateSnapshots.length - 1]));
+          lastPlayerPositionUpdate = Date.now();
+        }
+        newSocket.emit("localPlayerPositionChanged", data);
       })
     );
 
@@ -235,6 +243,13 @@ export const InitSubscriptionsToPhaser = () => {
     unsubscribes.push(
       eventEmitter.subscribe("monsterControlDirections", (data) => {
         newSocket.emit("monsterControlDirections", data);
+      })
+    );
+
+    unsubscribes.push(
+      eventEmitter.subscribe("reviveLocalPlayer", (data) => {
+        console.log('reviveLocalPlayer', data.playerCharacter.reviveHealth);
+        dispatch(revivePlayer(data.playerCharacter.reviveHealth));
       })
     );
 

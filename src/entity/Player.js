@@ -48,6 +48,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.animationChanged = false;
     this.isInstant = false; //a flag to indicate that this state should only be transmitted once, such as an attack
     this.characterName = characterName;
+    this.isAlive = true;
 
     let style = {
       font: "15px",

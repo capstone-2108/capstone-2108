@@ -9,12 +9,13 @@ export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const SET_NEARBY_MONSTERS = "SET_NEARBY_MONSTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
 export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
-// export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
 export const REMOTE_PLAYER_CHANGED_SCENE = "REMOTE_PLAYER_CHANGED_SCENE";
 export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
 export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
+export const UPDATE_LOCAL_PLAYER_POSITION = "UPDATE_LOCAL_PLAYER_POSITION";
+export const REVIVE_PLAYER = "REVIVE_PLAYER";
 
 /*************************
  * Action Creators       *
@@ -82,6 +83,20 @@ export const playerTookDamage = (data) => {
   };
 };
 
+export const updateLocalPlayerPosition = ({ endX: xPos, endY: yPos }) => {
+  return {
+    type: UPDATE_LOCAL_PLAYER_POSITION,
+    data: { xPos, yPos }
+  };
+};
+
+export const revivePlayer = (health) => {
+  return {
+    type: REVIVE_PLAYER,
+    health
+  };
+};
+
 export const setSelectedUnit = (unitType, id) => {
   return {
     type: SET_SELECTED_UNIT,
@@ -94,8 +109,8 @@ export const reviveMonsters = (monsters) => {
   return {
     type: REVIVE_MONSTERS,
     monsters
-  }
-}
+  };
+};
 
 //--Thunks--
 export const fetchCharacterData = () => {
@@ -117,20 +132,6 @@ export const fetchCharacterData = () => {
     }
   };
 };
-
-// export const fetchSelectedUnitData = (id) => {
-//   return async (dispatch, getState) => {
-//     try {
-//       const response = await axios.get(`/api/game/character/${id}`);
-//       dispatch(setSelectedPlayer(response.data));
-//       const state = getState();
-//       return state.player;
-//     }
-//     catch (err) {
-//       console.log(err);
-//     }
-//   };
-// };
 
 export const fetchNearbyPlayers = (characterId) => {
   return async (dispatch, getState) => {
@@ -193,6 +194,7 @@ export const heartbeat = (socket) => {
       userId: state.player.userId,
       characterName: state.player.name,
       characterId: state.player.characterId
+      //pass in xPos, and yPos
     });
     return true;
   };
@@ -255,12 +257,13 @@ export default (state = initialState, action) => {
       return clearState;
     case UPDATE_PLAYER_CHARACTER:
       return { ...state, ...action.updates };
+    case UPDATE_LOCAL_PLAYER_POSITION: {
+      return { ...state, xPos: action.data.xPos, yPos: action.data.yPos };
+    }
     case SET_SELECTED_UNIT: {
       let unit;
       if (action.unitType === "monster") {
         unit = state.nearbyMonsters.filter((monster) => monster.monsterId === action.id);
-        console.log("state.nearbyMonsters", state.nearbyMonsters);
-        console.log("monster", unit);
         if (unit.length) {
           unit[0].unitType = "monster";
           return {
@@ -270,7 +273,6 @@ export default (state = initialState, action) => {
         }
       } else {
         unit = state.nearbyPlayers.filter((player) => player.characterId === action.id);
-        console.log("player", unit);
         if (unit.length) {
           unit[0].unitType = "player";
           return {
@@ -283,12 +285,14 @@ export default (state = initialState, action) => {
     }
     case MONSTER_TOOK_DAMAGE: {
       let selectedUnit = state.selectedUnit;
-      const {local, monster} = action
+      const { local, monster } = action;
       if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === monster.id) {
         selectedUnit = { ...selectedUnit, ...monster };
       }
       let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
-        nearbyMonster.monsterId === monster.id ? Object.assign(nearbyMonster, monster) : nearbyMonster
+        nearbyMonster.monsterId === monster.id
+          ? Object.assign(nearbyMonster, monster)
+          : nearbyMonster
       );
       return {
         ...state,
@@ -297,16 +301,16 @@ export default (state = initialState, action) => {
       };
     }
     case PLAYER_TOOK_DAMAGE: {
-      const {local, playerCharacter} = action
-      if(local) {
-        return {...state, ...playerCharacter}
+      const { local, playerCharacter } = action;
+      if (local) {
+        return { ...state, ...playerCharacter };
       }
       let selectedUnit = state.selectedUnit;
       if (selectedUnit.unitType === "player" && selectedUnit.characterId === action.data.id) {
         selectedUnit = { ...selectedUnit, ...playerCharacter };
       }
       let nearbyPlayers = state.nearbyPlayers.map((player) =>
-        player.characterId === action.data.id ? Object.assign(player, playerCharacter) : player
+        player.characterId === playerCharacter.id ? Object.assign(player, playerCharacter) : player
       );
       return {
         ...state,
@@ -335,21 +339,23 @@ export default (state = initialState, action) => {
     }
     case REVIVE_MONSTERS: {
       let selectedUnit = state.selectedUnit;
-      const {monsters} = action;
+      const { monsters } = action;
       console.log(action, typeof monsters);
       if (selectedUnit.unitType === "monster") {
-        for(let i = 0; i < monsters.length; i++) {
-          if(selectedUnit.monsterId === monsters[i].id) {
+        for (let i = 0; i < monsters.length; i++) {
+          if (selectedUnit.monsterId === monsters[i].id) {
             selectedUnit = { ...selectedUnit, ...monsters[i] };
           }
         }
       }
       let monsterMap = new Map();
-      for(let i = 0; i < monsters.length; i++) {
+      for (let i = 0; i < monsters.length; i++) {
         monsterMap.set(monsters[i].id, monsters[i]);
       }
       let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
-        monsterMap.has(nearbyMonster.monsterId) ? Object.assign(nearbyMonster, monsterMap.get(nearbyMonster.monsterId)) : nearbyMonster
+        monsterMap.has(nearbyMonster.monsterId)
+          ? Object.assign(nearbyMonster, monsterMap.get(nearbyMonster.monsterId))
+          : nearbyMonster
       );
       return {
         ...state,
@@ -357,6 +363,11 @@ export default (state = initialState, action) => {
         nearbyMonsters
       };
     }
+    case REVIVE_PLAYER:
+      return {
+        ...state,
+        health: action.health
+      };
     default:
       return state;
   }

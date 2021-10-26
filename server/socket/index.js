@@ -48,7 +48,7 @@ function initGameSync() {
 
     //when players move we receive this event, we should emit an event to all clients to let
     //them know that this player has moved
-    socket.on('playerPositionChanged', (data) => {
+    socket.on('localPlayerPositionChanged', (data) => {
       //let other clients know this this player has moved
       // console.log("playerPositionChanged", data);
       socket.broadcast.emit('remotePlayerPositionChanged', data);
@@ -78,6 +78,7 @@ function initGameSync() {
     //heartbeats are sent out when a player logs in, and on request from the server
     socket.on('heartbeat', async ({userId, characterName, characterId}) => {
       console.log('Received heart beat for ' + characterName);
+      //save the current position of the playerCharacter
       heartBeats[characterId] = {
         userId,
         characterName,
@@ -176,6 +177,7 @@ function initHeartbeat() {
     try {
       for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
         const {characterName, lastSeen, userId} = heartBeatInfo;
+        //save the characters new position
         if (Date.now() - lastSeen > 12000) {
           await User.logout(userId);
           console.log(`Logging out ${characterName} due to inactivity`);

@@ -34,10 +34,10 @@ export default class StarterTown extends MMOScene {
 
     this.pathfinder = createPathFinder(this.map, this.layers);
 
-    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 0);
+    // this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 1);
 
-    // use this for developmet (close to monster)
-    // this.transitionToForestSceneFromStarterTown = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5).setDepth(1);
+    // use this for development (close to monster)
+    this.transitionToForestSceneFromStarterTown = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5).setDepth(1);
 
     this.physics.add.existing(this.transitionToForestSceneFromStarterTown);
     this.transitionToForestSceneFromStarterTown.body.enable = true;
@@ -45,10 +45,8 @@ export default class StarterTown extends MMOScene {
     this.transitionZones.push({
       sceneName: 'ForestScene',
       sceneId: 2,
-      xPos: 500,
-      yPos: 500,
-      // xPos: 140,
-      // yPos: 675,
+      xPos: 140,
+      yPos: 675,
       transitionPoint: this.transitionToForestSceneFromStarterTown
     });
 

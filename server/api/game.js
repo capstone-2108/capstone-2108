@@ -96,6 +96,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       spriteSheetJsonUrl: spriteSheetInfo[0].spriteSheet_json_url,
       xPos: location.xPos,
       yPos: location.yPos,
+      spawnX: location.spawnX,
+      spawnY: location.spawnY,
       facingDirection: location.facingDirection,
       scene: scene.name
     };
@@ -128,6 +130,8 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
         spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
         xPos: playerCharacter.location.xPos,
         yPos: playerCharacter.location.yPos,
+        spawnX: playerCharacter.location.spawnX,
+        spawnY: playerCharacter.location.spawnY,
         facingDirection: playerCharacter.location.facingDirection
       };
     }
@@ -157,6 +161,8 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
         spriteSheetJsonUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
         xPos: monster.location.xPos,
         yPos: monster.location.yPos,
+        spawnX: monster.location.spawnX,
+        spawnY: monster.location.spawnY,
         facingDirection: monster.location.facingDirection
       };
     }
