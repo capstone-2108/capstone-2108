@@ -119,7 +119,7 @@ export const playerExpIncrease = (experience) => {
     type: PLAYER_EXP_INCREASE,
     experience
   };
-}
+};
 
 export const setNewPlayerFlag = (flag) => {
   return {
@@ -204,12 +204,15 @@ export const logoutCharacters = (characterId) => {
 export const heartbeat = (socket) => {
   return async (dispatch, getState) => {
     const state = getState();
+
     socket.emit("heartbeat", {
       userId: state.player.userId,
       characterName: state.player.name,
-      characterId: state.player.characterId
-      //pass in xPos, and yPos
+      characterId: state.player.characterId,
+      characterXPos: state.player.xPos,
+      characterYPos: state.player.yPos
     });
+
     return true;
   };
 };
@@ -387,7 +390,6 @@ export default (state = initialState, action) => {
       return {...state, experience: action.experience}
       }
     case SET_NEW_PLAYER_FLAG: {
-      console.log('set new player flag', action);
       return {...state, newUser: action.flag}
     }
     default:
