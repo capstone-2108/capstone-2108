@@ -6,10 +6,12 @@
 
 ### Checkout the Deployed Game: https://world-of-arcana.herokuapp.com/
 
+<center>
   <img src="/public/screenshots/login1.png" width="600">
   <img src="/public/screenshots/selectCharacter.png" width="600">
   <img src="/public/screenshots/dungeon.png" width="600">
   <img src="/public/screenshots/forest.png" width="600">
+</center>
 
 ## Libraries / Services Used in This Game
 
