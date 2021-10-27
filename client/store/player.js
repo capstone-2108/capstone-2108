@@ -197,11 +197,15 @@ export const logoutCharacters = (characterId) => {
 export const heartbeat = (socket) => {
   return async (dispatch, getState) => {
     const state = getState();
+
     socket.emit("heartbeat", {
       userId: state.player.userId,
       characterName: state.player.name,
-      characterId: state.player.characterId
+      characterId: state.player.characterId,
+      characterXPos: state.player.xPos,
+      characterYPos: state.player.yPos
     });
+
     return true;
   };
 };
