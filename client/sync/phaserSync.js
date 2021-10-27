@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { eventEmitter } from "../../src/event/EventEmitter";
-import {
+import player, {
   fetchCharacterData,
   fetchNearbyMonsters,
   fetchNearbyPlayers,
@@ -17,15 +17,15 @@ import {
   setSelectedUnit,
   updateLocalPlayerPosition,
   updatePlayerPosition,
-  playerExpIncrease
-} from '../store/player';
+  playerExpIncrease,
+  updateHealth
+} from "../store/player";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
 import { logout } from "../store";
-
 
 //this is a fake component which handles our event subscriptions
 //we're using a functional component because we need access to hooks
@@ -35,25 +35,19 @@ export const InitSubscriptionsToPhaser = () => {
   const [socket, setSocket] = useState(null);
   const playerState = useSelector((state) => state.player);
   let lastPlayerPositionUpdate = Date.now();
+  let healthIntervalId;
 
-  // const logoutOnClose = (evt) => {
-  //   console.log('characterId', playerState.characterId);
-  //   if (playerState.characterId) {
-  //     console.log('init unload listener');
-  //     dispatch(logoutCharacters(playerState.characterId));
-  //     dispatch(logout());
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   console.log('add unload listener', playerState);
-  //   addEventListener("beforeunload", logoutOnClose);
-  //   return () => {
-  //     console.log('remove unload listener');
-  //     removeEventListener('beforeunload', logoutOnClose);
-  //   }
-  //
-  // }, [playerState.characterId]);
+  useEffect(() => {
+    /****************
+     * Intervals *
+     ***************/
+    if (playerState.characterId && socket) {
+      healthIntervalId = window.setInterval(() => {
+        socket.emit("healthIntervalIncrease", playerState.characterId);
+      }, 2000);
+    }
+    return () => window.clearInterval(healthIntervalId);
+  }, [playerState.characterId, socket]);
 
   useEffect(() => {
     console.log('test', playerState);
@@ -148,7 +142,11 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     newSocket.on("playerExpIncrease", (experience) => {
-      dispatch(playerExpIncrease(experience))
+      dispatch(playerExpIncrease(experience));
+    });
+
+    newSocket.on("healthIntervalIncrease", (health) => {
+      dispatch(updateHealth(health));
     });
 
     /****************
