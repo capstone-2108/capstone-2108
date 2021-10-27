@@ -23,10 +23,10 @@
 
 - [Phaser 3](https://phaser.io/)
 - [Socket.IO](https://socket.io/)
-- [React] (https://reactjs.org/)
+- [React](https://reactjs.org/)
 - [Tiled](https://www.mapeditor.org/)
 - [Express](https://expressjs.com/)
-- [TexturePacker] (https://www.codeandweb.com/texturepacker)
+- [TexturePacker](https://www.codeandweb.com/texturepacker)
 
 ## How to Run the Game Locally
 
