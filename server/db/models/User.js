@@ -169,11 +169,11 @@ User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
 User.beforeSave(lowerCaseEmail);
 User.beforeBulkCreate((users) => Promise.all(users.map(lowerCaseEmail)));
 
-User.beforeUpdate((instance, options) => {
-  console.log('before update');
-  if(instance.changed({key: "loggedIn"})) {
-    console.log(`${instance.firstName} has changed from ${instance.previous({key: "loggedIn"})} to ${instance.loggedIn}`);
-  }
-})
+// User.beforeUpdate((instance, options) => {
+//   console.log('before update');
+//   if(instance.changed({key: "loggedIn"})) {
+//     console.log(`${instance.firstName} has changed from ${instance.previous({key: "loggedIn"})} to ${instance.loggedIn}`);
+//   }
+// })
 
 module.exports = { User };

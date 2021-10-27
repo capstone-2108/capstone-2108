@@ -77,17 +77,19 @@ function initGameSync() {
     // heartbeats are sent out when a player logs in, and on request from the server
     socket.on(
       "heartbeat",
-      async ({ userId, characterName, characterId, characterXPos, characterYPos }) => {
-        console.log("Received heart beat for " + characterName, characterXPos);
+      //{ userId, characterName, characterId, characterXPos, characterYPos }
+      async (data) => {
+        console.log("Received heart beat for ", data.characterName);
         try {
-          const user = await socket.user.flagLoggedIn();
-          await player.update({ xPos: characterXPos, yPos: characterYPos });
+          await socket.user.flagLoggedIn();
+          const player = await PlayerCharacter.getCharacter(data.characterId);
+          await player.location.update({ xPos: data.characterXPos, yPos: data.characterYPos });
         }
         catch(err) {
           console.log(err);
         }
 
-        const player = await PlayerCharacter.findByPk(characterId);
+
       }
     );
 
