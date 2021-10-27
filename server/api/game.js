@@ -4,8 +4,10 @@ const cookieParser = require("cookie-parser");
 router.use(cookieParser(process.env.cookieSecret));
 const { worldChat, gameSync } = require("../socket");
 const { TemplateCharacter, SpriteSheet, Location, PlayerCharacter, Scene, Npc } = require("../db");
-const { transformToPayload } = require("../db/models/PlayerCharacter");
+const { transformToPayload, transformToNearbyPlayerPayload} = require("../db/models/PlayerCharacter");
 const chalk = require("chalk");
+const {Sequelize} = require('sequelize');
+const sequelize = require('sequelize');
 
 //This fetches all template characters
 router.get("/templates", async (req, res, next) => {
@@ -62,6 +64,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
     const location = await Location.create({
       xPos: 300,
       yPos: 500,
+      spawnX: 300,
+      spawnY: 500,
       facingDirection: "e",
       sceneId: 1
     });
@@ -83,6 +87,7 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
 
     const templateCharacterInfo = await newPlayer.getTemplateCharacter();
     const spriteSheetInfo = await templateCharacterInfo.getSpriteSheets();
+    await req.user.flagLoggedIn();
 
     const payload = {
       userId: req.user.id,
@@ -96,8 +101,11 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       spriteSheetJsonUrl: spriteSheetInfo[0].spriteSheet_json_url,
       xPos: location.xPos,
       yPos: location.yPos,
+      spawnX: location.spawnX,
+      spawnY: location.spawnY,
       facingDirection: location.facingDirection,
-      scene: scene.name
+      scene: scene.name,
+      portrait: templateCharacterInfo.portrait
     };
     res.json(payload);
     gameSync.emit("remotePlayerLoad", payload);
@@ -115,21 +123,7 @@ router.get("/character/:characterId/nearby", requireTokenMiddleware, async (req,
     let len = playerCharacters.length;
     for (; i < len; i++) {
       const playerCharacter = playerCharacters[i];
-      payload[i] = {
-        userId: req.user.id,
-        characterId: playerCharacter.id,
-        name: playerCharacter.name,
-        health: playerCharacter.health,
-        totalHealth: playerCharacter.totalHealth,
-        portrait: playerCharacter.templateCharacter.portrait,
-        templateName: playerCharacter.templateCharacter.name,
-        spriteSheetImageUrl:
-          playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
-        spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
-        xPos: playerCharacter.location.xPos,
-        yPos: playerCharacter.location.yPos,
-        facingDirection: playerCharacter.location.facingDirection
-      };
+      payload[i] = transformToNearbyPlayerPayload(req.user, playerCharacter);
     }
     res.json(payload);
   } catch (err) {
@@ -157,6 +151,8 @@ router.get("/monster/scene/:sceneId", requireTokenMiddleware, async (req, res, n
         spriteSheetJsonUrl: monster.templateCharacter.spriteSheets[0].spriteSheet_image_url,
         xPos: monster.location.xPos,
         yPos: monster.location.yPos,
+        spawnX: monster.location.spawnX,
+        spawnY: monster.location.spawnY,
         facingDirection: monster.location.facingDirection
       };
     }

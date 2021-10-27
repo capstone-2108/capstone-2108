@@ -173,7 +173,9 @@ export default class MMOScene extends Phaser.Scene {
       if (!this.monsterGroup.contains(monster)) {
         this.monsterGroup.add(monster);
         this.physics.add.overlap(monster.aggroZone, this.player, (aggroZone, player) => {
-          aggroZone.requestAggroOnTarget(this.player);
+          if(this.player.isAlive) {
+            aggroZone.requestAggroOnTarget(this.player);
+          }
         });
       }
       monster.update(time, delta);

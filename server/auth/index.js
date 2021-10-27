@@ -3,6 +3,7 @@ const { User, TemplateCharacter, SpriteSheet } = require("../db");
 const { requireTokenMiddleware } = require("../auth-middleware");
 const cookieParser = require("cookie-parser");
 const { userSignupSchema } = require("../api/validationSchemas");
+const {Sequelize} = require('sequelize');
 const cookieSecret = process.env.cookieSecret;
 router.use(cookieParser(cookieSecret));
 
@@ -10,7 +11,7 @@ router.post("/signup", async (req, res, next) => {
   try {
     await userSignupSchema.validate(req.body);
     const { email, password, firstName } = req.body;
-    const user = await User.create({ email, password, firstName });
+    const user = await User.create({ email, password, firstName, lastSeen: Sequelize.literal('CURRENT_TIMESTAMP')});
     //Need to move lines 15 - 17 to after character creation REACT COMPONENT
     // const playerCharacter = await user.createPlayerCharacter({ name: "Hero", health: 100 });
     // console.log("playerCharacter", playerCharacter.__proto__);
@@ -37,6 +38,7 @@ router.post("/signup", async (req, res, next) => {
 //authenticates that the user is who they say they are
 router.get("/whoAmI", requireTokenMiddleware, async (req, res, next) => {
   try {
+    await req.user.flagLoggedIn();
     res.send({
       loggedIn: true,
       firstName: req.user.firstName,
@@ -46,6 +48,7 @@ router.get("/whoAmI", requireTokenMiddleware, async (req, res, next) => {
     });
   } catch (ex) {
     res.sendStatus(404);
+    console.log(ex);
     // next(ex);
   }
 });
@@ -84,14 +87,8 @@ router.post("/login", async (req, res, next) => {
       res.status(401).send("already loggedIn!!");
     } else {
       const { user, token } = await User.authenticate(req.body);
-      await User.update(
-        { loggedIn: true },
-        {
-          where: {
-            id: user.id
-          }
-        }
-      );
+      await user.flagLoggedIn();
+
       res.cookie("token", token, {
         sameSite: "strict",
         httpOnly: true,
@@ -124,6 +121,7 @@ router.post("/change", requireTokenMiddleware, async (req, res, next) => {
 });
 
 router.put("/logout", requireTokenMiddleware, async (req, res, next) => {
+  console.log('LOGGED OUT USER', req.user);
   try {
     await User.update(
       { loggedIn: false },

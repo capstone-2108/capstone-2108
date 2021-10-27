@@ -21,7 +21,6 @@ const init = async () => {
     initHeartbeat();
     initLazarusPit();
     Npc.clearAllAggro()
-    User.clearAllLogins();
   } catch (ex) {
     console.log(ex);
   }

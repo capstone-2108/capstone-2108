@@ -86,7 +86,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
       targetX: false,
       targetY: false
     };
-    if (this.target) {
+    if (this.target && this.target.isAlive) {
       const isTargetWithinZone = this.scene.physics.overlap(this, this.target, () => {});
       //if the player is within the monsters aggro zone
       if (isTargetWithinZone) {
@@ -109,6 +109,10 @@ export class AggroZone extends Phaser.GameObjects.Zone {
         zoneStatus.isTargetInZone = false;
         this.resetAggro();
       }
+    }
+    if (this.target && !this.target.isAlive) {
+      zoneStatus.isTargetInZone = false;
+      this.resetAggro();
     }
     return zoneStatus;
   }

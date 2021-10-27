@@ -13,7 +13,10 @@ const Npc = db.define("npc", {
   },
   health: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   totalHealth: {
     type: Sequelize.INTEGER,
@@ -35,6 +38,16 @@ const Npc = db.define("npc", {
     type: Sequelize.INTEGER
   }
 });
+
+/************************
+ Instance Methods       *
+ ***********************/
+// Npc.prototype.re = function() {
+//   this.health = this.totalHealth;
+//   this.xPos = this.spawnX;
+//   this.yPos = this.spawnY;
+//   return this;
+// }
 
 /************************
  Model Methods          *
@@ -76,9 +89,6 @@ Npc.getMonster = async function (monsterId) {
       },
       {
         model: Location,
-        where: {
-          sceneId
-        },
         attributes: { exclude: ["createdAt", "updatedAt"] }
       }
     ]
@@ -99,16 +109,26 @@ Npc.resetAggro = async (npcId) => {
   return monster.update({ aggroedOn: null });
 };
 
-Npc.reviveDeadMonsters = async function () {
+Npc.resurrectDeadMonsters = async function () {
   const deadMonsters = await this.findAll({
     where: {
       health: {
         [Op.lte]: 0
       }
     },
+    include: [
+      {
+        model: Location,
+        attributes: { exclude: ["createdAt", "updatedAt"] }
+      }
+    ]
   });
-  return Promise.all(deadMonsters.map(monster => monster.update({health: monster.totalHealth, aggroedOn: null})));
-
+  return Promise.all(deadMonsters.map(monster => monster.update({
+    health: monster.totalHealth,
+    aggroedOn: null,
+    xPos: monster.spawnX,
+    yPos: monster.spawnY,
+  })));
 }
 
 Npc.applyDamage = async function (monsterId, damage) {
@@ -119,7 +139,18 @@ Npc.applyDamage = async function (monsterId, damage) {
   const monster = await this.findByPk(monsterId, {
     attributes: ["id", "health", "totalHealth", "isAlive"]
   });
-  await monster.update({health: monster.health - damage});
+  try {
+    if ((monster.health - damage) < 0 ) {
+      await monster.update({health: 0});
+    }
+    else {
+      await monster.update({health: monster.health - damage});
+    }
+  }
+  catch(err) {
+    await monster.update({health: 0});
+  }
+
   return monster.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 

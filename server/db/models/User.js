@@ -47,6 +47,10 @@ const User = db.define("user", {
   loggedIn: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
+  },
+  lastSeen: {
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.NOW
   }
 });
 
@@ -61,6 +65,13 @@ User.prototype.correctPassword = function (candidatePwd) {
 User.prototype.generateToken = function () {
   return jwt.sign({ id: this.id }, process.env.JWT);
 };
+
+User.prototype.flagLoggedIn = function () {
+  return this.update({
+    loggedIn: true,
+    lastSeen: Sequelize.literal("CURRENT_TIMESTAMP")
+  });
+}
 
 /***********************
  * Model Methods       *
@@ -123,6 +134,7 @@ User.clearAllLogins = function() {
 }
 
 
+
 /******************
  * Custom Error   *
  * ****************/
@@ -156,5 +168,12 @@ User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
 
 User.beforeSave(lowerCaseEmail);
 User.beforeBulkCreate((users) => Promise.all(users.map(lowerCaseEmail)));
+
+// User.beforeUpdate((instance, options) => {
+//   console.log('before update');
+//   if(instance.changed({key: "loggedIn"})) {
+//     console.log(`${instance.firstName} has changed from ${instance.previous({key: "loggedIn"})} to ${instance.loggedIn}`);
+//   }
+// })
 
 module.exports = { User };

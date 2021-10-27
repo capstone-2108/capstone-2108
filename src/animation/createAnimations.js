@@ -61,46 +61,46 @@ export const createMonsterAnimations = (monster) => {
       },
       repeat: "yoyo"
     },
-    hit: {
-      frameConfigs: {
-        // [NORTH]: [9, 10, 11, 10, 11, 9],
-        [NORTH]: [
-          { frame: "_hit-9", duration: 120 },
-          { frame: "_hit-10", duration: 80 },
-          { frame: "_hit-11", duration: 80 },
-          { frame: "_hit-10", duration: 80 },
-          { frame: "_hit-11", duration: 80 },
-          { frame: "_hit-9", duration: 80 }
-        ],
-        // [EAST]: [6, 7, 8, 7, 8, 6],
-        [EAST]: [
-          { frame: "_hit-6", duration: 120 },
-          { frame: "_hit-7", duration: 80 },
-          { frame: "_hit-8", duration: 80 },
-          { frame: "_hit-7", duration: 80 },
-          { frame: "_hit-8", duration: 80 },
-          { frame: "_hit-6", duration: 80 }
-        ],
-        // [SOUTH]: [0, 1, 2, 1, 2, 0],
-        [SOUTH]: [
-          { frame: "_hit-0", duration: 120 },
-          { frame: "_hit-1", duration: 80 },
-          { frame: "_hit-2", duration: 80 },
-          { frame: "_hit-1", duration: 80 },
-          { frame: "_hit-2", duration: 80 },
-          { frame: "_hit-0", duration: 80 }
-        ],
-        // [WEST]: [3, 4, 5, 4, 5, 3]
-        [WEST]: [
-          { frame: "_hit-3", duration: 120 },
-          { frame: "_hit-4", duration: 80 },
-          { frame: "_hit-5", duration: 80 },
-          { frame: "_hit-4", duration: 80 },
-          { frame: "_hit-5", duration: 80 },
-          { frame: "_hit-3", duration: 80 }
-        ]
-      }
-    },
+    // hit: {
+    //   frameConfigs: {
+    //     // [NORTH]: [9, 10, 11, 10, 11, 9],
+    //     [NORTH]: [
+    //       { frame: "_hit-9", duration: 120 },
+    //       { frame: "_hit-10", duration: 80 },
+    //       { frame: "_hit-11", duration: 80 },
+    //       { frame: "_hit-10", duration: 80 },
+    //       { frame: "_hit-11", duration: 80 },
+    //       { frame: "_hit-9", duration: 80 }
+    //     ],
+    //     // [EAST]: [6, 7, 8, 7, 8, 6],
+    //     [EAST]: [
+    //       { frame: "_hit-6", duration: 120 },
+    //       { frame: "_hit-7", duration: 80 },
+    //       { frame: "_hit-8", duration: 80 },
+    //       { frame: "_hit-7", duration: 80 },
+    //       { frame: "_hit-8", duration: 80 },
+    //       { frame: "_hit-6", duration: 80 }
+    //     ],
+    //     // [SOUTH]: [0, 1, 2, 1, 2, 0],
+    //     [SOUTH]: [
+    //       { frame: "_hit-0", duration: 120 },
+    //       { frame: "_hit-1", duration: 80 },
+    //       { frame: "_hit-2", duration: 80 },
+    //       { frame: "_hit-1", duration: 80 },
+    //       { frame: "_hit-2", duration: 80 },
+    //       { frame: "_hit-0", duration: 80 }
+    //     ],
+    //     // [WEST]: [3, 4, 5, 4, 5, 3]
+    //     [WEST]: [
+    //       { frame: "_hit-3", duration: 120 },
+    //       { frame: "_hit-4", duration: 80 },
+    //       { frame: "_hit-5", duration: 80 },
+    //       { frame: "_hit-4", duration: 80 },
+    //       { frame: "_hit-5", duration: 80 },
+    //       { frame: "_hit-3", duration: 80 }
+    //     ]
+    //   }
+    // },
     walk: {
       frameConfigs: {
         // [NORTH]: [12, 13, 14, 15],

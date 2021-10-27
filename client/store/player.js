@@ -9,13 +9,15 @@ export const SET_NEARBY_PLAYER_CHARACTERS = "SET_NEARBY_PLAYER_CHARACTERS";
 export const SET_NEARBY_MONSTERS = "SET_NEARBY_MONSTERS";
 export const CLEAR_PLAYER_STATE = "CLEAR_PLAYER_STATE";
 export const UPDATE_PLAYER_CHARACTER = "UPDATE_PLAYER_CHARACTER";
-// export const SET_SELECTED_PLAYER = "SET_SELECTED_PLAYER";
 export const REMOTE_PLAYER_CHANGED_SCENE = "REMOTE_PLAYER_CHANGED_SCENE";
 export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
 export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
+export const UPDATE_LOCAL_PLAYER_POSITION = "UPDATE_LOCAL_PLAYER_POSITION";
+export const REVIVE_PLAYER = "REVIVE_PLAYER";
 export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE";
+export const SET_NEW_PLAYER_FLAG = "SET_NEW_PLAYER_FLAG";
 
 /*************************
  * Action Creators       *
@@ -83,6 +85,20 @@ export const playerTookDamage = (data) => {
   };
 };
 
+export const updateLocalPlayerPosition = ({ endX: xPos, endY: yPos }) => {
+  return {
+    type: UPDATE_LOCAL_PLAYER_POSITION,
+    data: { xPos, yPos }
+  };
+};
+
+export const revivePlayer = (health) => {
+  return {
+    type: REVIVE_PLAYER,
+    health
+  };
+};
+
 export const setSelectedUnit = (unitType, id) => {
   return {
     type: SET_SELECTED_UNIT,
@@ -105,6 +121,13 @@ export const playerExpIncrease = (experience) => {
   };
 };
 
+export const setNewPlayerFlag = (flag) => {
+  return {
+    type: SET_NEW_PLAYER_FLAG,
+    flag
+  };
+}
+
 //--Thunks--
 export const fetchCharacterData = () => {
   return async (dispatch, getState) => {
@@ -125,20 +148,6 @@ export const fetchCharacterData = () => {
     }
   };
 };
-
-// export const fetchSelectedUnitData = (id) => {
-//   return async (dispatch, getState) => {
-//     try {
-//       const response = await axios.get(`/api/game/character/${id}`);
-//       dispatch(setSelectedPlayer(response.data));
-//       const state = getState();
-//       return state.player;
-//     }
-//     catch (err) {
-//       console.log(err);
-//     }
-//   };
-// };
 
 export const fetchNearbyPlayers = (characterId) => {
   return async (dispatch, getState) => {
@@ -174,10 +183,8 @@ export const createPlayerCharacter = (name, character, history) => {
     try {
       const response = await axios.post("/api/game/character", { name, character });
       dispatch(setPlayerCharacter(response.data));
-      history.push({
-        pathname: "/game",
-        state: { newUser: true }
-      });
+      dispatch(setNewPlayerFlag(true));
+      history.push("/game");
     } catch (err) {
       console.log(err);
     }
@@ -214,6 +221,7 @@ export const heartbeat = (socket) => {
  * Reducer       *
  ************************/
 const initialState = {
+  newUser: false,
   userId: null,
   characterId: null,
   name: "",
@@ -234,6 +242,7 @@ const initialState = {
 };
 
 const clearState = {
+  newUser: false,
   userId: null,
   characterId: null,
   name: "",
@@ -256,7 +265,7 @@ const clearState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PLAYER_CHARACTER:
-      return { ...state, ...action.character };
+      return { ...state, ...action.character};
     case SET_NEARBY_PLAYER_CHARACTERS:
       return { ...state, nearbyPlayers: action.characters };
     case SET_NEARBY_MONSTERS:
@@ -267,12 +276,13 @@ export default (state = initialState, action) => {
       return clearState;
     case UPDATE_PLAYER_CHARACTER:
       return { ...state, ...action.updates };
+    case UPDATE_LOCAL_PLAYER_POSITION: {
+      return { ...state, xPos: action.data.xPos, yPos: action.data.yPos };
+    }
     case SET_SELECTED_UNIT: {
       let unit;
       if (action.unitType === "monster") {
         unit = state.nearbyMonsters.filter((monster) => monster.monsterId === action.id);
-        console.log("state.nearbyMonsters", state.nearbyMonsters);
-        console.log("monster", unit);
         if (unit.length) {
           unit[0].unitType = "monster";
           return {
@@ -282,7 +292,6 @@ export default (state = initialState, action) => {
         }
       } else {
         unit = state.nearbyPlayers.filter((player) => player.characterId === action.id);
-        console.log("player", unit);
         if (unit.length) {
           unit[0].unitType = "player";
           return {
@@ -320,7 +329,7 @@ export default (state = initialState, action) => {
         selectedUnit = { ...selectedUnit, ...playerCharacter };
       }
       let nearbyPlayers = state.nearbyPlayers.map((player) =>
-        player.characterId === action.data.id ? Object.assign(player, playerCharacter) : player
+        player.characterId === playerCharacter.id ? Object.assign(player, playerCharacter) : player
       );
       return {
         ...state,
@@ -350,7 +359,6 @@ export default (state = initialState, action) => {
     case REVIVE_MONSTERS: {
       let selectedUnit = state.selectedUnit;
       const { monsters } = action;
-      console.log(action, typeof monsters);
       if (selectedUnit.unitType === "monster") {
         for (let i = 0; i < monsters.length; i++) {
           if (selectedUnit.monsterId === monsters[i].id) {
@@ -373,8 +381,16 @@ export default (state = initialState, action) => {
         nearbyMonsters
       };
     }
+    case REVIVE_PLAYER:
+      return {
+        ...state,
+        health: action.health
+      };
     case PLAYER_EXP_INCREASE: {
-      return { ...state, experience: action.experience };
+      return {...state, experience: action.experience}
+      }
+    case SET_NEW_PLAYER_FLAG: {
+      return {...state, newUser: action.flag}
     }
     default:
       return state;

@@ -16,8 +16,6 @@ export default class Preloader extends Phaser.Scene {
     this.load.audio("orcAttack", "/audio/orcAttack.mp3");
     this.load.audio("swordAttack", "/audio/swordAttack.mp3");
 
-
-
     this.load.path = "/assets/";
     /**How to load an atlas (basically a sprite sheet with a .json file that tells phaser how to find certain animations**/
     this.load.atlas("fox", "spritesheets/heroes/fox/fox.png", "spritesheets/heroes/fox/fox.json");

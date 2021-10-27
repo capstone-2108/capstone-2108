@@ -6,6 +6,7 @@ const { SpriteSheet } = require("./SpriteSheet");
 const { Location } = require("./Location");
 const {Scene} = require('./Scene');
 const {Npc} = require('./Npc');
+const {User} = require('./User');
 
 const PlayerCharacter = db.define("playerCharacter", {
   name: {
@@ -14,7 +15,10 @@ const PlayerCharacter = db.define("playerCharacter", {
   },
   health: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      min: 0
+    }
   },
   totalHealth: {
     type: Sequelize.INTEGER,
@@ -73,10 +77,16 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
         id: {
           [Op.ne]: characterId
         },
-        active: true
       },
       attributes: ["id", "name", "health", "totalHealth"],
       include: [
+        {
+          model: User,
+          attributes: ["firstName"],
+          where: {
+            loggedIn: true
+          }
+        },
         {
           model: TemplateCharacter,
           attributes: ["id", "name", "portrait"],
@@ -148,6 +158,22 @@ PlayerCharacter.getCharacter = function (characterId) {
   });
 }
 
+PlayerCharacter.getStaleLoggedInUsers = function () {
+  return this.findAll({
+    include: [
+      {
+        model: User,
+        where: {
+          loggedIn: true,
+          lastSeen: {
+            [Op.lte]: new Date(Date.now() - 45000).toISOString()
+          }
+        },
+      },
+    ]
+  });
+}
+
 PlayerCharacter.logout = async function (userId, characterId) {
   let playerCharacter = await PlayerCharacter.findAll({
     where: {
@@ -171,10 +197,40 @@ PlayerCharacter.logout = async function (userId, characterId) {
 
 PlayerCharacter.applyDamage = async function (characterId, damage) {
   const character = await this.findByPk(characterId, {
-    attributes: ["id", "health", "totalHealth", "isAlive"]
+    attributes: ["id", "health", "totalHealth", "isAlive"],
+    include: [
+      {
+        model: Location,
+        attributes: ["spawnX", "spawnY"],
+      }
+    ]
   });
-  await character.update({health: character.health - damage});
-  return character.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
+
+  try {
+    if ((character.health - damage) < 0) {
+      await character.update({health: 0});
+    }
+    else {
+      await character.update({health: character.health - damage});
+    }
+  }
+  catch(err) {
+    console.log(err);
+    await character.update({health: 0});
+  }
+  const payload = {
+    id: character.id,
+    health: character.health,
+    totalHealth: character.totalHealth,
+    isAlive: character.isAlive,
+    spawnX: character.location.spawnX,
+    spawnY: character.location.spawnY
+  }
+  if(!character.isAlive) {
+    payload.reviveHealth = Math.floor(character.totalHealth * .3)
+    await character.update({health: payload.reviveHealth});
+  }
+  return payload;
 }
 
 PlayerCharacter.resetAggroOnPlayerCharacter = async function(characterId) {
@@ -205,6 +261,8 @@ const transformToPayload = (playerCharacter) => {
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_json_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
+    spawnX: playerCharacter.location.spawnX,
+    spawnY: playerCharacter.location.spawnY,
     gold: playerCharacter.gold,
     sceneId: playerCharacter.location.scene.id,
     sceneName: playerCharacter.location.scene.name,
@@ -212,4 +270,24 @@ const transformToPayload = (playerCharacter) => {
   };
 }
 
-module.exports = { PlayerCharacter, transformToPayload };
+const transformToNearbyPlayerPayload = (user, playerCharacter) => {
+  return {
+    userId: user.id,
+    characterId: playerCharacter.id,
+    name: playerCharacter.name,
+    health: playerCharacter.health,
+    totalHealth: playerCharacter.totalHealth,
+    portrait: playerCharacter.templateCharacter.portrait,
+    templateName: playerCharacter.templateCharacter.name,
+    spriteSheetImageUrl:
+    playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    xPos: playerCharacter.location.xPos,
+    yPos: playerCharacter.location.yPos,
+    spawnX: playerCharacter.location.spawnX,
+    spawnY: playerCharacter.location.spawnY,
+    facingDirection: playerCharacter.location.facingDirection
+  };
+}
+
+module.exports = { PlayerCharacter, transformToPayload, transformToNearbyPlayerPayload };

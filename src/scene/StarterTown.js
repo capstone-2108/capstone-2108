@@ -10,9 +10,9 @@ export default class StarterTown extends MMOScene {
   }
 
   create() {
-    this.music = this.sound.add("scene1Audio");
-    this.music.loop = true;
-    this.music.play();
+    // this.music = this.sound.add("scene1Audio");
+    // this.music.loop = true;
+    // this.music.play();
 
     this.map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
 
@@ -34,9 +34,9 @@ export default class StarterTown extends MMOScene {
 
     this.pathfinder = createPathFinder(this.map, this.layers);
 
-    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 0);
+    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 1);
 
-    // use this for developmet (close to monster)
+    // use this for development (close to monster)
     // this.transitionToForestSceneFromStarterTown = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5).setDepth(1);
 
     this.physics.add.existing(this.transitionToForestSceneFromStarterTown);

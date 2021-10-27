@@ -10,6 +10,14 @@ const Location = db.define("location", {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  spawnX: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  spawnY: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
   facingDirection: {
     type: Sequelize.ENUM("n", "s", "e", "w", "ne", "nw", "se", "sw"),
     allowNull: false

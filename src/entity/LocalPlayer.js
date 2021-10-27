@@ -47,7 +47,7 @@ export class LocalPlayer extends Player {
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer) => {
       if (pointer.rightButtonDown()) {
         this.stateMachine.setState("melee");
-        this.scene.swordSE.play();
+
       }
     });
 
@@ -127,12 +127,9 @@ export class LocalPlayer extends Player {
         lastSnapshot.endY = Math.floor(this.y);
       }
 
-      eventEmitter.emit("phaserUpdate", {
-        action: "playerPositionChanged",
-        data: {
-          characterId: this.id,
-          stateSnapshots: this.localStateSnapshots
-        }
+      eventEmitter.emit("localPlayerPositionChanged", {
+        characterId: this.id,
+        stateSnapshots: this.localStateSnapshots
       });
       this.localStateSnapshots = [];
       this.snapShotsLen = 0;

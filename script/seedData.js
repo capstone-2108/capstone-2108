@@ -23,6 +23,8 @@ const userData = [
     location: {
       xPos: 300,
       yPos: 700,
+      spawnX: 300,
+      spawnY: 700,
       facingDirection: "w",
       sceneId: 1
     },
@@ -52,6 +54,8 @@ const userData = [
     location: {
       xPos: 350,
       yPos: 500,
+      spawnX: 300,
+      spawnY: 500,
       facingDirection: "w",
       sceneId: 1
     },
@@ -65,7 +69,7 @@ const templateCharacterData = [
     baseStrength: 11,
     baseIntelligence: 8,
     constitution: 11,
-    baseHealth: 70,
+    baseHealth: 700,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png",
     description: "Increased health and melee damage. No ranged attacks"
@@ -75,7 +79,7 @@ const templateCharacterData = [
     baseStrength: 5,
     baseIntelligence: 11,
     constitution: 4,
-    baseHealth: 30,
+    baseHealth: 300,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png",
     description: "High damage, low health and movement speed"
@@ -85,7 +89,7 @@ const templateCharacterData = [
     baseStrength: 9,
     baseIntelligence: 7,
     constitution: 9,
-    baseHealth: 60,
+    baseHealth: 600,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png",
     description: "High strength, but not the brightest"
@@ -95,7 +99,7 @@ const templateCharacterData = [
     baseStrength: 10,
     baseIntelligence: 6,
     constitution: 9,
-    baseHealth: 60,
+    baseHealth: 600,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
     description: "Average strength and intelligence"
@@ -209,12 +213,14 @@ const npcData = [
   {
     npc: {
       name: "Goblin",
-      health: 100,
-      totalHealth: 100
+      health: 10,
+      totalHealth: 10
     },
     location: {
       xPos: 250,
       yPos: 400,
+      spawnX: 250,
+      spawnY: 400,
       facingDirection: "w",
       sceneId: 1
     },
@@ -230,6 +236,8 @@ const npcData = [
     location: {
       xPos: 1716,
       yPos: 800,
+      spawnX: 1716,
+      spawnY: 800,
       facingDirection: "w",
       sceneId: 1
     },
@@ -244,6 +252,8 @@ const npcData = [
     location: {
       xPos: 2900,
       yPos: 625,
+      spawnX: 2900,
+      spawnY: 625,
       facingDirection: "w",
       sceneId: 1
     },
@@ -259,6 +269,8 @@ const npcData = [
     location: {
       xPos: 810,
       yPos: 1000,
+      spawnX: 810,
+      spawnY: 1000,
       facingDirection: "w",
       sceneId: 2
     },
@@ -273,6 +285,8 @@ const npcData = [
     location: {
       xPos: 625,
       yPos: 300,
+      spawnX: 625,
+      spawnY: 300,
       facingDirection: "w",
       sceneId: 2
     },
@@ -287,6 +301,8 @@ const npcData = [
     location: {
       xPos: 1200,
       yPos: 1300,
+      spawnX: 1200,
+      spawnY: 1300,
       facingDirection: "w",
       sceneId: 2
     },
@@ -301,6 +317,8 @@ const npcData = [
     location: {
       xPos: 350,
       yPos: 1100,
+      spawnX: 350,
+      spawnY: 1100,
       facingDirection: "w",
       sceneId: 2
     },
@@ -315,6 +333,8 @@ const npcData = [
     location: {
       xPos: 1800,
       yPos: 1300,
+      spawnX: 1800,
+      spawnY: 1300,
       facingDirection: "w",
       sceneId: 2
     },
@@ -329,6 +349,8 @@ const npcData = [
     location: {
       xPos: 2550,
       yPos: 1450,
+      spawnX: 2550,
+      spawnY: 1450,
       facingDirection: "w",
       sceneId: 2
     },
@@ -343,6 +365,8 @@ const npcData = [
     location: {
       xPos: 1400,
       yPos: 700,
+      spawnX: 1400,
+      spawnY: 700,
       facingDirection: "w",
       sceneId: 2
     },
@@ -357,6 +381,8 @@ const npcData = [
     location: {
       xPos: 1340,
       yPos: 200,
+      spawnX: 1340,
+      spawnY: 200,
       facingDirection: "w",
       sceneId: 2
     },
@@ -371,6 +397,8 @@ const npcData = [
     location: {
       xPos: 2800,
       yPos: 500,
+      spawnX: 2800,
+      spawnY: 500,
       facingDirection: "w",
       sceneId: 2
     },
@@ -385,6 +413,8 @@ const npcData = [
     location: {
       xPos: 2300,
       yPos: 350,
+      spawnX: 2300,
+      spawnY: 350,
       facingDirection: "w",
       sceneId: 2
     },
@@ -400,6 +430,8 @@ const npcData = [
     location: {
       xPos: 400,
       yPos: 1300,
+      spawnX: 400,
+      spawnY: 1300,
       facingDirection: "w",
       sceneId: 3
     },
@@ -414,6 +446,8 @@ const npcData = [
     location: {
       xPos: 375,
       yPos: 1000,
+      spawnX: 375,
+      spawnY: 1000,
       facingDirection: "w",
       sceneId: 3
     },
@@ -428,6 +462,8 @@ const npcData = [
     location: {
       xPos: 425,
       yPos: 700,
+      spawnX: 425,
+      spawnY: 700,
       facingDirection: "w",
       sceneId: 3
     },
@@ -442,6 +478,8 @@ const npcData = [
     location: {
       xPos: 400,
       yPos: 400,
+      spawnX: 400,
+      spawnY: 400,
       facingDirection: "w",
       sceneId: 3
     },
@@ -457,6 +495,8 @@ const npcData = [
     location: {
       xPos: 810,
       yPos: 1300,
+      spawnX: 810,
+      spawnY: 1300,
       facingDirection: "w",
       sceneId: 4
     },
@@ -471,6 +511,8 @@ const npcData = [
     location: {
       xPos: 400,
       yPos: 650,
+      spawnX: 400,
+      spawnY: 650,
       facingDirection: "w",
       sceneId: 4
     },
@@ -485,6 +527,8 @@ const npcData = [
     location: {
       xPos: 810,
       yPos: 400,
+      spawnX: 810,
+      spawnY: 400,
       facingDirection: "w",
       sceneId: 4
     },
@@ -499,6 +543,8 @@ const npcData = [
     location: {
       xPos: 1000,
       yPos: 600,
+      spawnX: 1000,
+      spawnY: 600,
       facingDirection: "w",
       sceneId: 4
     },
@@ -514,6 +560,8 @@ const npcData = [
     location: {
       xPos: 100,
       yPos: 1300,
+      spawnX: 100,
+      spawnY: 1300,
       facingDirection: "w",
       sceneId: 5
     },
@@ -528,6 +576,8 @@ const npcData = [
     location: {
       xPos: 900,
       yPos: 1000,
+      spawnX: 900,
+      spawnY: 1000,
       facingDirection: "w",
       sceneId: 5
     },
@@ -542,6 +592,8 @@ const npcData = [
     location: {
       xPos: 950,
       yPos: 400,
+      spawnX: 950,
+      spawnY: 400,
       facingDirection: "w",
       sceneId: 5
     },
@@ -556,6 +608,8 @@ const npcData = [
     location: {
       xPos: 1200,
       yPos: 1200,
+      spawnX: 1200,
+      spawnY: 1200,
       facingDirection: "w",
       sceneId: 5
     },
@@ -570,6 +624,8 @@ const npcData = [
     location: {
       xPos: 1300,
       yPos: 400,
+      spawnX: 1300,
+      spawnY: 400,
       facingDirection: "w",
       sceneId: 5
     },
@@ -584,6 +640,8 @@ const npcData = [
     location: {
       xPos: 250,
       yPos: 200,
+      spawnX: 250,
+      spawnY: 200,
       facingDirection: "w",
       sceneId: 5
     },

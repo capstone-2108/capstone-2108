@@ -6,6 +6,7 @@ import { eventEmitter } from "../../src/event/EventEmitter";
 import Ui from "./Ui";
 import { InitSubscriptionsToPhaser } from "../sync/phaserSync";
 import HowToPlay from "./HowToPlay";
+import {setNewPlayerFlag} from '../store/player';
 
 const useStyles = makeStyles((theme) => ({
   chatContainer: {
@@ -23,12 +24,14 @@ export const GameView = (props) => {
 
   //if a new player, set popUp to true
   useEffect(() => {
-    if (location.state && location.state.newUser) {
+    if(player.newUser) {
       setPopUp(true);
-    };
-  }, []);
+    }
+
+  }, [player]);
 
   const handleClose = () => {
+    dispatch(setNewPlayerFlag(false));
     setPopUp(false)
   }
 

@@ -13,8 +13,10 @@ import player, {
   playerTookDamage,
   remotePlayerChangedScenes,
   remotePlayerTookDamage,
-  reviveMonsters,
+  reviveMonsters, revivePlayer,
   setSelectedUnit,
+  updateLocalPlayerPosition,
+  updatePlayerPosition,
   playerExpIncrease,
   updateHealth
 } from "../store/player";
@@ -32,25 +34,9 @@ export const InitSubscriptionsToPhaser = () => {
   const dispatch = useDispatch();
   const [socket, setSocket] = useState(null);
   const playerState = useSelector((state) => state.player);
+  let lastPlayerPositionUpdate = Date.now();
   let healthIntervalId;
-  // const logoutOnClose = (evt) => {
-  //   console.log('characterId', playerState.characterId);
-  //   if (playerState.characterId) {
-  //     console.log('init unload listener');
-  //     dispatch(logoutCharacters(playerState.characterId));
-  //     dispatch(logout());
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   console.log('add unload listener', playerState);
-  //   addEventListener("beforeunload", logoutOnClose);
-  //   return () => {
-  //     console.log('remove unload listener');
-  //     removeEventListener('beforeunload', logoutOnClose);
-  //   }
-  //
-  // }, [playerState.characterId]);
+
   useEffect(() => {
     /****************
      * Intervals *
@@ -62,6 +48,12 @@ export const InitSubscriptionsToPhaser = () => {
     }
     return () => window.clearInterval(healthIntervalId);
   }, [playerState.characterId, socket]);
+
+  useEffect(() => {
+    console.log('test', playerState);
+
+  },[playerState.characterId]);
+
 
   useEffect(() => {
     //loads the game
@@ -84,11 +76,6 @@ export const InitSubscriptionsToPhaser = () => {
     newSocket.on("remotePlayerLogout", (characterId) => {
       eventEmitter.emit("remotePlayerLogout", characterId);
     });
-
-    // newSocket.on("playerChangedScenes", (scene) => {
-    //   console.log("CLIENT SIDE PHASERSYNC")
-    //   eventEmitter.emit("playerChangedScenes", (scene))
-    // })
 
     //this is where the server lets us know that others players have moved, once we receive this signal we
     //tell phaser to move those characters on the screen
@@ -143,7 +130,7 @@ export const InitSubscriptionsToPhaser = () => {
     //received a message to register a hit on a player
     newSocket.on("playerTookDamage", (data) => {
       dispatch(playerTookDamage(data));
-      if (!data.playerCharacter.isAlive && data.local) {
+      if (!data.playerCharacter.isAlive) {
         eventEmitter.emit("playerHasDied", data);
       }
     });
@@ -208,8 +195,12 @@ export const InitSubscriptionsToPhaser = () => {
     //this is used for generic updates from phaser which just need to be passed on to the server
     //and which react doesn't need to do anything beyond that
     unsubscribes.push(
-      eventEmitter.subscribe("phaserUpdate", ({ action, data }) => {
-        newSocket.emit(action, data);
+      eventEmitter.subscribe("localPlayerPositionChanged", (data) => {
+        if (Date.now() - lastPlayerPositionUpdate > 2000) {
+          dispatch(updateLocalPlayerPosition(data.stateSnapshots[data.stateSnapshots.length - 1]));
+          lastPlayerPositionUpdate = Date.now();
+        }
+        newSocket.emit("localPlayerPositionChanged", data);
       })
     );
 
@@ -261,6 +252,19 @@ export const InitSubscriptionsToPhaser = () => {
     unsubscribes.push(
       eventEmitter.subscribe("monsterControlDirections", (data) => {
         newSocket.emit("monsterControlDirections", data);
+      })
+    );
+
+    unsubscribes.push(
+      eventEmitter.subscribe("reviveLocalPlayer", (data) => {
+        console.log('reviveLocalPlayer', data.playerCharacter.reviveHealth);
+        dispatch(revivePlayer(data.playerCharacter.reviveHealth));
+      })
+    );
+
+    unsubscribes.push(
+      eventEmitter.subscribe("updateMonsterDBPosition", (data) => {
+        newSocket.emit('updateMonsterDBPosition', data);
       })
     );
 

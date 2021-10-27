@@ -101,6 +101,7 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   if (remotePlayer) {
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
   } else {
+    console.log(stateSnapshots);
     console.log("remotePlayerPosition - player not found");
   }
 }
@@ -166,9 +167,11 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
 export function monsterControlResetAggroCallback(monsterId) {
   if (this.monsters[monsterId]) {
     console.log('control reset aggro callback');
-    this.monsters[monsterId].receivedAggroResetRequest = true;
-    this.monsters[monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
-    this.monsters[monsterId].stateMachine.setState(MONSTER_STATES.IDLE);
+    const monster = this.monsters[monsterId];
+    monster.receivedAggroResetRequest = true;
+    monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
+    monster.stateMachine.setState(MONSTER_STATES.IDLE);
+    monster.clearPath();
   }
 }
 
@@ -179,6 +182,7 @@ export function monsterHasDiedCallback(monsterId) {
     monster.stateMachine.setState(MONSTER_STATES.DEAD);
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     monster.aggroZone.resetAggro(true);
+    monster.clearPath();
   }
 }
 
@@ -190,18 +194,42 @@ export function reviveMonstersCallback(revivedMonsters) {
       monster.stateMachine.setState(MONSTER_STATES.IDLE);
       monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
       monster.aggroZone.resetAggro(true);
+      monster.x = revivedMonsters[i].xPos;
+      monster.y = revivedMonsters[i].yPos;
       fadeIn(this, monster);
     }
   }
 }
 
 export function playerHasDiedCallback(data) {
-  console.log('localPlayer has died');
+
   if(data.local) {
+    console.log('localPlayer has died');
+    console.log(data);
     deathFadeout(this, this.player);
+    this.player.isAlive = false;
+    setTimeout(() => {
+      console.log('data', data);
+      this.player.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
+      fadeIn(this, this.player);
+      this.player.isAlive = true;
+      eventEmitter.emit('reviveLocalPlayer', data);
+    }, 2000);
   }
   else {
-    console.log('remote player has died');
+    console.log('remote player has died', data);
+    if(this.remotePlayers[data.playerCharacter.id]) {
+      const remotePlayer = this.remotePlayers[data.playerCharacter.id];
+      deathFadeout(this, remotePlayer);
+      remotePlayer.isAlive = false;
+      setTimeout(() => {
+        console.log('data', data);
+        remotePlayer.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
+        fadeIn(this, remotePlayer);
+        remotePlayer.isAlive = true;
+      }, 2000);
+    }
+
   }
 }
 
