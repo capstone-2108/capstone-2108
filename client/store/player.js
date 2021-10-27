@@ -15,7 +15,7 @@ export const SET_SELECTED_UNIT = "SET_SELECTED_UNIT";
 export const MONSTER_TOOK_DAMAGE = "MONSTER_TOOK_DAMAGE";
 export const PLAYER_TOOK_DAMAGE = "PLAYER_TOOK_DAMAGE";
 export const REVIVE_MONSTERS = "REVIVE_MONSTERS";
-export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE"
+export const PLAYER_EXP_INCREASE = "PLAYER_EXP_INCREASE";
 
 /*************************
  * Action Creators       *
@@ -95,15 +95,15 @@ export const reviveMonsters = (monsters) => {
   return {
     type: REVIVE_MONSTERS,
     monsters
-  }
-}
+  };
+};
 
 export const playerExpIncrease = (experience) => {
   return {
     type: PLAYER_EXP_INCREASE,
     experience
   };
-}
+};
 
 //--Thunks--
 export const fetchCharacterData = () => {
@@ -197,11 +197,15 @@ export const logoutCharacters = (characterId) => {
 export const heartbeat = (socket) => {
   return async (dispatch, getState) => {
     const state = getState();
+
     socket.emit("heartbeat", {
       userId: state.player.userId,
       characterName: state.player.name,
-      characterId: state.player.characterId
+      characterId: state.player.characterId,
+      characterXPos: state.player.xPos,
+      characterYPos: state.player.yPos
     });
+
     return true;
   };
 };
@@ -291,12 +295,14 @@ export default (state = initialState, action) => {
     }
     case MONSTER_TOOK_DAMAGE: {
       let selectedUnit = state.selectedUnit;
-      const {local, monster} = action
+      const { local, monster } = action;
       if (selectedUnit.unitType === "monster" && selectedUnit.monsterId === monster.id) {
         selectedUnit = { ...selectedUnit, ...monster };
       }
       let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
-        nearbyMonster.monsterId === monster.id ? Object.assign(nearbyMonster, monster) : nearbyMonster
+        nearbyMonster.monsterId === monster.id
+          ? Object.assign(nearbyMonster, monster)
+          : nearbyMonster
       );
       return {
         ...state,
@@ -305,9 +311,9 @@ export default (state = initialState, action) => {
       };
     }
     case PLAYER_TOOK_DAMAGE: {
-      const {local, playerCharacter} = action
-      if(local) {
-        return {...state, ...playerCharacter}
+      const { local, playerCharacter } = action;
+      if (local) {
+        return { ...state, ...playerCharacter };
       }
       let selectedUnit = state.selectedUnit;
       if (selectedUnit.unitType === "player" && selectedUnit.characterId === action.data.id) {
@@ -343,21 +349,23 @@ export default (state = initialState, action) => {
     }
     case REVIVE_MONSTERS: {
       let selectedUnit = state.selectedUnit;
-      const {monsters} = action;
+      const { monsters } = action;
       console.log(action, typeof monsters);
       if (selectedUnit.unitType === "monster") {
-        for(let i = 0; i < monsters.length; i++) {
-          if(selectedUnit.monsterId === monsters[i].id) {
+        for (let i = 0; i < monsters.length; i++) {
+          if (selectedUnit.monsterId === monsters[i].id) {
             selectedUnit = { ...selectedUnit, ...monsters[i] };
           }
         }
       }
       let monsterMap = new Map();
-      for(let i = 0; i < monsters.length; i++) {
+      for (let i = 0; i < monsters.length; i++) {
         monsterMap.set(monsters[i].id, monsters[i]);
       }
       let nearbyMonsters = state.nearbyMonsters.map((nearbyMonster) =>
-        monsterMap.has(nearbyMonster.monsterId) ? Object.assign(nearbyMonster, monsterMap.get(nearbyMonster.monsterId)) : nearbyMonster
+        monsterMap.has(nearbyMonster.monsterId)
+          ? Object.assign(nearbyMonster, monsterMap.get(nearbyMonster.monsterId))
+          : nearbyMonster
       );
       return {
         ...state,
@@ -366,8 +374,8 @@ export default (state = initialState, action) => {
       };
     }
     case PLAYER_EXP_INCREASE: {
-      return {...state, experience: action.experience}
-      }
+      return { ...state, experience: action.experience };
+    }
     default:
       return state;
   }
