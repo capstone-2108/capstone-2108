@@ -170,7 +170,11 @@ function initGameSync() {
     socket.on('healthIntervalIncrease', async (characterId) => {
       try {
         const player = await PlayerCharacter.findByPk(characterId)
-        await player.update({ health: player.health += 10 })
+        if (player.health + 10 > player.totalHealth) {
+          await player.update({ health: player.totalHealth })
+        } else {
+          await player.update({ health: player.health += 10 })
+        }
         socket.emit("healthIntervalIncrease", player.health)
       } catch (error) {
         console.log(error)
