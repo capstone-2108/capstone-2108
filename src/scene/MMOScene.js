@@ -3,7 +3,8 @@ import { eventEmitter } from "../event/EventEmitter";
 
 import {
   localPlayerLogoutCallback,
-  monsterCanAggroPlayerCallback, monsterControlFollowDirectionsCallback,
+  monsterCanAggroPlayerCallback,
+  monsterControlFollowDirectionsCallback,
   monsterControlResetAggroCallback,
   nearbyMonsterLoadCallback,
   nearbyPlayerLoadCallback,
@@ -11,10 +12,13 @@ import {
   remotePlayerLoadCallback,
   remotePlayerLogoutCallback,
   remotePlayerPositionChangedCallback,
-  scenePlayerLoadCallback, monsterHasDiedCallback, playerHasDiedCallback, reviveMonstersCallback
-} from '../event/callbacks';
-import {Monster} from '../entity/Monster';
-import {Player} from '../entity/Player';
+  scenePlayerLoadCallback,
+  monsterHasDiedCallback,
+  playerHasDiedCallback,
+  reviveMonstersCallback
+} from "../event/callbacks";
+import { Monster } from "../entity/Monster";
+import { Player } from "../entity/Player";
 
 export default class MMOScene extends Phaser.Scene {
   constructor(sceneName) {
@@ -34,7 +38,7 @@ export default class MMOScene extends Phaser.Scene {
   create() {
     this.scene.run("minimapBorder");
 
-    this.input.setDefaultCursor('url(images/FantasyCursor.cur), pointer');
+    this.input.setDefaultCursor("url(images/FantasyCursor.cur), pointer");
 
     this.swordSE = this.sound.add("swordAttack");
     this.orcSE = this.sound.add("orcAttack");
@@ -95,9 +99,11 @@ export default class MMOScene extends Phaser.Scene {
     //   eventEmitter.subscribe("monsterAggroFollowPath", monsterAggroFollowPathCallback.bind(this))
     // );
 
-
     this.unsubscribes.push(
-      eventEmitter.subscribe("monsterFollowDirections", monsterControlFollowDirectionsCallback.bind(this))
+      eventEmitter.subscribe(
+        "monsterFollowDirections",
+        monsterControlFollowDirectionsCallback.bind(this)
+      )
     );
 
     //receiving an event to let us know that a monster needs to reset it's aggro
@@ -110,12 +116,11 @@ export default class MMOScene extends Phaser.Scene {
 
     this.unsubscribes.push(
       eventEmitter.subscribe("monsterHasDied", monsterHasDiedCallback.bind(this))
-    )
+    );
 
     this.unsubscribes.push(
       eventEmitter.subscribe("reviveMonsters", reviveMonstersCallback.bind(this))
     );
-
 
     this.unsubscribes.push(
       eventEmitter.subscribe("playerHasDied", playerHasDiedCallback.bind(this))
@@ -132,10 +137,17 @@ export default class MMOScene extends Phaser.Scene {
     //
     this.input.on("gameobjectdown", (pointer, gameObject) => {
       if (gameObject instanceof Player) {
-        console.log("remote player", gameObject);
+        const players = this.remotePlayers;
+        for (const [id, player] of Object.entries(players)) {
+          player.nameTag.setColor("#872340");
+        }
         gameObject.nameTag.setColor("#FFFFFF");
         eventEmitter.emit("requestPlayerInfo", gameObject.id);
       } else if (gameObject instanceof Monster) {
+        const players = this.remotePlayers;
+        for (const [id, player] of Object.entries(players)) {
+          player.nameTag.setColor("#872340");
+        }
         eventEmitter.emit("requestMonsterInfo", gameObject.id);
       } else {
         console.log("error!!!");
