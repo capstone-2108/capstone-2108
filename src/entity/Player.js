@@ -132,7 +132,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   dealDamage() {
     let convertedDir = DIRECTION_CONVERSION[this.direction];
     const applyHitBox = (animation, frame) => {
-      if (frame.index < 2) return;
+      if (frame.index < 2) {return;}
+      if(frame.index === 2) {
+        if(this.localPlayer) {
+          this.scene.swordSE.play();
+        }
+      }
       //here we're setting up where the attack box should go based on the character direction
       // this.instant = true;
       switch (convertedDir) {

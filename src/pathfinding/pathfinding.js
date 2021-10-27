@@ -66,7 +66,7 @@ export const createPathFinder = (map, layers) => {
   pathFinder.disableDiagonals();
   pathFinder.disableCornerCutting();
   // pathFinder.disableSync();
-  
+
   const grid = [];
   const acceptableTiles = new Set();
   for (let col = 0; col < map.height; col++) {

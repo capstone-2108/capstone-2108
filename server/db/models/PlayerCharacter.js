@@ -6,6 +6,7 @@ const { SpriteSheet } = require("./SpriteSheet");
 const { Location } = require("./Location");
 const {Scene} = require('./Scene');
 const {Npc} = require('./Npc');
+const {User} = require('./User');
 
 const PlayerCharacter = db.define("playerCharacter", {
   name: {
@@ -76,10 +77,16 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
         id: {
           [Op.ne]: characterId
         },
-        active: true
       },
       attributes: ["id", "name", "health", "totalHealth"],
       include: [
+        {
+          model: User,
+          attributes: ["firstName"],
+          where: {
+            loggedIn: true
+          }
+        },
         {
           model: TemplateCharacter,
           attributes: ["id", "name", "portrait"],
@@ -151,6 +158,22 @@ PlayerCharacter.getCharacter = function (characterId) {
   });
 }
 
+PlayerCharacter.getStaleLoggedInUsers = function () {
+  return this.findAll({
+    include: [
+      {
+        model: User,
+        where: {
+          loggedIn: true,
+          lastSeen: {
+            [Op.lte]: new Date(Date.now() - 45000).toISOString()
+          }
+        },
+      },
+    ]
+  });
+}
+
 PlayerCharacter.logout = async function (userId, characterId) {
   let playerCharacter = await PlayerCharacter.findAll({
     where: {
@@ -185,11 +208,9 @@ PlayerCharacter.applyDamage = async function (characterId, damage) {
 
   try {
     if ((character.health - damage) < 0) {
-      console.log('less than 0');
       await character.update({health: 0});
     }
     else {
-      console.log('not less than 0');
       await character.update({health: character.health - damage});
     }
   }
@@ -205,7 +226,6 @@ PlayerCharacter.applyDamage = async function (characterId, damage) {
     spawnX: character.location.spawnX,
     spawnY: character.location.spawnY
   }
-  console.log(payload);
   if(!character.isAlive) {
     payload.reviveHealth = Math.floor(character.totalHealth * .3)
     await character.update({health: payload.reviveHealth});
@@ -250,4 +270,24 @@ const transformToPayload = (playerCharacter) => {
   };
 }
 
-module.exports = { PlayerCharacter, transformToPayload };
+const transformToNearbyPlayerPayload = (user, playerCharacter) => {
+  return {
+    userId: user.id,
+    characterId: playerCharacter.id,
+    name: playerCharacter.name,
+    health: playerCharacter.health,
+    totalHealth: playerCharacter.totalHealth,
+    portrait: playerCharacter.templateCharacter.portrait,
+    templateName: playerCharacter.templateCharacter.name,
+    spriteSheetImageUrl:
+    playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    xPos: playerCharacter.location.xPos,
+    yPos: playerCharacter.location.yPos,
+    spawnX: playerCharacter.location.spawnX,
+    spawnY: playerCharacter.location.spawnY,
+    facingDirection: playerCharacter.location.facingDirection
+  };
+}
+
+module.exports = { PlayerCharacter, transformToPayload, transformToNearbyPlayerPayload };

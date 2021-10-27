@@ -2,13 +2,12 @@ const {Server} = require('socket.io');
 const server = require('../app');
 const {requireSocketToken} = require('./socket-middleware');
 const io = new Server(server);
-const {PlayerCharacter, Location, Npc, User} = require('../db');
+const {PlayerCharacter, Npc, User} = require('../db');
 const {transformToPayload} = require('../db/models/PlayerCharacter');
 const chalk = require('chalk');
 
 const worldChat = io.of('/worldChat');
 const gameSync = io.of('/gameSync');
-const heartBeats = {};
 
 function initSocketServer() {
   initWorldChat();
@@ -48,9 +47,11 @@ function initGameSync() {
 
     //when players move we receive this event, we should emit an event to all clients to let
     //them know that this player has moved
-    socket.on('localPlayerPositionChanged', (data) => {
+    socket.on('localPlayerPositionChanged', async (data) => {
       //let other clients know this this player has moved
-      // console.log("playerPositionChanged", data);
+      if(!socket.user.loggedIn) {
+        await socket.user.flagLoggedIn();
+      }
       socket.broadcast.emit('remotePlayerPositionChanged', data);
     });
 
@@ -74,16 +75,18 @@ function initGameSync() {
       }
     });
 
-    //we'll receive heartbeats from players to let us know they are still logged in
-    //heartbeats are sent out when a player logs in, and on request from the server
+    // we'll receive heartbeats from players to let us know they are still logged in
+    // heartbeats are sent out when a player logs in, and on request from the server
     socket.on('heartbeat', async ({userId, characterName, characterId}) => {
       console.log('Received heart beat for ' + characterName);
       //save the current position of the playerCharacter
-      heartBeats[characterId] = {
-        userId,
-        characterName,
-        lastSeen: Date.now()
-      };
+      try {
+        const user = await socket.user.flagLoggedIn();
+        // console.log('heartbeat user', user);
+      }
+      catch(err) {
+        console.log(err);
+      }
     });
 
     //a client is letting us know that a monster is requesting to aggro a player
@@ -170,60 +173,89 @@ function initGameSync() {
         console.log(err);
       }
     });
+
+    socket.on("updateMonsterDBPosition", async (data) => {
+      console.log('updating monster position', data);
+      try {
+        const monster = await Npc.getMonster(data.monsterId);
+        await monster.location.update({xPos: data.xPos, yPos: data.yPos});
+      }
+      catch(err) {
+        console.log(err);
+      }
+    });
+
   });
 }
 
 function initHeartbeat() {
   setInterval(async () => {
     try {
-      for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
-        const {characterName, lastSeen, userId} = heartBeatInfo;
-        if (Date.now() - lastSeen > 120000) {
-          await User.logout(userId);
-          console.log(`Logging out ${characterName} due to inactivity`);
-          worldChat.emit('newMessage', {
+      const players = await PlayerCharacter.getStaleLoggedInUsers();
+      let i = 0;
+      let len = players.length;
+      for(i; i < len; i++) {
+        const player = players[i];
+        console.log(chalk.red(`Logging out ${player.name} due to inactivity`));
+        await User.logout(player.user.id);
+        worldChat.emit('newMessage', {
             channel: 'world',
             message: {
               name: 'WORLD',
-              message: characterName + ' has been logged out by the server!'
+              message: player.name + ' has been logged out by the server!'
             }
-          });
-          delete heartBeats[characterId];
-          //@todo if a monster is aggroed on a person who's been logged out, we should cancel that aggro
-          const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
-          monsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
-          gameSync.emit('remotePlayerLogout', characterId);
-        }
-        else {
-          // const playerCharacter = await PlayerCharacter.getCharacter(characterId);
-
-        }
+        });
+        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(player.id);
+        monsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
+        gameSync.emit('remotePlayerLogout', player.id);
       }
-      console.log('Sending out heart beat check');
-      gameSync.emit('heartbeatCheck');
+      // for (const [characterId, heartBeatInfo] of Object.entries(heartBeats)) {
+      //   const {characterName, lastSeen, userId} = heartBeatInfo;
+      //   if (Date.now() - lastSeen > 120000) {
+      //     await User.logout(userId);
+      //     console.log(`Logging out ${characterName} due to inactivity`);
+      //     worldChat.emit('newMessage', {
+      //       channel: 'world',
+      //       message: {
+      //         name: 'WORLD',
+      //         message: characterName + ' has been logged out by the server!'
+      //       }
+      //     });
+      //     delete heartBeats[characterId];
+      //     //@todo if a monster is aggroed on a person who's been logged out, we should cancel that aggro
+      //     const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(characterId);
+      //     monsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
+      //     gameSync.emit('remotePlayerLogout', characterId);
+      //   }
+      //   else {
+      //     // const playerCharacter = await PlayerCharacter.getCharacter(characterId);
+      //
+      //   }
+      // }
     }
     catch (err) {
       console.log(err);
     }
-  }, 60000);
-
-  setInterval(async () => {
-    //log out anyone who is logged in but not registered with a heartbeat
-    //@todo: implement this
-  })
+  }, 15000);
+  setInterval(() => {
+    console.log(chalk.bgMagenta('Sending out heart beat check'));
+    gameSync.emit('heartbeatCheck');
+  }, 10000);
 }
 
 //brings dead monsters back to life
 function initLazarusPit() {
   setInterval(async () => {
     try {
-      const deadMonsters = await Npc.reviveDeadMonsters();
+      const deadMonsters = await Npc.resurrectDeadMonsters();
       if (deadMonsters.length) {
         console.log(chalk.bgBlue('Reviving Monsters'));
         const revivedMonsters = deadMonsters.map(monster => ({
           id: monster.id,
           health: monster.health,
-          totalHealth: monster.totalHealth
+          totalHealth: monster.totalHealth,
+          xPos: monster.location.spawnX,
+          yPos: monster.location.spawnY
         }));
         console.log(revivedMonsters);
         gameSync.emit('reviveMonsters', revivedMonsters);
@@ -233,7 +265,7 @@ function initLazarusPit() {
       console.log(chalk.bgRed('ERROR REVIVING MONSTERS'));
       console.log(err);
     }
-  }, 60000);
+  }, 5000);
 }
 
 module.exports = {

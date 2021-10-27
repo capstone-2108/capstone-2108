@@ -40,6 +40,16 @@ const Npc = db.define("npc", {
 });
 
 /************************
+ Instance Methods       *
+ ***********************/
+// Npc.prototype.re = function() {
+//   this.health = this.totalHealth;
+//   this.xPos = this.spawnX;
+//   this.yPos = this.spawnY;
+//   return this;
+// }
+
+/************************
  Model Methods          *
  ***********************/
 Npc.getNearbyMonsters = async function (sceneId) {
@@ -79,9 +89,6 @@ Npc.getMonster = async function (monsterId) {
       },
       {
         model: Location,
-        where: {
-          sceneId
-        },
         attributes: { exclude: ["createdAt", "updatedAt"] }
       }
     ]
@@ -102,7 +109,7 @@ Npc.resetAggro = async (npcId) => {
   return monster.update({ aggroedOn: null });
 };
 
-Npc.reviveDeadMonsters = async function () {
+Npc.resurrectDeadMonsters = async function () {
   const deadMonsters = await this.findAll({
     where: {
       health: {
@@ -116,8 +123,12 @@ Npc.reviveDeadMonsters = async function () {
       }
     ]
   });
-  return Promise.all(deadMonsters.map(monster => monster.update({health: monster.totalHealth, aggroedOn: null})));
-
+  return Promise.all(deadMonsters.map(monster => monster.update({
+    health: monster.totalHealth,
+    aggroedOn: null,
+    xPos: monster.spawnX,
+    yPos: monster.spawnY,
+  })));
 }
 
 Npc.applyDamage = async function (monsterId, damage) {

@@ -56,6 +56,12 @@ export const InitSubscriptionsToPhaser = () => {
   // }, [playerState.characterId]);
 
   useEffect(() => {
+    console.log('test', playerState);
+
+  },[playerState.characterId]);
+
+
+  useEffect(() => {
     //loads the game
     window.game = new Game();
 
@@ -81,7 +87,6 @@ export const InitSubscriptionsToPhaser = () => {
     //tell phaser to move those characters on the screen
     newSocket.on("remotePlayerPositionChanged", (position) => {
       //this is how we tell phaser that another player has moved
-      console.log("position", position);
       eventEmitter.emit("remotePlayerPositionChanged", position);
     });
 
@@ -256,6 +261,12 @@ export const InitSubscriptionsToPhaser = () => {
       eventEmitter.subscribe("reviveLocalPlayer", (data) => {
         console.log('reviveLocalPlayer', data.playerCharacter.reviveHealth);
         dispatch(revivePlayer(data.playerCharacter.reviveHealth));
+      })
+    );
+
+    unsubscribes.push(
+      eventEmitter.subscribe("updateMonsterDBPosition", (data) => {
+        newSocket.emit('updateMonsterDBPosition', data);
       })
     );
 

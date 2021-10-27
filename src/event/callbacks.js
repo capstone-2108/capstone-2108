@@ -181,8 +181,8 @@ export function monsterHasDiedCallback(monsterId) {
     const monster = this.monsters[monsterId];
     monster.stateMachine.setState(MONSTER_STATES.DEAD);
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
-    monster.clearPath();
     monster.aggroZone.resetAggro(true);
+    monster.clearPath();
   }
 }
 
@@ -194,6 +194,8 @@ export function reviveMonstersCallback(revivedMonsters) {
       monster.stateMachine.setState(MONSTER_STATES.IDLE);
       monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
       monster.aggroZone.resetAggro(true);
+      monster.x = revivedMonsters[i].xPos;
+      monster.y = revivedMonsters[i].yPos;
       fadeIn(this, monster);
     }
   }

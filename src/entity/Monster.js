@@ -156,6 +156,17 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.stateMachine.setState(MONSTER_STATES.IDLE);
     }
+
+    window.setInterval(() => {
+      if(!this.stateMachine.isCurrentState(MONSTER_STATES.DEAD) && this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
+        eventEmitter.emit('updateMonsterDBPosition', {
+          monsterId: this.id,
+          xPos: Math.floor(this.x),
+          yPos: Math.floor(this.y)
+        })
+      }
+    }, 2000);
+
   }
 
   dealDamage() {
@@ -401,7 +412,6 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       } else {
         this.clearPath();
         this.stateMachine.setState(MONSTER_STATES.IDLE);
-        console.log("aggro reset");
         // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
         //   this.stateMachine.setState(MONSTER_STATES.WALK);
         //   this.waypointIdx = 0;
@@ -426,12 +436,12 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
 
   getPathTo(x, y) {
     return new Promise((resolve, reject) => {
-      console.log('tileSize', this.scene.tileSize);
+      // console.log('tileSize', this.scene.tileSize);
       const startNode = screenToMap(this.x, this.y, this.scene.tileSize);
       this.scene.pathfinder.cancelPath(this.pathId);
-      console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
+      // console.log(`CALCULATE: ${startNode.x}, ${startNode.y} to ${x}, ${y}`);
       this.pathId = this.scene.pathfinder.findPath(startNode.x, startNode.y, x, y, (path) => {
-        console.log("PATH", path);
+        // console.log("PATH", path);
         resolve(path);
       });
       this.scene.pathfinder.calculate();

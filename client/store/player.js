@@ -356,7 +356,6 @@ export default (state = initialState, action) => {
     case REVIVE_MONSTERS: {
       let selectedUnit = state.selectedUnit;
       const { monsters } = action;
-      console.log(action, typeof monsters);
       if (selectedUnit.unitType === "monster") {
         for (let i = 0; i < monsters.length; i++) {
           if (selectedUnit.monsterId === monsters[i].id) {
