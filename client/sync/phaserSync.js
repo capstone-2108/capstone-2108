@@ -43,8 +43,10 @@ export const InitSubscriptionsToPhaser = () => {
      ***************/
     if (playerState.characterId && socket) {
       healthIntervalId = window.setInterval(() => {
-        socket.emit("healthIntervalIncrease", playerState.characterId);
-      }, 2000);
+        if (playerState.health !== playerState.totalHealth) {
+          socket.emit("healthIntervalIncrease", playerState.characterId);
+        }
+      }, 10000);
     }
     return () => window.clearInterval(healthIntervalId);
   }, [playerState.characterId, socket]);
