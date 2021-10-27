@@ -15,8 +15,8 @@ import {
   scenePlayerLoadCallback,
   monsterHasDiedCallback,
   playerHasDiedCallback,
-  reviveMonstersCallback
-} from "../event/callbacks";
+  reviveMonstersCallback, updateMonsterPositionCallback
+} from '../event/callbacks';
 import { Monster } from "../entity/Monster";
 import { Player } from "../entity/Player";
 
@@ -120,6 +120,11 @@ export default class MMOScene extends Phaser.Scene {
 
     this.unsubscribes.push(
       eventEmitter.subscribe("reviveMonsters", reviveMonstersCallback.bind(this))
+    );
+
+
+    this.unsubscribes.push(
+      eventEmitter.subscribe("updateMonsterPosition", updateMonsterPositionCallback.bind(this))
     );
 
     this.unsubscribes.push(

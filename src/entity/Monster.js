@@ -280,6 +280,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     } else if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
       this.playRemoteSnapshots(time, delta);
     }
+    else if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) && !this.waypoints.length) {
+      this.stateMachine.setState(MONSTER_STATES.IDLE);
+    }
     this.stateMachine.update(time, delta);
   }
 
@@ -411,7 +414,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         }
       } else {
         this.clearPath();
+        console.log('no target');
         this.stateMachine.setState(MONSTER_STATES.IDLE);
+        // eventEmitter.emit('updateMonsterDBPosition', {
+        //   monsterId: this.id,
+        //   xPos: Math.floor(this.x),
+        //   yPos: Math.floor(this.y)
+        // })
         // this.getPathTo(this.spawnPoint.x, this.spawnPoint.y).then((path) => {
         //   this.stateMachine.setState(MONSTER_STATES.WALK);
         //   this.waypointIdx = 0;
@@ -420,6 +429,17 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         // });
       }
     }
+  }
+
+  pathTo(x, y) {
+    const endNode = screenToMap(x, y, this.scene.tileSize);
+    this.getPathTo(endNode.x, endNode.y).then((path) => {
+      this.clearPath();
+      this.stateMachine.setState(MONSTER_STATES.WALK);
+      this.waypointIdx = 0;
+      this.waypoints = path.slice(1);
+      this.setNextWaypoint(this.waypoints[++this.waypointIdx]);
+    });
   }
 
   clearPath() {

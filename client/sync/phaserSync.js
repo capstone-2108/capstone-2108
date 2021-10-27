@@ -18,8 +18,8 @@ import player, {
   updateLocalPlayerPosition,
   updatePlayerPosition,
   playerExpIncrease,
-  updateHealth
-} from "../store/player";
+  updateHealth, updateMonsterPosition
+} from '../store/player';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Game } from "../../src/Game";
@@ -50,11 +50,6 @@ export const InitSubscriptionsToPhaser = () => {
     }
     return () => window.clearInterval(healthIntervalId);
   }, [playerState.characterId, socket]);
-
-  useEffect(() => {
-    console.log('test', playerState);
-
-  },[playerState.characterId]);
 
 
   useEffect(() => {
@@ -100,7 +95,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     //server is letting us know that a monster can aggro a player
     newSocket.on("monsterCanAggroPlayer", async (data) => {
-      console.log("monster can aggro player", data);
+      // console.log("monster can aggro player", data);
       eventEmitter.emit("monsterCanAggroPlayer", data);
     });
 
@@ -111,9 +106,9 @@ export const InitSubscriptionsToPhaser = () => {
     // });
 
     //controlling monster has reset
-    newSocket.on("monsterControlResetAggro", (monsterId) => {
-      console.log("reset aggro", monsterId);
-      eventEmitter.emit("monsterControlResetAggro", monsterId);
+    newSocket.on("monsterControlResetAggro", (data) => {
+      // console.log("reset aggro", data);
+      eventEmitter.emit("monsterControlResetAggro", data);
     });
 
     newSocket.on("monsterFollowDirections", (data) => {
@@ -149,6 +144,13 @@ export const InitSubscriptionsToPhaser = () => {
 
     newSocket.on("healthIntervalIncrease", (health) => {
       dispatch(updateHealth(health));
+    });
+
+    newSocket.on("updateMonsterPosition", (data) => {
+      const {monsterId, xPos, yPos} = data;
+      // console.log('phaserSync updateMonsterPosition', data);
+      // dispatch(updateMonsterPosition({monsterId, xPos, yPos}));
+      eventEmitter.emit("updateMonsterPosition", {monsterId, xPos, yPos});
     });
 
     /****************
@@ -229,9 +231,9 @@ export const InitSubscriptionsToPhaser = () => {
 
     //phaser is letting us know that a monster's aggro has reset
     unsubscribes.push(
-      eventEmitter.subscribe("monsterRequestResetAggro", (monsterId) => {
+      eventEmitter.subscribe("monsterRequestResetAggro", (data) => {
         //let the server know so it can update the database
-        newSocket.emit("monsterRequestResetAggro", monsterId);
+        newSocket.emit("monsterRequestResetAggro", data);
       })
     );
 
@@ -259,7 +261,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     unsubscribes.push(
       eventEmitter.subscribe("reviveLocalPlayer", (data) => {
-        console.log('reviveLocalPlayer', data.playerCharacter.reviveHealth);
+        // console.log('reviveLocalPlayer', data.playerCharacter.reviveHealth);
         dispatch(revivePlayer(data.playerCharacter.reviveHealth));
       })
     );

@@ -38,8 +38,11 @@ export function scenePlayerLoadCallback(data) {
     .add(795, 0, 230, 230)
     .setZoom(0.15)
     .setName("mini")
-    .startFollow(this.player);
-  this.minimap.setBackgroundColor(0x002244);
+    .startFollow(this.player)
+    .setAlpha(.9)
+    .setBackgroundColor("rgba(0, 0, 0, 0)") ;
+  // this.minimap.setBackgroundColor(0x002244);
+
 
   this.minimap.centerOn(0, 0);
   const minimapCircle = new Phaser.GameObjects.Graphics(this);
@@ -139,7 +142,6 @@ export function monsterCanAggroPlayerCallback(data) {
    * @param {Monster[]} monsters
    */
   if (this.monsters[data.monsterId] && data.canAggro) {
-    console.log('setting aggro target');
     this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
     this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLING);
   }
@@ -164,25 +166,33 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
 
 
 //runs when the server says a monster should reset it's aggro
-export function monsterControlResetAggroCallback(monsterId) {
+export function monsterControlResetAggroCallback({monsterId, xPos, yPos}) {
   if (this.monsters[monsterId]) {
-    console.log('control reset aggro callback');
     const monster = this.monsters[monsterId];
     monster.receivedAggroResetRequest = true;
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     monster.stateMachine.setState(MONSTER_STATES.IDLE);
     monster.clearPath();
+    monster.pathTo(xPos, yPos);
   }
 }
 
 export function monsterHasDiedCallback(monsterId) {
-  console.log('monsterHasDied', monsterId);
   if (this.monsters[monsterId]) {
     const monster = this.monsters[monsterId];
     monster.stateMachine.setState(MONSTER_STATES.DEAD);
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     monster.aggroZone.resetAggro(true);
     monster.clearPath();
+  }
+}
+
+export function updateMonsterPositionCallback(data) {
+  if (this.monsters[data.monsterId] && !data.local) {
+    const monster = this.monsters[data.monsterId];
+    if(monster.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL)) {
+      monster.pathTo(data.xPos, data.yPos);
+    }
   }
 }
 
@@ -202,14 +212,10 @@ export function reviveMonstersCallback(revivedMonsters) {
 }
 
 export function playerHasDiedCallback(data) {
-
   if(data.local) {
-    console.log('localPlayer has died');
-    console.log(data);
     deathFadeout(this, this.player);
     this.player.isAlive = false;
     setTimeout(() => {
-      console.log('data', data);
       this.player.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
       fadeIn(this, this.player);
       this.player.isAlive = true;
@@ -217,13 +223,11 @@ export function playerHasDiedCallback(data) {
     }, 2000);
   }
   else {
-    console.log('remote player has died', data);
     if(this.remotePlayers[data.playerCharacter.id]) {
       const remotePlayer = this.remotePlayers[data.playerCharacter.id];
       deathFadeout(this, remotePlayer);
       remotePlayer.isAlive = false;
       setTimeout(() => {
-        console.log('data', data);
         remotePlayer.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
         fadeIn(this, remotePlayer);
         remotePlayer.isAlive = true;
