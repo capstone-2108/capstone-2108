@@ -35,6 +35,14 @@ function initWorldChat() {
   });
 }
 
+
+async function remotePlayerLoad(user) {
+  const playerCharacter = await PlayerCharacter.getMainCharacterFromUser(user.id);
+  await playerCharacter.update({ active: true });
+  const payload = transformToPayload(playerCharacter);
+  gameSync.emit("remotePlayerLoad", payload);
+}
+
 function initGameSync() {
   //todo: should probably setup a channel for each scene
   gameSync.use(requireSocketToken);
@@ -48,10 +56,16 @@ function initGameSync() {
     //them know that this player has moved
     socket.on('localPlayerPositionChanged', async (data) => {
       //let other clients know this this player has moved
-      if(!socket.user.loggedIn) {
+      try {
+        if (!socket.user.loggedIn) {
+          await remotePlayerLoad(socket.user);
+        }
         await socket.user.flagLoggedIn();
+        socket.broadcast.emit('remotePlayerPositionChanged', data);
       }
-      socket.broadcast.emit('remotePlayerPositionChanged', data);
+      catch(err) {
+        console.log(err);
+      }
     });
 
     socket.on("playerChangedScenes", async (data) => {
@@ -66,6 +80,7 @@ function initGameSync() {
         });
         await playerCharacter.reload();
         const characterPayload = transformToPayload(playerCharacter);
+        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(playerCharacter.id);
         //let the world know that this player has moved to a new scene
         socket.broadcast.emit("remotePlayerChangedScenes", characterPayload);
       } catch (err) {
@@ -81,9 +96,14 @@ function initGameSync() {
       async (data) => {
         console.log("Received heart beat for ", data.characterName);
         try {
-          await socket.user.flagLoggedIn();
-          const player = await PlayerCharacter.getCharacter(data.characterId);
-          await player.location.update({ xPos: data.characterXPos, yPos: data.characterYPos });
+          if(socket.user) {
+            if(!socket.user.loggedIn) {
+              await remotePlayerLoad(socket.user);
+            }
+            await socket.user.flagLoggedIn();
+            const player = await PlayerCharacter.getCharacter(data.characterId);
+            await player.location.update({xPos: data.characterXPos, yPos: data.characterYPos});
+          }
         }
         catch(err) {
           console.log(err);
@@ -119,11 +139,11 @@ function initGameSync() {
     });
 
     //a controlling monster is requesting us to broadcast a message to controlled monsters to reset aggro
-    socket.on("monsterRequestResetAggro", async (monsterId) => {
-      console.log(chalk.yellow(`Monster ${monsterId} aggro reset`));
+    socket.on("monsterRequestResetAggro", async (data) => {
+      console.log(chalk.yellow(`Monster ${data.monsterId} aggro reset`));
       try {
-        await Npc.resetAggro(monsterId);
-        socket.broadcast.emit("monsterControlResetAggro", monsterId);
+        await Npc.resetAggro(data.monsterId);
+        socket.broadcast.emit("monsterControlResetAggro", data);
       } catch (err) {
         console.log(err);
       }
@@ -173,10 +193,11 @@ function initGameSync() {
     });
 
     socket.on("updateMonsterDBPosition", async (data) => {
-      console.log('updating monster position', data);
       try {
         const monster = await Npc.getMonster(data.monsterId);
         await monster.location.update({xPos: data.xPos, yPos: data.yPos});
+        socket.emit('updateMonsterPosition', {...data, local: true});
+        socket.broadcast.emit('updateMonsterPosition', {...data, local: false});
       }
       catch(err) {
         console.log(err);
@@ -186,12 +207,15 @@ function initGameSync() {
     socket.on('healthIntervalIncrease', async (characterId) => {
       try {
         const player = await PlayerCharacter.findByPk(characterId)
-        if (player.health + 10 > player.totalHealth) {
-          await player.update({ health: player.totalHealth })
-        } else {
-          await player.update({ health: player.health += 10 })
+        if(player) {
+          if (player.health + 10 > player.totalHealth) {
+            await player.update({health: player.totalHealth})
+          }
+          else {
+            await player.update({health: player.health += 10})
+          }
+          socket.emit("healthIntervalIncrease", player.health)
         }
-        socket.emit("healthIntervalIncrease", player.health)
       } catch (error) {
         console.log(error)
       }
@@ -253,7 +277,7 @@ function initLazarusPit() {
       console.log(chalk.bgRed("ERROR REVIVING MONSTERS"));
       console.log(err);
     }
-  }, 5000);
+  }, 20000);
 }
 
 module.exports = {

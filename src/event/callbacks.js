@@ -38,8 +38,11 @@ export function scenePlayerLoadCallback(data) {
     .add(795, 0, 230, 230)
     .setZoom(0.15)
     .setName("mini")
-    .startFollow(this.player);
-  this.minimap.setBackgroundColor(0x002244);
+    .startFollow(this.player)
+    .setAlpha(.9)
+    .setBackgroundColor("rgba(0, 0, 0, 0)") ;
+  // this.minimap.setBackgroundColor(0x002244);
+
 
   this.minimap.centerOn(0, 0);
   const minimapCircle = new Phaser.GameObjects.Graphics(this);
@@ -101,8 +104,8 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   if (remotePlayer) {
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
   } else {
-    console.log(stateSnapshots);
-    console.log("remotePlayerPosition - player not found");
+    // console.log(stateSnapshots);
+    // console.log("remotePlayerPosition - player not found");
   }
 }
 
@@ -119,17 +122,30 @@ export function remotePlayerChangedSceneCallback(remotePlayer) {
   }
 }
 
-export function remotePlayerLoadCallback(data) {
-  if (data.characterId !== this.player.id && !this.remotePlayers[data.characterId]) {
-    this.remotePlayers[data.characterId] = new RemotePlayer(
-      this,
-      data.xPos,
-      data.yPos,
-      `${data.name}-${data.characterId}`,
-      data.templateName,
-      data.name,
-      data.characterId
-    );
+export function remotePlayerLoadCallback({mySceneId, remotePlayerData}) {
+  if (remotePlayerData.characterId === this.player.id) return;
+  //is this player in my scene?
+  if(remotePlayerData.sceneId === mySceneId) {
+    //add
+    if(!this.remotePlayers[remotePlayerData.characterId]) {
+        this.remotePlayers[remotePlayerData.characterId] = new RemotePlayer(
+          this,
+          remotePlayerData.xPos,
+          remotePlayerData.yPos,
+          `${remotePlayerData.name}-${remotePlayerData.characterId}`,
+          remotePlayerData.templateName,
+          remotePlayerData.name,
+          remotePlayerData.characterId
+        );
+    }
+  }
+  else {
+    //remove
+    if(this.remotePlayers[remotePlayerData.characterId]) {
+      console.log('removing');
+      const boundRemove = remotePlayerLogoutCallback.bind(this);
+      boundRemove(remotePlayerData.characterId);
+    }
   }
 }
 
@@ -139,7 +155,6 @@ export function monsterCanAggroPlayerCallback(data) {
    * @param {Monster[]} monsters
    */
   if (this.monsters[data.monsterId] && data.canAggro) {
-    console.log('setting aggro target');
     this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
     this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLING);
   }
@@ -158,31 +173,39 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLED);
     monster.remoteSnapshots.push(...stateSnapshots.stateSnapshots);
   } else {
-    console.log("monsterControl - monster not found");
+    // console.log("monsterControl - monster not found");
   }
 }
 
 
 //runs when the server says a monster should reset it's aggro
-export function monsterControlResetAggroCallback(monsterId) {
+export function monsterControlResetAggroCallback({monsterId, xPos, yPos}) {
   if (this.monsters[monsterId]) {
-    console.log('control reset aggro callback');
     const monster = this.monsters[monsterId];
     monster.receivedAggroResetRequest = true;
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     monster.stateMachine.setState(MONSTER_STATES.IDLE);
     monster.clearPath();
+    monster.pathTo(xPos, yPos);
   }
 }
 
 export function monsterHasDiedCallback(monsterId) {
-  console.log('monsterHasDied', monsterId);
   if (this.monsters[monsterId]) {
     const monster = this.monsters[monsterId];
     monster.stateMachine.setState(MONSTER_STATES.DEAD);
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
     monster.aggroZone.resetAggro(true);
     monster.clearPath();
+  }
+}
+
+export function updateMonsterPositionCallback(data) {
+  if (this.monsters[data.monsterId] && !data.local) {
+    const monster = this.monsters[data.monsterId];
+    if(monster.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL)) {
+      monster.pathTo(data.xPos, data.yPos);
+    }
   }
 }
 
@@ -202,14 +225,10 @@ export function reviveMonstersCallback(revivedMonsters) {
 }
 
 export function playerHasDiedCallback(data) {
-
   if(data.local) {
-    console.log('localPlayer has died');
-    console.log(data);
     deathFadeout(this, this.player);
     this.player.isAlive = false;
     setTimeout(() => {
-      console.log('data', data);
       this.player.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
       fadeIn(this, this.player);
       this.player.isAlive = true;
@@ -217,13 +236,11 @@ export function playerHasDiedCallback(data) {
     }, 2000);
   }
   else {
-    console.log('remote player has died', data);
     if(this.remotePlayers[data.playerCharacter.id]) {
       const remotePlayer = this.remotePlayers[data.playerCharacter.id];
       deathFadeout(this, remotePlayer);
       remotePlayer.isAlive = false;
       setTimeout(() => {
-        console.log('data', data);
         remotePlayer.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
         fadeIn(this, remotePlayer);
         remotePlayer.isAlive = true;

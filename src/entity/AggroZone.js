@@ -69,7 +69,11 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     this.target = undefined;
     this.requestingAggro = false;
     if (!skipEmit) {
-      eventEmitter.emit("monsterRequestResetAggro", this.owner.id);
+      eventEmitter.emit("monsterRequestResetAggro", {
+        monsterId: this.owner.id,
+        xPos: Math.floor(this.owner.x),
+        yPos: Math.floor(this.owner.y)
+      });
     }
     this.owner.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
   }

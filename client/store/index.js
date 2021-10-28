@@ -7,7 +7,6 @@ import chat from './chat';
 import player from './player';
 import templateCharacters from "./templateCharacters";
 import chosenCharacter from "./chosenCharacter";
-// import monster from "./monster";
 
 
 const reducer = combineReducers({
@@ -18,10 +17,18 @@ const reducer = combineReducers({
   chosenCharacter,
   // monster
 });
-const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
-);
-const store = createStore(reducer, middleware);
+
+let store;
+if(process.env.NODE_ENV === "development") {
+  const middleware = composeWithDevTools(
+    applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
+  );
+  store = createStore(reducer, middleware);
+}
+else {
+  store = createStore(reducer, applyMiddleware(thunkMiddleware));
+}
+
 
 export default store;
 export * from "./auth";
