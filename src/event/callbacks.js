@@ -142,6 +142,7 @@ export function remotePlayerLoadCallback({mySceneId, remotePlayerData}) {
   else {
     //remove
     if(this.remotePlayers[remotePlayerData.characterId]) {
+      console.log('removing');
       const boundRemove = remotePlayerLogoutCallback.bind(this);
       boundRemove(remotePlayerData.characterId);
     }

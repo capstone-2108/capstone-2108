@@ -21,7 +21,7 @@ import player, {
   updateHealth, updateMonsterPosition
 } from '../store/player';
 
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector, useStore} from 'react-redux';
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
@@ -36,6 +36,7 @@ export const InitSubscriptionsToPhaser = () => {
   const playerState = useSelector((state) => state.player);
   let lastPlayerPositionUpdate = Date.now();
   let healthIntervalId;
+  const store = useStore();
 
   useEffect(() => {
     /****************
@@ -54,9 +55,9 @@ export const InitSubscriptionsToPhaser = () => {
 
   useEffect(() => {
     const remotePlayerLoad = (data) => {
-      console.log('remote player load', data);
+      const state = store.getState();
       eventEmitter.emit("remotePlayerLoad", {
-        myScene: playerState.sceneId,
+        mySceneId: state.player.sceneId,
         remotePlayerData: data
       });
     }
