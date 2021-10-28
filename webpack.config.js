@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 module.exports = {
-  mode: "development",
   devtool: "source-map",
   entry: "./src/index.js",
   output: {
@@ -44,7 +43,8 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       CANVAS_RENDERER: JSON.stringify(true),
-      WEBGL_RENDERER: JSON.stringify(true)
+      WEBGL_RENDERER: JSON.stringify(true),
+      // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
   ]
 };

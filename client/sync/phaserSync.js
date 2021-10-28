@@ -67,6 +67,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     // listens for other players loading in
     newSocket.on("remotePlayerLoad", (data) => {
+      //is this person in my scene?
       eventEmitter.emit("remotePlayerLoad", data);
     });
 

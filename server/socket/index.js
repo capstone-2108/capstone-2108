@@ -192,7 +192,6 @@ function initGameSync() {
     });
 
     socket.on("updateMonsterDBPosition", async (data) => {
-      console.log('updating monster position', data);
       try {
         const monster = await Npc.getMonster(data.monsterId);
         await monster.location.update({xPos: data.xPos, yPos: data.yPos});
