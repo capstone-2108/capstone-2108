@@ -152,7 +152,7 @@ function initGameSync() {
     //broadcast that a player hit a monster
     socket.on("monsterTookDamage", async (data) => {
       // console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
-      console.log(data);
+      console.log('monster damage', data);
       try {
         const monster = await Npc.applyDamage(data.monsterId, data.damage);
         if (!monster.isAlive) {
