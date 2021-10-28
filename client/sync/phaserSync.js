@@ -43,14 +43,15 @@ export const InitSubscriptionsToPhaser = () => {
      * Intervals *
      ***************/
     if (playerState.characterId && socket) {
+      const state = store.getState();
       healthIntervalId = window.setInterval(() => {
-        if (playerState.health !== playerState.totalHealth) {
-          socket.emit("healthIntervalIncrease", playerState.characterId);
+        if (state.player.health < state.player.totalHealth) {
+          socket.emit("healthIntervalIncrease", state.player.characterId);
         }
       }, 10000);
     }
     return () => window.clearInterval(healthIntervalId);
-  }, [playerState.characterId, socket]);
+  }, [playerState.characterId, playerState.health, socket]);
 
 
   useEffect(() => {
