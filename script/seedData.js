@@ -66,43 +66,43 @@ const userData = [
 const templateCharacterData = [
   {
     name: "fox",
-    baseStrength: 11,
+    baseStrength: 50,
     baseIntelligence: 8,
     constitution: 11,
-    baseHealth: 700,
+    baseHealth: 350,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Fox_frame.png",
-    description: "Increased health and melee damage. No ranged attacks"
+    description: "Average strength and health"
   },
   {
     name: "sorcerer",
-    baseStrength: 5,
+    baseStrength: 70,
     baseIntelligence: 11,
     constitution: 4,
-    baseHealth: 300,
+    baseHealth: 250,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Sorcerer_frame.png",
-    description: "High damage, low health and movement speed"
+    description: "High damage, but low health"
   },
   {
     name: "beastmaster",
-    baseStrength: 9,
+    baseStrength: 30,
     baseIntelligence: 7,
     constitution: 9,
-    baseHealth: 600,
+    baseHealth: 500,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Beastmaster_frame.png",
-    description: "High strength, but not the brightest"
+    description: "High health, but low damage"
   },
   {
     name: "swashbuckler",
-    baseStrength: 10,
+    baseStrength: 50,
     baseIntelligence: 6,
     constitution: 9,
-    baseHealth: 600,
+    baseHealth: 350,
     isPlayable: true,
     portrait: "/assets/characters/character-protrait-emotes-2/Swashbuckler_frame.png",
-    description: "Average strength and intelligence"
+    description: "Average strength and health"
   },
   {
     name: "orc",
@@ -231,7 +231,7 @@ const npcData = [
     npc: {
       name: "Orcie",
       health: 100,
-      totalHealth: 1000
+      totalHealth: 100
     },
     location: {
       xPos: 1716,
@@ -247,7 +247,7 @@ const npcData = [
     npc: {
       name: "Trollie",
       health: 150,
-      totalHealth: 1000
+      totalHealth: 150
     },
     location: {
       xPos: 2900,
@@ -264,7 +264,7 @@ const npcData = [
     npc: {
       name: "Orcta",
       health: 200,
-      totalHealth: 1000
+      totalHealth: 200
     },
     location: {
       xPos: 810,
@@ -280,7 +280,7 @@ const npcData = [
     npc: {
       name: "Goblimie",
       health: 250,
-      totalHealth: 1000
+      totalHealth: 250
     },
     location: {
       xPos: 625,
@@ -296,7 +296,7 @@ const npcData = [
     npc: {
       name: "Trolllllll",
       health: 300,
-      totalHealth: 1000
+      totalHealth: 300
     },
     location: {
       xPos: 1200,
@@ -312,7 +312,7 @@ const npcData = [
     npc: {
       name: "Ork",
       health: 350,
-      totalHealth: 1000
+      totalHealth: 350
     },
     location: {
       xPos: 350,
@@ -328,7 +328,7 @@ const npcData = [
     npc: {
       name: "Trollbi",
       health: 400,
-      totalHealth: 1000
+      totalHealth: 400
     },
     location: {
       xPos: 1800,
@@ -344,7 +344,7 @@ const npcData = [
     npc: {
       name: "Goblintri",
       health: 450,
-      totalHealth: 1000
+      totalHealth: 450
     },
     location: {
       xPos: 2550,
@@ -360,7 +360,7 @@ const npcData = [
     npc: {
       name: "Orka",
       health: 500,
-      totalHealth: 1000
+      totalHealth: 500
     },
     location: {
       xPos: 1400,
@@ -376,7 +376,7 @@ const npcData = [
     npc: {
       name: "Trollione",
       health: 550,
-      totalHealth: 1000
+      totalHealth: 550
     },
     location: {
       xPos: 1340,
@@ -392,7 +392,7 @@ const npcData = [
     npc: {
       name: "Goblinon",
       health: 600,
-      totalHealth: 1000
+      totalHealth: 600
     },
     location: {
       xPos: 2800,
@@ -408,7 +408,7 @@ const npcData = [
     npc: {
       name: "Orciline",
       health: 650,
-      totalHealth: 1000
+      totalHealth: 650
     },
     location: {
       xPos: 2300,
@@ -425,7 +425,7 @@ const npcData = [
     npc: {
       name: "Trolltastic",
       health: 700,
-      totalHealth: 1000
+      totalHealth: 700
     },
     location: {
       xPos: 400,
@@ -441,7 +441,7 @@ const npcData = [
     npc: {
       name: "Goblintada",
       health: 750,
-      totalHealth: 1000
+      totalHealth: 750
     },
     location: {
       xPos: 375,
@@ -457,7 +457,7 @@ const npcData = [
     npc: {
       name: "Orkkabo",
       health: 800,
-      totalHealth: 1000
+      totalHealth: 800
     },
     location: {
       xPos: 425,
@@ -473,7 +473,7 @@ const npcData = [
     npc: {
       name: "Trollalalo",
       health: 750,
-      totalHealth: 1000
+      totalHealth: 750
     },
     location: {
       xPos: 400,
@@ -490,7 +490,7 @@ const npcData = [
     npc: {
       name: "Goblinbaby",
       health: 800,
-      totalHealth: 1000
+      totalHealth: 800
     },
     location: {
       xPos: 810,
@@ -506,7 +506,7 @@ const npcData = [
     npc: {
       name: "Orclom",
       health: 850,
-      totalHealth: 1000
+      totalHealth: 850
     },
     location: {
       xPos: 400,
@@ -522,7 +522,7 @@ const npcData = [
     npc: {
       name: "Trollpi",
       health: 850,
-      totalHealth: 1000
+      totalHealth: 850
     },
     location: {
       xPos: 810,
@@ -538,7 +538,7 @@ const npcData = [
     npc: {
       name: "Goblinpie",
       health: 900,
-      totalHealth: 1000
+      totalHealth: 900
     },
     location: {
       xPos: 1000,
@@ -555,7 +555,7 @@ const npcData = [
     npc: {
       name: "Orcipipi",
       health: 900,
-      totalHealth: 1000
+      totalHealth: 900
     },
     location: {
       xPos: 100,
@@ -571,7 +571,7 @@ const npcData = [
     npc: {
       name: "Trollona",
       health: 920,
-      totalHealth: 1000
+      totalHealth: 920
     },
     location: {
       xPos: 900,
@@ -587,7 +587,7 @@ const npcData = [
     npc: {
       name: "Goblintaco",
       health: 940,
-      totalHealth: 1000
+      totalHealth: 940
     },
     location: {
       xPos: 950,
@@ -603,7 +603,7 @@ const npcData = [
     npc: {
       name: "Orcpizza",
       health: 960,
-      totalHealth: 1000
+      totalHealth: 960
     },
     location: {
       xPos: 1200,
@@ -619,7 +619,7 @@ const npcData = [
     npc: {
       name: "Trollspaghetti",
       health: 980,
-      totalHealth: 1000
+      totalHealth: 980
     },
     location: {
       xPos: 1300,
