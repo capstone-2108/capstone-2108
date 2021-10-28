@@ -80,6 +80,7 @@ function initGameSync() {
         });
         await playerCharacter.reload();
         const characterPayload = transformToPayload(playerCharacter);
+        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(playerCharacter.id);
         //let the world know that this player has moved to a new scene
         socket.broadcast.emit("remotePlayerChangedScenes", characterPayload);
       } catch (err) {

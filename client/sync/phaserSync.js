@@ -53,6 +53,25 @@ export const InitSubscriptionsToPhaser = () => {
 
 
   useEffect(() => {
+    const remotePlayerLoad = (data) => {
+      console.log('remote player load', data);
+      eventEmitter.emit("remotePlayerLoad", {
+        myScene: playerState.sceneId,
+        remotePlayerData: data
+      });
+    }
+    if(socket && playerState.sceneId) {
+      socket.on("remotePlayerLoad", remotePlayerLoad);
+    }
+    return () => {
+      if(socket) {
+        socket.off("remotePlayerLoad", remotePlayerLoad);
+      }
+    }
+  },[socket, playerState.sceneId]);
+
+
+  useEffect(() => {
     //loads the game
     window.game = new Game();
 
@@ -65,11 +84,11 @@ export const InitSubscriptionsToPhaser = () => {
     });
     setSocket(newSocket); //save the socket into the component state
 
-    // listens for other players loading in
-    newSocket.on("remotePlayerLoad", (data) => {
-      //is this person in my scene?
-      eventEmitter.emit("remotePlayerLoad", data);
-    });
+    // newSocket.on("remotePlayerLoad", (data) => {
+    //   test();
+    //   eventEmitter.emit("remotePlayerLoad", data);
+    // });
+
 
     newSocket.on("remotePlayerLogout", (characterId) => {
       eventEmitter.emit("remotePlayerLogout", characterId);

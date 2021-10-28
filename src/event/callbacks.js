@@ -104,8 +104,8 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
   if (remotePlayer) {
     remotePlayer.stateSnapshots = remotePlayer.stateSnapshots.concat(stateSnapshots.stateSnapshots);
   } else {
-    console.log(stateSnapshots);
-    console.log("remotePlayerPosition - player not found");
+    // console.log(stateSnapshots);
+    // console.log("remotePlayerPosition - player not found");
   }
 }
 
@@ -122,17 +122,29 @@ export function remotePlayerChangedSceneCallback(remotePlayer) {
   }
 }
 
-export function remotePlayerLoadCallback(data) {
-  if (data.characterId !== this.player.id && !this.remotePlayers[data.characterId]) {
-    this.remotePlayers[data.characterId] = new RemotePlayer(
-      this,
-      data.xPos,
-      data.yPos,
-      `${data.name}-${data.characterId}`,
-      data.templateName,
-      data.name,
-      data.characterId
-    );
+export function remotePlayerLoadCallback({mySceneId, remotePlayerData}) {
+  if (remotePlayerData.characterId === this.player.id) return;
+  //is this player in my scene?
+  if(remotePlayerData.sceneId === mySceneId) {
+    //add
+    if(!this.remotePlayers[remotePlayerData.characterId]) {
+        this.remotePlayers[remotePlayerData.characterId] = new RemotePlayer(
+          this,
+          remotePlayerData.xPos,
+          remotePlayerData.yPos,
+          `${remotePlayerData.name}-${remotePlayerData.characterId}`,
+          remotePlayerData.templateName,
+          remotePlayerData.name,
+          remotePlayerData.characterId
+        );
+    }
+  }
+  else {
+    //remove
+    if(this.remotePlayers[remotePlayerData.characterId]) {
+      const boundRemove = remotePlayerLogoutCallback.bind(this);
+      boundRemove(remotePlayerData.characterId);
+    }
   }
 }
 
@@ -160,7 +172,7 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
     monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLED);
     monster.remoteSnapshots.push(...stateSnapshots.stateSnapshots);
   } else {
-    console.log("monsterControl - monster not found");
+    // console.log("monsterControl - monster not found");
   }
 }
 

@@ -166,6 +166,7 @@ router.put("/character/:characterId/logout", requireTokenMiddleware, async (req,
   try {
     const playerCharacter = await PlayerCharacter.logout(req.user.id, req.params.characterId);
     if (playerCharacter) {
+      await PlayerCharacter.resetAggroOnPlayerCharacter(playerCharacter.id);
       worldChat.emit("newMessage", {
         channel: "world",
         message: {

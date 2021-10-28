@@ -7,7 +7,6 @@ import chat from './chat';
 import player from './player';
 import templateCharacters from "./templateCharacters";
 import chosenCharacter from "./chosenCharacter";
-// import monster from "./monster";
 
 
 const reducer = combineReducers({

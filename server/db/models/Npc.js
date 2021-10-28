@@ -154,6 +154,8 @@ Npc.applyDamage = async function (monsterId, damage) {
   return monster.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
 }
 
+
+
 Npc.clearAllAggro = function () {
   db.query('UPDATE npcs SET "aggroedOn" = NULL');
 };
