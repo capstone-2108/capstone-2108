@@ -152,9 +152,9 @@ function initGameSync() {
     //broadcast that a player hit a monster
     socket.on("monsterTookDamage", async (data) => {
       // console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
-      console.log('monster damage', data);
       try {
-        const monster = await Npc.applyDamage(data.monsterId, data.damage);
+        const playerCharacter = await PlayerCharacter.getCharacter(data.playerCharacterId);
+        const monster = await Npc.applyDamage(data.monsterId, playerCharacter.getDamage());
         if (!monster.isAlive) {
           const player = await PlayerCharacter.findByPk(data.playerCharacterId);
           await player.update({ experience: (player.experience += 10) });
@@ -176,7 +176,7 @@ function initGameSync() {
 
     socket.on("playerTookDamage", async (data) => {
       // console.log(chalk.red(`Player ${data.characterId} has been hit`));
-      console.log(data);
+      // console.log(data);
       try {
         const playerCharacter = await PlayerCharacter.applyDamage(data.characterId, data.damage);
         socket.broadcast.emit("playerTookDamage", {

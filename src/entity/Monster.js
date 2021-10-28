@@ -411,6 +411,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
           this.stateMachine.setState(MONSTER_STATES.ATTACK);
+          if(zoneStatus.direction) {
+            this.direction = zoneStatus.direction;
+          }
         }
       } else {
         this.clearPath();

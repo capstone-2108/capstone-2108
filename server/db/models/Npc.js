@@ -24,7 +24,7 @@ const Npc = db.define("npc", {
   },
   isAlive: {
     type: Sequelize.VIRTUAL,
-    get: function() {
+    get: function () {
       return this.health > 0;
     }
   },
@@ -123,13 +123,17 @@ Npc.resurrectDeadMonsters = async function () {
       }
     ]
   });
-  return Promise.all(deadMonsters.map(monster => monster.update({
-    health: monster.totalHealth,
-    aggroedOn: null,
-    xPos: monster.spawnX,
-    yPos: monster.spawnY,
-  })));
-}
+  return Promise.all(
+    deadMonsters.map((monster) =>
+      monster.update({
+        health: monster.totalHealth,
+        aggroedOn: null,
+        xPos: monster.spawnX,
+        yPos: monster.spawnY
+      })
+    )
+  );
+};
 
 Npc.applyDamage = async function (monsterId, damage) {
   // return await db.query('UPDATE npcs SET health = health - $damage WHERE npcs.id = $id returning id, health, "totalHealth", "isAlive"', {
@@ -139,22 +143,19 @@ Npc.applyDamage = async function (monsterId, damage) {
   const monster = await this.findByPk(monsterId, {
     attributes: ["id", "health", "totalHealth", "isAlive"]
   });
+
   try {
-    if ((monster.health - damage) < 0 ) {
-      await monster.update({health: 0});
+    if (monster.health - damage < 0) {
+      await monster.update({ health: 0 });
+    } else {
+      await monster.update({ health: monster.health - damage });
     }
-    else {
-      await monster.update({health: monster.health - damage});
-    }
-  }
-  catch(err) {
-    await monster.update({health: 0});
+  } catch (err) {
+    await monster.update({ health: 0 });
   }
 
-  return monster.reload({attributes: ["id", "health", "totalHealth", "isAlive"]});
-}
-
-
+  return monster.reload({ attributes: ["id", "health", "totalHealth", "isAlive"] });
+};
 
 Npc.clearAllAggro = function () {
   db.query('UPDATE npcs SET "aggroedOn" = NULL');

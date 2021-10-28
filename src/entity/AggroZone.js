@@ -1,6 +1,7 @@
 import { screenToMap } from "../util/conversion";
 import { eventEmitter } from "../event/EventEmitter";
 import { MONSTER_CONTROL_STATES } from "./MonsterStates";
+import { EAST, NORTH, SOUTH, WEST } from "../constants/constants";
 
 export class AggroZone extends Phaser.GameObjects.Zone {
   constructor(scene, x, y, width, height, owner) {
@@ -82,6 +83,32 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     return this.target !== undefined;
   }
 
+  /*
+get the direction of the target in relation to me, face that direction
+ */
+
+  getDirectionInRelationTo(monsterX, monsterY, playerX, playerY) {
+    let direction = null;
+    const eastWestDiff = Math.abs(monsterX - playerX);
+    const northSouthDiff = Math.abs(monsterY - playerY);
+
+    if (eastWestDiff > northSouthDiff) {
+      if (playerX < monsterX) {
+        direction = WEST;
+      } else {
+        direction = EAST;
+      }
+    } else {
+      if (playerY < monsterY) {
+        direction = NORTH;
+      } else {
+        direction = SOUTH;
+      }
+    }
+
+    return direction;
+  }
+
   checkZone() {
     const zoneStatus = {
       isTargetInZone: false,
@@ -92,6 +119,7 @@ export class AggroZone extends Phaser.GameObjects.Zone {
     };
     if (this.target && this.target.isAlive) {
       const isTargetWithinZone = this.scene.physics.overlap(this, this.target, () => {});
+
       //if the player is within the monsters aggro zone
       if (isTargetWithinZone) {
         zoneStatus.isTargetInZone = true; //is the player in the zone?
@@ -107,6 +135,8 @@ export class AggroZone extends Phaser.GameObjects.Zone {
             this.targetLastKnownY = endNode.y;
             zoneStatus.targetHasMoved = true;
           }
+        } else {
+          zoneStatus.direction = this.getDirectionInRelationTo(this.owner.x, this.owner.y, this.target.x, this.target.y);
         }
       } else {
         //the player has left the monsters aggro zone, lets reset the monster back to it's original location

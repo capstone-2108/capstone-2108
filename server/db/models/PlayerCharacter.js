@@ -65,6 +65,13 @@ const PlayerCharacter = db.define("playerCharacter", {
 });
 
 /************************
+ Instance Methods       *
+ ***********************/
+PlayerCharacter.prototype.getDamage = function() {
+  return Math.floor(this.templateCharacter.baseStrength / 2);
+}
+
+/************************
  Model Methods          *
  ***********************/
 PlayerCharacter.getNearbyPlayers = async function (characterId) {
@@ -140,7 +147,7 @@ PlayerCharacter.getCharacter = function (characterId) {
     include: [
       {
         model: TemplateCharacter,
-        attributes: ["id", "name", "portrait"],
+        attributes: ["id", "name", "portrait", "baseStrength"],
         include: {
           model: SpriteSheet,
           attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
