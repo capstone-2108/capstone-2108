@@ -51,7 +51,7 @@ export default class ForestScene extends MMOScene {
     this.transitionToStarterTownFromForestScene.body.enable = true;
     this.physics.world.add(this.transitionToStarterTownFromForestScene.body);
     this.transitionZones.push({
-      sceneName: 'StarterTown',
+      sceneName: "Noldo Village",
       sceneId: 1,
       xPos: 3100,
       yPos: 655,
@@ -63,7 +63,7 @@ export default class ForestScene extends MMOScene {
     this.transitionToForestPathFromForestScene.body.enable = true;
     this.physics.world.add(this.transitionToForestPathFromForestScene.body);
     this.transitionZones.push({
-      sceneName: 'ForestPath',
+      sceneName: "The Road Less Traveled",
       sceneId: 3,
       xPos: 425,
       yPos: 1500,

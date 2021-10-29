@@ -35,7 +35,7 @@ export default class ForestPath extends MMOScene {
     this.transitionToForestSceneFromForestPath.body.enable = true;
     this.physics.world.add(this.transitionToForestSceneFromForestPath.body);
     this.transitionZones.push({
-      sceneName: "ForestScene",
+      sceneName: "Darkwood",
       sceneId: 2,
       xPos: 1375,
       yPos: 150,
@@ -47,7 +47,7 @@ export default class ForestPath extends MMOScene {
     this.transitionToMiddleTownFromForestPath.body.enable = true;
     this.physics.world.add(this.transitionToMiddleTownFromForestPath.body);
     this.transitionZones.push({
-      sceneName: "MiddleTown",
+      sceneName: "Almaren Village",
       sceneId: 4,
       xPos: 800,
       yPos: 1400,

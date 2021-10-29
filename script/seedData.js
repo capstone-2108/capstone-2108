@@ -177,27 +177,27 @@ const spriteSheetData = [
 const sceneData = [
   {
     id: 1,
-    name: "StarterTown",
+    name: "Noldo Village",
     mapId: 1
   },
   {
     id: 2,
-    name: "ForestScene",
+    name: "Darkwood",
     mapId: 1
   },
   {
     id: 3,
-    name: "ForestPath",
+    name: "The Road Less Traveled",
     mapId: 1
   },
   {
     id: 4,
-    name: "MiddleTown",
+    name: "Almaren Village",
     mapId: 1
   },
   {
     id: 5,
-    name: "Dungeon",
+    name: "Sinstone Crypts",
     mapId: 1
   }
 ];
@@ -646,7 +646,7 @@ const npcData = [
       sceneId: 5
     },
     templateCharacter: "goblin"
-  },
+  }
 ];
 
 module.exports = {
