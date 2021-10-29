@@ -98,6 +98,8 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       health: newPlayer.health,
       totalHealth: newPlayer.totalHealth,
       gold: newPlayer.gold,
+      experience: newPlayer.experience,
+      expToNextLevel: newPlayer.expToNextLevel,
       spriteSheetImageUrl: spriteSheetInfo[0].spriteSheet_image_url,
       spriteSheetJsonUrl: spriteSheetInfo[0].spriteSheet_json_url,
       xPos: location.xPos,
