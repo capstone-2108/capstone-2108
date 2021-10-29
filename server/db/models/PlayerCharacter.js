@@ -4,9 +4,9 @@ const { Op } = require("sequelize");
 const { TemplateCharacter } = require("./TemplateCharacter");
 const { SpriteSheet } = require("./SpriteSheet");
 const { Location } = require("./Location");
-const {Scene} = require('./Scene');
-const {Npc} = require('./Npc');
-const {User} = require('./User');
+const { Scene } = require("./Scene");
+const { Npc } = require("./Npc");
+const { User } = require("./User");
 
 const PlayerCharacter = db.define("playerCharacter", {
   name: {
@@ -58,11 +58,18 @@ const PlayerCharacter = db.define("playerCharacter", {
   },
   isAlive: {
     type: Sequelize.VIRTUAL,
-    get: function() {
+    get: function () {
       return this.health > 0;
     }
-  },
+  }
 });
+
+/************************
+ Instance Methods       *
+ ***********************/
+PlayerCharacter.prototype.getDamage = function () {
+  return Math.floor(this.templateCharacter.baseStrength / 2);
+};
 
 /************************
  Model Methods          *
@@ -76,7 +83,7 @@ PlayerCharacter.getNearbyPlayers = async function (characterId) {
       where: {
         id: {
           [Op.ne]: characterId
-        },
+        }
       },
       attributes: ["id", "name", "health", "totalHealth"],
       include: [
@@ -127,12 +134,12 @@ PlayerCharacter.getMainCharacterFromUser = function (userId) {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         include: {
           model: Scene,
-          attributes: ["id", "name"]
+          attributes: ["id", "name", "displayName"]
         }
       }
     ]
   });
-}
+};
 
 PlayerCharacter.getCharacter = function (characterId) {
   //@todo: if the user id is included, then include it in the return payload
@@ -140,7 +147,7 @@ PlayerCharacter.getCharacter = function (characterId) {
     include: [
       {
         model: TemplateCharacter,
-        attributes: ["id", "name", "portrait"],
+        attributes: ["id", "name", "portrait", "baseStrength"],
         include: {
           model: SpriteSheet,
           attributes: ["name", "spriteSheet_image_url", "spriteSheet_json_url"]
@@ -148,15 +155,15 @@ PlayerCharacter.getCharacter = function (characterId) {
       },
       {
         model: Location,
-        attributes: {exclude: ["createdAt", "updatedAt"]},
+        attributes: { exclude: ["createdAt", "updatedAt"] },
         include: {
           model: Scene,
-          attributes: ["id", "name"]
+          attributes: ["id", "name", "displayName"]
         }
       }
     ]
   });
-}
+};
 
 PlayerCharacter.getStaleLoggedInUsers = function () {
   return this.findAll({
@@ -168,11 +175,26 @@ PlayerCharacter.getStaleLoggedInUsers = function () {
           lastSeen: {
             [Op.lte]: new Date(Date.now() - 45000).toISOString()
           }
-        },
-      },
+        }
+      }
     ]
   });
-}
+};
+
+PlayerCharacter.getIncompleteCharacterCreations = function() {
+  return User.findAll({
+    where: {
+      loggedIn: true,
+    },
+    include: [
+      {
+        model: PlayerCharacter,
+        required: false
+      }
+    ]
+  });
+};
+
 
 PlayerCharacter.logout = async function (userId, characterId) {
   let playerCharacter = await PlayerCharacter.findAll({
@@ -201,22 +223,20 @@ PlayerCharacter.applyDamage = async function (characterId, damage) {
     include: [
       {
         model: Location,
-        attributes: ["spawnX", "spawnY"],
+        attributes: ["spawnX", "spawnY"]
       }
     ]
   });
 
   try {
-    if ((character.health - damage) < 0) {
-      await character.update({health: 0});
+    if (character.health - damage < 0) {
+      await character.update({ health: 0 });
+    } else {
+      await character.update({ health: character.health - damage });
     }
-    else {
-      await character.update({health: character.health - damage});
-    }
-  }
-  catch(err) {
+  } catch (err) {
     console.log(err);
-    await character.update({health: 0});
+    await character.update({ health: 0 });
   }
   const payload = {
     id: character.id,
@@ -225,24 +245,26 @@ PlayerCharacter.applyDamage = async function (characterId, damage) {
     isAlive: character.isAlive,
     spawnX: character.location.spawnX,
     spawnY: character.location.spawnY
-  }
-  if(!character.isAlive) {
-    payload.reviveHealth = Math.floor(character.totalHealth * .3)
-    await character.update({health: payload.reviveHealth});
+  };
+  if (!character.isAlive) {
+    payload.reviveHealth = Math.floor(character.totalHealth * 0.3);
+    await character.update({ health: payload.reviveHealth });
   }
   return payload;
-}
+};
 
-PlayerCharacter.resetAggroOnPlayerCharacter = async function(characterId) {
-  return Npc.update({aggroedOn: null}, {
-    where: {
-      aggroedOn: characterId
-    },
-    returning: true
-  });
+PlayerCharacter.resetAggroOnPlayerCharacter = async function (characterId) {
+  return Npc.update(
+    { aggroedOn: null },
+    {
+      where: {
+        aggroedOn: characterId
+      },
+      returning: true
+    }
+  );
   // return await Promise.all(aggroedMonsters.map(monster => monster.update({aggroedOn: null}, {returning: true})));
-}
-
+};
 
 /************************
  Helper Functions       *
@@ -266,9 +288,10 @@ const transformToPayload = (playerCharacter) => {
     gold: playerCharacter.gold,
     sceneId: playerCharacter.location.scene.id,
     sceneName: playerCharacter.location.scene.name,
+    sceneDisplayName: playerCharacter.location.scene.displayName,
     portrait: playerCharacter.templateCharacter.portrait
   };
-}
+};
 
 const transformToNearbyPlayerPayload = (user, playerCharacter) => {
   return {
@@ -279,15 +302,15 @@ const transformToNearbyPlayerPayload = (user, playerCharacter) => {
     totalHealth: playerCharacter.totalHealth,
     portrait: playerCharacter.templateCharacter.portrait,
     templateName: playerCharacter.templateCharacter.name,
-    spriteSheetImageUrl:
-    playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
+    spriteSheetImageUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
     spriteSheetJsonUrl: playerCharacter.templateCharacter.spriteSheets[0].spriteSheet_image_url,
     xPos: playerCharacter.location.xPos,
     yPos: playerCharacter.location.yPos,
     spawnX: playerCharacter.location.spawnX,
     spawnY: playerCharacter.location.spawnY,
+    sceneId: playerCharacter.location.sceneId,
     facingDirection: playerCharacter.location.facingDirection
   };
-}
+};
 
 module.exports = { PlayerCharacter, transformToPayload, transformToNearbyPlayerPayload };

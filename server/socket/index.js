@@ -35,7 +35,6 @@ function initWorldChat() {
   });
 }
 
-
 async function remotePlayerLoad(user) {
   const playerCharacter = await PlayerCharacter.getMainCharacterFromUser(user.id);
   await playerCharacter.update({ active: true });
@@ -54,16 +53,15 @@ function initGameSync() {
 
     //when players move we receive this event, we should emit an event to all clients to let
     //them know that this player has moved
-    socket.on('localPlayerPositionChanged', async (data) => {
+    socket.on("localPlayerPositionChanged", async (data) => {
       //let other clients know this this player has moved
       try {
         if (!socket.user.loggedIn) {
           await remotePlayerLoad(socket.user);
         }
         await socket.user.flagLoggedIn();
-        socket.broadcast.emit('remotePlayerPositionChanged', data);
-      }
-      catch(err) {
+        socket.broadcast.emit("remotePlayerPositionChanged", data);
+      } catch (err) {
         console.log(err);
       }
     });
@@ -76,11 +74,13 @@ function initGameSync() {
           xPos: data.xPos,
           yPos: data.yPos,
           spawnX: data.xPos,
-          spawnY: data.yPos,
+          spawnY: data.yPos
         });
         await playerCharacter.reload();
         const characterPayload = transformToPayload(playerCharacter);
-        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(playerCharacter.id);
+        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(
+          playerCharacter.id
+        );
         //let the world know that this player has moved to a new scene
         socket.broadcast.emit("remotePlayerChangedScenes", characterPayload);
       } catch (err) {
@@ -96,20 +96,19 @@ function initGameSync() {
       async (data) => {
         console.log("Received heart beat for ", data.characterName);
         try {
-          if(socket.user) {
-            if(!socket.user.loggedIn) {
+          if (socket.user) {
+            if (!socket.user.loggedIn) {
               await remotePlayerLoad(socket.user);
             }
-            await socket.user.flagLoggedIn();
             const player = await PlayerCharacter.getCharacter(data.characterId);
-            await player.location.update({xPos: data.characterXPos, yPos: data.characterYPos});
+            await socket.user.flagLoggedIn();
+            if(player) {
+              await player.location.update({xPos: data.characterXPos, yPos: data.characterYPos});
+            }
           }
-        }
-        catch(err) {
+        } catch (err) {
           console.log(err);
         }
-
-
       }
     );
 
@@ -152,9 +151,9 @@ function initGameSync() {
     //broadcast that a player hit a monster
     socket.on("monsterTookDamage", async (data) => {
       // console.log(chalk.red(`Monster ${data.monsterId} has been hit`));
-      console.log('monster damage', data);
       try {
-        const monster = await Npc.applyDamage(data.monsterId, data.damage);
+        const playerCharacter = await PlayerCharacter.getCharacter(data.playerCharacterId);
+        const monster = await Npc.applyDamage(data.monsterId, playerCharacter.getDamage());
         if (!monster.isAlive) {
           const player = await PlayerCharacter.findByPk(data.playerCharacterId);
           await player.update({ experience: (player.experience += 10) });
@@ -176,7 +175,7 @@ function initGameSync() {
 
     socket.on("playerTookDamage", async (data) => {
       // console.log(chalk.red(`Player ${data.characterId} has been hit`));
-      console.log(data);
+      // console.log(data);
       try {
         const playerCharacter = await PlayerCharacter.applyDamage(data.characterId, data.damage);
         socket.broadcast.emit("playerTookDamage", {
@@ -195,34 +194,31 @@ function initGameSync() {
     socket.on("updateMonsterDBPosition", async (data) => {
       try {
         const monster = await Npc.getMonster(data.monsterId);
-        await monster.location.update({xPos: data.xPos, yPos: data.yPos});
-        socket.emit('updateMonsterPosition', {...data, local: true});
-        socket.broadcast.emit('updateMonsterPosition', {...data, local: false});
-      }
-      catch(err) {
+        await monster.location.update({ xPos: data.xPos, yPos: data.yPos });
+        socket.emit("updateMonsterPosition", { ...data, local: true });
+        socket.broadcast.emit("updateMonsterPosition", { ...data, local: false });
+      } catch (err) {
         console.log(err);
       }
     });
 
-    socket.on('healthIntervalIncrease', async (characterId) => {
+    socket.on("healthIntervalIncrease", async (characterId) => {
       try {
-        const player = await PlayerCharacter.findByPk(characterId)
-        if(player) {
+        const player = await PlayerCharacter.findByPk(characterId);
+        if (player) {
           if (player.health + 10 > player.totalHealth) {
-            await player.update({health: player.totalHealth})
+            await player.update({ health: player.totalHealth });
+          } else {
+            await player.update({ health: (player.health += 10) });
           }
-          else {
-            await player.update({health: player.health += 10})
-          }
-          socket.emit("healthIntervalIncrease", player.health)
+          socket.emit("healthIntervalIncrease", player.health);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    })
+    });
   });
 }
-
 
 function initHeartbeat() {
   setInterval(async () => {
@@ -230,29 +226,30 @@ function initHeartbeat() {
       const players = await PlayerCharacter.getStaleLoggedInUsers();
       let i = 0;
       let len = players.length;
-      for(i; i < len; i++) {
+      for (i; i < len; i++) {
         const player = players[i];
         console.log(chalk.red(`Logging out ${player.name} due to inactivity`));
         await User.logout(player.user.id);
-        worldChat.emit('newMessage', {
-            channel: 'world',
-            message: {
-              name: 'WORLD',
-              message: player.name + ' has been logged out by the server!'
-            }
+        worldChat.emit("newMessage", {
+          channel: "world",
+          message: {
+            name: "WORLD",
+            message: player.name + " has been logged out by the server!"
+          }
         });
-        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(player.id);
-        monsters.forEach(monster => gameSync.emit('monsterControlResetAggro', monster.id));
-        gameSync.emit('remotePlayerLogout', player.id);
+        const [rowsUpdated, monsters] = await PlayerCharacter.resetAggroOnPlayerCharacter(
+          player.id
+        );
+        monsters.forEach((monster) => gameSync.emit("monsterControlResetAggro", monster.id));
+        gameSync.emit("remotePlayerLogout", player.id);
       }
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
   }, 15000);
   setInterval(() => {
-    console.log(chalk.bgMagenta('Sending out heart beat check'));
-    gameSync.emit('heartbeatCheck');
+    console.log(chalk.bgMagenta("Sending out heart beat check"));
+    gameSync.emit("heartbeatCheck");
   }, 10000);
 }
 
@@ -285,5 +282,5 @@ module.exports = {
   gameSync,
   worldChat,
   initHeartbeat,
-  initLazarusPit,
+  initLazarusPit
 };

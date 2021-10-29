@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const { User, TemplateCharacter, SpriteSheet } = require("../db");
+const { User, TemplateCharacter, SpriteSheet, PlayerCharacter } = require("../db");
 const { requireTokenMiddleware } = require("../auth-middleware");
 const cookieParser = require("cookie-parser");
 const { userSignupSchema } = require("../api/validationSchemas");
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require("sequelize");
 const cookieSecret = process.env.cookieSecret;
 router.use(cookieParser(cookieSecret));
 
@@ -11,7 +11,12 @@ router.post("/signup", async (req, res, next) => {
   try {
     await userSignupSchema.validate(req.body);
     const { email, password, firstName } = req.body;
-    const user = await User.create({ email, password, firstName, lastSeen: Sequelize.literal('CURRENT_TIMESTAMP')});
+    const user = await User.create({
+      email,
+      password,
+      firstName,
+      lastSeen: Sequelize.literal("CURRENT_TIMESTAMP")
+    });
     //Need to move lines 15 - 17 to after character creation REACT COMPONENT
     // const playerCharacter = await user.createPlayerCharacter({ name: "Hero", health: 100 });
     // console.log("playerCharacter", playerCharacter.__proto__);
@@ -77,12 +82,13 @@ router.put("/update", requireTokenMiddleware, async (req, res, next) => {
 //log the user in, generate a token and set it as a cookie
 router.post("/login", async (req, res, next) => {
   try {
-    const isLoggedIn = await User.findOne({
+    const user = await User.findOne({
       where: {
         email: req.body.email
       }
     });
-    if (isLoggedIn.loggedIn) {
+    const playerCharacter = await PlayerCharacter.getMainCharacterFromUser(user.id);
+    if (user.loggedIn && playerCharacter) {
       //throw some type of error and stop
       res.status(401).send("already loggedIn!!");
     } else {
@@ -97,7 +103,8 @@ router.post("/login", async (req, res, next) => {
       res.json({
         loggedIn: true,
         firstName: user.firstName,
-        isAdmin: user.isAdmin
+        isAdmin: user.isAdmin,
+        hasPlayerCharacter: playerCharacter !== null
       });
     }
   } catch (err) {
@@ -121,7 +128,7 @@ router.post("/change", requireTokenMiddleware, async (req, res, next) => {
 });
 
 router.put("/logout", requireTokenMiddleware, async (req, res, next) => {
-  console.log('LOGGED OUT USER', req.user);
+  console.log("LOGGED OUT USER", req.user);
   try {
     await User.update(
       { loggedIn: false },

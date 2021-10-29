@@ -16,7 +16,7 @@ import { AggroZone } from "./AggroZone";
 import { createMonsterAnimations } from "../animation/createAnimations";
 import { eventEmitter } from "../event/EventEmitter";
 import { MONSTER_CONTROL_STATES, MONSTER_STATES, MonsterStates } from "./MonsterStates";
-import {damageFlash} from '../animation/tweens';
+import { damageFlash } from "../animation/tweens";
 
 export class Monster extends Phaser.Physics.Arcade.Sprite {
   /**
@@ -61,7 +61,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.dy = 0;
 
     //Monster Aggro Zone
-    this.aggroZone = new AggroZone(this.scene, this.x, this.y, 100, 100, this);
+    this.aggroZone = new AggroZone(this.scene, this.x, this.y, 150, 150, this);
     this.scene.monsterAggroZones.add(this.aggroZone);
 
     //Enable physics on this sprite
@@ -103,7 +103,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       .addState(MONSTER_CONTROL_STATES.CONTROLLING, {})
       .addState(MONSTER_CONTROL_STATES.CONTROLLED, {});
 
-    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.id )
+    this.stateMachine = new StateMachine(this, "monsterStateMachine" + this.id)
       .addState(MONSTER_STATES.WALK, {
         onEnter: this.monsterStates.walkEnter,
         onUpdate: this.monsterStates.walkUpdate,
@@ -158,21 +158,26 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     }
 
     window.setInterval(() => {
-      if(!this.stateMachine.isCurrentState(MONSTER_STATES.DEAD) && this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)) {
-        eventEmitter.emit('updateMonsterDBPosition', {
+      if (
+        !this.stateMachine.isCurrentState(MONSTER_STATES.DEAD) &&
+        this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLING)
+      ) {
+        eventEmitter.emit("updateMonsterDBPosition", {
           monsterId: this.id,
           xPos: Math.floor(this.x),
           yPos: Math.floor(this.y)
-        })
+        });
       }
     }, 2000);
-
   }
 
   dealDamage() {
     let convertedDir = DIRECTION_CONVERSION[this.direction];
     // this.stateLock = true;
     const applyHitBox = (animation, frame) => {
+      if(frame.index === 3) {
+        this.scene.orcSE.play();
+      }
       if (frame.index < 3) return;
       //here we're setting up where the attack box should go based on the character direction
       switch (convertedDir) {
@@ -243,10 +248,10 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
-
-
   update(time, delta) {
-    if (this.stateMachine.isCurrentState(MONSTER_STATES.DEAD)) {return}
+    if (this.stateMachine.isCurrentState(MONSTER_STATES.DEAD)) {
+      return;
+    }
     this.aggroZone.shadowOwner(); //makes the zone follow the monster it's tied to
     if (
       this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) ||
@@ -279,8 +284,10 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
       }
     } else if (this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.CONTROLLED)) {
       this.playRemoteSnapshots(time, delta);
-    }
-    else if(this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) && !this.waypoints.length) {
+    } else if (
+      this.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL) &&
+      !this.waypoints.length
+    ) {
       this.stateMachine.setState(MONSTER_STATES.IDLE);
     }
     this.stateMachine.update(time, delta);
@@ -374,9 +381,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
-      if (animationToPlay.includes("attack")) {
-        this.scene.orcSE.play();
-      }
+      // if (animationToPlay.includes("attack")) {
+      //   this.scene.orcSE.play();
+      // }
       this.anims.play(animationToPlay);
     }
     if (this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
@@ -411,10 +418,13 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
         } else if (zoneStatus.isNextToTarget) {
           this.clearPath();
           this.stateMachine.setState(MONSTER_STATES.ATTACK);
+          if (zoneStatus.direction) {
+            this.direction = zoneStatus.direction;
+          }
         }
       } else {
         this.clearPath();
-        console.log('no target');
+        // console.log('no target');
         this.stateMachine.setState(MONSTER_STATES.IDLE);
         // eventEmitter.emit('updateMonsterDBPosition', {
         //   monsterId: this.id,

@@ -41,7 +41,7 @@ const userData = [
     },
     playerCharacter: {
       name: "Arcana",
-      health: 800,
+      health: 1000,
       totalHealth: 1000,
       strength: 75,
       intelligence: 100,
@@ -178,26 +178,31 @@ const sceneData = [
   {
     id: 1,
     name: "StarterTown",
+    displayName: "Noldo Village",
     mapId: 1
   },
   {
     id: 2,
     name: "ForestScene",
+    displayName: "Darkwood",
     mapId: 1
   },
   {
     id: 3,
     name: "ForestPath",
+    displayName: "Road Less Traveled",
     mapId: 1
   },
   {
     id: 4,
     name: "MiddleTown",
+    displayName: "Almaren Village",
     mapId: 1
   },
   {
     id: 5,
     name: "Dungeon",
+    displayName: "Sinstone Crypts",
     mapId: 1
   }
 ];
@@ -646,7 +651,7 @@ const npcData = [
       sceneId: 5
     },
     templateCharacter: "goblin"
-  },
+  }
 ];
 
 module.exports = {

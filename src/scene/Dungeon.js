@@ -36,6 +36,7 @@ export default class Dungeon extends MMOScene {
     this.physics.world.add(this.transitionToMiddleTownFromDungeon.body);
     this.transitionZones.push({
       sceneName: "MiddleTown",
+      sceneDisplayName: "Almaren Village",
       sceneId: 4,
       xPos: 1025,
       yPos: 650,

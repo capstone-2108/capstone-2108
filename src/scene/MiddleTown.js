@@ -36,6 +36,7 @@ export default class MiddleTown extends MMOScene {
     this.physics.world.add(this.transitionToForestPathFromMiddleTown.body);
     this.transitionZones.push({
       sceneName: "ForestPath",
+      sceneDisplayName: "Road Less Traveled",
       sceneId: 3,
       xPos: 425,
       yPos: 125,
@@ -48,6 +49,7 @@ export default class MiddleTown extends MMOScene {
     this.physics.world.add(this.transitionToDungeonFromMiddleTown.body);
     this.transitionZones.push({
       sceneName: "Dungeon",
+      sceneDisplayName: "Sinstone Crypts",
       sceneId: 5,
       xPos: 250,
       yPos: 1020,

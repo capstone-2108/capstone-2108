@@ -337,8 +337,9 @@ img {
   margin: 25px;
   justify-content: center;
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
-  flex-wrap: wrap;
+  /*flex-wrap: wrap;*/
   gap: 3px;
 }
 
@@ -411,6 +412,7 @@ img {
 
 #chat_history {
   height: 190px;
+  font-size:.9rem;
   display: flex;
   flex-flow: column-reverse nowrap;
   overflow-y: scroll;

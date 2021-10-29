@@ -13,15 +13,17 @@ import player, {
   playerTookDamage,
   remotePlayerChangedScenes,
   remotePlayerTookDamage,
-  reviveMonsters, revivePlayer,
+  reviveMonsters,
+  revivePlayer,
   setSelectedUnit,
   updateLocalPlayerPosition,
   updatePlayerPosition,
   playerExpIncrease,
-  updateHealth, updateMonsterPosition
-} from '../store/player';
+  updateHealth,
+  updateMonsterPosition
+} from "../store/player";
 
-import {useDispatch, useSelector, useStore} from 'react-redux';
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { Game } from "../../src/Game";
 import io from "socket.io-client";
 import { updatePlayerCharacter } from "../store/player";
@@ -53,7 +55,6 @@ export const InitSubscriptionsToPhaser = () => {
     return () => window.clearInterval(healthIntervalId);
   }, [playerState.characterId, playerState.health, socket]);
 
-
   useEffect(() => {
     const remotePlayerLoad = (data) => {
       const state = store.getState();
@@ -61,17 +62,16 @@ export const InitSubscriptionsToPhaser = () => {
         mySceneId: state.player.sceneId,
         remotePlayerData: data
       });
-    }
-    if(socket && playerState.sceneId) {
+    };
+    if (socket && playerState.sceneId) {
       socket.on("remotePlayerLoad", remotePlayerLoad);
     }
     return () => {
-      if(socket) {
+      if (socket) {
         socket.off("remotePlayerLoad", remotePlayerLoad);
       }
-    }
-  },[socket, playerState.sceneId]);
-
+    };
+  }, [socket, playerState.sceneId]);
 
   useEffect(() => {
     //loads the game
@@ -91,7 +91,6 @@ export const InitSubscriptionsToPhaser = () => {
     //   eventEmitter.emit("remotePlayerLoad", data);
     // });
 
-
     newSocket.on("remotePlayerLogout", (characterId) => {
       eventEmitter.emit("remotePlayerLogout", characterId);
     });
@@ -107,6 +106,7 @@ export const InitSubscriptionsToPhaser = () => {
     newSocket.on("remotePlayerChangedScenes", (remotePlayer) => {
       //lets tell phaser that this player has changed scenes so it can update accordingly
       //if they entered my scene, lets add them to redux, otherwise remove,
+
       dispatch(remotePlayerChangedScenes(remotePlayer));
       eventEmitter.emit("remotePlayerChangedScenes", remotePlayer);
     });
@@ -169,10 +169,10 @@ export const InitSubscriptionsToPhaser = () => {
     });
 
     newSocket.on("updateMonsterPosition", (data) => {
-      const {monsterId, xPos, yPos} = data;
+      const { monsterId, xPos, yPos } = data;
       // console.log('phaserSync updateMonsterPosition', data);
       // dispatch(updateMonsterPosition({monsterId, xPos, yPos}));
-      eventEmitter.emit("updateMonsterPosition", {monsterId, xPos, yPos});
+      eventEmitter.emit("updateMonsterPosition", { monsterId, xPos, yPos });
     });
 
     /****************
@@ -208,6 +208,7 @@ export const InitSubscriptionsToPhaser = () => {
         dispatch(
           updatePlayerCharacter({
             sceneName: data.sceneName,
+            sceneDisplayName: data.sceneDisplayName,
             sceneId: data.sceneId,
             xPos: data.xPos,
             yPos: data.yPos
@@ -290,7 +291,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     unsubscribes.push(
       eventEmitter.subscribe("updateMonsterDBPosition", (data) => {
-        newSocket.emit('updateMonsterDBPosition', data);
+        newSocket.emit("updateMonsterDBPosition", data);
       })
     );
 
