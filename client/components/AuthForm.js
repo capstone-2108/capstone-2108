@@ -116,15 +116,16 @@ const AuthForm = (props) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+
     if (name === "signup") {
-      const successLogIn = await dispatch(authenticate(name, { email, password, firstName }));
+      const successLogIn = await dispatch(authenticate(name, { email, password, firstName }, history));
       if (successLogIn) {
         routeChange();
       } else {
         setSnackBarErrorOpen(true);
       }
     } else {
-      const successLogIn = await dispatch(authenticate(name, { email, password }));
+      const successLogIn = await dispatch(authenticate(name, { email, password }, history));
       if (successLogIn) {
         routeChange();
       } else {

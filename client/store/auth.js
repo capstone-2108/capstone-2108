@@ -28,14 +28,19 @@ export const loginSuccess = (bool) => ({ type: LOGIN_SUCCESS, bool });
 /**
  * THUNK CREATORS
  */
-export const authenticate = (method, credentials) => {
+export const authenticate = (method, credentials, history) => {
   return async (dispatch, getState) => {
     try {
       const response = await axios.post(`/auth/${method}`, credentials);
       if (response.data.loggedIn) {
-        dispatch(loginSuccess(true));
-        dispatch(setLoggedIn(response.data.firstName, response.data.lastName, response.data.email));
-        return true;
+        if(!response.data.hasPlayerCharacter) {
+          history.push("/select");
+        }
+        else {
+          dispatch(loginSuccess(true));
+          dispatch(setLoggedIn(response.data.firstName, response.data.lastName, response.data.email));
+          return true;
+        }
       } else {
         console.log("Failed to authenticate");
         dispatch(loginSuccess(false));
