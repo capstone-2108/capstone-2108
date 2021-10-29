@@ -183,7 +183,7 @@ export const InitSubscriptionsToPhaser = () => {
 
     unsubscribes.push(
       eventEmitter.subscribe("phaserLoad", async (data) => {
-        console.log('phaserLoad', data);
+        // console.log('phaserLoad', data);
         const player = await dispatch(fetchCharacterData()); //load the players data into redux
         eventEmitter.emit("playerLoad", player);
         dispatch(heartbeat(newSocket));
@@ -193,7 +193,7 @@ export const InitSubscriptionsToPhaser = () => {
     unsubscribes.push(
       eventEmitter.subscribe("sceneLoad", async (data) => {
         const player = await dispatch(fetchCharacterData()); //load the players data into redux
-        console.log('sceneLoad', data);
+        // console.log('sceneLoad', data);
         eventEmitter.emit("scenePlayerLoad", player);
         //load any players which are in the same scene as the player
         const nearbyPlayers = await dispatch(fetchNearbyPlayers(player.characterId));

@@ -6,7 +6,7 @@ import { MONSTER_CONTROL_STATES, MONSTER_STATES } from "../entity/MonsterStates"
 import { deathFadeout, fadeIn } from "../animation/tweens";
 
 export function scenePlayerLoadCallback(data) {
-  console.log('scenePlayerLoad', data);
+  // console.log('scenePlayerLoad', data);
   this.player = new LocalPlayer(
     this,
     data.xPos,
