@@ -10,14 +10,14 @@ export default class StarterTown extends MMOScene {
   }
 
   create() {
-    // this.music = this.sound.add("scene1Audio");
-    // this.music.loop = true;
-    // this.music.play();
+    this.music = this.sound.add("scene1Audio");
+    this.music.loop = true;
+    this.music.play();
 
     this.map = this.make.tilemap({ key: "start-scene" }); //the key: should match what you specified in this.load.tilemapTiledJSON
 
     //tileSetName has to match the name of the tileset in Tiled, and the key is the image key we used for this tile set
-    const town = this.map.addTilesetImage("town", "town"); //loads the tileset used to make up this map
+    const town = this.map.addTilesetImage("town", "town", 16, 16, 1, 2); //loads the tileset used to make up this map
 
     this.groundLayer = this.map.createLayer("ground", town, 0, 0);
     this.worldLayer = this.map.createLayer("world", town, 0, 0);
@@ -34,7 +34,7 @@ export default class StarterTown extends MMOScene {
 
     this.pathfinder = createPathFinder(this.map, this.layers);
 
-    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 1);
+    this.transitionToForestSceneFromStarterTown = this.add.rectangle(3200, 625, 100, 100, 0xffffff, 0);
 
     // use this for development (close to monster)
     // this.transitionToForestSceneFromStarterTown = this.add.rectangle(500, 500, 100, 100, 0xffffff, 0.5).setDepth(1);
