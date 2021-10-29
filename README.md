@@ -28,7 +28,7 @@
 
 1. Fork and clone this repo.
 2. Create db named mmo.
-2. Install the dependencies with: `npm install`.
-3. Start the build process and the application with: `npm run start:dev`.
-4. Navigate to [localhost:1337](http://localhost:1337) to see the site in the browser.
+3. Install the dependencies with: `npm install`.
+4. Start the build process and the application with: `npm run start:dev`.
+5. Navigate to [localhost:1337](http://localhost:1337) to see the site in the browser.
 
