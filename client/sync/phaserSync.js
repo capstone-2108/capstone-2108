@@ -57,7 +57,6 @@ export const InitSubscriptionsToPhaser = () => {
 
   useEffect(() => {
     const remotePlayerLoad = (data) => {
-      console.log("phaserSync remotePlayerLoad", data);
       const state = store.getState();
       eventEmitter.emit("remotePlayerLoad", {
         mySceneId: state.player.sceneId,
@@ -65,7 +64,6 @@ export const InitSubscriptionsToPhaser = () => {
       });
     };
     if (socket && playerState.sceneId) {
-      console.log("phaserSync remotePlayerLoad same scene", playerState.scendId);
       socket.on("remotePlayerLoad", remotePlayerLoad);
     }
     return () => {
@@ -110,7 +108,6 @@ export const InitSubscriptionsToPhaser = () => {
       //if they entered my scene, lets add them to redux, otherwise remove,
 
       dispatch(remotePlayerChangedScenes(remotePlayer));
-      console.log("phaserSync remotePlayerChangedScenes", remotePlayer, playerState);
       eventEmitter.emit("remotePlayerChangedScenes", remotePlayer);
     });
 
@@ -194,7 +191,6 @@ export const InitSubscriptionsToPhaser = () => {
 
     unsubscribes.push(
       eventEmitter.subscribe("sceneLoad", async (data) => {
-        console.log('sceneLoad*********');
         const player = await dispatch(fetchCharacterData()); //load the players data into redux
         eventEmitter.emit("scenePlayerLoad", player);
         //load any players which are in the same scene as the player
@@ -212,6 +208,7 @@ export const InitSubscriptionsToPhaser = () => {
         dispatch(
           updatePlayerCharacter({
             sceneName: data.sceneName,
+            sceneDisplayName: data.sceneDisplayName,
             sceneId: data.sceneId,
             xPos: data.xPos,
             yPos: data.yPos

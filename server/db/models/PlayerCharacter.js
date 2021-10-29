@@ -134,7 +134,7 @@ PlayerCharacter.getMainCharacterFromUser = function (userId) {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         include: {
           model: Scene,
-          attributes: ["id", "name"]
+          attributes: ["id", "name", "displayName"]
         }
       }
     ]
@@ -158,7 +158,7 @@ PlayerCharacter.getCharacter = function (characterId) {
         attributes: { exclude: ["createdAt", "updatedAt"] },
         include: {
           model: Scene,
-          attributes: ["id", "name"]
+          attributes: ["id", "name", "displayName"]
         }
       }
     ]
@@ -288,6 +288,7 @@ const transformToPayload = (playerCharacter) => {
     gold: playerCharacter.gold,
     sceneId: playerCharacter.location.scene.id,
     sceneName: playerCharacter.location.scene.name,
+    sceneDisplayName: playerCharacter.location.scene.displayName,
     portrait: playerCharacter.templateCharacter.portrait
   };
 };

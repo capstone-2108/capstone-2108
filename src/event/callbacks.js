@@ -2,11 +2,11 @@ import { RemotePlayer } from "../entity/RemotePlayer";
 import { LocalPlayer } from "../entity/LocalPlayer";
 import { Monster } from "../entity/Monster";
 import { eventEmitter } from "../event/EventEmitter";
-import {MONSTER_CONTROL_STATES, MONSTER_STATES} from '../entity/MonsterStates';
-import {deathFadeout, fadeIn} from '../animation/tweens';
+import { MONSTER_CONTROL_STATES, MONSTER_STATES } from "../entity/MonsterStates";
+import { deathFadeout, fadeIn } from "../animation/tweens";
 
 export function scenePlayerLoadCallback(data) {
-  console.log('scenePlayerLoad', data);
+  // console.log('scenePlayerLoad', data);
   this.player = new LocalPlayer(
     this,
     data.xPos,
@@ -26,6 +26,7 @@ export function scenePlayerLoadCallback(data) {
         sceneId: transitionZone.sceneId,
         characterId: this.player.id,
         sceneName: transitionZone.sceneName,
+        sceneDisplayName: transitionZone.sceneDisplayName,
         xPos: transitionZone.xPos,
         yPos: transitionZone.yPos
       });
@@ -41,10 +42,9 @@ export function scenePlayerLoadCallback(data) {
     .setZoom(0.15)
     .setName("mini")
     .startFollow(this.player)
-    .setAlpha(.9)
-    .setBackgroundColor("rgba(0, 0, 0, 0)") ;
+    .setAlpha(0.9)
+    .setBackgroundColor("rgba(0, 0, 0, 0)");
   // this.minimap.setBackgroundColor(0x002244);
-
 
   this.minimap.centerOn(0, 0);
   const minimapCircle = new Phaser.GameObjects.Graphics(this);
@@ -68,11 +68,8 @@ export function nearbyPlayerLoadCallback(players) {
   let len = players.length;
   for (; i < len; i++) {
     const player = players[i];
-    console.log('nearbyPlayerloadcallback', this.sceneId, this.sceneId === player.sceneId, player);
     if (player.characterId !== this.player.id && !this.remotePlayers[player.id]) {
-      console.log(1)
       if (this.sceneId === player.sceneId) {
-        console.log(2)
         this.remotePlayers[player.characterId] = new RemotePlayer(
           this,
           player.xPos,
@@ -117,16 +114,16 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
 }
 
 export function remotePlayerChangedSceneCallback(remotePlayer) {
-  console.log("remotePlayerChangedSceneCallback", remotePlayer);
+  // console.log("remotePlayerChangedSceneCallback", remotePlayer);
   //has the player entered the scene or left the scene?
   //if they exist on remotePlayers, they've likely left, otherwise they entered
-  if(remotePlayer.sceneId === this.sceneId) {
+  if (remotePlayer.sceneId === this.sceneId) {
     if (!this.remotePlayers[remotePlayer.characterId]) {
       const boundCallback = nearbyPlayerLoadCallback.bind(this);
       boundCallback([remotePlayer]);
     }
-  }
-  else { //different scene
+  } else {
+    //different scene
     if (this.remotePlayers[remotePlayer.characterId]) {
       this.remotePlayers[remotePlayer.characterId].cleanUp();
       this.remotePlayers[remotePlayer.characterId].destroy();
@@ -135,34 +132,27 @@ export function remotePlayerChangedSceneCallback(remotePlayer) {
   }
 }
 
-export function remotePlayerLoadCallback({mySceneId, remotePlayerData}) {
-  console.log('callbacks remotePlayerLoad', mySceneId, remotePlayerData);
+export function remotePlayerLoadCallback({ mySceneId, remotePlayerData }) {
   if (remotePlayerData.characterId === this.player.id) {
-    console.log('remotePlayerLoad exiting');
     return;
   }
   //is this player in my scene?
-  if(remotePlayerData.sceneId === mySceneId) {
+  if (remotePlayerData.sceneId === mySceneId) {
     //add
-    console.log('remotePlayerLoad in my scene');
-    if(!this.remotePlayers[remotePlayerData.characterId]) {
-      console.log('remotePlayerLoad adding');
-        this.remotePlayers[remotePlayerData.characterId] = new RemotePlayer(
-          this,
-          remotePlayerData.xPos,
-          remotePlayerData.yPos,
-          `${remotePlayerData.name}-${remotePlayerData.characterId}`,
-          remotePlayerData.templateName,
-          remotePlayerData.name,
-          remotePlayerData.characterId
-        );
+    if (!this.remotePlayers[remotePlayerData.characterId]) {
+      this.remotePlayers[remotePlayerData.characterId] = new RemotePlayer(
+        this,
+        remotePlayerData.xPos,
+        remotePlayerData.yPos,
+        `${remotePlayerData.name}-${remotePlayerData.characterId}`,
+        remotePlayerData.templateName,
+        remotePlayerData.name,
+        remotePlayerData.characterId
+      );
     }
-  }
-  else {
+  } else {
     //remove
-    console.log('remotePlayerLoad not in my scene');
-    if(this.remotePlayers[remotePlayerData.characterId]) {
-      console.log('removing');
+    if (this.remotePlayers[remotePlayerData.characterId]) {
       const boundRemove = remotePlayerLogoutCallback.bind(this);
       boundRemove(remotePlayerData.characterId);
     }
@@ -178,11 +168,10 @@ export function monsterCanAggroPlayerCallback(data) {
     this.monsters[data.monsterId].aggroZone.setAggroTarget(this.player);
     this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES.CONTROLLING);
   }
-  if(!data.canAggro) {
+  if (!data.canAggro) {
     // this.monsters[data.monsterId].controlStateMachine.setState(MONSTER_CONTROL_STATES. NEUTRAL);
   }
 }
-
 
 export function monsterControlFollowDirectionsCallback(stateSnapshots) {
   /**
@@ -197,9 +186,8 @@ export function monsterControlFollowDirectionsCallback(stateSnapshots) {
   }
 }
 
-
 //runs when the server says a monster should reset it's aggro
-export function monsterControlResetAggroCallback({monsterId, xPos, yPos}) {
+export function monsterControlResetAggroCallback({ monsterId, xPos, yPos }) {
   if (this.monsters[monsterId]) {
     const monster = this.monsters[monsterId];
     monster.receivedAggroResetRequest = true;
@@ -223,17 +211,16 @@ export function monsterHasDiedCallback(monsterId) {
 export function updateMonsterPositionCallback(data) {
   if (this.monsters[data.monsterId] && !data.local) {
     const monster = this.monsters[data.monsterId];
-    if(monster.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL)) {
+    if (monster.controlStateMachine.isCurrentState(MONSTER_CONTROL_STATES.NEUTRAL)) {
       monster.pathTo(data.xPos, data.yPos);
     }
   }
 }
 
 export function reviveMonstersCallback(revivedMonsters) {
-  for(let i = 0; i < revivedMonsters.length; i++) {
+  for (let i = 0; i < revivedMonsters.length; i++) {
     if (this.monsters[revivedMonsters[i].id]) {
       const monster = this.monsters[revivedMonsters[i].id];
-      console.log(revivedMonsters[i], monster);
       monster.stateMachine.setState(MONSTER_STATES.IDLE);
       monster.controlStateMachine.setState(MONSTER_CONTROL_STATES.NEUTRAL);
       monster.aggroZone.resetAggro(true);
@@ -245,18 +232,17 @@ export function reviveMonstersCallback(revivedMonsters) {
 }
 
 export function playerHasDiedCallback(data) {
-  if(data.local) {
+  if (data.local) {
     deathFadeout(this, this.player);
     this.player.isAlive = false;
     setTimeout(() => {
       this.player.moveToCoordinate(data.playerCharacter.spawnX, data.playerCharacter.spawnY);
       fadeIn(this, this.player);
       this.player.isAlive = true;
-      eventEmitter.emit('reviveLocalPlayer', data);
+      eventEmitter.emit("reviveLocalPlayer", data);
     }, 2000);
-  }
-  else {
-    if(this.remotePlayers[data.playerCharacter.id]) {
+  } else {
+    if (this.remotePlayers[data.playerCharacter.id]) {
       const remotePlayer = this.remotePlayers[data.playerCharacter.id];
       deathFadeout(this, remotePlayer);
       remotePlayer.isAlive = false;
@@ -266,7 +252,6 @@ export function playerHasDiedCallback(data) {
         remotePlayer.isAlive = true;
       }, 2000);
     }
-
   }
 }
 

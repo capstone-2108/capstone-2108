@@ -177,27 +177,32 @@ const spriteSheetData = [
 const sceneData = [
   {
     id: 1,
-    name: "Noldo Village",
+    name: "StarterTown",
+    displayName: "Noldo Village",
     mapId: 1
   },
   {
     id: 2,
-    name: "Darkwood",
+    name: "ForestScene",
+    displayName: "Darkwood",
     mapId: 1
   },
   {
     id: 3,
-    name: "The Road Less Traveled",
+    name: "ForestPath",
+    displayName: "Road Less Traveled",
     mapId: 1
   },
   {
     id: 4,
-    name: "Almaren Village",
+    name: "MiddleTown",
+    displayName: "Almaren Village",
     mapId: 1
   },
   {
     id: 5,
-    name: "Sinstone Crypts",
+    name: "Dungeon",
+    displayName: "Sinstone Crypts",
     mapId: 1
   }
 ];

@@ -43,7 +43,8 @@ export default class StarterTown extends MMOScene {
     this.transitionToForestSceneFromStarterTown.body.enable = true;
     this.physics.world.add(this.transitionToForestSceneFromStarterTown.body);
     this.transitionZones.push({
-      sceneName: 'Darkwood',
+      sceneName: 'ForestScene',
+      sceneDisplayName: 'Darkwood',
       sceneId: 2,
       xPos: 140,
       yPos: 675,

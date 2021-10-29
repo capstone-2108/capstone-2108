@@ -30,12 +30,20 @@ export default class ForestPath extends MMOScene {
 
     this.collisionLayer.setCollisionByProperty({ collides: true });
 
-    this.transitionToForestSceneFromForestPath = this.add.rectangle(400, 1600, 100, 100, 0xffffff, 0);
+    this.transitionToForestSceneFromForestPath = this.add.rectangle(
+      400,
+      1600,
+      100,
+      100,
+      0xffffff,
+      0
+    );
     this.physics.add.existing(this.transitionToForestSceneFromForestPath);
     this.transitionToForestSceneFromForestPath.body.enable = true;
     this.physics.world.add(this.transitionToForestSceneFromForestPath.body);
     this.transitionZones.push({
-      sceneName: "Darkwood",
+      sceneName: "ForestScene",
+      sceneDisplayName: "Darkwood",
       sceneId: 2,
       xPos: 1375,
       yPos: 150,
@@ -47,7 +55,8 @@ export default class ForestPath extends MMOScene {
     this.transitionToMiddleTownFromForestPath.body.enable = true;
     this.physics.world.add(this.transitionToMiddleTownFromForestPath.body);
     this.transitionZones.push({
-      sceneName: "Almaren Village",
+      sceneName: "MiddleTown",
+      sceneDisplayName: "Almaren Village",
       sceneId: 4,
       xPos: 800,
       yPos: 1400,

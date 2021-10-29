@@ -5,6 +5,10 @@ const Scene = db.define("scene", {
   name: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  displayName: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 });
 
