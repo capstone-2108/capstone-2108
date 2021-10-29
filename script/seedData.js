@@ -215,22 +215,22 @@ const mapData = [
 
 const npcData = [
   // remove this orc after development
-  {
-    npc: {
-      name: "Goblin",
-      health: 10,
-      totalHealth: 10
-    },
-    location: {
-      xPos: 250,
-      yPos: 400,
-      spawnX: 250,
-      spawnY: 400,
-      facingDirection: "w",
-      sceneId: 1
-    },
-    templateCharacter: "goblin"
-  },
+  // {
+  //   npc: {
+  //     name: "Goblin",
+  //     health: 10,
+  //     totalHealth: 10
+  //   },
+  //   location: {
+  //     xPos: 250,
+  //     yPos: 400,
+  //     spawnX: 250,
+  //     spawnY: 400,
+  //     facingDirection: "w",
+  //     sceneId: 1
+  //   },
+  //   templateCharacter: "goblin"
+  // },
   // FIRST SCENE MONSTERS
   {
     npc: {
