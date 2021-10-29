@@ -53,6 +53,7 @@ export default class Preloader extends Phaser.Scene {
       "spritesheets/monsters/troll/troll.json"
     );
 
+
     this.load.atlas(
       "goblin",
       "spritesheets/monsters/goblin/goblin.png",
@@ -67,7 +68,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON("dungeon", "/maps/dungeon.json");
 
     /**How to load a tile set**/
-    this.load.image("town", "tilesets/tileset/RPG tileset (full) v1.5 - 200_.png");
+    this.load.image("town", "tilesets/tileset/town-extruded.png");
     this.load.image("grass", "tilesets/forest/grass.png");
     this.load.image("plant", "tilesets/forest/plant.png");
     this.load.image("props", "tilesets/forest/props.png");
@@ -75,7 +76,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image("structure", "tilesets/forest/structure.png");
     this.load.image("wall", "tilesets/forest/wall.png");
     this.load.image("minimapBorder", "gold.png");
-    this.load.image("dungeon", "tilesets/tileset/Dungeon.png");
+    this.load.image("dungeon", "tilesets/tileset/Dungeon-extruded.png");
 
 
     this.input.mouse.disableContextMenu();

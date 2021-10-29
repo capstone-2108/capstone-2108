@@ -74,8 +74,6 @@ const selectCharacter = () => {
                 <CardContent>
                   <h3>{character.name}</h3>
                   <h5>{character.description}</h5>
-                  <h6>Strength: {character.baseStrength}</h6>
-                  <h6>Intelligence: {character.baseIntelligence}</h6>
                 </CardContent>
               </CardActionArea>
             </Card>
