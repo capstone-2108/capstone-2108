@@ -61,7 +61,7 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     this.dy = 0;
 
     //Monster Aggro Zone
-    this.aggroZone = new AggroZone(this.scene, this.x, this.y, 100, 100, this);
+    this.aggroZone = new AggroZone(this.scene, this.x, this.y, 150, 150, this);
     this.scene.monsterAggroZones.add(this.aggroZone);
 
     //Enable physics on this sprite

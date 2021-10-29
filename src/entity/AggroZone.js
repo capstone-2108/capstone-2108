@@ -44,12 +44,12 @@ export class AggroZone extends Phaser.GameObjects.Zone {
   }
 
   shrinkAggroZone() {
-    this.width = 100;
-    this.height = 100;
+    this.width = 150;
+    this.height = 150;
     this.x = this.owner.x; //- 100;
     this.y = this.owner.y; //- 100;
-    this.body.width = 100;
-    this.body.height = 100; //300;
+    this.body.width = 150;
+    this.body.height = 150; //300;
   }
 
   //make the aggro zone follow it's owner
@@ -58,8 +58,8 @@ export class AggroZone extends Phaser.GameObjects.Zone {
       this.x = this.owner.x;
       this.y = this.owner.y;
     } else {
-      this.x = this.owner.x - 100;
-      this.y = this.owner.y - 100;
+      this.x = this.owner.x - 75;
+      this.y = this.owner.y - 75;
     }
   }
 
