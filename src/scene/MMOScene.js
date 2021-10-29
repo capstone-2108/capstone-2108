@@ -36,6 +36,7 @@ export default class MMOScene extends Phaser.Scene {
   }
 
   create() {
+    console.log('scene launched');
     this.scene.run("minimapBorder");
 
     this.input.setDefaultCursor("url(images/FantasyCursor.cur), pointer");

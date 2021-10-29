@@ -70,6 +70,7 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       sceneId: 1
     });
     const scene = await location.getScene();
+    console.log(scene);
 
     //create newplayer in PlayerCharacter instance
     const newPlayer = await PlayerCharacter.create({
@@ -104,8 +105,9 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       spawnX: location.spawnX,
       spawnY: location.spawnY,
       facingDirection: location.facingDirection,
-      scene: scene.name,
+      sceneName: scene.name,
       sceneId: location.sceneId,
+      sceneDisplayName: scene.displayName,
       portrait: templateCharacterInfo.portrait
     };
     res.json(payload);

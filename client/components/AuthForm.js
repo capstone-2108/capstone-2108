@@ -105,10 +105,7 @@ const AuthForm = (props) => {
       history.push(path);
     } else {
       let path = "/game";
-      history.push({
-        pathname: path,
-        state: { newUser: false }
-      });
+      history.push(path);
     }
   };
 
