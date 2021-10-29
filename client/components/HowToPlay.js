@@ -13,8 +13,8 @@ const useStyles = makeStyles(() => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    // backgroundColor: "rgba(0, 0, 0, 0.8)",
-    backgroundColor: "#f6f6f6",
+    backgroundColor: "rgba(255,255,255, 0.8)",
+    // backgroundColor: "#f6f6f6",
     fontFamily: "Cinzel Decorative",
     padding: 20,
     color: "#00000",
@@ -29,8 +29,8 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "#77963f"
     },
     textTransform: "lowercase"
-  },
-}))
+  }
+}));
 
 const HowToPlay = (props) => {
   const classes = useStyles();
@@ -43,7 +43,7 @@ const HowToPlay = (props) => {
         </Grid>
         <Box component="div">
           <Grid align="center">
-            <img src="/images/controls2.jpeg"/>
+            <img src="/images/controls.png"/>
             <Button type="submit" onClick={props.handleClose} className={classes.btn}>
               Lets Play!
             </Button>
