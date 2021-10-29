@@ -307,6 +307,7 @@ const transformToNearbyPlayerPayload = (user, playerCharacter) => {
     yPos: playerCharacter.location.yPos,
     spawnX: playerCharacter.location.spawnX,
     spawnY: playerCharacter.location.spawnY,
+    sceneId: playerCharacter.location.sceneId,
     facingDirection: playerCharacter.location.facingDirection
   };
 };

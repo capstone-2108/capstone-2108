@@ -6,6 +6,7 @@ import {MONSTER_CONTROL_STATES, MONSTER_STATES} from '../entity/MonsterStates';
 import {deathFadeout, fadeIn} from '../animation/tweens';
 
 export function scenePlayerLoadCallback(data) {
+  console.log('scenePlayerLoad', data);
   this.player = new LocalPlayer(
     this,
     data.xPos,
@@ -15,6 +16,7 @@ export function scenePlayerLoadCallback(data) {
     data.name,
     data.characterId
   );
+  this.sceneId = data.sceneId;
 
   this.transitionZones.forEach((transitionZone) => {
     this.physics.add.overlap(transitionZone.transitionPoint, this.player, () => {
@@ -66,16 +68,21 @@ export function nearbyPlayerLoadCallback(players) {
   let len = players.length;
   for (; i < len; i++) {
     const player = players[i];
+    console.log('nearbyPlayerloadcallback', this.sceneId, this.sceneId === player.sceneId, player);
     if (player.characterId !== this.player.id && !this.remotePlayers[player.id]) {
-      this.remotePlayers[player.characterId] = new RemotePlayer(
-        this,
-        player.xPos,
-        player.yPos,
-        `${player.name}-${player.characterId}`,
-        player.templateName,
-        player.name,
-        player.characterId
-      );
+      console.log(1)
+      if (this.sceneId === player.sceneId) {
+        console.log(2)
+        this.remotePlayers[player.characterId] = new RemotePlayer(
+          this,
+          player.xPos,
+          player.yPos,
+          `${player.name}-${player.characterId}`,
+          player.templateName,
+          player.name,
+          player.characterId
+        );
+      }
     }
   }
 }
@@ -110,24 +117,36 @@ export function remotePlayerPositionChangedCallback(stateSnapshots) {
 }
 
 export function remotePlayerChangedSceneCallback(remotePlayer) {
+  console.log("remotePlayerChangedSceneCallback", remotePlayer);
   //has the player entered the scene or left the scene?
   //if they exist on remotePlayers, they've likely left, otherwise they entered
-  if (this.remotePlayers[remotePlayer.characterId]) {
-    this.remotePlayers[remotePlayer.characterId].cleanUp();
-    this.remotePlayers[remotePlayer.characterId].destroy();
-    delete this.remotePlayers[remotePlayer.characterId];
-  } else {
-    const boundCallback = nearbyPlayerLoadCallback.bind(this);
-    boundCallback([remotePlayer]);
+  if(remotePlayer.sceneId === this.sceneId) {
+    if (!this.remotePlayers[remotePlayer.characterId]) {
+      const boundCallback = nearbyPlayerLoadCallback.bind(this);
+      boundCallback([remotePlayer]);
+    }
+  }
+  else { //different scene
+    if (this.remotePlayers[remotePlayer.characterId]) {
+      this.remotePlayers[remotePlayer.characterId].cleanUp();
+      this.remotePlayers[remotePlayer.characterId].destroy();
+      delete this.remotePlayers[remotePlayer.characterId];
+    }
   }
 }
 
 export function remotePlayerLoadCallback({mySceneId, remotePlayerData}) {
-  if (remotePlayerData.characterId === this.player.id) return;
+  console.log('callbacks remotePlayerLoad', mySceneId, remotePlayerData);
+  if (remotePlayerData.characterId === this.player.id) {
+    console.log('remotePlayerLoad exiting');
+    return;
+  }
   //is this player in my scene?
   if(remotePlayerData.sceneId === mySceneId) {
     //add
+    console.log('remotePlayerLoad in my scene');
     if(!this.remotePlayers[remotePlayerData.characterId]) {
+      console.log('remotePlayerLoad adding');
         this.remotePlayers[remotePlayerData.characterId] = new RemotePlayer(
           this,
           remotePlayerData.xPos,
@@ -141,6 +160,7 @@ export function remotePlayerLoadCallback({mySceneId, remotePlayerData}) {
   }
   else {
     //remove
+    console.log('remotePlayerLoad not in my scene');
     if(this.remotePlayers[remotePlayerData.characterId]) {
       console.log('removing');
       const boundRemove = remotePlayerLogoutCallback.bind(this);

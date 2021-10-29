@@ -105,10 +105,19 @@ router.post("/character", requireTokenMiddleware, async (req, res, next) => {
       spawnY: location.spawnY,
       facingDirection: location.facingDirection,
       scene: scene.name,
+      sceneId: location.sceneId,
       portrait: templateCharacterInfo.portrait
     };
     res.json(payload);
     gameSync.emit("remotePlayerLoad", payload);
+    // Tell the world this player has joined!
+    worldChat.emit("newMessage", {
+      channel: "world",
+      message: {
+        name: "WORLD", //todo: change this to the person's character name
+        message: newPlayer.name + " has logged in!"
+      }
+    });
   } catch (err) {
     next(err);
   }

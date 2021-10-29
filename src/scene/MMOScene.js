@@ -45,7 +45,6 @@ export default class MMOScene extends Phaser.Scene {
 
     this.unsubscribes.push(
       eventEmitter.subscribe("disabledEvents", () => {
-        console.log("disabledEvents", this);
         this.input.keyboard.enabled = false;
         this.input.keyboard.disableGlobalCapture();
       })
