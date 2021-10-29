@@ -175,6 +175,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     let convertedDir = DIRECTION_CONVERSION[this.direction];
     // this.stateLock = true;
     const applyHitBox = (animation, frame) => {
+      if(frame.index === 3) {
+        this.scene.orcSE.play();
+      }
       if (frame.index < 3) return;
       //here we're setting up where the attack box should go based on the character direction
       switch (convertedDir) {
@@ -378,9 +381,9 @@ export class Monster extends Phaser.Physics.Arcade.Sprite {
     const convertedDir = DIRECTION_CONVERSION[this.direction];
     const animationToPlay = `${this.templateName}-${state}-${convertedDir}`;
     if (!this.anims.isPlaying || animationToPlay !== currentAnimationPlaying) {
-      if (animationToPlay.includes("attack")) {
-        this.scene.orcSE.play();
-      }
+      // if (animationToPlay.includes("attack")) {
+      //   this.scene.orcSE.play();
+      // }
       this.anims.play(animationToPlay);
     }
     if (this.stateMachine.isCurrentState(MONSTER_STATES.ATTACK)) {
